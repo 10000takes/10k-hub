@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>10K Takes Network Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef1f4;--panel:#fff;--ink:#15202b;--mute:#5d6b79;--line:#d9e0e6;--acc:#1d5c48;--up:#17794f;--down:#b3382c;--chip:#e4ebf0;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f161d;--panel:#18222c;--ink:#e9eef2;--mute:#93a1ae;--line:#2a3743;--acc:#4fb890;--up:#4fcf94;--down:#f07a6c;--chip:#223140}}
+:root[data-theme="dark"]{--bg:#0f161d;--panel:#18222c;--ink:#e9eef2;--mute:#93a1ae;--line:#2a3743;--acc:#4fb890;--up:#4fcf94;--down:#f07a6c;--chip:#223140}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Barlow,system-ui,Arial,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 16px 48px}
+h1,h2,.big{font-family:"Barlow Condensed","Arial Narrow",sans-serif;margin:0;letter-spacing:.2px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+h1{font-size:28px}
+.sub{color:var(--mute);font-size:13px}
+.hero{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:12px;margin:8px 0 16px}
+.kv{display:flex;justify-content:space-between;gap:8px;font-size:13px;margin-top:6px;padding-top:6px;border-top:1px solid var(--line)}
+.kv span:first-child{color:var(--mute)}
+.kv span:last-child{text-align:right}
+.hero .big{font-size:44px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 16px}
+.big{font-size:54px;line-height:1;font-weight:700}
+.hero .panel:first-child{border-left:5px solid var(--acc)}
+.lbl{font-size:13px;color:var(--mute);margin-bottom:4px}
+.up{color:var(--up)}.down{color:var(--down)}
+h2{font-size:20px;margin:22px 0 8px}
+.plats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.plats .big{font-size:30px}
+.mini{font-size:12px;color:var(--mute);margin-top:4px}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-variant-numeric:tabular-nums}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:var(--panel)}
+th{font-weight:600;font-size:13px;color:var(--mute)}
+tr.tot td{font-weight:600;background:var(--chip)}
+td small{display:block;font-size:12px}
+.chart{padding:10px}
+svg{width:100%;height:auto;display:block}
+.tools{display:grid;gap:8px}
+textarea{width:100%;height:110px;font:12px/1.4 ui-monospace,Menlo,monospace;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:8px}
+button,.btn{font:600 14px Barlow,sans-serif;background:var(--acc);color:#fff;border:0;border-radius:5px;padding:8px 14px;cursor:pointer}
+button.alt,.btn.alt{background:var(--chip);color:var(--ink)}
+button:focus-visible,.btn:focus-visible,textarea:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+#msg{font-size:13px;color:var(--mute)}
+@media(max-width:900px){.hero{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.hero{grid-template-columns:1fr}.big{font-size:44px}}
+.rng{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 14px}
+.rng button.on{background:var(--acc);color:#fff}.rng button{padding:6px 12px}
+h3.gh{font:700 20px "Barlow Condensed","Arial Narrow",sans-serif;margin:22px 0 4px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;margin:4px 0}
+.legend i{display:inline-block;width:12px;height:3px;margin-right:5px;vertical-align:middle;border-radius:2px}
+.ro{font-size:13px;color:var(--mute);min-height:20px;margin:2px 0 4px}
+.chk{font-size:13px;color:var(--mute);display:flex;gap:6px;align-items:center;margin:2px 0}
+.gt{margin-top:8px}.gt table{min-width:520px}
+[hidden]{display:none!important}
+.tabs{display:flex;gap:2px;border-bottom:2px solid var(--line);margin:22px 0 4px;overflow-x:auto}
+.tabs button{background:none;color:var(--mute);border:0;border-bottom:4px solid transparent;border-radius:0;padding:10px 18px;margin-bottom:-2px;font:700 20px "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.3px;white-space:nowrap}
+.tabs button:hover{color:var(--ink)}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--acc)}
+.soon{padding:40px 20px;text-align:center}.soon .big{font-size:36px}
+.prow{margin:8px 0 14px;gap:12px;align-items:flex-end}
+.prow label,.pform label{display:flex;flex-direction:column;gap:3px;font-size:13px;color:var(--mute)}
+select,input[type=text],input[type=number],input[type=date],input[type=url],.pform textarea{font:15px Barlow,sans-serif;padding:7px 9px;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--ink);min-width:150px}
+.pform{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.pform .wide{grid-column:1/-1}.pform textarea{width:100%;height:70px;font:12px ui-monospace,Menlo,monospace}
+.bar{display:inline-block;height:8px;background:var(--acc);border-radius:2px;vertical-align:middle;margin-right:6px}
+.demo{background:var(--chip);border-left:4px solid var(--acc);margin-bottom:10px}
+#printRoot{display:none}
+.rp{font-family:Barlow,Arial,sans-serif;color:#111}.rp h1{font-size:40px;margin:0}.rp h2{font-size:24px;margin:22px 0 8px}
+.rcover{min-height:240mm;display:flex;flex-direction:column;justify-content:center;gap:10px}
+.rcover img{max-height:90px;max-width:260px;object-fit:contain;align-self:flex-start;margin-bottom:24px}
+.rcards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.rcards .panel{break-inside:avoid}
+.rp td small{display:inline;margin-left:6px;color:#555}.rp .note{font-size:12px;color:#555;margin-top:6px}
+@media print{
+ :root,:root:not([data-theme="light"]),:root[data-theme="dark"]{--bg:#fff;--panel:#fff;--ink:#111;--mute:#555;--line:#ccc;--chip:#eee;--acc:#1d5c48;--up:#17794f;--down:#b3382c;padding:0}
+ body{background:#fff}.wrap{display:none}#printRoot{display:block}
+ .rcover{page-break-after:always}.rp table{min-width:0;font-size:12px}.rp tr{break-inside:avoid}.rp .scroll{overflow:visible}
+ @page{margin:14mm}}
+</style></head>
+<body><div class="wrap">
+<header><div><h1>10K Takes network dashboard</h1><div class="sub" id="asof"></div></div>
+<div class="row"><button class="alt" id="toggleImport">Import data</button></div></header>
+
+<div class="sub" style="margin-top:14px">All accounts combined</div>
+<section class="hero" id="netTop"></section>
+<div class="sub" id="netNote"></div>
+
+<nav class="tabs" role="tablist" aria-label="Analytics sections">
+<button role="tab" id="tabbtn-main" aria-controls="tab-main" aria-selected="true" data-tab="main">Main Account</button>
+<button role="tab" id="tabbtn-subsidiary" aria-controls="tab-subsidiary" aria-selected="false" tabindex="-1" data-tab="subsidiary">Subsidiary Accounts</button>
+<button role="tab" id="tabbtn-partner" aria-controls="tab-partner" aria-selected="false" tabindex="-1" data-tab="partner">Partner Analytics</button>
+</nav>
+
+<section role="tabpanel" id="tab-main" aria-labelledby="tabbtn-main">
+<h2>Main account (10K Takes)</h2>
+<div class="sub" style="margin-bottom:6px">Followers, views and engagement for the main account on each platform. Views are each platform's own view count, so compare trends, not platforms.</div>
+<div class="plats" id="mainCards"></div>
+
+<h2>Growth over time</h2>
+<div class="sub" id="histNote">Loading history…</div>
+<div class="rng" id="rngMain"></div>
+
+<h3 class="gh">Followers</h3>
+<div class="legend" id="lg1"></div><div class="ro" id="ro1"></div>
+<div class="panel chart"><svg id="c1" viewBox="0 0 800 270" role="img" aria-label="Main account followers over time"></svg></div>
+<div class="scroll gt"><table id="t1"></table></div>
+
+<h3 class="gh">Weekly impressions and views</h3>
+<label class="chk"><input type="checkbox" id="sm" checked> Smooth with a 4-week average</label>
+<div class="legend" id="lg2"></div><div class="ro" id="ro2"></div>
+<div class="panel chart"><svg id="c2" viewBox="0 0 800 270" role="img" aria-label="Main account weekly impressions over time"></svg></div>
+<div class="scroll gt"><table id="t2"></table></div>
+</section>
+
+<section role="tabpanel" id="tab-subsidiary" aria-labelledby="tabbtn-subsidiary" hidden>
+<h2>Subsidiary accounts</h2>
+<div class="sub" style="margin-bottom:6px">Wild Takes, 10K Howls, State of Skol, The Underline and Captain's Patch, combined by platform.</div>
+<div class="plats" id="subCards"></div>
+<div class="sub" style="margin:14px 0 6px">By subsidiary account. Each cell: current followers and gain over the last 7 days.</div>
+<div class="scroll"><table id="tbl"></table></div>
+
+<h2>Growth over time</h2>
+<div class="sub" id="histNote2">Loading history…</div>
+<div class="rng" id="rngSub"></div>
+<h3 class="gh">Followers by account</h3>
+<div class="sub">Historical totals combine all platforms for each account. Live data joins the line once all of an account's platforms are connected.</div>
+<div class="legend" id="lg3"></div><div class="ro" id="ro3"></div>
+<div class="panel chart"><svg id="c3" viewBox="0 0 800 270" role="img" aria-label="Subsidiary follower totals over time"></svg></div>
+<div class="scroll gt"><table id="t3"></table></div>
+</section>
+
+<section role="tabpanel" id="tab-partner" aria-labelledby="tabbtn-partner" hidden>
+<h2>Partner analytics</h2>
+<div class="sub">Monthly sponsored-post results for client reports. Posts are listed in <b>posts.csv</b> and their numbers are collected into <b>post_metrics.csv</b>.</div>
+<div class="panel demo" id="pDemo" hidden>Showing <b>sample data</b>, not real campaigns. <a href="#partner" id="pSampleOff">Switch back to real data</a></div>
+<div class="row prow">
+<label>Month<select id="pMonth"></select></label>
+<label>Client<select id="pClient"></select></label>
+<label>Campaign<select id="pCamp"></select></label>
+<button class="alt" id="pSample">Preview with sample data</button>
+</div>
+<div class="panel soon" id="pEmpty" hidden><div class="big">No campaign posts yet</div><div class="sub" style="margin-top:8px">Add posts below, then paste the lines into posts.csv. Or preview the layout with sample data.</div></div>
+<div id="pBody">
+<div class="plats" id="pCards"></div>
+<div id="pCampBox"><h3 class="gh">By campaign</h3><div class="scroll"><table id="pCampT"></table></div></div>
+<h3 class="gh">By platform</h3><div class="scroll"><table id="pPlat"></table></div>
+<h3 class="gh">Top posts</h3><div class="plats" id="pTop"></div>
+<h3 class="gh">All posts</h3><div class="scroll"><table id="pPosts"></table></div>
+<h3 class="gh">Client report</h3>
+<div class="panel pform">
+<label>Client logo (optional)<input type="file" id="pLogo" accept="image/*"></label>
+<label class="wide">Highlights for the client (optional)<textarea id="pNote" placeholder="Two or three sentences on how the campaign went."></textarea></label>
+<div class="wide row"><button id="pReport">Create PDF report</button><span class="sub">Opens the print dialog. Choose <b>Save as PDF</b> as the destination.</span></div>
+</div>
+</div>
+<h3 class="gh">Add a post</h3>
+<div class="sub" style="margin-bottom:6px">Paste every link for one campaign, one per line, and it writes one line per post for posts.csv. Paste those lines at the bottom of the file on GitHub, then the next daily run starts collecting it.</div>
+<div class="panel pform" id="pAdd">
+<label>Client<input type="text" id="aClient" list="dlClient"></label>
+<label>Campaign<input type="text" id="aCamp"></label>
+<label class="wide">Post links, one per line<textarea id="aUrl" placeholder="https://&#10;https://"></textarea></label>
+<label>Posted on<input type="date" id="aDate"></label>
+<label>Account<select id="aAcct"></select></label>
+<label>Fee for the whole batch (optional)<input type="number" id="aFee" min="0" step="1"></label>
+<div class="wide"><div class="sub" id="aPlat"></div><textarea id="aOut" readonly style="height:110px"></textarea></div>
+<div class="wide row"><button id="aCopy">Copy lines</button><a class="btn alt" href="https://github.com/10000takes/10k-takes-data/edit/main/posts.csv" target="_blank" rel="noopener">Open posts.csv on GitHub</a></div>
+</div>
+<datalist id="dlClient"></datalist>
+</section>
+
+<section id="importBox" style="display:none">
+<h2>Import data</h2>
+<div class="panel tools">
+<div class="sub" id="sampleNote"></div>
+<div>Paste rows or choose a CSV file. Columns: <b>date, account, platform, followers</b> (one row per account per platform per day). Existing rows for the same date, account and platform are replaced.</div>
+<textarea id="paste" placeholder="2026-09-28,10K Takes,YouTube,48210&#10;2026-09-28,Wild Takes,TikTok,9120"></textarea>
+<div class="row">
+<button id="addBtn">Add pasted rows</button>
+<label class="btn alt">Choose CSV file<input type="file" id="file" accept=".csv,.txt,.tsv" hidden></label>
+<button class="alt" id="tmpl">Download blank template</button>
+<button class="alt" id="exportBtn">Export all data</button>
+<button class="alt" id="clearBtn">Clear all data</button>
+</div>
+<div id="msg" role="status"></div>
+</div></section>
+</div>
+<div id="printRoot"></div>
+<script>
+const PL=['Facebook','Instagram','X/Twitter','YouTube','TikTok','Threads'];
+const SUBP=['Facebook','Instagram','X/Twitter','TikTok','Threads'];
+const AC=[{n:'10K Takes',p:PL},...['Wild Takes','10K Howls','State of Skol','The Underline',"Captain's Patch"].map(n=>({n,p:SUBP}))];
+const KEYS=[];AC.forEach(a=>a.p.forEach(p=>KEYS.push(a.n+'|'+p)));
+const SK='tenk_rows_v1',SS='tenk_sample_v1';
+let rows=[],sample=false;
+const $=id=>document.getElementById(id);
+const fmt=n=>n==null?'–':Math.round(n).toLocaleString('en-US');
+const sg=n=>(n>0?'+':n<0?'−':'')+Math.abs(Math.round(n)).toLocaleString('en-US');
+const cls=n=>n>0?'up':n<0?'down':'';
+const pd=s=>Date.parse(s+'T00:00:00Z');
+const ad=(s,n)=>new Date(pd(s)+n*864e5).toISOString().slice(0,10);
+function load(){try{rows=JSON.parse(localStorage.getItem(SK)||'null')||[];sample=localStorage.getItem(SS)==='1'}catch(e){rows=[]}
+ if(!rows.length){makeSample();}}
+function save(){try{localStorage.setItem(SK,JSON.stringify(rows));localStorage.setItem(SS,sample?'1':'0')}catch(e){}}
+function makeSample(){sample=true;rows=[];const end=new Date();end.setUTCHours(0,0,0,0);let s=7;const r=()=>(s=(s*9301+49297)%233280)/233280;
+ const base={Facebook:18000,Instagram:24000,'X/Twitter':41000,YouTube:52000,TikTok:30000,Threads:9000};
+ AC.forEach((a,i)=>a.p.forEach(p=>{let v=base[p]*(i?0.12+r()*0.15:1);const g=v*(0.002+r()*0.006);
+  for(let w=10;w>=0;w--){const d=new Date(end.getTime()-w*7*864e5).toISOString().slice(0,10);v+=g*(0.4+r()*1.4);rows.push({d,a:a.n,p,f:Math.round(v)})}}));}
+function series(){const m={};rows.forEach(r=>{(m[r.a+'|'+r.p]=m[r.a+'|'+r.p]||[]).push(r)});Object.values(m).forEach(a=>a.sort((x,y)=>x.d<y.d?-1:1));return m}
+function at(arr,d){let v=null;if(!arr)return v;for(const r of arr){if(r.d<=d)v=r.f;else break}return v}
+const pc=(n,o)=>o>0?(n-o)/o*100:null;
+const pct=n=>n==null?'':(n>0?'+':n<0?'−':'')+Math.abs(n).toFixed(1)+'%';
+const pts2=n=>(n>=0?'+':'−')+Math.abs(n).toFixed(2)+' pts';
+function mIndex(){const ix={};MET.forEach(r=>{const k=r.a+'|'+r.p+'|'+r.m;(ix[k]=ix[k]||[]).push({d:r.d,f:r.v})});Object.values(ix).forEach(a=>a.sort((x,y)=>x.d<y.d?-1:1));return ix}
+function agg(keys,S,ix,asof){
+ const o={f:0,hasF:false,g:0,gb:0,g2:0,v:0,pv:0,nV:0,nPV:0,e:0,vE:0,pe:0,pvE:0,nE:0,nPE:0,coll:false};
+ keys.forEach(k=>{const a=S[k],c=at(a,asof),p1=at(a,ad(asof,-7)),p2=at(a,ad(asof,-14));
+  if(c!=null){o.f+=c;o.hasF=true}
+  if(c!=null&&p1!=null){o.g+=c-p1;o.gb+=p1}
+  if(p1!=null&&p2!=null)o.g2+=p1-p2;
+  const V=ix[k+'|views_7d'],E=ix[k+'|engagements_7d'];
+  if(V&&V.length){const d=V[V.length-1].d,v=at(V,d),v1=at(V,ad(d,-7));o.v+=v;o.nV++;if(v1!=null){o.pv+=v1;o.nPV++}
+   if(E&&E.length){const e=at(E,d),e1=at(E,ad(d,-7));o.e+=e;o.vE+=v;o.nE++;if(e1!=null&&v1!=null){o.pe+=e1;o.pvE+=v1;o.nPE++}}}
+  else if(ix[k+'|views_total'])o.coll=true});
+ return o}
+function vChg(o){return o.nV&&o.nPV===o.nV?pc(o.v,o.pv):null}
+function rate(o){return o.vE>0?o.e/o.vE*100:null}
+function rate1(o){return o.nE&&o.nPE===o.nE&&o.pvE>0?o.pe/o.pvE*100:null}
+function card(title,o){
+ const vc=vChg(o),er=rate(o),er1=rate1(o),none=o.coll?'collecting data':'not connected yet';
+ const views=o.nV?'<b>'+fmt(o.v)+'</b>'+(vc==null?'':' <span class="'+cls(vc)+'">'+pct(vc)+'</span>'):none;
+ const eng=o.nE?'<b>'+fmt(o.e)+'</b> · '+er.toFixed(2)+'%'+(er1!=null?' <span class="'+cls(er-er1)+'">'+pts2(er-er1)+'</span>':''):(o.nV?'–':none);
+ return '<div class="panel"><div class="lbl">'+title+'</div><div class="big">'+(o.hasF?fmt(o.f):'–')+'</div><div class="'+cls(o.g)+'" style="font-weight:600">'+sg(o.g)+' this week</div>'
+  +'<div class="kv"><span>Views, 7 days</span><span>'+views+'</span></div><div class="kv"><span>Engagement · rate</span><span>'+eng+'</span></div></div>'}
+function render(){
+ const S=series(),ix=mIndex(),dates=[...new Set(rows.map(r=>r.d))].sort();
+ if(!dates.length){$('asof').textContent='No data yet. Import rows to begin.';return}
+ const asof=dates[dates.length-1];
+ $('asof').textContent='Data as of '+new Date(pd(asof)).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'})+'. Week = last 7 days.';
+ const mainK=AC[0].p.map(p=>AC[0].n+'|'+p),subA=AC.slice(1),subK=[];subA.forEach(a=>a.p.forEach(p=>subK.push(a.n+'|'+p)));
+ const N=agg(KEYS,S,ix,asof),M=agg(mainK,S,ix,asof),B=agg(subK,S,ix,asof);
+ const er=rate(N),er1=rate1(N),vc=vChg(N),dd=N.g-N.g2;
+ $('netTop').innerHTML=
+  '<div class="panel"><div class="lbl">Total followers, all accounts</div><div class="big">'+fmt(N.f)+'</div><div class="mini">Main '+fmt(M.f)+' · Subsidiaries '+fmt(B.f)+'</div></div>'
+  +'<div class="panel"><div class="lbl">Followers gained this week</div><div class="big '+cls(N.g)+'">'+sg(N.g)+'</div><div class="mini">'+(N.gb?(N.g/N.gb*100).toFixed(2)+'% growth. ':'')+(N.g2||N.g?'Week before '+sg(N.g2)+' ('+sg(dd)+' change)':'Needs 2 weeks of history')+'</div></div>'
+  +'<div class="panel"><div class="lbl">Views, last 7 days</div><div class="big">'+(N.nV?fmt(N.v):'–')+'</div><div class="mini '+cls(vc)+'">'+(N.nV?(vc==null?'No prior week yet':pct(vc)+' vs last week'):'No data yet')+'</div></div>'
+  +'<div class="panel"><div class="lbl">Engagement, last 7 days</div><div class="big">'+(N.nE?fmt(N.e):'–')+'</div><div class="mini">'+(N.nE?'Rate '+er.toFixed(2)+'%'+(er1!=null?' ('+pts2(er-er1)+')':''):'No data yet')+'</div></div>';
+ $('netNote').textContent='Views and engagement include only the '+N.nV+' of '+KEYS.length+' account and platform pairs that are connected so far.';
+ $('mainCards').innerHTML=card('All platforms',M)+AC[0].p.map(p=>card(p,agg([AC[0].n+'|'+p],S,ix,asof))).join('');
+ $('subCards').innerHTML=card('All subsidiary platforms',B)+SUBP.map(p=>card(p,agg(subA.map(a=>a.n+'|'+p),S,ix,asof))).join('');
+ let h='<tr><th>Account</th>'+SUBP.map(p=>'<th>'+p+'</th>').join('')+'<th>Total</th></tr>';
+ subA.forEach(a=>{const t=agg(a.p.map(p=>a.n+'|'+p),S,ix,asof);h+='<tr><td>'+a.n+'</td>'+SUBP.map(p=>{const c=agg([a.n+'|'+p],S,ix,asof);return '<td>'+(c.hasF?fmt(c.f):'–')+'<small class="'+cls(c.g)+'">'+(c.hasF?sg(c.g):'')+'</small></td>'}).join('')+'<td><b>'+fmt(t.f)+'</b><small class="'+cls(t.g)+'">'+sg(t.g)+'</small></td></tr>'});
+ h+='<tr class="tot"><td>All subsidiaries</td>'+SUBP.map(p=>{const c=agg(subA.map(a=>a.n+'|'+p),S,ix,asof);return '<td>'+fmt(c.f)+'<small class="'+cls(c.g)+'">'+sg(c.g)+'</small></td>'}).join('')+'<td>'+fmt(B.f)+'<small class="'+cls(B.g)+'">'+sg(B.g)+'</small></td></tr>';
+ $('tbl').innerHTML=h;
+ renderGrowth();
+ $('sampleNote').innerHTML=sample?'<b>Sample data is loaded.</b> Clear all data, then import your real numbers to replace it.':'';
+}
+function norm(s){return s.trim().toLowerCase()}
+function ingest(text){
+ const A={},Pm={};AC.forEach(a=>A[norm(a.n)]=a.n);PL.forEach(p=>Pm[norm(p)]=p);Pm['twitter']='X/Twitter';Pm['x']='X/Twitter';
+ let ok=0,bad=0;const out=[];
+ text.split(/\r?\n/).forEach(line=>{if(!line.trim())return;const c=line.split(/\t|,/).map(x=>x.trim().replace(/^"|"$/g,''));
+  if(c.length<4)return void(/date/i.test(line)||bad++);
+  const f=Number(c[3].replace(/[,\s]/g,'')),a=A[norm(c[1])],p=Pm[norm(c[2])];
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(c[0])||!a||!p||!isFinite(f)){if(!/date/i.test(c[0]))bad++;return}
+  out.push({d:c[0],a,p,f});ok++});
+ if(ok){if(sample){rows=[];sample=false}const m=new Map(rows.map(r=>[r.d+'|'+r.a+'|'+r.p,r]));out.forEach(r=>m.set(r.d+'|'+r.a+'|'+r.p,r));rows=[...m.values()];save();render()}
+ $('msg').textContent=ok+' rows added'+(bad?', '+bad+' skipped (check date as YYYY-MM-DD, account and platform names).':'.');}
+function dl(name,txt){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/csv'}));a.download=name;a.click()}
+$('toggleImport').onclick=()=>{const b=$('importBox'),open=b.style.display==='none';b.style.display=open?'block':'none';if(open)b.scrollIntoView({behavior:'smooth',block:'start'})};
+$('addBtn').onclick=()=>{ingest($('paste').value);$('paste').value=''};
+$('file').onchange=e=>{const f=e.target.files[0];if(f)f.text().then(ingest)};
+$('tmpl').onclick=()=>dl('10k-takes-template.csv','date,account,platform,followers\n'+KEYS.map(k=>'2026-10-01,'+k.replace('|',',')+',').join('\n'));
+$('exportBtn').onclick=()=>dl('10k-takes-data.csv','date,account,platform,followers\n'+rows.map(r=>[r.d,'"'+r.a+'"',r.p,r.f].join(',')).join('\n'));
+$('clearBtn').onclick=()=>{rows=[];sample=false;save();render();$('msg').textContent='All data cleared.'};
+let MET=[];
+let HIST=[],RANGE='all';
+const PAL=['#1d5c48','#c8553d','#2f6fb3','#b7791f','#7b4fb0','#0f8b8d'],CH={};
+const fC=n=>n>=1e6?(n/1e6).toFixed(n>=1e7?0:1)+'M':n>=1e3?(n/1e3).toFixed(n>=1e5?0:1)+'k':String(Math.round(n));
+const fri=d=>new Date(pd(d)).getUTCDay()===5;
+const hs=(a,p,m)=>HIST.filter(r=>r.a===a&&r.p===p&&r.m===m).map(r=>({d:r.d,f:r.v}));
+function joinLive(h,live){const last=h.length?h[h.length-1].d:'';return h.concat(live.filter(x=>x.d>last&&fri(x.d)))}
+function tot(list){const ds=[...new Set(list.flatMap(s=>s.map(x=>x.d)))].sort();return ds.map(d=>({d,f:list.reduce((s,a)=>s+(at(a,d)||0),0)}))}
+function smooth(s,n){return s.map((x,i)=>{const w=s.slice(Math.max(0,i-n+1),i+1);return{d:x.d,f:w.reduce((a,b)=>a+b.f,0)/w.length}})}
+function subLive(a,S){const ks=a.p.map(p=>a.n+'|'+p);
+ const ds=[...new Set(ks.flatMap(k=>(S[k]||[]).map(r=>r.d)))].filter(fri).sort();
+ return ds.filter(d=>ks.every(k=>at(S[k],d)!=null)).map(d=>({d,f:ks.reduce((s,k)=>s+at(S[k],d),0)}))}
+function drawChart(id,list,ann){
+ const el=$('c'+id),all=list.flatMap(s=>s.pts);
+ if(!all.length){el.innerHTML='';return}
+ const end=all.reduce((m,x)=>x.d>m?x.d:m,''),start=RANGE==='all'?all.reduce((m,x)=>x.d<m?x.d:m,end):ad(end,{'3y':-1095,'1y':-365,'6m':-182}[RANGE]);
+ const L=list.map(s=>Object.assign({},s,{v:s.pts.filter(x=>x.d>=start)}));
+ const W=800,H=270,l=52,r=12,t=12,b=26,t0=pd(start),t1=pd(end),mx=Math.max(1,...L.flatMap(s=>s.v.map(x=>x.f)))*1.06;
+ const X=d=>l+(pd(d)-t0)/Math.max(1,t1-t0)*(W-l-r),Y=v=>t+(1-v/mx)*(H-t-b);
+ let g='';for(let i=0;i<=4;i++){const v=mx*i/4,y=Y(v);g+='<line x1="'+l+'" x2="'+(W-r)+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)"/><text x="'+(l-6)+'" y="'+(y+4)+'" text-anchor="end" font-size="11" fill="var(--mute)">'+fC(v)+'</text>'}
+ const yrs=(t1-t0)/31536e6,step=yrs>4?12:yrs>1.5?6:yrs>0.6?3:1;let dd=new Date(t0);dd=new Date(Date.UTC(dd.getUTCFullYear(),dd.getUTCMonth()+1,1));let n=0;
+ for(;dd.getTime()<=t1;dd=new Date(Date.UTC(dd.getUTCFullYear(),dd.getUTCMonth()+1,1)),n++){if((dd.getUTCMonth()+(yrs>4?12:0))%step===0||(step===1)){const x=l+(dd.getTime()-t0)/Math.max(1,t1-t0)*(W-l-r);if(step>=12&&dd.getUTCMonth()!==0)continue;g+='<text x="'+x+'" y="'+(H-8)+'" text-anchor="middle" font-size="11" fill="var(--mute)">'+(step>=12?dd.getUTCFullYear():dd.toLocaleDateString('en-US',{month:'short',year:'2-digit',timeZone:'UTC'}))+'</text>'}}
+ (ann||[]).forEach((a,i)=>{if(a.d>=start&&a.d<=end){const x=X(a.d);g+='<line x1="'+x+'" x2="'+x+'" y1="'+t+'" y2="'+(H-b)+'" stroke="var(--mute)" stroke-dasharray="3 3"/><text x="'+(x+4)+'" y="'+(t+11+i*12)+'" font-size="10" fill="var(--mute)">'+a.t+'</text>'}});
+ L.forEach(s=>{if(s.v.length)g+='<polyline fill="none" stroke="'+s.color+'" stroke-width="'+(s.bold?3:1.6)+'" stroke-linejoin="round" points="'+s.v.map(x=>X(x.d).toFixed(1)+','+Y(x.f).toFixed(1)).join(' ')+'"/>'});
+ g+='<line id="cur'+id+'" x1="0" x2="0" y1="'+t+'" y2="'+(H-b)+'" stroke="var(--ink)" stroke-opacity=".4" style="display:none"/><rect x="'+l+'" y="'+t+'" width="'+(W-l-r)+'" height="'+(H-t-b)+'" fill="transparent" id="hov'+id+'"/>';
+ el.innerHTML=g;$('lg'+id).innerHTML=list.map(s=>'<span><i style="background:'+s.color+'"></i>'+s.name+'</span>').join('');
+ const dates=[...new Set(L.flatMap(s=>s.v.map(x=>x.d)))].sort();CH[id]={L,dates,X,l,r,W,t0,t1};
+ const h=$('hov'+id);h.onmousemove=e=>{const bb=el.getBoundingClientRect(),px=(e.clientX-bb.left)/bb.width*W,c=CH[id],tt=c.t0+(px-c.l)/(c.W-c.l-c.r)*(c.t1-c.t0);
+  let best=c.dates[0];c.dates.forEach(d=>{if(Math.abs(pd(d)-tt)<Math.abs(pd(best)-tt))best=d});
+  const cu=$('cur'+id);cu.setAttribute('x1',c.X(best));cu.setAttribute('x2',c.X(best));cu.style.display='';
+  $('ro'+id).textContent=new Date(pd(best)).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'})+':  '+c.L.map(s=>{const v=at(s.v,best);return v==null?null:s.name+' '+Math.round(v).toLocaleString('en-US')}).filter(Boolean).join('  ·  ')};
+ h.onmouseleave=()=>{$('cur'+id).style.display='none';$('ro'+id).textContent=''}}
+function statsTable(id,list){
+ const all=list.flatMap(s=>s.pts),end=all.reduce((m,x)=>x.d>m?x.d:m,'');
+ let h='<tr><th>Series</th><th>Latest</th><th>1 year ago</th><th>1-year change</th><th>Peak</th></tr>';
+ list.forEach(s=>{if(!s.pts.length)return;const now=s.pts[s.pts.length-1],ago=at(s.pts,ad(now.d,-365)),pk=s.pts.reduce((m,x)=>x.f>m.f?x:m);
+  const c=ago>0?(now.f-ago)/ago*100:null;
+  h+='<tr'+(s.bold?' class="tot"':'')+'><td>'+s.name+'</td><td>'+fmt(now.f)+'</td><td>'+(ago==null?'–':fmt(ago))+'</td><td class="'+cls(c)+'">'+(c==null?'–':pct(c))+'</td><td>'+fmt(pk.f)+'<small>'+pk.d+'</small></td></tr>'});
+ $('t'+id).innerHTML=h}
+function renderGrowth(){
+ if(!HIST.length){$('histNote2').textContent=$('histNote').textContent='history.csv has not loaded, so only live data is shown elsewhere on this page.';return}
+ const S=series(),im={};MET.forEach(r=>{if(r.m==='views_7d'){const k=r.a+'|'+r.p;(im[k]=im[k]||[]).push({d:r.d,f:r.v})}});
+ Object.values(im).forEach(a=>a.sort((x,y)=>x.d<y.d?-1:1));
+ const last=HIST.reduce((m,r)=>r.d>m?r.d:m,'');
+ $('histNote2').textContent=$('histNote').textContent='Weekly history from the original spreadsheet through '+new Date(pd(last)).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'})+', continued by live data each Friday. Hover a chart for exact values.';
+ ['rngMain','rngSub'].forEach(id=>{$(id).innerHTML=[['all','All time'],['3y','3 years'],['1y','1 year'],['6m','6 months']].map(x=>'<button class="'+(RANGE===x[0]?'on':'alt')+'" data-r="'+x[0]+'">'+x[1]+'</button>').join('');
+  $(id).querySelectorAll('button').forEach(b=>b.onclick=()=>{RANGE=b.dataset.r;renderGrowth()})});
+ const M='10K Takes',ann=[{d:'2021-07-22',t:'X suspended, backup account counted'},{d:'2023-01-05',t:'Backup account no longer counted'}];
+ let s1=PL.map((p,i)=>({name:p,color:PAL[i],pts:joinLive(hs(M,p,'followers'),(S[M+'|'+p]||[]).map(x=>({d:x.d,f:x.f})))})).filter(s=>s.pts.length);
+ s1=[{name:'Total',color:'var(--ink)',bold:true,pts:tot(s1.map(s=>s.pts))}].concat(s1);
+ const sm=$('sm').checked,P2=PL.filter(p=>p!=='Threads');
+ let s2=P2.map((p,i)=>({name:p,color:PAL[PL.indexOf(p)],pts:joinLive(hs(M,p,'views_7d'),im[M+'|'+p]||[])})).filter(s=>s.pts.length);
+ s2=[{name:'Total',color:'var(--ink)',bold:true,pts:tot(s2.map(s=>s.pts))}].concat(s2);
+ if(sm)s2=s2.map(s=>Object.assign({},s,{pts:smooth(s.pts,4)}));
+ let s3=AC.slice(1).map((a,i)=>({name:a.n,color:PAL[i],pts:joinLive(hs(a.n,'All platforms','followers'),subLive(a,S))})).filter(s=>s.pts.length);
+ s3=[{name:'All subsidiaries',color:'var(--ink)',bold:true,pts:tot(s3.map(s=>s.pts))}].concat(s3);
+ [[1,s1,ann],[2,s2,null],[3,s3,null]].forEach(x=>{drawChart(x[0],x[1],x[2]);statsTable(x[0],x[1])})}
+$('sm').onchange=renderGrowth;
+const TABS=['main','subsidiary','partner'];
+function showTab(t){if(!TABS.includes(t))t='main';TABS.forEach(x=>{const on=x===t,b=$('tabbtn-'+x);$('tab-'+x).hidden=!on;b.setAttribute('aria-selected',on?'true':'false');b.tabIndex=on?0:-1});document.title=({main:'Main Account',subsidiary:'Subsidiary Accounts',partner:'Partner Analytics'})[t]+' | 10K Takes'}
+TABS.forEach((x,i)=>{const b=$('tabbtn-'+x);b.onclick=()=>{location.hash=x};
+ b.onkeydown=e=>{const k=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;if(k){const n=TABS[(i+k+TABS.length)%TABS.length];location.hash=n;$('tabbtn-'+n).focus();e.preventDefault()}}});
+window.addEventListener('hashchange',()=>showTab(location.hash.slice(1)));
+showTab(location.hash.slice(1));
+load();render();
+let PO=[],PM=[],PMX={},PDEMO=false,LOGO='',PSEL={m:'',c:'',k:'*'};
+const PALIAS={x:'X/Twitter',twitter:'X/Twitter','x/twitter':'X/Twitter',youtube:'YouTube',instagram:'Instagram',tiktok:'TikTok',threads:'Threads',facebook:'Facebook'};
+const ENG=['likes','comments','shares','saves'];
+function parseCSV(t){const rows=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];
+ if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}
+ else if(c==='"')q=true;else if(c===','){row.push(f);f=''}
+ else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;row.push(f);f='';rows.push(row);row=[]}else f+=c}
+ if(f!==''||row.length){row.push(f);rows.push(row)}return rows.filter(r=>r.some(x=>x.trim()!==''))}
+function pNorm(u){u=(u||'').trim();const y=u.match(/^https?:\/\/(?:www\.|m\.)?youtube\.com\/watch\?(?:[^#]*&)?v=([A-Za-z0-9_-]{11})/i);if(y)return'https://youtube.com/watch?v='+y[1];return u.replace(/[?#].*$/,'').replace(/^https?:\/\/(www\.|m\.)?/i,'https://').replace(/\/+$/,'')}
+function setPosts(t){const r=parseCSV(t);if(!r.length)return[];const h=r[0].map(x=>x.trim().toLowerCase());
+ return r.slice(1).map(c=>{const o={};h.forEach((k,i)=>o[k]=(c[i]||'').trim());return o}).filter(o=>o.url&&/^\d{4}-\d{2}-\d{2}$/.test(o.posted||'')).map(o=>({client:o.client||'(no client)',campaign:o.campaign||'',platform:PALIAS[(o.platform||'').toLowerCase()]||o.platform,account:o.account||'',url:o.url,key:pNorm(o.url),posted:o.posted,month:o.posted.slice(0,7),fee:Number(o.fee)||0,mv:o.manual_views||'',me:o.manual_engagements||'',notes:o.notes||''}))}
+function setPM(rowsIn){PM=rowsIn;PMX={};PM.forEach(r=>{const k=r.u+'|'+r.m;(PMX[k]=PMX[k]||[]).push({d:r.d,f:r.v})});Object.values(PMX).forEach(a=>a.sort((x,y)=>x.d<y.d?-1:1))}
+const monthEnd=m=>{const[y,mo]=m.split('-').map(Number);return new Date(Date.UTC(y,mo,0)).toISOString().slice(0,10)};
+const prevMonth=m=>{const[y,mo]=m.split('-').map(Number);const d=new Date(Date.UTC(y,mo-2,1));return d.toISOString().slice(0,7)};
+const monthName=m=>new Date(m+'-15T00:00:00Z').toLocaleDateString('en-US',{month:'long',year:'numeric',timeZone:'UTC'});
+const todayS=()=>new Date().toISOString().slice(0,10);
+const cutFor=m=>{const e=monthEnd(m),t=todayS();return e<t?e:t};
+function postStat(p,cut){const g=m=>{const a=PMX[p.key+'|'+m];return a?at(a,cut):null};
+ const hasE=ENG.some(m=>g(m)!=null);let asof='';['views',...ENG].forEach(m=>{const a=PMX[p.key+'|'+m];if(a)a.forEach(x=>{if(x.d<=cut&&x.d>asof)asof=x.d})});
+ return{v:p.mv!==''?Number(p.mv):g('views'),e:p.me!==''?Number(p.me):(hasE?ENG.reduce((s,m)=>s+(g(m)||0),0):null),manual:p.mv!==''||p.me!=='',asof}}
+function pAgg(list,month){const cut=cutFor(month),o={n:list.length,wait:0,v:0,e:0,vE:0,fee:0,asof:''};
+ list.forEach(p=>{const s=postStat(p,cut);o.fee+=p.fee;if(s.asof>o.asof)o.asof=s.asof;if(s.v==null){o.wait++;return}o.v+=s.v;if(s.e!=null){o.e+=s.e;o.vE+=s.v}});
+ o.er=o.vE>0?o.e/o.vE*100:null;o.cpm=o.fee>0&&o.v>0?o.fee/o.v*1000:null;return o}
+const pMatch=p=>(PSEL.c==='*'||p.client===PSEL.c)&&(PSEL.k==='*'||p.campaign===PSEL.k);
+const pSel=()=>PO.filter(p=>p.month===PSEL.m&&pMatch(p));
+const pPrev=()=>PO.filter(p=>p.month===prevMonth(PSEL.m)&&pMatch(p));
+const money=n=>'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+function pCard(t,big,sub){return '<div class="panel"><div class="lbl">'+t+'</div><div class="big">'+big+'</div><div class="mini">'+sub+'</div></div>'}
+function pCardsHTML(A,P){const vc=P&&P.v>0&&!P.wait?pc(A.v,P.v):null,ec=P&&P.er!=null&&A.er!=null?A.er-P.er:null;
+ return pCard('Posts',A.n,A.wait?A.wait+' still waiting for numbers':'All have numbers')
+ +pCard('Total views',fmt(A.v),vc==null?(P?'No comparison available':'First month for this selection'):'<span class="'+cls(vc)+'">'+pct(vc)+'</span> vs '+monthName(prevMonth(PSEL.m)))
+ +pCard('Engagements',fmt(A.e),A.er==null?'':'Likes, comments, shares and saves')
+ +pCard('Engagement rate',A.er==null?'–':A.er.toFixed(2)+'%',ec==null?'Engagements divided by views':'<span class="'+cls(ec)+'">'+pts2(ec)+'</span> vs last month')
+ +(A.cpm!=null?pCard('Cost per 1,000 views',money(A.cpm),'On '+money(A.fee)+' in fees'):'')}
+function pPlatHTML(list,month){const cut=cutFor(month),g={};list.forEach(p=>{(g[p.platform]=g[p.platform]||[]).push(p)});
+ const rows=Object.entries(g).map(([k,v])=>[k,pAgg(v,month)]).sort((a,b)=>b[1].v-a[1].v),mx=Math.max(1,...rows.map(r=>r[1].v));
+ return '<tr><th>Platform</th><th>Posts</th><th>Views</th><th>Engagements</th><th>Rate</th></tr>'+rows.map(([k,a])=>'<tr><td>'+k+'</td><td>'+a.n+'</td><td><span class="bar" style="width:'+Math.round(a.v/mx*60)+'px"></span>'+fmt(a.v)+'</td><td>'+fmt(a.e)+'</td><td>'+(a.er==null?'–':a.er.toFixed(2)+'%')+'</td></tr>').join('')}
+function pCampHTML(list,month){const g={};list.forEach(p=>{(g[p.campaign||'(no campaign)']=g[p.campaign||'(no campaign)']||[]).push(p)});
+ return '<tr><th>Campaign</th><th>Posts</th><th>Views</th><th>Engagements</th><th>Rate</th><th>Cost per 1,000 views</th></tr>'+Object.entries(g).map(([k,v])=>[k,pAgg(v,month)]).sort((a,b)=>b[1].v-a[1].v).map(([k,a])=>'<tr><td>'+esc(k)+'</td><td>'+a.n+'</td><td>'+fmt(a.v)+'</td><td>'+fmt(a.e)+'</td><td>'+(a.er==null?'–':a.er.toFixed(2)+'%')+'</td><td>'+(a.cpm==null?'–':money(a.cpm))+'</td></tr>').join('')}
+function pPostsHTML(list,month){const cut=cutFor(month);
+ return '<tr><th>Date</th><th>Campaign</th><th>Platform</th><th>Account</th><th>Views</th><th>Engagements</th><th>Rate</th><th>Link</th></tr>'+list.slice().sort((a,b)=>a.posted<b.posted?-1:1).map(p=>{const s=postStat(p,cut),r=s.v>0&&s.e!=null?(s.e/s.v*100).toFixed(2)+'%':'–';
+  return '<tr><td>'+p.posted+'</td><td>'+esc(p.campaign)+'</td><td>'+p.platform+'</td><td>'+esc(p.account)+'</td><td>'+(s.v==null?'–':fmt(s.v)+(s.manual?'*':''))+'</td><td>'+(s.e==null?'–':fmt(s.e)+(s.manual?'*':''))+'</td><td>'+r+'</td><td><a href="'+esc(p.url)+'" target="_blank" rel="noopener">View</a></td></tr>'}).join('')}
+const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function pTopHTML(list,month){const cut=cutFor(month);return list.map(p=>({p,s:postStat(p,cut)})).filter(x=>x.s.v!=null).sort((a,b)=>b.s.v-a.s.v).slice(0,3).map(x=>'<div class="panel"><div class="lbl">'+x.p.platform+' · '+esc(x.p.account||'')+' · '+x.p.posted+'</div><div class="big">'+fmt(x.s.v)+'</div><div class="mini">views'+(x.s.e!=null&&x.s.v>0?' · '+(x.s.e/x.s.v*100).toFixed(2)+'% engagement':'')+'<br>'+esc(x.p.campaign)+' · <a href="'+esc(x.p.url)+'" target="_blank" rel="noopener">open post</a></div></div>').join('')}
+function renderPartner(){
+ const months=[...new Set(PO.map(p=>p.month))].sort().reverse();
+ $('pDemo').hidden=!PDEMO;$('pEmpty').hidden=!!PO.length;$('pBody').hidden=!PO.length;
+ $('dlClient').innerHTML=[...new Set(PO.map(p=>p.client))].map(c=>'<option value="'+esc(c)+'">').join('');
+ if(!PO.length)return;
+ if(!months.includes(PSEL.m))PSEL.m=months[0];
+ $('pMonth').innerHTML=months.map(m=>'<option value="'+m+'"'+(m===PSEL.m?' selected':'')+'>'+monthName(m)+'</option>').join('');
+ const cl=[...new Set(PO.filter(p=>p.month===PSEL.m).map(p=>p.client))].sort();if(PSEL.c!=='*'&&!cl.includes(PSEL.c))PSEL.c='*';
+ $('pClient').innerHTML='<option value="*"'+(PSEL.c==='*'?' selected':'')+'>All clients</option>'+cl.map(c=>'<option value="'+esc(c)+'"'+(c===PSEL.c?' selected':'')+'>'+esc(c)+'</option>').join('');
+ const ca=[...new Set(PO.filter(p=>p.month===PSEL.m&&(PSEL.c==='*'||p.client===PSEL.c)).map(p=>p.campaign||'(no campaign)'))].sort();if(PSEL.k!=='*'&&!ca.includes(PSEL.k))PSEL.k='*';
+ $('pCamp').innerHTML='<option value="*"'+(PSEL.k==='*'?' selected':'')+'>All campaigns</option>'+ca.map(k=>'<option value="'+esc(k)+'"'+(k===PSEL.k?' selected':'')+'>'+esc(k)+'</option>').join('');
+ const list=pSel(),A=pAgg(list,PSEL.m),pl=pPrev(),P=pl.length?pAgg(pl,prevMonth(PSEL.m)):null;
+ $('pCampBox').hidden=new Set(list.map(p=>p.campaign)).size<2;$('pCampT').innerHTML=pCampHTML(list,PSEL.m);$('pCards').innerHTML=pCardsHTML(A,P);$('pPlat').innerHTML=pPlatHTML(list,PSEL.m);$('pPosts').innerHTML=pPostsHTML(list,PSEL.m);$('pTop').innerHTML=pTopHTML(list,PSEL.m)||'<div class="sub">No numbers yet.</div>'}
+const DEFS='YouTube: views are video views; engagements are likes and comments. X: views are post impressions; engagements are likes, replies, reposts, quotes and bookmarks. Instagram: views count plays and displays; engagements are likes, comments, shares and saves. TikTok: views are video views; engagements are likes, comments and shares. Threads: engagements are likes, replies, reposts and quotes. Figures marked * were entered by hand. Engagement rate is engagements divided by views. Platforms count views differently, so compare results within a platform rather than across platforms.';
+function buildReport(){const list=pSel(),A=pAgg(list,PSEL.m),pl=pPrev(),P=pl.length?pAgg(pl,prevMonth(PSEL.m)):null,client=PSEL.c==='*'?'All clients':PSEL.c,note=$('pNote').value.trim();
+ const asof=A.asof?new Date(pd(A.asof)).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'}):'';
+ $('printRoot').innerHTML='<div class="rp"><section class="rcover">'+(LOGO?'<img src="'+LOGO+'" alt="">':'')+'<div class="sub">Sponsored content report</div><h1>'+esc(client)+'</h1><div style="font-size:26px">'+monthName(PSEL.m)+'</div><div class="sub" style="margin-top:30px">Prepared by 10K Media LLC · '+new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})+'</div></section>'
+ +'<section><h2>Summary</h2><div class="rcards">'+pCardsHTML(A,P)+'</div>'+(note?'<h2>Highlights</h2><p style="font-size:15px;line-height:1.5">'+esc(note).replace(/\n/g,'<br>')+'</p>':'')
+ +(new Set(list.map(p=>p.campaign)).size>1?'<h2>By campaign</h2><table>'+pCampHTML(list,PSEL.m)+'</table>':'')+'<h2>By platform</h2><table>'+pPlatHTML(list,PSEL.m)+'</table><h2>Top posts</h2><div class="rcards">'+pTopHTML(list,PSEL.m)+'</div>'
+ +'<h2>All posts</h2><table>'+pPostsHTML(list,PSEL.m)+'</table><h2>Notes on the numbers</h2><div class="note">'+DEFS+(asof?' Figures as of '+asof+'.':'')+'</div></section></div>'}
+function sampleData(){const m1=prevMonth(todayS().slice(0,7)),m0=prevMonth(m1),P=[],M=[];let k=0;
+ [[m0,0.8],[m1,1]].forEach(([m,f])=>[['YouTube','10K Takes','https://youtube.com/watch?v=sample'],['X/Twitter','10K Takes','https://x.com/10K_Takes/status/'],['Instagram','Wild Takes','https://instagram.com/reel/'],['TikTok','Wild Takes','https://tiktok.com/@wildtakes10k/video/'],['Threads','10K Takes','https://threads.net/@10ktakes/post/'],['Facebook','10K Takes','https://facebook.com/10ktakes/posts/']].forEach(([pl,ac,u],i)=>{k++;
+  const url=u+(pl==='YouTube'?String(k).padStart(2,'0'):k),views=Math.round((12000+i*9000+(k*7919%5000))*f),eng=Math.round(views*(0.03+(k%4)*0.012));
+  P.push({client:'Sample Brand',campaign:i<3?'Fall launch':'Tipoff push',platform:pl,account:ac,url,key:pNorm(url),posted:m+'-'+String(3+i*4).padStart(2,'0'),month:m,fee:i===0?750*f:0,mv:pl==='Facebook'?String(views):'',me:pl==='Facebook'?String(eng):'',notes:''});
+  if(pl!=='Facebook'){const d=monthEnd(m);M.push({d,u:pNorm(url),m:'views',v:views},{d,u:pNorm(url),m:'likes',v:Math.round(eng*.7)},{d,u:pNorm(url),m:'comments',v:Math.round(eng*.1)},{d,u:pNorm(url),m:'shares',v:Math.round(eng*.2)})}}));
+ PO=P;setPM(M)}
+const PLATHOST=[[/youtu(\.be|be\.com)/i,'YouTube'],[/(^|\.)(x|twitter)\.com/i,'X/Twitter'],[/instagram\.com/i,'Instagram'],[/tiktok\.com/i,'TikTok'],[/threads\.(net|com)/i,'Threads'],[/(facebook|fb)\.com|fb\.watch/i,'Facebook']];
+function csvQ(x){x=String(x==null?'':x);return /[",\n]/.test(x)?'"'+x.replace(/"/g,'""')+'"':x}
+function updAdd(){const links=$('aUrl').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),out=[],count={};let bad=0;
+ links.forEach(u=>{let h='';try{h=new URL(u).hostname}catch(e){}const pl=(PLATHOST.find(x=>x[0].test(h))||[0,''])[1];if(!pl){bad++;return}count[pl]=(count[pl]||0)+1;
+  out.push([$('aClient').value.trim(),$('aCamp').value.trim(),pl,$('aAcct').value==='Other'?'':$('aAcct').value,u,$('aDate').value,out.length?'':$('aFee').value,'','',''].map(csvQ).join(','))});
+ const own=Object.keys(count).some(k=>k!=='YouTube'&&k!=='X/Twitter');
+ $('aPlat').textContent=links.length?(out.length?'Detected '+out.length+' post'+(out.length>1?'s':'')+' ('+Object.entries(count).map(([k,v])=>v+' '+k).join(', ')+').':'')+(bad?' '+bad+' link'+(bad>1?'s':'')+' not recognized and skipped.':'')+($('aAcct').value==='Other'&&own?' Posts on accounts we do not own only show public numbers, so add manual numbers in posts.csv.':''):'';
+ $('aOut').value=out.join('\n')}
+$('aAcct').innerHTML=AC.map(a=>'<option>'+esc(a.n)+'</option>').join('')+'<option value="Other">Other (a creator or partner account)</option>';
+$('aDate').value=todayS();
+['aClient','aCamp','aUrl','aDate','aAcct','aFee'].forEach(id=>{$(id).oninput=updAdd;$(id).onchange=updAdd});
+$('aCopy').onclick=()=>{const t=$('aOut');t.select();navigator.clipboard&&navigator.clipboard.writeText(t.value);$('aCopy').textContent='Copied';setTimeout(()=>$('aCopy').textContent='Copy lines',1500)};
+$('pMonth').onchange=e=>{PSEL.m=e.target.value;PSEL.k='*';renderPartner()};
+$('pClient').onchange=e=>{PSEL.c=e.target.value;PSEL.k='*';renderPartner()};
+$('pCamp').onchange=e=>{PSEL.k=e.target.value;renderPartner()};
+$('pSample').onclick=()=>{PDEMO=true;sampleData();PSEL={m:'',c:'*',k:'*'};renderPartner()};
+$('pSampleOff').onclick=e=>{e.preventDefault();PDEMO=false;PO=[];setPM([]);loadPartner()};
+$('pLogo').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>LOGO=r.result;r.readAsDataURL(f)};
+$('pReport').onclick=()=>{buildReport();window.print()};
+function loadPartner(){
+ fetch('posts.csv?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{if(!PDEMO){PO=setPosts(t);renderPartner()}}).catch(()=>renderPartner());
+ fetch('post_metrics.csv?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{if(!PDEMO){setPM(parseCSV(t).slice(1).filter(c=>c.length>=4).map(c=>({d:c[0].trim(),u:pNorm(c[1]),m:c[2].trim(),v:Number(c[3])})).filter(r=>isFinite(r.v)));renderPartner()}}).catch(()=>{})}
+renderPartner();loadPartner();
+fetch('followers.csv?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{ingest(t);$('msg').textContent='Loaded latest data from followers.csv.'}).catch(()=>{});
+fetch('metrics.csv?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{
+ const names=new Set(AC.map(a=>a.n));
+ MET=t.split(/\r?\n/).slice(1).map(l=>l.split(',')).filter(c=>c.length>=5&&names.has(c[1].trim())).map(c=>({d:c[0].trim(),a:c[1].trim(),p:c[2].trim(),m:c[3].trim(),v:Number(c[4])})).filter(r=>isFinite(r.v));render()}).catch(()=>{});
+fetch('history.csv?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{
+ const names=new Set(AC.map(a=>a.n));
+ HIST=t.split(/\r?\n/).slice(1).map(l=>l.split(',')).filter(c=>c.length>=5&&names.has(c[1].trim())).map(c=>({d:c[0].trim(),a:c[1].trim(),p:c[2].trim(),m:c[3].trim(),v:Number(c[4])})).filter(r=>isFinite(r.v));renderGrowth()}).catch(()=>{$('histNote').textContent='history.csv has not loaded yet.'});
+</script></body></html>
