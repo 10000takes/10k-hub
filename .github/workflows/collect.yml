@@ -1,0 +1,139 @@
+name: Collect follower counts
+
+on:
+  schedule:
+    - cron: "0 11 * * *"   # every day at 11:00 UTC (6 AM Central during daylight time)
+  workflow_dispatch:        # lets you run it by hand from the Actions tab
+
+permissions:
+  contents: write
+  pages: write           # needed to save followers.csv back to the repo
+
+concurrency:
+  group: collect-data
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Collect YouTube subscribers
+        continue-on-error: true
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: python collect_youtube.py
+
+      - name: Collect YouTube views and engagement
+        continue-on-error: true
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: python collect_youtube_metrics.py
+
+      - name: Collect Facebook followers (main Page)
+        continue-on-error: true
+        env:
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+        run: python collect_facebook.py
+
+      - name: Collect Facebook views and engagement
+        continue-on-error: true
+        env:
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+        run: python collect_facebook_metrics.py
+
+      - name: Collect Facebook subsidiary Pages
+        continue-on-error: true
+        env:
+          FACEBOOK_SYSTEM_USER_TOKEN: ${{ secrets.FACEBOOK_SYSTEM_USER_TOKEN }}
+        run: python collect_facebook_subsidiaries.py
+
+      - name: Collect Instagram subsidiary accounts
+        continue-on-error: true
+        env:
+          FACEBOOK_SYSTEM_USER_TOKEN: ${{ secrets.FACEBOOK_SYSTEM_USER_TOKEN }}
+        run: python collect_instagram_subsidiaries.py
+
+      - name: Collect Instagram followers (main account)
+        continue-on-error: true
+        env:
+          INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID }}
+          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+        run: python collect_instagram.py
+
+      - name: Collect Instagram views and engagement
+        continue-on-error: true
+        env:
+          INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID }}
+          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+        run: python collect_instagram_metrics.py
+
+      - name: Collect TikTok followers
+        continue-on-error: true
+        env:
+          TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+          TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+          TIKTOK_REFRESH_TOKEN_10K_TAKES: ${{ secrets.TIKTOK_REFRESH_TOKEN_10K_TAKES }}
+          TIKTOK_REFRESH_TOKEN_WILD_TAKES: ${{ secrets.TIKTOK_REFRESH_TOKEN_WILD_TAKES }}
+          TIKTOK_REFRESH_TOKEN_10K_HOWLS: ${{ secrets.TIKTOK_REFRESH_TOKEN_10K_HOWLS }}
+          TIKTOK_REFRESH_TOKEN_STATE_OF_SKOL: ${{ secrets.TIKTOK_REFRESH_TOKEN_STATE_OF_SKOL }}
+          TIKTOK_REFRESH_TOKEN_THE_UNDERLINE: ${{ secrets.TIKTOK_REFRESH_TOKEN_THE_UNDERLINE }}
+          TIKTOK_REFRESH_TOKEN_CAPTAINS_PATCH: ${{ secrets.TIKTOK_REFRESH_TOKEN_CAPTAINS_PATCH }}
+        run: python collect_tiktok.py
+
+      - name: Collect Threads followers
+        continue-on-error: true
+        env:
+          THREADS_ACCESS_TOKEN_10K_TAKES: ${{ secrets.THREADS_ACCESS_TOKEN_10K_TAKES }}
+          THREADS_ACCESS_TOKEN_WILD_TAKES: ${{ secrets.THREADS_ACCESS_TOKEN_WILD_TAKES }}
+          THREADS_ACCESS_TOKEN_10K_HOWLS: ${{ secrets.THREADS_ACCESS_TOKEN_10K_HOWLS }}
+          THREADS_ACCESS_TOKEN_STATE_OF_SKOL: ${{ secrets.THREADS_ACCESS_TOKEN_STATE_OF_SKOL }}
+          THREADS_ACCESS_TOKEN_THE_UNDERLINE: ${{ secrets.THREADS_ACCESS_TOKEN_THE_UNDERLINE }}
+          THREADS_ACCESS_TOKEN_CAPTAINS_PATCH: ${{ secrets.THREADS_ACCESS_TOKEN_CAPTAINS_PATCH }}
+        run: python collect_threads.py
+
+      - name: Collect top posts (main account)
+        continue-on-error: true
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+          INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+          THREADS_ACCESS_TOKEN_10K_TAKES: ${{ secrets.THREADS_ACCESS_TOKEN_10K_TAKES }}
+        run: python collect_top_posts.py
+
+      - name: Collect sponsored post numbers
+        continue-on-error: true
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+          INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID }}
+          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+          FACEBOOK_SYSTEM_USER_TOKEN: ${{ secrets.FACEBOOK_SYSTEM_USER_TOKEN }}
+          THREADS_ACCESS_TOKEN_10K_TAKES: ${{ secrets.THREADS_ACCESS_TOKEN_10K_TAKES }}
+          THREADS_ACCESS_TOKEN_WILD_TAKES: ${{ secrets.THREADS_ACCESS_TOKEN_WILD_TAKES }}
+          THREADS_ACCESS_TOKEN_10K_HOWLS: ${{ secrets.THREADS_ACCESS_TOKEN_10K_HOWLS }}
+          THREADS_ACCESS_TOKEN_STATE_OF_SKOL: ${{ secrets.THREADS_ACCESS_TOKEN_STATE_OF_SKOL }}
+          THREADS_ACCESS_TOKEN_THE_UNDERLINE: ${{ secrets.THREADS_ACCESS_TOKEN_THE_UNDERLINE }}
+          THREADS_ACCESS_TOKEN_CAPTAINS_PATCH: ${{ secrets.THREADS_ACCESS_TOKEN_CAPTAINS_PATCH }}
+        run: python collect_posts.py
+
+      - name: Save results
+        if: always()
+        run: |
+          cp save_results.sh /tmp/save_results.sh
+          bash /tmp/save_results.sh "Follower snapshot $(date -u +%F)"
+
+      - name: Refresh the dashboard site
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || true
