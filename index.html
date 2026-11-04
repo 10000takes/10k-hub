@@ -597,10 +597,12 @@ function renderTop(){
  const asof=TP.reduce((m,p)=>p.snap>m?p.snap:m,''),cut=Date.parse(asof+'T23:59:59Z')-7*864e5;
  const week=TP.filter(p=>p.t>cut&&p.views!=null&&p.views>0);
  $('tpNote').textContent='Posts from the last 7 days across all platforms, as of '+new Date(pd(asof)).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'})+'. '+week.length+' posts have view numbers.';
- $('tpSort').innerHTML=[['views','Most views'],['eng','Most tracked interactions'],['rel','Beat their usual the most']].map(x=>'<button class="'+(TPSORT===x[0]?'on':'alt')+'" data-s="'+x[0]+'">'+x[1]+'</button>').join('')+'<button class="alt" data-n="1">'+(TPN===5?'Show top 10':'Show top 5')+'</button>';
+ $('tpSort').innerHTML=[['views','Most views'],['eng','Most tracked interactions'],['rel','Beat their usual the most'],['platform','By platform']].map(x=>'<button class="'+(TPSORT===x[0]?'on':'alt')+'" data-s="'+x[0]+'">'+x[1]+'</button>').join('')+'<button class="alt" data-n="1">'+(TPN===5?'Show top 10':'Show top 5')+'</button>';
  $('tpSort').querySelectorAll('button').forEach(b=>b.onclick=()=>{if(b.dataset.s)TPSORT=b.dataset.s;else TPN=TPN===5?10:5;renderTop()});
  const key={views:p=>p.views,eng:p=>tpHasEng(p)?tpEng(p):-1,rel:p=>tpRel(p)==null?-1:tpRel(p)};
- const top=week.slice().sort((a,c)=>key[TPSORT](c)-key[TPSORT](a)||c.views-a.views).slice(0,TPN);
+ const order=['Facebook','Instagram','TikTok','Threads','X/Twitter','YouTube'];
+ const sorted=week.slice().sort((a,c)=>TPSORT==='platform'?(order.indexOf(a.platform)-order.indexOf(c.platform)||c.views-a.views):key[TPSORT](c)-key[TPSORT](a)||c.views-a.views);
+ const top=sorted.slice(0,TPN);
  $('tpList').innerHTML=top.length?top.map((p,i)=>{const eng=tpEng(p),showEng=tpHasEng(p),er=showEng&&p.views>0?eng/p.views*100:null,rel=tpRel(p);
   return '<div class="panel tp"><div class="rk">'+(i+1)+'</div><div><div class="lbl">'+esc(p.platform)+' · '+esc(p.type)+' · '+new Date(p.t).toLocaleDateString('en-US',{month:'short',day:'numeric'})+' · <a href="'+esc(p.url)+'" target="_blank" rel="noopener">open post</a></div>'
   +'<div class="cap">'+(p.caption?'“'+esc(p.caption)+'”':'(no caption)')+'</div>'
