@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   snapshot:
@@ -24,3 +24,29 @@ jobs:
           CONTENT_INTELLIGENCE_API_URL: ${{ vars.CONTENT_INTELLIGENCE_API_URL }}
           CONTENT_INTELLIGENCE_TOKEN: ${{ secrets.CONTENT_INTELLIGENCE_TOKEN }}
         run: python scripts/upload_content_snapshot.py
+
+      - name: Generate daily Minnesota sports opportunities
+        id: opportunities
+        if: ${{ always() }}
+        run: python scripts/generate_content_opportunities.py
+
+      - name: Publish daily opportunity report
+        if: ${{ always() && steps.opportunities.outcome == 'success' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content-opportunities.json
+          if git diff --cached --quiet; then
+            echo "Opportunity report has no changes."
+          else
+            git commit -m "Update daily content opportunities"
+            git push
+          fi
+
+      - name: Email daily opportunity digest
+        if: ${{ always() && steps.opportunities.outcome == 'success' }}
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OPPORTUNITIES_EMAIL_TO: ${{ secrets.OPPORTUNITIES_EMAIL_TO }}
+          RESEND_FROM: ${{ secrets.RESEND_FROM }}
+        run: python scripts/generate_content_opportunities.py --email-only

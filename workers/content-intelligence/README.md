@@ -21,6 +21,40 @@ The current collector uses a rolling 30-day set of posts. D1 preserves each dail
 
 These thresholds are starting rules, not proven 10K Takes targets. The dashboard indicates when the history is too short to produce a comparison. Hashtags are only a rough topic label; content meaning and causal explanations are not inferred in this version.
 
+## Daily opportunity radar (new)
+
+The scheduled `Content Intelligence snapshot` workflow also runs `scripts/generate_content_opportunities.py`. It:
+
+- Searches Google News RSS daily for the Vikings, Twins, Timberwolves, Lynx, Wild, Gophers, Minnesota United, and Minnesota Frost.
+- Can include any HTTPS RSS feeds listed in the `accounts` array in `config/monitored_sources.json` (for example, a creator's public YouTube channel feed), or a name plus a Google News query for public/indexed mentions. Add a `category` to separate groups, e.g. `{"name":"Rival Page","platform":"Instagram","search_query":"\"@handle\" Minnesota sports","team":"Twins","category":"Competing pages"}` and `{"name":"Sports Creator","platform":"TikTok","feed_url":"https://example.com/public-feed.xml","team":"Vikings","category":"Sports creators"}`. The opportunity dashboard groups report items under **All** and adds one filter per category. The accounts array remains empty until supported feeds/searches are configured. Search-query matching is indirect and does not guarantee every social post from the account is captured.
+- The workbook-supplied Instagram and TikTok competitor list is stored under `competitors` in the same config. The dashboard displays a separate public profile directory, grouped by category, with **All** and category filters. This directory is a curated reference list; it does not connect to or directly monitor those social accounts. For actual post monitoring, use authorized account/platform APIs or supported public RSS feeds. Search-query matching is indirect and does not guarantee every social post from an account is captured.
+- Scores each current story from 0–100 using relevance (35%), timeliness (30%), virality cues and publisher corroboration (20%), and execution ease (15%). The dimensions are transparent heuristics, not a model prediction.
+- Suggests a format, a draft hook, and adaptation ideas for Instagram, Facebook, TikTok, and X. The hook must be checked against its linked source before use.
+- Publishes `content-opportunities.json` for the GitHub Pages dashboard and can email the top eight ideas through Resend.
+
+The report does **not** claim to have live trending-post counts from Instagram, Facebook, TikTok, or X. TikTok Creative Center exposes a free public trends interface, but its Research API is for approved research use. Meta's broad Content Library is for qualified research applicants. X offers usage-based API access, so reading posts can add cost. To keep the first pass inside the $0–$50 budget and avoid scraping or unofficial access, this release uses news/RSS plus 10K Takes' own post history, and labels the platform trend feeds as disconnected or manual. Account monitoring begins only after the relevant RSS feeds are added to the config file.
+
+### Turn on the daily email
+
+Email is intentionally inactive until the repository has these three **Actions secrets**:
+
+- `RESEND_API_KEY` — an API key from Resend.
+- `OPPORTUNITIES_EMAIL_TO` — the recipient address.
+- `RESEND_FROM` — a sender address on a domain verified in Resend (for example, `10K Takes <insights@your-verified-domain>`).
+
+The Resend free tier currently lists 3,000 emails/month and 100/day. One daily email is within that limit. This code does not create a Resend account, verify a domain, add payment details, or send email until the secrets are set. The email uses an idempotency key to prevent a same-day rerun from sending duplicates.
+
+The workflow writes the daily JSON report back to `main`, so `contents: write` must be allowed for GitHub Actions in repository settings. It is scheduled at 12:30 UTC (06:30 Central during standard time and 07:30 during daylight time); GitHub may start scheduled runs later than the exact minute.
+
+### Scoring and safety
+
+- **Relevance:** direct team/topic matches from the source title.
+- **Timeliness:** an exponential time decay, with a 36-hour half-life.
+- **Virality potential:** emotional/high-interest story cues plus distinct publisher corroboration; this is only a proxy, not observed social reach.
+- **Ease:** favors quick reaction/explainer formats; own post history is noted but does not claim a causal format lift.
+- Articles older than four days are excluded. Each suggestion includes its source and a reminder to verify current facts. Hooks are drafts and are not published automatically.
+- Public account feed links and report content are part of the GitHub Pages site. Do not put private notes, credentials, or confidential competitor data in this feed.
+
 ## Provision D1
 
 From this directory, create the database and apply its schema:
