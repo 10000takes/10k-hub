@@ -94,6 +94,7 @@ select,input[type=text],input[type=number],input[type=date],input[type=url],.pfo
 ul.why{margin:4px 0 0;padding-left:20px;font-size:14px}ul.why li{margin:2px 0}
 .ci-grid{display:grid;gap:10px;margin-top:12px}.ci-rec h3{margin:0 0 6px;font-size:18px}.ci-rec p{margin:4px 0}.ci-meta{font-size:12px;color:var(--mute)}.ci-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:13px}.ci-url{min-width:min(440px,100%)}
 .ci-section>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;font:700 24px "Barlow Condensed","Arial Narrow",sans-serif;margin:22px 0 8px}.ci-section>summary::-webkit-details-marker{display:none}.ci-section>summary::before{content:"+";color:var(--mute);font:600 18px Barlow,sans-serif;width:16px;text-align:center}.ci-section[open]>summary::before{content:"−"}.ci-section>summary:focus-visible{outline:3px solid var(--acc);outline-offset:3px}.ci-section-body{padding-left:24px}
+.analytics-section>summary,.analytics-subsection>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;font:700 24px "Barlow Condensed","Arial Narrow",sans-serif;margin:22px 0 8px}.analytics-subsection>summary{font-size:20px;margin:12px 0 6px}.analytics-section>summary::-webkit-details-marker,.analytics-subsection>summary::-webkit-details-marker{display:none}.analytics-section>summary::before,.analytics-subsection>summary::before{content:"+";color:var(--mute);font:600 18px Barlow,sans-serif;width:16px;text-align:center}.analytics-section[open]>summary::before,.analytics-subsection[open]>summary::before{content:"−"}.analytics-section>summary:focus-visible,.analytics-subsection>summary:focus-visible{outline:3px solid var(--acc);outline-offset:3px}.analytics-section-body,.analytics-subsection-body{padding-left:24px}
 .op-score{font:700 25px "Barlow Condensed","Arial Narrow",sans-serif;color:var(--acc);float:right}.op-breakdown{font-size:12px;color:var(--mute);margin:6px 0}.op-hook{padding:8px 10px;background:var(--chip);border-radius:5px;margin:8px 0;font-weight:600}.op-platforms{font-size:13px;color:var(--mute);margin-top:8px}.op-platforms div{margin-top:3px}
 .op-category{margin-top:12px}.op-category h3{margin:0 0 4px}
 html.locked .wrap,html.locked #printRoot{display:none}
@@ -125,9 +126,15 @@ html.locked #gate{display:flex}
 </nav>
 
 <section role="tabpanel" id="sec-analytics" aria-labelledby="secbtn-analytics">
-<div class="sub" style="margin-top:14px">All accounts combined</div>
+<details class="analytics-section" open>
+<summary>All Accounts Combined</summary>
+<div class="analytics-section-body">
+<div class="sub" style="margin-top:14px">Live totals and recent change for connected accounts.</div>
 <section class="hero" id="netTop"></section>
 <div class="sub" id="netNote"></div>
+</div>
+</details>
+<hr class="section-divider" aria-hidden="true">
 
 <nav class="tabs subtabs" role="tablist" aria-label="Analytics views">
 <button role="tab" id="tabbtn-main" aria-controls="tab-main" aria-selected="true" data-tab="main">Main Account</button>
@@ -136,62 +143,112 @@ html.locked #gate{display:flex}
 </nav>
 
 <section role="tabpanel" id="tab-main" aria-labelledby="tabbtn-main">
-<h2>Main Account (10K Takes)</h2>
+<details class="analytics-section" open>
+<summary>Main Account (10K Takes)</summary>
+<div class="analytics-section-body">
 <div class="sub" style="margin-bottom:6px">Followers, views and engagement for the main account on each platform. Views are each platform's own view count, so compare trends, not platforms.</div>
 <div class="plats" id="mainCards"></div>
+</div>
+</details>
 <hr class="section-divider" aria-hidden="true">
 
-<h2>Top Posts This Week</h2>
+<details class="analytics-section" open>
+<summary>Top Posts This Week</summary>
+<div class="analytics-section-body">
 <div class="sub" id="tpNote">Loading…</div>
 <div class="sub">Facebook video and Reel posts show views only because the interaction count is incomplete. Other Facebook posts show the available reactions, comments, and shares; other platforms show their collected interaction metrics.</div>
 <div class="rng" id="tpSort"></div>
 <div id="tpList"></div>
 <div class="sub" id="tpFoot"></div>
-<hr class="section-divider" aria-hidden="true">
-<h3>What’s Working vs What to Adjust</h3>
-<div class="sub">Patterns compare views per day with recent posts on the same platform. Each row shows its platform and sample size. Hook style comes from the caption opening, topics from hashtags, and caption length from characters; no video transcript is available.</div>
-<div id="tpSignals"></div>
-<hr class="section-divider" aria-hidden="true">
-<h3>Content to Repurpose</h3>
-<div class="sub">Candidates are older posts with strong views per day versus their platform baseline. Review rights, freshness, and context before reposting.</div>
-<div id="tpReuse" class="rcards"></div>
+</div>
+</details>
 <hr class="section-divider" aria-hidden="true">
 
-<h2>Growth over time</h2>
+<details class="analytics-section">
+<summary>What’s Working vs What to Adjust</summary>
+<div class="analytics-section-body">
+<div class="sub">Patterns compare views per day with recent posts on the same platform. Each row shows its platform and sample size. Hook style comes from the caption opening, topics from hashtags, and caption length from characters; no video transcript is available.</div>
+<div id="tpSignals"></div>
+</div>
+</details>
+<hr class="section-divider" aria-hidden="true">
+
+<details class="analytics-section">
+<summary>Content to Repurpose</summary>
+<div class="analytics-section-body">
+<div class="sub">Candidates are older posts with strong views per day versus their platform baseline. Review rights, freshness, and context before reposting.</div>
+<div id="tpReuse" class="rcards"></div>
+</div>
+</details>
+<hr class="section-divider" aria-hidden="true">
+
+<details class="analytics-section">
+<summary>Growth Over Time</summary>
+<div class="analytics-section-body">
 <div class="sub" id="histNote">Loading history…</div>
 <div class="rng" id="rngMain"></div>
 
-<h3 class="gh">Followers</h3>
+<details class="analytics-subsection" open>
+<summary>Followers</summary>
+<div class="analytics-subsection-body">
 <div class="legend" id="lg1"></div><div class="ro" id="ro1"></div>
 <div class="panel chart"><svg id="c1" viewBox="0 0 800 270" role="img" aria-label="Main account followers over time"></svg></div>
 <div class="scroll gt"><table id="t1"></table></div>
+</div>
+</details>
+<hr class="section-divider" aria-hidden="true">
 
-<h3 class="gh">Weekly impressions and views</h3>
+<details class="analytics-subsection">
+<summary>Weekly Impressions and Views</summary>
+<div class="analytics-subsection-body">
 <label class="chk"><input type="checkbox" id="sm" checked> Smooth with a 4-week average</label>
 <div class="legend" id="lg2"></div><div class="ro" id="ro2"></div>
 <div class="panel chart"><svg id="c2" viewBox="0 0 800 270" role="img" aria-label="Main account weekly impressions over time"></svg></div>
 <div class="scroll gt"><table id="t2"></table></div>
+</div>
+</details>
+<hr class="section-divider" aria-hidden="true">
+</div>
+</details>
+<hr class="section-divider" aria-hidden="true">
 </section>
 
 <section role="tabpanel" id="tab-subsidiary" aria-labelledby="tabbtn-subsidiary" hidden>
-<h2>Subsidiary accounts</h2>
+<details class="analytics-section" open>
+<summary>Subsidiary Accounts</summary>
+<div class="analytics-section-body">
 <div class="sub" style="margin-bottom:6px">Wild Takes, 10K Howls, State of Skol, The Underline and Captain's Patch, combined by platform.</div>
 <div class="plats" id="subCards"></div>
 <div class="sub" style="margin:14px 0 6px">By subsidiary account. Each cell: current followers and gain over the last 7 days.</div>
 <div class="scroll"><table id="tbl"></table></div>
+</div>
+</details>
+<hr class="section-divider" aria-hidden="true">
 
-<h2>Growth over time</h2>
+<details class="analytics-section">
+<summary>Growth Over Time</summary>
+<div class="analytics-section-body">
 <div class="sub" id="histNote2">Loading history…</div>
 <div class="rng" id="rngSub"></div>
-<h3 class="gh">Followers by account</h3>
+<details class="analytics-subsection" open>
+<summary>Followers by Account</summary>
+<div class="analytics-subsection-body">
 <div class="sub">Historical totals combine all platforms for each account. Live data joins the line once all of an account's platforms are connected.</div>
 <div class="legend" id="lg3"></div><div class="ro" id="ro3"></div>
 <div class="panel chart"><svg id="c3" viewBox="0 0 800 270" role="img" aria-label="Subsidiary follower totals over time"></svg></div>
 <div class="scroll gt"><table id="t3"></table></div>
+</div>
+</details>
+<hr class="section-divider" aria-hidden="true">
+</div>
+</details>
+<hr class="section-divider" aria-hidden="true">
 </section>
 
 <section role="tabpanel" id="tab-partner" aria-labelledby="tabbtn-partner" hidden>
-<h2>Partner analytics</h2>
+<details class="analytics-section" open>
+<summary>Partner Analytics</summary>
+<div class="analytics-section-body">
 <div class="sub">Monthly sponsored-post results for client reports. Posts are listed in <b>posts.csv</b> and their numbers are collected into <b>post_metrics.csv</b>.</div>
 <div class="panel demo" id="pDemo" hidden>Showing <b>sample data</b>, not real campaigns. <a href="#partner" id="pSampleOff">Switch back to real data</a></div>
 <div class="row prow">
@@ -203,18 +260,25 @@ html.locked #gate{display:flex}
 <div class="panel soon" id="pEmpty" hidden><div class="big">No campaign posts yet</div><div class="sub" style="margin-top:8px">Add posts below, then paste the lines into posts.csv. Or preview the layout with sample data.</div></div>
 <div id="pBody">
 <div class="plats" id="pCards"></div>
-<div id="pCampBox"><h3 class="gh">By campaign</h3><div class="scroll"><table id="pCampT"></table></div></div>
-<h3 class="gh">By platform</h3><div class="scroll"><table id="pPlat"></table></div>
-<h3 class="gh">Top posts</h3><div class="plats" id="pTop"></div>
-<h3 class="gh">All posts</h3><div class="scroll"><table id="pPosts"></table></div>
-<h3 class="gh">Client report</h3>
+<hr class="section-divider" aria-hidden="true">
+<details class="analytics-subsection" id="pCampBox"><summary>By Campaign</summary><div class="analytics-subsection-body"><div class="scroll"><table id="pCampT"></table></div></div></details>
+<hr class="section-divider" aria-hidden="true">
+<details class="analytics-subsection"><summary>By Platform</summary><div class="analytics-subsection-body"><div class="scroll"><table id="pPlat"></table></div></div></details>
+<hr class="section-divider" aria-hidden="true">
+<details class="analytics-subsection"><summary>Top Posts</summary><div class="analytics-subsection-body"><div class="plats" id="pTop"></div></div></details>
+<hr class="section-divider" aria-hidden="true">
+<details class="analytics-subsection"><summary>All Posts</summary><div class="analytics-subsection-body"><div class="scroll"><table id="pPosts"></table></div></div></details>
+<hr class="section-divider" aria-hidden="true">
+<details class="analytics-subsection"><summary>Client Report</summary><div class="analytics-subsection-body">
 <div class="panel pform">
 <label>Client logo (optional)<input type="file" id="pLogo" accept="image/*"></label>
 <label class="wide">Highlights for the client (optional)<textarea id="pNote" placeholder="Two or three sentences on how the campaign went."></textarea></label>
 <div class="wide row"><button id="pReport">Create PDF report</button><span class="sub">Opens the print dialog. Choose <b>Save as PDF</b> as the destination.</span></div>
 </div>
+</div></details>
 </div>
-<h3 class="gh">Add a post</h3>
+<hr class="section-divider" aria-hidden="true">
+<details class="analytics-subsection"><summary>Add a Post</summary><div class="analytics-subsection-body">
 <div class="sub" style="margin-bottom:6px">Paste every link for one campaign, one per line, and it writes one line per post for posts.csv. Paste those lines at the bottom of the file on GitHub, then the next daily run starts collecting it.</div>
 <div class="panel pform" id="pAdd">
 <label>Client<input type="text" id="aClient" list="dlClient"></label>
@@ -227,6 +291,10 @@ html.locked #gate{display:flex}
 <div class="wide row"><button id="aCopy">Copy lines</button><a class="btn alt" href="https://github.com/10000takes/10k-takes-data/edit/main/posts.csv" target="_blank" rel="noopener">Open posts.csv on GitHub</a></div>
 </div>
 <datalist id="dlClient"></datalist>
+</div></details>
+</div>
+</details>
+<hr class="section-divider" aria-hidden="true">
 </section>
 
 <section id="importBox" style="display:none">
