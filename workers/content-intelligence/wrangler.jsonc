@@ -1,18 +1,24 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "10k-takes-content-intelligence",
-  "main": "src/index.ts",
-  "compatibility_date": "2026-11-04",
-  "workers_dev": true,
-  "vars": {
-    "PUBLIC_READ_ORIGIN": ""
-  },
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "10k-takes-content-intelligence",
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
-      "preview_database_id": "10k-takes-content-intelligence-local"
-    }
-  ]
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "10k-takes-content-intelligence",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-11-04",
+	"workers_dev": true,
+	"vars": {
+		"PUBLIC_READ_ORIGIN": "https://10000takes.github.io"
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "10k-takes-content-intelligence",
+			"database_id": "6a2dce69-e436-45ae-9baa-945f36454029",
+			"preview_database_id": "10k-takes-content-intelligence-local"
+		},
+		{
+			"binding": "_10k_takes_content_intelligence",
+			"database_name": "10k-takes-content-intelligence",
+			"database_id": "6a2dce69-e436-45ae-9baa-945f36454029",
+			"remote": true
+		}
+	]
 }
