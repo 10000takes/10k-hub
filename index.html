@@ -93,6 +93,7 @@ select,input[type=text],input[type=number],input[type=date],input[type=url],.pfo
 .tpm b{font:700 28px "Barlow Condensed","Arial Narrow",sans-serif;line-height:1.05}.tpm span{font-size:12px;color:var(--mute)}
 ul.why{margin:4px 0 0;padding-left:20px;font-size:14px}ul.why li{margin:2px 0}
 .ci-grid{display:grid;gap:10px;margin-top:12px}.ci-rec h3{margin:0 0 6px;font-size:18px}.ci-rec p{margin:4px 0}.ci-meta{font-size:12px;color:var(--mute)}.ci-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:13px}.ci-url{min-width:min(440px,100%)}
+.ci-section>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;font:700 24px "Barlow Condensed","Arial Narrow",sans-serif;margin:22px 0 8px}.ci-section>summary::-webkit-details-marker{display:none}.ci-section>summary::before{content:"+";color:var(--mute);font:600 18px Barlow,sans-serif;width:16px;text-align:center}.ci-section[open]>summary::before{content:"−"}.ci-section>summary:focus-visible{outline:3px solid var(--acc);outline-offset:3px}.ci-section-body{padding-left:24px}
 .op-score{font:700 25px "Barlow Condensed","Arial Narrow",sans-serif;color:var(--acc);float:right}.op-breakdown{font-size:12px;color:var(--mute);margin:6px 0}.op-hook{padding:8px 10px;background:var(--chip);border-radius:5px;margin:8px 0;font-weight:600}.op-platforms{font-size:13px;color:var(--mute);margin-top:8px}.op-platforms div{margin-top:3px}
 .op-category{margin-top:12px}.op-category h3{margin:0 0 4px}
 html.locked .wrap,html.locked #printRoot{display:none}
@@ -246,7 +247,9 @@ html.locked #gate{display:flex}
 </section>
 
 <section role="tabpanel" id="sec-content-generation" aria-labelledby="secbtn-content-generation" hidden>
-<h2>Content Intelligence</h2>
+<details class="ci-section" open>
+<summary>Content Intelligence</summary>
+<div class="ci-section-body">
 <div class="sub" style="margin-bottom:10px">Evidence-based patterns from recent posts. The agent compares week-over-week changes within each platform and format; its suggestions are drafts, not proof of what caused a post to perform.</div>
 <div class="panel tools">
 <div class="row">
@@ -259,15 +262,28 @@ html.locked #gate{display:flex}
 <div id="contentAgentMeta" class="ci-meta"></div>
 <div id="contentAgentResults" class="ci-grid"></div>
 </div>
-<h2>Daily opportunity radar</h2>
+</div>
+</details>
+<hr class="section-divider" aria-hidden="true">
+<details class="ci-section">
+<summary>Daily Opportunity Radar</summary>
+<div class="ci-section-body">
 <div class="sub" style="margin-bottom:10px">Ranked Minnesota sports story ideas with source links, draft hooks, platform adaptations, and score breakdowns. Scores are triage aids, not predictions.</div>
 <div id="opportunityCoverage" class="ci-meta" role="status" aria-live="polite">Loading daily opportunities…</div>
 <div id="opportunityFilters" class="row" role="group" aria-label="Filter opportunities by category"></div>
 <div id="opportunityResults" class="ci-grid"></div>
-<h2>Competitor pages</h2>
+</div>
+</details>
+<hr class="section-divider" aria-hidden="true">
+<details class="ci-section">
+<summary>Competitor Pages</summary>
+<div class="ci-section-body">
 <div class="sub" style="margin-bottom:10px">Public profile directory from the supplied competitor list. View all accounts together or filter by category. This directory does not imply the accounts are connected or directly monitored.</div>
 <div id="competitorFilters" class="row" role="group" aria-label="Filter competitor profiles by category"></div>
 <div id="competitorDirectory" class="ci-grid"></div>
+</div>
+</details>
+<hr class="section-divider" aria-hidden="true">
 </section>
 
 <section role="tabpanel" id="sec-partnerships" aria-labelledby="secbtn-partnerships" hidden>
