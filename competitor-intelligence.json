@@ -1,0 +1,15 @@
+{
+  "generated_at": null,
+  "status": "not_configured",
+  "source": null,
+  "coverage_note": "Competitor profiles are listed below. Post monitoring starts only after eligible official API access is configured and the opt-in workflow variable is enabled. No scraping is used.",
+  "platforms": {
+    "Instagram": {"status": "needs_access", "detail": "Meta API access and eligible public Business/Creator accounts required."},
+    "TikTok": {"status": "not_connected", "detail": "Commercial API access to arbitrary competitor posts is not generally available."},
+    "Facebook": {"status": "needs_access", "detail": "Meta Page Public Content Access approval is required for public Page posts."}
+  },
+  "accounts": [],
+  "posts": [],
+  "recommendations": [],
+  "post_history": {}
+}

@@ -93,6 +93,8 @@ select,input[type=text],input[type=number],input[type=date],input[type=url],.pfo
 .tpm b{font:700 28px "Barlow Condensed","Arial Narrow",sans-serif;line-height:1.05}.tpm span{font-size:12px;color:var(--mute)}
 ul.why{margin:4px 0 0;padding-left:20px;font-size:14px}ul.why li{margin:2px 0}
 .ci-grid{display:grid;gap:10px;margin-top:12px}.ci-rec h3{margin:0 0 6px;font-size:18px}.ci-rec p{margin:4px 0}.ci-meta{font-size:12px;color:var(--mute)}.ci-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:13px}.ci-url{min-width:min(440px,100%)}
+.ci-grid.competitor-cards{grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}.ci-post-stats{display:flex;gap:18px;flex-wrap:wrap;margin:8px 0}.ci-post-stats b{font:700 22px "Barlow Condensed","Arial Narrow",sans-serif}.ci-post-stats span{display:block;font-size:11px;color:var(--mute)}.ci-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.ci-tag{background:var(--chip);border-radius:12px;padding:2px 8px;font-size:11px}
+.ci-directory>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;font-weight:600}.ci-directory>summary::-webkit-details-marker{display:none}.ci-directory>summary::before{content:"+";color:var(--mute);width:14px;text-align:center}.ci-directory[open]>summary::before{content:"−"}
 .ci-section>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;font:700 24px "Barlow Condensed","Arial Narrow",sans-serif;margin:22px 0 8px}.ci-section>summary::-webkit-details-marker{display:none}.ci-section>summary::before{content:"+";color:var(--mute);font:600 18px Barlow,sans-serif;width:16px;text-align:center}.ci-section[open]>summary::before{content:"−"}.ci-section>summary:focus-visible{outline:3px solid var(--acc);outline-offset:3px}.ci-section-body{padding-left:24px}
 .analytics-section>summary,.analytics-subsection>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;font:700 24px "Barlow Condensed","Arial Narrow",sans-serif;margin:22px 0 8px}.analytics-subsection>summary{font-size:20px;margin:12px 0 6px}.analytics-section>summary::-webkit-details-marker,.analytics-subsection>summary::-webkit-details-marker{display:none}.analytics-section>summary::before,.analytics-subsection>summary::before{content:"+";color:var(--mute);font:600 18px Barlow,sans-serif;width:16px;text-align:center}.analytics-section[open]>summary::before,.analytics-subsection[open]>summary::before{content:"−"}.analytics-section>summary:focus-visible,.analytics-subsection>summary:focus-visible{outline:3px solid var(--acc);outline-offset:3px}.analytics-section-body,.analytics-subsection-body{padding-left:24px}
 .op-score{font:700 25px "Barlow Condensed","Arial Narrow",sans-serif;color:var(--acc);float:right}.op-breakdown{font-size:12px;color:var(--mute);margin:6px 0}.op-hook{padding:8px 10px;background:var(--chip);border-radius:5px;margin:8px 0;font-weight:600}.op-platforms{font-size:13px;color:var(--mute);margin-top:8px}.op-platforms div{margin-top:3px}
@@ -346,9 +348,26 @@ html.locked #gate{display:flex}
 <details class="ci-section">
 <summary>Competitor Pages</summary>
 <div class="ci-section-body">
-<div class="sub" style="margin-bottom:10px">Public profile directory from the supplied competitor list. View all accounts together or filter by category. This directory does not imply the accounts are connected or directly monitored.</div>
+<div class="sub" style="margin-bottom:10px">Public-post signals and adaptation ideas from eligible competitor accounts. Rankings use visible interactions and are not a measure of reach or proof of what caused a post to perform.</div>
+<div id="competitorCoverage" class="ci-meta" role="status" aria-live="polite">Loading competitor intelligence…</div>
+<div id="competitorPlatformFilters" class="row" role="group" aria-label="Filter competitor intelligence by platform"></div>
+<div id="competitorCategoryFilters" class="row" role="group" aria-label="Filter competitor intelligence by category"></div>
+<h3 class="gh" style="margin-top:18px">Ideas for 10K Takes</h3>
+<div id="competitorRecommendations" class="ci-grid"></div>
+<hr class="section-divider" aria-hidden="true">
+<h3 class="gh">Top Public Competitor Posts</h3>
+<div class="ci-meta">Instagram results compare likes and comments per follower against that account’s recent-post median. Views, reach, watch time, saves, and retention are not included.</div>
+<div id="competitorPosts" class="ci-grid"></div>
+<button id="competitorMore" class="alt" type="button" style="display:none;margin-top:10px">Show More Posts</button>
+<hr class="section-divider" aria-hidden="true">
+<details class="ci-directory">
+<summary>Tracked Competitor Directory</summary>
+<div class="ci-section-body">
+<div class="sub" style="margin-bottom:10px">The supplied public profile list, grouped by category. A listed account is not necessarily eligible for official API monitoring.</div>
 <div id="competitorFilters" class="row" role="group" aria-label="Filter competitor profiles by category"></div>
 <div id="competitorDirectory" class="ci-grid"></div>
+</div>
+</details>
 </div>
 </details>
 <hr class="section-divider" aria-hidden="true">
@@ -778,7 +797,45 @@ function renderCompetitors(competitors){
  const groups={};for(const c of shown){const category=c.category||'Other';(groups[category]||(groups[category]=[])).push(c)}
  $('competitorDirectory').innerHTML=Object.entries(groups).map(([category,accounts])=>'<section class="op-category"><h3 class="gh">'+esc(category)+' <span class="ci-meta">('+fmt(accounts.length)+')</span></h3><div class="ci-grid">'+accounts.map(card).join('')+'</div></section>').join('');
 }
-fetch('content-opportunities.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(report=>{renderOpportunities(report);renderCompetitors(report.competitors)}).catch(()=>{$('opportunityCoverage').textContent='Daily opportunities are not available yet. They appear after the scheduled source scan publishes its first report.';$('opportunityResults').innerHTML='';$('competitorDirectory').innerHTML=''});
+let COMPETITOR_INTEL=null,COMPETITOR_PLATFORM='all',COMPETITOR_SIGNAL_CATEGORY='all',COMPETITOR_LIMIT=20;
+function competitorPostCard(post){
+ const url=typeof post.url==='string'&&/^https:\/\/(www\.)?(instagram\.com|tiktok\.com|facebook\.com|x\.com|twitter\.com)\//i.test(post.url)?post.url:'';
+ const tags=[...(post.topics||[]),...(post.hashtags||[])].slice(0,5).map(tag=>'<span class="ci-tag">'+esc(tag)+'</span>').join('');
+ const ratio=post.relative_to_account_median?'<div><b>'+fmt(post.relative_to_account_median)+'×</b><span>vs account median</span></div>':'';
+ const rate=post.engagement_rate_proxy!=null?'<div><b>'+(post.engagement_rate_proxy*100).toFixed(2)+'%</b><span>interactions / followers</span></div>':'';
+ const delta=post.daily_interaction_change!=null?'<div><b>'+(post.daily_interaction_change>0?'+':'')+fmt(post.daily_interaction_change)+'</b><span>interaction change</span></div>':'';
+ const caption=post.caption?'<p>'+esc(post.caption.slice(0,260))+(post.caption.length>260?'…':'')+'</p>':'';
+ return '<article class="panel ci-rec"><div class="lbl">'+esc(post.platform)+' · '+esc(post.category||'Other')+' · '+esc(post.format||'Post')+' · '+esc(post.published_at?new Date(post.published_at).toLocaleDateString():'')+'</div><h3><a href="'+esc(url||'#')+'" target="_blank" rel="noopener">'+esc(post.handle||'Competitor post')+' · Open post</a></h3>'+caption+'<div class="ci-post-stats"><div><b>'+fmt(post.likes||0)+'</b><span>likes</span></div><div><b>'+fmt(post.comments||0)+'</b><span>comments</span></div>'+rate+ratio+delta+'</div><div class="ci-meta">Caption opening: '+esc(post.hook_style||'Not classified')+(post.stronger_than_account_baseline?' · Above this account’s recent median':'')+'</div>'+(tags?'<div class="ci-tags">'+tags+'</div>':'')+'</article>';
+}
+function renderCompetitorSignals(){
+ const report=COMPETITOR_INTEL||{},posts=Array.isArray(report.posts)?report.posts:[],recs=Array.isArray(report.recommendations)?report.recommendations:[];
+ const match=row=>(COMPETITOR_PLATFORM==='all'||row.platform===COMPETITOR_PLATFORM)&&(COMPETITOR_SIGNAL_CATEGORY==='all'||(row.category||'Other')===COMPETITOR_SIGNAL_CATEGORY);
+ const shownPosts=posts.filter(match).sort((a,b)=>(b.relative_to_account_median||0)-(a.relative_to_account_median||0));
+ const shownRecs=recs.filter(match);
+ $('competitorRecommendations').classList.add('competitor-cards');
+ $('competitorPosts').classList.add('competitor-cards');
+ if(!shownRecs.length){$('competitorRecommendations').innerHTML='<div class="panel">No recurring public-post signal is strong enough to suggest an adaptation yet. This will fill in as eligible posts are collected.</div>'}
+ else $('competitorRecommendations').innerHTML=shownRecs.map(rec=>'<article class="panel ci-rec"><div class="lbl">'+esc(rec.category)+' · '+esc(rec.platform)+' · '+fmt(rec.account_count)+' account(s) · '+fmt(rec.post_count)+' post(s)</div><h3>'+esc(rec.theme)+' · '+fmt(rec.median_lift)+'× account median</h3><p>'+esc(rec.suggestion)+'</p><div class="ci-meta">Observed formats: '+esc((rec.formats||[]).join(', ')||'not classified')+' · Caption openings: '+esc((rec.hook_styles||[]).join(', ')||'not classified')+'</div><div class="ci-links">'+(rec.example_posts||[]).map(url=>/^https:\/\//i.test(url)?'<a href="'+esc(url)+'" target="_blank" rel="noopener">Example post</a>':'').join('')+'</div></article>').join('');
+ if(!shownPosts.length){$('competitorPosts').innerHTML='<div class="panel">'+(report.status==='not_configured'||report.status==='needs_access'?'Post monitoring has not started. The daily collector requires approved Meta API access and an explicit opt-in in repository settings.':'No posts match these filters yet.')+'</div>'}
+ else $('competitorPosts').innerHTML=shownPosts.slice(0,COMPETITOR_LIMIT).map(competitorPostCard).join('');
+ $('competitorMore').style.display=shownPosts.length>COMPETITOR_LIMIT?'inline-block':'none';
+}
+function renderCompetitorIntelligence(report){
+ COMPETITOR_INTEL=report||{};
+ const platforms=report.platforms||{};
+ const statuses=Object.entries(platforms).map(([platform,state])=>esc(platform)+': '+esc(state.detail||state.status||'not connected')).join(' · ');
+ $('competitorCoverage').textContent=(report.generated_at?'Updated '+new Date(report.generated_at).toLocaleString()+' · ':'')+(report.coverage_note||'Competitor-post coverage is not configured.')+(statuses?' '+statuses:'');
+ const platformNames=[...new Set(['Instagram','Facebook','TikTok','X',...(report.posts||[]).map(post=>post.platform)])].sort();
+ const platformFilters=[['all','All Platforms'],...platformNames.map(value=>[value,value])];
+ $('competitorPlatformFilters').innerHTML=platformFilters.map(([value,label])=>'<button type="button" class="alt" data-ci-platform="'+esc(value)+'" aria-pressed="'+(COMPETITOR_PLATFORM===value)+'">'+esc(label)+'</button>').join('');
+ const categoryNames=[...new Set([...(COMPETITOR_REPORT||[]).map(row=>row.category||'Other'),...(report.accounts||[]).map(row=>row.category||'Other'),...(report.recommendations||[]).map(row=>row.category||'Other')])].sort();
+ $('competitorCategoryFilters').innerHTML=[['all','All Categories'],...categoryNames.map(value=>[value,value])].map(([value,label])=>'<button type="button" class="alt" data-ci-category="'+esc(value)+'" aria-pressed="'+(COMPETITOR_SIGNAL_CATEGORY===value)+'">'+esc(label)+'</button>').join('');
+ $('competitorPlatformFilters').querySelectorAll('button').forEach(button=>button.onclick=()=>{COMPETITOR_PLATFORM=button.dataset.ciPlatform;COMPETITOR_LIMIT=20;renderCompetitorIntelligence(COMPETITOR_INTEL)});
+ $('competitorCategoryFilters').querySelectorAll('button').forEach(button=>button.onclick=()=>{COMPETITOR_SIGNAL_CATEGORY=button.dataset.ciCategory;COMPETITOR_LIMIT=20;renderCompetitorIntelligence(COMPETITOR_INTEL)});
+ $('competitorMore').onclick=()=>{COMPETITOR_LIMIT+=20;renderCompetitorSignals()};
+ renderCompetitorSignals();
+}
+fetch('content-opportunities.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(report=>{renderOpportunities(report);renderCompetitors(report.competitors);return fetch('competitor-intelligence.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(renderCompetitorIntelligence)}).catch(()=>{$('opportunityCoverage').textContent='Daily opportunities are not available yet. They appear after the scheduled source scan publishes its first report.';$('opportunityResults').innerHTML='';$('competitorDirectory').innerHTML='';renderCompetitorIntelligence({status:'not_configured',coverage_note:'Competitor post coverage will appear after the public API collector is configured.',platforms:{}})});
 
 fetch('followers.csv?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{ingest(t);$('msg').textContent='Loaded latest data from followers.csv.'}).catch(()=>{});
 fetch('metrics.csv?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{

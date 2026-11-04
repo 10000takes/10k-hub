@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   snapshot:
-    if: ${{ vars.CONTENT_INTELLIGENCE_ENABLED == 'true' }}
+    if: ${{ vars.CONTENT_INTELLIGENCE_ENABLED == 'true' || vars.COMPETITOR_INTELLIGENCE_ENABLED == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,6 +20,7 @@ jobs:
           python-version: "3.12"
 
       - name: Send latest post snapshot to Cloudflare Worker
+        if: ${{ vars.CONTENT_INTELLIGENCE_ENABLED == 'true' }}
         env:
           CONTENT_INTELLIGENCE_API_URL: ${{ vars.CONTENT_INTELLIGENCE_API_URL }}
           CONTENT_INTELLIGENCE_TOKEN: ${{ secrets.CONTENT_INTELLIGENCE_TOKEN }}
@@ -30,16 +31,25 @@ jobs:
         if: ${{ always() }}
         run: python scripts/generate_content_opportunities.py
 
-      - name: Publish daily opportunity report
-        if: ${{ always() && steps.opportunities.outcome == 'success' }}
+      - name: Collect public Instagram competitor posts
+        id: competitors
+        if: ${{ vars.COMPETITOR_INTELLIGENCE_ENABLED == 'true' }}
+        env:
+          COMPETITOR_INTELLIGENCE_ENABLED: ${{ vars.COMPETITOR_INTELLIGENCE_ENABLED }}
+          INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID }}
+          INSTAGRAM_DISCOVERY_TOKEN: ${{ secrets.INSTAGRAM_DISCOVERY_TOKEN }}
+        run: python scripts/collect_competitor_intelligence.py
+
+      - name: Publish daily intelligence reports
+        if: ${{ always() && (steps.opportunities.outcome == 'success' || steps.competitors.outcome == 'success') }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add content-opportunities.json
+          git add content-opportunities.json competitor-intelligence.json
           if git diff --cached --quiet; then
-            echo "Opportunity report has no changes."
+            echo "Intelligence reports have no changes."
           else
-            git commit -m "Update daily content opportunities"
+            git commit -m "Update daily intelligence reports"
             git push
           fi
 
