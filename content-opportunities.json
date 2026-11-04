@@ -1,0 +1,944 @@
+{
+  "generated_at": "2026-11-04T21:02:59.479078+00:00",
+  "status": "ok",
+  "source_scope": "Google News RSS searches for Minnesota teams plus configured RSS feeds for tracked accounts.",
+  "source_count": 8,
+  "articles_scanned": 134,
+  "social_trend_coverage": {
+    "Instagram": "not_connected",
+    "Facebook": "not_connected",
+    "TikTok": "manual_reference",
+    "X": "not_connected",
+    "note": "Current official public interfaces do not provide one free, automated cross-platform trending feed. TikTok Creative Center offers public trend discovery; no live social trend counts are claimed in this report."
+  },
+  "coverage_note": "News and RSS signals update automatically. Tracked-account coverage starts when RSS feeds are added to config/monitored_sources.json. Social-platform trends are not inferred from news volume.",
+  "source_failures": [],
+  "opportunities": [
+    {
+      "id": "21416715b14fde56",
+      "score": 86,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 99,
+        "virality_potential": 72,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "Minnesota Wild Named in Nikita Kucherov Rumor Amid Trade Rumblings",
+      "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPVnZCSm94aFVZWE9zVjFvcVY4OG04WTUwN0NqQkVKUzAyUmlhdG9VaFlwRjJHeGRSX3ZtSTgtaUhNZ0hlQTdESUNjRHhPbnA3anJ3eXlkcG1YQTVHdnlncnNOTWllWTgyVk9aZmFkWHRTcm8wWjlVZzdJRHpraWx1Y1JGT2hJdzktdDJBV3lB?oc=5",
+      "published_at": "2026-11-04T20:22:13+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 2,
+      "trend_signal": "Early signal",
+      "viral_cues": [
+        "rumor",
+        "trade"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Wild fans need to know about this: Minnesota Wild Named in Nikita Kucherov Rumor Amid Trade Rumblings",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "61ad14a02c1e3d94",
+      "score": 84,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 93,
+        "virality_potential": 72,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "Minnesota Wild Named in Nikita Kucherov Rumor Amid Trade Rumblings",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQekx1VzY0V1pRSkNjblE4aDNwZllpSGxwYXlKY2R6blpEYTdaTHVHaXNtckpSZnRKSGZhZ3lMZ2Q0Zk82OW1lZl9pd29fMERBb3NoR2hvX2J6M1ZiT0tmX0NUV2c2Tmh2VVJDdVdMUkszTXQ3NDEtRHVKeW1ReHV6Q2lxbTEtLTdGeVNMSzlJa0k0cXdoWjEw?oc=5",
+      "published_at": "2026-11-04T17:22:13+00:00",
+      "category": "Minnesota team news",
+      "source": "Heavy.com",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 2,
+      "trend_signal": "Early signal",
+      "viral_cues": [
+        "rumor",
+        "trade"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Wild fans need to know about this: Minnesota Wild Named in Nikita Kucherov Rumor Amid Trade Rumblings",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "bfad8fb513fc551b",
+      "score": 83,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 95,
+        "virality_potential": 64,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "New NFL Rumors Reveal Vikings' Reaction to J.J. McCarthy Winning 1st Start with Giants After Trade",
+      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxOajByTHVWMFdPbVBTRFdlalN5OW96bndHZVU0WWgxeHY5ZmRVM1lNdUVTM2hFdW9CM05jQW5RQVFtazBNd0hUaWJRVS1EMGtBZFE0bnYybWQ0RHl0MUlBSTlDVldQa09xaWxMVVgxbUN2MVVqZ2NtN1o1Q0pTSzNrQ1NUNHhiTE05VHlRYUd5SWh4ajRHMVB2X25FVlRFSjJsRGM0bjJlejlhWWVhWS12VTVnTjIxbDd1X2pudVpNbGlVQ0dfb0U4aWVZNGs?oc=5",
+      "published_at": "2026-11-04T18:14:52+00:00",
+      "category": "Minnesota team news",
+      "source": "Bleacher Report",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [
+        "reaction",
+        "trade"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Vikings fans need to know about this: New NFL Rumors Reveal Vikings' Reaction to J.J. McCarthy Winning 1st Start with Giants After Trade",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "b7441930c0d49af3",
+      "score": 83,
+      "score_breakdown": {
+        "relevance": 91,
+        "timeliness": 98,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "NHL Rumors: Could the Minnesota Wild be a Landing Spot for Nikita Kucherov?",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOUGFvR0I5ZWtaTjVPdjFRZDRsdHp5UmxzZDNocXM5bFN5Z2IyazVhZnZQZTItR2xkZmcxdzJURVJwWmpHWUNxcmJyQkdHa0xwVU45WlRjSFBlQUNSTHBWWnRKTFpaWnVsdzdoR01sSjNXRXdQbWlKVHpmNmV6Z3BKRnhhVDdXdUR2bjVsQk83c3N3bXc4WE44ZTEwNURNcFN3bTE0ZkM3OWRRNnPSAbABQVVfeXFMTzFtTUI5ODZ2UDd2NXBUYXNVdTR6UVY3QU5PYkcxbmV0VGw5ekZLV05vdmVHejBUTUUwTWhxZUFCR3laMUkydk41aWJna1lwblRKRTJxOC1OakhQLWZhLXo4ZUNSZHBteGJyUkNraFJ2VUVpQUVQM2tyc25EUS05N1JGQUxDTUE4dUJCLXpORUF5WXVvcTRsWkhpY1RNbFJEeUJMbXlRUXhqb3l2WGJvR0w?oc=5",
+      "published_at": "2026-11-04T19:50:59+00:00",
+      "category": "Minnesota team news",
+      "source": "NHLRumors.com",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Wild story: NHL Rumors: Could the Minnesota Wild be a Landing Spot for Nikita Kucherov?",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "fbfe51e129df9a85",
+      "score": 81,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 96,
+        "virality_potential": 51,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Report Makes 5-Time Pro Bowler Perfect Minnesota Vikings Trade Target Before Deadline",
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNbjZ2QW9oLURGUVhaSVdnRWdzQVpMM0tGZ2laNUtZaHBSd2pMdElpQXJhMTRRNTVnNjBXY0VoVGVuM2VfZG16VFludlpIYTdCNDg3NkNrenJ6V1ZQTUhxemtTS3h5dEpjYWxNWEpIcFRBV3RZSkpuZ0tJdDdOTTJ3eTVB?oc=5",
+      "published_at": "2026-11-04T19:02:44+00:00",
+      "category": "Minnesota team news",
+      "source": "Sportsnaut",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [
+        "trade"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Vikings fans need to know about this: Report Makes 5-Time Pro Bowler Perfect Minnesota Vikings Trade Target Before Deadline",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "8148f6242291b52a",
+      "score": 81,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 97,
+        "virality_potential": 51,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Minnesota Vikings Urged to Pay Ridiculous Price in Trade for Pro Bowl Quarterback",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQY0FhVGZvOEdSMVd4anFDa0Y2ekZpMWF4T0QxUUtlVWZxZlZYaDQxOXlEX2dsN0I4bjREQW1FN3E5MGdfV3ZLcGY2MXdPNTdTS29Uejk2cGRIekFwSUlCUXBjcXU2MGtIckwxZ3NXNlppdVQzZFFOVG1zTlZJUlVuNm1UbWxHREtMMXg1OHU3MFY?oc=5",
+      "published_at": "2026-11-04T19:19:48+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [
+        "trade"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Vikings fans need to know about this: Minnesota Vikings Urged to Pay Ridiculous Price in Trade for Pro Bowl Quarterback",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "c47284cc2e314e87",
+      "score": 80,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 96,
+        "virality_potential": 46,
+        "ease_of_execution": 93
+      },
+      "team": "Twins",
+      "title": "Ryan Jeffers Facing Decision After Minnesota Twins Offer",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPTHh5RjBfckpnY1VDdUdJYjBJWUFGeEJUVUEyTVVzS2hkYVR1Qk9xM21CWkJza2wzeW1TX1ZFaWpxVFlqelRoMjNjTDRKNVhUSG9NRUczVW82bG9jNVY1N201a0JacjZBU2xxMndrLU1feG1jVU8zcGVCMWtGeDF2ZUMxcXlXanJoREVSSUJnNy1jSGlqR1VWWkh3a1JMN0VtSWc?oc=5",
+      "published_at": "2026-11-04T18:45:36+00:00",
+      "category": "Minnesota team news",
+      "source": "roundtable.io",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 2,
+      "trend_signal": "Early signal",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Twins story: Ryan Jeffers Facing Decision After Minnesota Twins Offer",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "4960eeb8d395b226",
+      "score": 80,
+      "score_breakdown": {
+        "relevance": 91,
+        "timeliness": 88,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "Minnesota Wild's Jesper Wallstedt Should Be Considered The NHL's 2026-27 Vezina Trophy Front-Runner",
+      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOSHViRlFxUlRhai1vSHhGZEVHMVc5dGxBVFBIMXotb1RxeUdIaEpMMUt5MHBJSUdLbGxScnA2WTRHdXNpSVhZRy10Y2Nfa0cyaFJMLUZPYVhyd3lMS1llMmVZblVQY0ZiOG1mc25Zam01SFAzV1NIQUYzQllXbU5NaEUyalJLLUN3MGNOdEdhQlpFczFC?oc=5",
+      "published_at": "2026-11-04T14:29:57+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Wild story: Minnesota Wild's Jesper Wallstedt Should Be Considered The NHL's 2026-27 Vezina Trophy Front-Runner",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "dcf762df3b2d0933",
+      "score": 79,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 98,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "How to watch, stream and listen to Buffalo Bills vs. Minnesota Vikings on Monday Night Football",
+      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxNUGZMdWV0Q09ibS1nX3c0NkRZT0dfWGk2UndzTTZwbGJkRnRBOWg2VzVDM25XWjlsYzA0QVQwMXUwR3h2M2ZQeXlhNkU4cmRzWHZtb3JyY2EtMlhDZWlvdThPSWVPOF9KOUtra0hlUTd0enVRQVBFUTVEbkh2UEs3TmZKWFZZRV9fVGdBQTRFRjRmd1VQaWdBRGdRTlhINmgyUHkycWxDUjR4eF8yWTRnNUZfZVNhaE9FZGdQM2FsMmM0UmxibU4tRTBYWDl0aHA5V2fSAdcBQVVfeXFMUGNqa2I5aVIwMzB4czJtTG44OGFIY3JzZFEyMzF1aWNyMXV3bGZyS1duTkRsd1IyZXdjWFNkajRBbWxRaTNhX1RKVG14bmQ4ODNNbTM4RTQ2a3Y2V280Zzl6MWZKRElaT3V6c2VfeXd1MERHZEhpd1FPb3NCUFJwMDJzU1RXYjE2VHdySzJWZkFXajlaUW9EeE1wMFdHVkE1endpNzhEZ0tJU3daS2wzeUswR20tSC1LS3VJaldtbnNmQWctQ2FjcDhId0FxVVkxbWtSOFkyazA?oc=5",
+      "published_at": "2026-11-04T19:44:07+00:00",
+      "category": "Minnesota team news",
+      "source": "WIVB News 4",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: How to watch, stream and listen to Buffalo Bills vs. Minnesota Vikings on Monday Night Football",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "84592b986b33d1a3",
+      "score": 79,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 90,
+        "virality_potential": 51,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Vikings Have Potential Jonathan Taylor ‘Plan B’ for NFL Trade Deadline",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOdlB1Zl9ER3JadE5GZ0IzbTl5WVB6eXZhbTFkT0dKZjNtZWo5ZUhxb1ViUmRGeXdudHVBZHRGdUdZaWgxQW51Z0lLcWc3T1VWZ3Y1NTFmeTNSZV9Pb3hiTklyZ3lzQ0Naa285WWp6djhuT3Y2VExOVUhTQS02QV9oUW5LT2ZGYTU0cEFjSm90Q28?oc=5",
+      "published_at": "2026-11-04T15:40:11+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [
+        "trade"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Vikings fans need to know about this: Vikings Have Potential Jonathan Taylor ‘Plan B’ for NFL Trade Deadline",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "a352d4c7e3e1b7cf",
+      "score": 79,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 84,
+        "virality_potential": 59,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "3 Quarterbacks Vikings Should Target Ahead of the NFL Trade Deadline",
+      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNUEp4c1ozdC1Vb1Vkd2I1Y1Btcy14UXpQZElENDN1TVFYUm05WUgyXzNjOEJtZUt0WnpTME5MMlJRZVdGQ1U5RU1faVV3X0JrYzNhdndnWW9JWjZELXU5Y2xhaFdfOER6YjRrbm44LUpSOG10cVRtRjZnNXItbFlzSG81R0hzZHZoWWVLNw?oc=5",
+      "published_at": "2026-11-04T12:00:05+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 2,
+      "trend_signal": "Early signal",
+      "viral_cues": [
+        "trade"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Vikings fans need to know about this: 3 Quarterbacks Vikings Should Target Ahead of the NFL Trade Deadline",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "14f10f95188d549d",
+      "score": 78,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 96,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Minnesota Vikings News and Links: When Did 6-1 Become Not Good Enough?",
+      "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxNRURBV0pnVkFKVU9zMkJnSndxaENMZUZLckF5SzRsMDZkeGhoSnNFcm1iT0pzTXRYWEFLTFRKR01SVjNiMndzZy03dFNnc3l2dEw0Z2hIUlMxWXZMV0g1SUF2QzU1eThpQXdDdUVfclRqcmh6MGtRaGZMR2V6eWdteW00bzYxSjE3UDY5a21TdXFwNEp3blhLS0NVMGZkRmg0cFQwZmdHdEQxbHVZSW94UFNSMjdWNFJFTm1wN1p1RzNVYWVJZDJrbkZZYWpRZzJtenNuUkdLekh6YlZCNmxkX1Mya2pPREhi?oc=5",
+      "published_at": "2026-11-04T18:46:40+00:00",
+      "category": "Minnesota team news",
+      "source": "Daily Norseman",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: Minnesota Vikings News and Links: When Did 6-1 Become Not Good Enough?",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "c8657091d834b39b",
+      "score": 78,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 92,
+        "virality_potential": 64,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "49ers Trade Pitch Could Determine Playoff Fate for Vikings",
+      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOYXFzSGNLRzFxR3YzdWdZRWFOa0F2WU9lNWpCRGNRdnFkb1NzNDRsUUFZZ3k3TEoyUXNaalJKYnVuQ2VMaGcxMV9vRFM2VW4wVmpmWHZUODNiNkdGaXhOUi05X2lBTkFwYy02OVFlWDZtOHpoTWJkdE9YWXNMc2E3NlM0ODdBWjhRcXc?oc=5",
+      "published_at": "2026-11-04T16:39:05+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [
+        "playoff",
+        "trade"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Vikings fans need to know about this: 49ers Trade Pitch Could Determine Playoff Fate for Vikings",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "b3cdbae13898dd3b",
+      "score": 78,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 95,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Twins",
+      "title": "Minnesota Twins Prospect Named Fall League Star",
+      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNMXNSOWFYRk5xblNobHRGOTVldVN2eXM3NWNuNGZQVmtmX1A5QjQ3TlUzeGw1WVZ5Q2swekEtYUczM2hTMFdGX0lFMkxPM0ZNSGpLMG9ReE93SF9zX01XZmhtS3A0MjcyLTB0Ykg3R21iU2FPMHRNR1dGemxRVGZHYzJ6aUMyWEV0WDhKUA?oc=5",
+      "published_at": "2026-11-04T18:20:04+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Twins story: Minnesota Twins Prospect Named Fall League Star",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "7b4c8c6113c433bc",
+      "score": 78,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 97,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "Minnesota Wild to Host Military Appreciation Night on November 7",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNY1lmMkNvYzZxRjR0QjducWlOMThjR0l5WVYtQWNhT1ZZMGVvM3hCMzltUjk0cklxZnp0THJsc2t4dGlWeHVueEw4WGJtbXhWQWgyYk9GTWE0dGNkR2dzV2pHRC1nQnU1X2ZrQ2FiLVJPSlZ5WWFaN05OSWdXNEROdnZrMm9zNEROTmEyVXhoSlVJb1J3RGtZQTB5LUNxdDg?oc=5",
+      "published_at": "2026-11-04T19:19:29+00:00",
+      "category": "Minnesota team news",
+      "source": "NHL.com",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Wild story: Minnesota Wild to Host Military Appreciation Night on November 7",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "a97f07ed42051376",
+      "score": 77,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 99,
+        "virality_potential": 51,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Vikings Predicted To Sell Recent Day 2 Selection Ahead Of Trade Deadline",
+      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE5ZTmNEdmxhMm9iQXlzN18yV2E3VDJ6QzNBU01HX2lURzNROENERGRCTUUtajVXNzNISHNhdzVWT3Q0ZndSdm1hNUlFbHF0MTdzU0dwNEdsSnl4OTJHMC1yNkJLX180SHhWdThIam1XQnplRmd4Vlg2Z3J6N0ZFR0E?oc=5",
+      "published_at": "2026-11-04T20:28:13+00:00",
+      "category": "Minnesota team news",
+      "source": "Heavy.com",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [
+        "trade"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Vikings fans need to know about this: Vikings Predicted To Sell Recent Day 2 Selection Ahead Of Trade Deadline",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "b30efc11b611ed69",
+      "score": 77,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 99,
+        "virality_potential": 51,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Vikings See 1 QB Trade Target Stolen Away by Ravens",
+      "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE84NUZRUUR0T0Z2N09ZSjJBSzU3NmRySU91ZHBNTkswVHJndWpVT1V2RkdtalFLU0h2U08yLXZEYTh3MFp4YjhSRTFmb2gtN000R05KMWxXZkZLdjFBNkR3eXVEUjRLV0ZxSHZzZGZ0Q1RxekE2OFlBMWg1Rk5Ydw?oc=5",
+      "published_at": "2026-11-04T20:35:00+00:00",
+      "category": "Minnesota team news",
+      "source": "Vikings Territory",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [
+        "trade"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Vikings fans need to know about this: Vikings See 1 QB Trade Target Stolen Away by Ravens",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "724fd8fff1f72c13",
+      "score": 77,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 98,
+        "virality_potential": 51,
+        "ease_of_execution": 93
+      },
+      "team": "Twins",
+      "title": "Former Twins Draft Pick Jason Kanzler Named Seattle Mariners Manager",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNVVBlbWJuZWR5aVlVc1RBbU1YUTIxRmRqSEFjLTJRbmpzU3E5MUVVUy0wVmhFMnUxek5Yd2ZCRFBtM1plQlZfWmIxSDh4UmhmbGlDYk5UYVRDLWl2SVM5NEt0cXdwR244dFMwNXFfbmt3R1RWTTdHQl9YeXpjWlgycWJ3S0RjZVhKM0pCR2QtakVOcmZQNnNMbVExRFc3TnBBMl83NzhjZm5NUHc0R2pybg?oc=5",
+      "published_at": "2026-11-04T19:56:01+00:00",
+      "category": "Minnesota team news",
+      "source": "Twins Daily",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [
+        "draft"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Twins fans need to know about this: Former Twins Draft Pick Jason Kanzler Named Seattle Mariners Manager",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "f57dafae98563c33",
+      "score": 77,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 92,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Lynx",
+      "title": "Way-too-early 2027 WNBA Power Rankings: Valkyries on top; Fever, Lynx, Liberty have major offseason questions",
+      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxONFFyNFZfeERhSVNaa1JsTng0Q2pLRlJiSWRkX3FUb1ZrRUZIZzdoWG1aUVZ6QVVIWUdvUnBEMVgxbGoyVE5GaE9GM2lTWTB4eUhEQ1ZCam9fUGVDMk52WXdxWE1UWlR2Vl9BX2lkMWFZakZ5dlFpM0lQc0kySW44R0VVb0tEdVJjOEE?oc=5",
+      "published_at": "2026-11-04T16:57:20+00:00",
+      "category": "Minnesota team news",
+      "source": "CBS Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Lynx story: Way-too-early 2027 WNBA Power Rankings: Valkyries on top; Fever, Lynx, Liberty have major offseason questions",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "1554ac25f9e43b25",
+      "score": 77,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 97,
+        "virality_potential": 51,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "Paul Bissonnette has already bailed on his ‘Wild will miss playoffs’ take",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNemxTdkdvRzZEMVNSQ3NqQ0pZMlpzenE1M3pxUnZ6TlJXN0U2ZkotTmxJM2QzTVAwdlVraTJZRk45RThQczZFdlVXdGljdUtybmZ3WnBDZzR5ZkxMX0Y4Q3dKWEtRbHJkMWwxcEk0b01XRW51R0VuX25VNXUzaW9qZi1jSnBkTGRkb1o0SXJ4b0Q5QUwzSC00b2FSZExybFJSRWc?oc=5",
+      "published_at": "2026-11-04T19:24:29+00:00",
+      "category": "Minnesota team news",
+      "source": "Bring Me the Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [
+        "playoffs"
+      ],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Wild story: Paul Bissonnette has already bailed on his ‘Wild will miss playoffs’ take",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    }
+  ],
+  "competitors": [
+    {
+      "handle": "@kfan1003",
+      "platform": "Instagram",
+      "category": "General Minnesota Sports",
+      "profile_url": "https://www.instagram.com/kfan1003/"
+    },
+    {
+      "handle": "@skornorthmn",
+      "platform": "Instagram",
+      "category": "General Minnesota Sports",
+      "profile_url": "https://www.instagram.com/skornorthmn/"
+    },
+    {
+      "handle": "@bringmn",
+      "platform": "Instagram",
+      "category": "General Minnesota Sports & News",
+      "profile_url": "https://www.instagram.com/bringmn/"
+    },
+    {
+      "handle": "@mnsportsnews",
+      "platform": "Instagram",
+      "category": "General Minnesota Sports",
+      "profile_url": "https://www.instagram.com/mnsportsnews/"
+    },
+    {
+      "handle": "@realmnsportsfan",
+      "platform": "Instagram",
+      "category": "General Minnesota Sports",
+      "profile_url": "https://www.instagram.com/realmnsportsfan/"
+    },
+    {
+      "handle": "@mnsportsandevents",
+      "platform": "Instagram",
+      "category": "General Minnesota Sports",
+      "profile_url": "https://www.instagram.com/mnsportsandevents/"
+    },
+    {
+      "handle": "@mnsportscollective",
+      "platform": "Instagram",
+      "category": "General Minnesota Sports",
+      "profile_url": "https://www.instagram.com/mnsportscollective/"
+    },
+    {
+      "handle": "@skolbros2",
+      "platform": "Instagram",
+      "category": "General Minnesota Sports",
+      "profile_url": "https://www.instagram.com/skolbros2/"
+    },
+    {
+      "handle": "@vikingnations",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/vikingnations/"
+    },
+    {
+      "handle": "@skolsundays",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/skolsundays/"
+    },
+    {
+      "handle": "@vikesinsider",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/vikesinsider/"
+    },
+    {
+      "handle": "@vikeslatest",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/vikeslatest/"
+    },
+    {
+      "handle": "@vikingzfanpage",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/vikingzfanpage/"
+    },
+    {
+      "handle": "@everything.wild",
+      "platform": "Instagram",
+      "category": "Wild",
+      "profile_url": "https://www.instagram.com/everything.wild/"
+    },
+    {
+      "handle": "@mnwildplayers",
+      "platform": "Instagram",
+      "category": "Wild",
+      "profile_url": "https://www.instagram.com/mnwildplayers/"
+    },
+    {
+      "handle": "@twolvesinsider",
+      "platform": "Instagram",
+      "category": "Wolves",
+      "profile_url": "https://www.instagram.com/twolvesinsider/"
+    },
+    {
+      "handle": "@the_daily_wolves",
+      "platform": "Instagram",
+      "category": "Wolves",
+      "profile_url": "https://www.instagram.com/the_daily_wolves/"
+    },
+    {
+      "handle": "@trackthepack",
+      "platform": "Instagram",
+      "category": "Wolves",
+      "profile_url": "https://www.instagram.com/trackthepack/"
+    },
+    {
+      "handle": "@thetwinsdaily",
+      "platform": "Instagram",
+      "category": "Twins",
+      "profile_url": "https://www.instagram.com/thetwinsdaily/"
+    },
+    {
+      "handle": "@twinscenter",
+      "platform": "Instagram",
+      "category": "Twins",
+      "profile_url": "https://www.instagram.com/twinscenter/"
+    },
+    {
+      "handle": "@barstoolgophers",
+      "platform": "Instagram",
+      "category": "Gophers",
+      "profile_url": "https://www.instagram.com/barstoolgophers/"
+    },
+    {
+      "handle": "@barstoolsports",
+      "platform": "Instagram",
+      "category": "General Sports",
+      "profile_url": "https://www.instagram.com/barstoolsports/"
+    },
+    {
+      "handle": "@snapbacksports_",
+      "platform": "Instagram",
+      "category": "General Sports",
+      "profile_url": "https://www.instagram.com/snapbacksports_/"
+    },
+    {
+      "handle": "@theathletic",
+      "platform": "Instagram",
+      "category": "General Sports",
+      "profile_url": "https://www.instagram.com/theathletic/"
+    },
+    {
+      "handle": "@bringmethenews",
+      "platform": "Instagram",
+      "category": "General Minnesota News",
+      "profile_url": "https://www.instagram.com/bringmethenews/"
+    },
+    {
+      "handle": "@racketmn",
+      "platform": "Instagram",
+      "category": "General Minnesota News",
+      "profile_url": "https://www.instagram.com/racketmn/"
+    },
+    {
+      "handle": "@mnmo_mag",
+      "platform": "Instagram",
+      "category": "General Minnesota Sports & News",
+      "profile_url": "https://www.instagram.com/mnmo_mag/"
+    },
+    {
+      "handle": "@vikings",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/vikings/"
+    },
+    {
+      "handle": "@purpleinsider",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/purpleinsider/"
+    },
+    {
+      "handle": "@dailynorseman",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/dailynorseman/"
+    },
+    {
+      "handle": "@vikescentral",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/vikescentral/"
+    },
+    {
+      "handle": "@vikings_territory",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/vikings_territory/"
+    },
+    {
+      "handle": "@vikesverified",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/vikesverified/"
+    },
+    {
+      "handle": "@mnwild",
+      "platform": "Instagram",
+      "category": "Wild",
+      "profile_url": "https://www.instagram.com/mnwild/"
+    },
+    {
+      "handle": "@hockeywilderness",
+      "platform": "Instagram",
+      "category": "Wild",
+      "profile_url": "https://www.instagram.com/hockeywilderness/"
+    },
+    {
+      "handle": "@wildon7th",
+      "platform": "Instagram",
+      "category": "Wild",
+      "profile_url": "https://www.instagram.com/wildon7th/"
+    },
+    {
+      "handle": "@bleacherreport",
+      "platform": "Instagram",
+      "category": "General Sports",
+      "profile_url": "https://www.instagram.com/bleacherreport/"
+    },
+    {
+      "handle": "@houseofhighlights",
+      "platform": "Instagram",
+      "category": "General Sports",
+      "profile_url": "https://www.instagram.com/houseofhighlights/"
+    },
+    {
+      "handle": "@espn",
+      "platform": "Instagram",
+      "category": "General Sports",
+      "profile_url": "https://www.instagram.com/espn/"
+    },
+    {
+      "handle": "@overtime",
+      "platform": "Instagram",
+      "category": "General Sports",
+      "profile_url": "https://www.instagram.com/overtime/"
+    },
+    {
+      "handle": "@jomboymedia",
+      "platform": "Instagram",
+      "category": "General Sports",
+      "profile_url": "https://www.instagram.com/jomboymedia/"
+    },
+    {
+      "handle": "@cadillacjackk",
+      "platform": "TikTok",
+      "category": "Vikings",
+      "profile_url": "https://www.tiktok.com/@cadillacjackk"
+    },
+    {
+      "handle": "@thatvikingsfan",
+      "platform": "TikTok",
+      "category": "Vikings",
+      "profile_url": "https://www.tiktok.com/@thatvikingsfan"
+    },
+    {
+      "handle": "@tycenrhodes",
+      "platform": "TikTok",
+      "category": "Wolves",
+      "profile_url": "https://www.tiktok.com/@tycenrhodes"
+    },
+    {
+      "handle": "@batboysbaseball",
+      "platform": "TikTok",
+      "category": "Twins",
+      "profile_url": "https://www.tiktok.com/@batboysbaseball"
+    },
+    {
+      "handle": "@talkinbaseball_",
+      "platform": "TikTok",
+      "category": "Twins",
+      "profile_url": "https://www.tiktok.com/@talkinbaseball_"
+    }
+  ]
+}
