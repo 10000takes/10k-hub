@@ -44,7 +44,11 @@ def main():
     request = urllib.request.Request(
         base_url + "/v1/import",
         data=payload,
-        headers={"Authorization": "Bearer " + token, "Content-Type": "application/json"},
+        headers={
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json",
+            "User-Agent": "10K-Takes-Content-Intelligence/1.0",
+        },
         method="POST",
     )
     try:
