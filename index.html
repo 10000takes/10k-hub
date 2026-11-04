@@ -138,7 +138,7 @@ html.locked #gate{display:flex}
 
 <h2>Top Posts This Week</h2>
 <div class="sub" id="tpNote">Loading…</div>
-<div class="sub">Interaction counts are the actions available to this dashboard (likes/reactions, comments, shares, and saves where collected). Facebook’s in-app “Engagement” total is broader, so its number and rate may be higher than the tracked interactions shown here.</div>
+<div class="sub">Facebook shows only the interactions currently returned to this dashboard: reactions, comments, and shares. This is a partial count; it does not match Facebook’s in-app “Engagement” total, which includes additional activity the collector does not receive.</div>
 <div class="rng" id="tpSort"></div>
 <div id="tpList"></div>
 <div class="sub" id="tpFoot"></div>
@@ -603,9 +603,9 @@ function renderTop(){
  $('tpList').innerHTML=top.length?top.map((p,i)=>{const eng=tpEng(p),er=p.views>0?eng/p.views*100:null,rel=tpRel(p);
   return '<div class="panel tp"><div class="rk">'+(i+1)+'</div><div><div class="lbl">'+esc(p.platform)+' · '+esc(p.type)+' · '+new Date(p.t).toLocaleDateString('en-US',{month:'short',day:'numeric'})+' · <a href="'+esc(p.url)+'" target="_blank" rel="noopener">open post</a></div>'
   +'<div class="cap">'+(p.caption?'“'+esc(p.caption)+'”':'(no caption)')+'</div>'
-  +'<div class="tpm"><div><b>'+fmt(p.views)+'</b><span>views</span></div><div><b>'+fmt(eng)+'</b><span>tracked interactions</span></div><div><b>'+(er==null?'–':er.toFixed(1)+'%')+'</b><span>tracked interaction rate</span></div>'+(rel!=null?'<div><b>'+rel.toFixed(1)+'×</b><span>views/day vs '+esc(p.platform)+' baseline</span></div>':'')+'</div>'
+  +'<div class="tpm"><div><b>'+fmt(p.views)+'</b><span>views</span></div><div><b>'+fmt(eng)+'</b><span>'+(p.platform==='Facebook'?'known reactions + comments + shares':'tracked interactions')+'</span></div><div><b>'+(er==null?'–':er.toFixed(1)+'%')+'</b><span>'+(p.platform==='Facebook'?'partial interaction rate':'tracked interaction rate')+'</span></div>'+(rel!=null?'<div><b>'+rel.toFixed(1)+'×</b><span>views/day vs '+esc(p.platform)+' baseline</span></div>':'')+'</div>'
   +'<div class="lbl" style="margin-top:10px">Why it performed well</div><ul class="why">'+tpWhy(p,week).map(r=>'<li>'+esc(r)+'</li>').join('')+'</ul></div></div>'}).join(''):'<div class="sub">No posts with view numbers in the last 7 days.</div>';
- $('tpFoot').textContent='Tracked interactions are likes/reactions, comments, shares and saves where collected; platform insight totals can include additional actions. Rates use tracked interactions ÷ views. These are patterns in the numbers, not proof of cause. Views and interactions are counted differently across platforms, so compare within each platform.';
+ $('tpFoot').textContent='Facebook counts shown here are a partial subtotal of reactions, comments, and shares; they are not Facebook’s full in-app Engagement metric. That makes the Facebook rate partial as well. Other platform counts include the actions available to their collectors. Rates divide the displayed interaction count by views. Treat comparisons as directional and compare within each platform.';
  $('tpSignals').innerHTML='';$('tpReuse').innerHTML='';renderSignals();
  const baseByPlatform=new Map();[...new Set(TP.map(p=>p.platform))].forEach(k=>{const v=TP.filter(p=>p.platform===k&&p.views>0).map(tpRate);baseByPlatform.set(k,tpMed(v))});
  const reuse=TP.filter(p=>p.views>0&&tpAge(p)>=7&&baseByPlatform.get(p.platform)>0&&tpRate(p)/baseByPlatform.get(p.platform)>=1.5).sort((a,b)=>tpRel(b)-tpRel(a)).slice(0,6);
