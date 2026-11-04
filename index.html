@@ -86,6 +86,7 @@ select,input[type=text],input[type=number],input[type=date],input[type=url],.pfo
 .tpm{display:flex;gap:22px;flex-wrap:wrap}.tpm div{display:flex;flex-direction:column}
 .tpm b{font:700 28px "Barlow Condensed","Arial Narrow",sans-serif;line-height:1.05}.tpm span{font-size:12px;color:var(--mute)}
 ul.why{margin:4px 0 0;padding-left:20px;font-size:14px}ul.why li{margin:2px 0}
+.ci-grid{display:grid;gap:10px;margin-top:12px}.ci-rec h3{margin:0 0 6px;font-size:18px}.ci-rec p{margin:4px 0}.ci-meta{font-size:12px;color:var(--mute)}.ci-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:13px}.ci-url{min-width:min(440px,100%)}
 html.locked .wrap,html.locked #printRoot{display:none}
 #gate{position:fixed;inset:0;z-index:100;background:var(--bg);color:var(--ink);display:none;align-items:center;justify-content:center;padding:20px}
 html.locked #gate{display:flex}
@@ -109,7 +110,7 @@ html.locked #gate{display:flex}
 
 <nav class="tabs top" role="tablist" aria-label="Sections">
 <button role="tab" id="secbtn-analytics" aria-controls="sec-analytics" aria-selected="true" data-sec="analytics">Analytics</button>
-<button role="tab" id="secbtn-content-generation" aria-controls="sec-content-generation" aria-selected="false" tabindex="-1" data-sec="content-generation">Content Generation</button>
+<button role="tab" id="secbtn-content-generation" aria-controls="sec-content-generation" aria-selected="false" tabindex="-1" data-sec="content-generation">Content Intelligence</button>
 <button role="tab" id="secbtn-partnerships" aria-controls="sec-partnerships" aria-selected="false" tabindex="-1" data-sec="partnerships">Partnerships</button>
 <button role="tab" id="secbtn-merchandise" aria-controls="sec-merchandise" aria-selected="false" tabindex="-1" data-sec="merchandise">Merchandise</button>
 </nav>
@@ -226,8 +227,19 @@ html.locked #gate{display:flex}
 </section>
 
 <section role="tabpanel" id="sec-content-generation" aria-labelledby="secbtn-content-generation" hidden>
-<h2>Content Generation</h2>
-<div class="panel secsoon"><div class="big">Coming soon</div><div class="sub" style="margin-top:8px">This section is being built.</div></div>
+<h2>Content Intelligence</h2>
+<div class="sub" style="margin-bottom:10px">Evidence-based patterns from recent posts. The agent compares week-over-week changes within each platform and format; its suggestions are drafts, not proof of what caused a post to perform.</div>
+<div class="panel tools">
+<div class="row">
+<label class="ci-url">Cloudflare Worker URL<input id="contentAgentUrl" type="url" inputmode="url" placeholder="https://your-worker.workers.dev" autocomplete="url"></label>
+<button id="connectContentAgent">Connect</button>
+<button class="alt" id="refreshContentAgent">Refresh</button>
+</div>
+<div class="sub">This connects to the Worker’s public, read-only recommendation endpoint. Never paste a token or secret here.</div>
+<div id="contentAgentStatus" role="status" aria-live="polite">Worker not connected.</div>
+<div id="contentAgentMeta" class="ci-meta"></div>
+<div id="contentAgentResults" class="ci-grid"></div>
+</div>
 </section>
 
 <section role="tabpanel" id="sec-partnerships" aria-labelledby="secbtn-partnerships" hidden>
@@ -404,7 +416,7 @@ function renderGrowth(){
  [[1,s1,ann],[2,s2,null],[3,s3,null]].forEach(x=>{drawChart(x[0],x[1],x[2]);statsTable(x[0],x[1])})}
 $('sm').onchange=renderGrowth;
 const SECS=['analytics','content-generation','partnerships','merchandise'],SUBS=['main','subsidiary','partner'];
-const SECNAME={analytics:'Analytics','content-generation':'Content Generation',partnerships:'Partnerships',merchandise:'Merchandise'},SUBNAME={main:'Main Account',subsidiary:'Subsidiary Accounts',partner:'Partner Analytics'};
+const SECNAME={analytics:'Analytics','content-generation':'Content Intelligence',partnerships:'Partnerships',merchandise:'Merchandise'},SUBNAME={main:'Main Account',subsidiary:'Subsidiary Accounts',partner:'Partner Analytics'};
 let lastSub='main';
 function route(){let [sec,sub]=location.hash.slice(1).split('/');
  if(SUBS.includes(sec)){sub=sec;sec='analytics'}      // old bookmarks like #subsidiary still work
@@ -556,6 +568,36 @@ function renderTop(){
  $('tpFoot').textContent='The reasons are patterns found in the numbers, such as how a post compares with the same platform\'s recent posts. They show what stood out, not proof of why. Platforms count views differently, so compare across platforms with care.'}
 function loadTop(){fetch('top_posts.csv?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{TP=setTop(t);renderTop()}).catch(()=>renderTop())}
 renderTop();loadTop();
+
+const CONTENT_AGENT_URL_KEY='tk_content_agent_url_v1';
+function normalizeAgentUrl(value){
+ try{const u=new URL(value.trim());if(u.protocol!=='https:'&&!(u.protocol==='http:'&&u.hostname==='localhost'))return null;if(u.username||u.password)return null;return u.origin+u.pathname.replace(/\/+$/,'')}catch(e){return null}}
+function renderContentAgent(data){
+ const recs=Array.isArray(data.recommendations)?data.recommendations:[];
+ $('contentAgentMeta').textContent=data.snapshot_as_of?'Latest source snapshot: '+data.snapshot_as_of+' · '+fmt(data.posts_analyzed||0)+' posts with comparable weekly snapshots.':'';
+ if(!recs.length){$('contentAgentResults').innerHTML='';$('contentAgentStatus').textContent=data.note||'No recommendations yet. The agent needs daily snapshots about a week apart before it can compare post performance.';return}
+ $('contentAgentStatus').textContent='Updated '+(data.generated_at?new Date(data.generated_at).toLocaleString():'recently')+'. Review these as hypotheses to test.';
+ $('contentAgentResults').innerHTML=recs.map(r=>{
+  let evidence={};try{evidence=JSON.parse(r.evidence_json||'{}')}catch(e){}
+  const links=Array.isArray(evidence.source_posts)?evidence.source_posts.slice(0,4).map(p=>{
+   let href='';try{const u=new URL(p.url);if(u.protocol==='https:'||u.protocol==='http:')href=u.href}catch(e){}
+   return href?'<a href="'+esc(href)+'" target="_blank" rel="noopener">View source post</a>':''
+  }).filter(Boolean).join(''):'';
+  return '<article class="panel ci-rec"><div class="lbl">'+esc(r.platform)+' · '+esc(r.format)+' · '+esc(r.topic)+' · '+esc(r.confidence)+' confidence</div><h3>Potential repeatable signal</h3><p>'+esc(r.summary)+'</p><div class="ci-meta">'+fmt(evidence.cohort_posts||0)+' source posts · compared with '+fmt(evidence.comparison_posts||0)+' others · '+esc(evidence.date_range?.from||'')+' to '+esc(evidence.date_range?.through||'')+'</div>'+(links?'<div class="ci-links">'+links+'</div>':'')+'</article>'
+ }).join('');
+}
+async function refreshContentAgent(){
+ const base=normalizeAgentUrl($('contentAgentUrl').value);
+ if(!base){$('contentAgentStatus').textContent='Enter a valid HTTPS Worker URL.';return}
+ $('contentAgentStatus').textContent='Loading recommendations…';
+ try{const r=await fetch(base+'/v1/recommendations',{cache:'no-store'});if(!r.ok)throw new Error('Worker returned '+r.status);renderContentAgent(await r.json())}
+ catch(e){$('contentAgentMeta').textContent='';$('contentAgentResults').innerHTML='';$('contentAgentStatus').textContent='Could not reach the Worker. Confirm its URL, deployment, and allowed dashboard origin.'}
+}
+try{$('contentAgentUrl').value=localStorage.getItem(CONTENT_AGENT_URL_KEY)||''}catch(e){}
+$('connectContentAgent').onclick=()=>{const base=normalizeAgentUrl($('contentAgentUrl').value);if(!base){$('contentAgentStatus').textContent='Enter a valid HTTPS Worker URL.';return}try{localStorage.setItem(CONTENT_AGENT_URL_KEY,base)}catch(e){}$('contentAgentUrl').value=base;refreshContentAgent()};
+$('refreshContentAgent').onclick=refreshContentAgent;
+if($('contentAgentUrl').value)refreshContentAgent();
+
 fetch('followers.csv?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{ingest(t);$('msg').textContent='Loaded latest data from followers.csv.'}).catch(()=>{});
 fetch('metrics.csv?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{
  const names=new Set(AC.map(a=>a.n));

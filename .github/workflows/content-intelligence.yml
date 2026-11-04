@@ -1,0 +1,26 @@
+name: Content Intelligence snapshot
+
+on:
+  schedule:
+    - cron: "30 12 * * *" # after the existing 11:00 UTC collector schedule
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    if: ${{ vars.CONTENT_INTELLIGENCE_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Send latest post snapshot to Cloudflare Worker
+        env:
+          CONTENT_INTELLIGENCE_API_URL: ${{ vars.CONTENT_INTELLIGENCE_API_URL }}
+          CONTENT_INTELLIGENCE_TOKEN: ${{ secrets.CONTENT_INTELLIGENCE_TOKEN }}
+        run: python scripts/upload_content_snapshot.py
