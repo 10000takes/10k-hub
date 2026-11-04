@@ -77,6 +77,8 @@ select,input[type=text],input[type=number],input[type=date],input[type=url],.pfo
 .rcover{min-height:240mm;display:flex;flex-direction:column;justify-content:center;gap:10px}
 .rcover img{max-height:90px;max-width:260px;object-fit:contain;align-self:flex-start;margin-bottom:24px}
 .rcards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.rcards .panel{break-inside:avoid}
+.signal-split{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}.signal-panel{min-width:0;padding:12px}.signal-panel h3{margin:0 0 8px}.signal-scroll{overflow-x:auto}.signal-table{min-width:510px;font-size:12px}.signal-table th,.signal-table td{white-space:normal;text-align:left;vertical-align:top}.signal-table th:first-child,.signal-table td:first-child{position:static;background:transparent}.signal-table td{line-height:1.35}.signal-table td small{color:var(--mute)}
+@media(max-width:850px){.signal-split{grid-template-columns:1fr}}
 .rp td small{display:inline;margin-left:6px;color:#555}.rp .note{font-size:12px;color:#555;margin-top:6px}
 @media print{
  :root,:root:not([data-theme="light"]),:root[data-theme="dark"]{--bg:#fff;--panel:#fff;--ink:#111;--mute:#555;--line:#ccc;--chip:#eee;--acc:#1d5c48;--up:#17794f;--down:#b3382c;padding:0}
@@ -143,8 +145,8 @@ html.locked #gate{display:flex}
 <div id="tpList"></div>
 <div class="sub" id="tpFoot"></div>
 <h3>What’s working and what to adjust</h3>
-<div class="sub">Comparisons use views per day since posting, against recent posts on the same platform. Hook style is inferred from the caption opening, topics from hashtags, and length from caption characters; no video transcript is available. Platform view counts use different definitions, so compare within a platform.</div>
-<div id="tpSignals" class="rcards"></div>
+<div class="sub">Patterns compare views per day with recent posts on the same platform. Each row shows its platform and sample size. Hook style comes from the caption opening, topics from hashtags, and caption length from characters; no video transcript is available.</div>
+<div id="tpSignals"></div>
 <h3>Repurpose and second life</h3>
 <div class="sub">Candidates are older posts with strong views per day versus their platform baseline. Review rights, freshness, and context before reposting.</div>
 <div id="tpReuse" class="rcards"></div>
@@ -559,20 +561,17 @@ function setTop(t){const r=parseCSV(t);if(!r.length)return[];const h=r[0].map(x=
 function tpHook(p){const s=(p.caption||'').trim().toLowerCase();if(!s)return 'No caption';if(/[?？]/.test(s.slice(0,70)))return 'Question';if(/^(did|do|does|what|why|how|is|are|can|should)\b/.test(s))return 'Question / direct prompt';if(/^(we |i |our |my |when |watching |trying |imagine )/.test(s))return 'First-person / scene';return 'Statement / other'}
 function tpTopic(p){const tags=(p.caption.match(/#[\p{L}\p{N}_]+/gu)||[]).slice(0,2);return tags.length?tags.map(x=>x.toLowerCase()).join(' '):'No hashtag topic'}
 function tpLength(p){const l=(p.caption||'').length;return l<45?'Short caption':l<=110?'Medium caption':'Long caption'}
-function tpGroupCards(groups,baseline,label,min=3){return groups.map(([name,items])=>{const vals=items.filter(p=>p.views>0).map(tpRate),m=tpMed(vals);return{name,n:vals.length,m,rel:baseline>0?m/baseline:null}}).filter(g=>g.n>=min&&g.rel!=null).sort((a,b)=>b.rel-a.rel).map(g=>({title:label+': '+g.name,text:g.rel>=1.2?'About '+g.rel.toFixed(1)+'× the platform baseline ('+g.n+' posts). Consider doing more of this.':g.rel<=.8?'About '+g.rel.toFixed(1)+'× baseline ('+g.n+' posts). Refresh the approach and monitor another week.':'Near baseline ('+g.n+' posts); keep testing.' ,rel:g.rel}))}
 function tpGroups(items,key){const m=new Map();items.forEach(p=>{const k=key(p);if(!m.has(k))m.set(k,[]);m.get(k).push(p)});return [...m.entries()]}
 function tpCard(title,text,url){return '<div class="panel"><div class="lbl">'+esc(title)+'</div><div>'+esc(text)+(url?' <a href="'+esc(url)+'" target="_blank" rel="noopener">Open source post</a>':'')+'</div></div>'}
-function renderSignals(){const cards=[],formats=[];const platforms=[...new Set(TP.map(p=>p.platform))];
+function signalTable(title,rows,empty){const body=rows.length?rows.map(r=>'<tr><td>'+esc(r.platform)+'</td><td>'+esc(r.signal)+'</td><td>'+esc(r.evidence)+'</td><td>'+esc(r.action)+'</td></tr>').join(''):'<tr><td colspan="4" class="sub">'+esc(empty)+'</td></tr>';return '<section class="panel signal-panel"><h3>'+esc(title)+'</h3><div class="scroll signal-scroll"><table class="signal-table"><thead><tr><th>Platform</th><th>Pattern</th><th>Evidence</th><th>Next step</th></tr></thead><tbody>'+body+'</tbody></table></div></section>'}
+function renderSignals(){const good=[],adjust=[],platforms=[...new Set(TP.map(p=>p.platform))];
  platforms.forEach(platform=>{const ps=TP.filter(p=>p.platform===platform&&p.views>0),base=tpMed(ps.map(tpRate));if(ps.length<6||!base)return;
-  [['Content type',p=>p.type||'Post'],['Opening style (caption proxy)',tpHook],['Topic hashtag',tpTopic],['Caption length',tpLength]].forEach(([label,key])=>{tpGroupCards(tpGroups(ps,key),base,label).forEach(c=>{if(c.rel>=1.2)cards.push(c)})});
-  const dur=tpGroupCards(tpGroups(ps.filter(p=>p.duration>0),p=>p.duration<=30?'≤30 sec':p.duration<=60?'31–60 sec':p.duration<=180?'1–3 min':'>3 min'),base,'Video length');dur.forEach(c=>{if(c.rel>=1.2)cards.push(c)});
-  const old=ps.filter(p=>tpAge(p)>=15&&tpAge(p)<=30),fresh=ps.filter(p=>tpAge(p)<15);const og=tpGroups(old,p=>p.type||'Post'),ng=tpGroups(fresh,p=>p.type||'Post');
-  og.forEach(([type,a])=>{const b=(ng.find(x=>x[0]===type)||[])[1]||[];if(a.length>=3&&b.length>=3){const x=tpMed(a.map(tpRate)),y=tpMed(b.map(tpRate));if(x>0&&y/x<=.75)formats.push(platform+' '+type+' is cooling: recent views/day are '+(y/x).toFixed(1)+'× the previous period. Rework the format and check again.') }})
+  const dimensions=[['Content type',p=>p.type||'Post'],['Opening style (caption proxy)',tpHook],['Topic hashtag',tpTopic],['Caption length',tpLength],['Video length',p=>p.duration>0?(p.duration<=30?'≤30 sec':p.duration<=60?'31–60 sec':p.duration<=180?'1–3 min':'>3 min'):null]];
+  dimensions.forEach(([label,key])=>{const groups=tpGroups(ps.filter(p=>key(p)!=null),key);groups.forEach(([name,items])=>{const vals=items.map(tpRate),m=tpMed(vals),n=vals.length;if(n<3||m==null)return;const ratio=m/base,evidence=ratio.toFixed(1)+'× platform median · '+n+' posts · '+fmt(Math.round(base))+' views/day across '+ps.length+' posts';if(ratio>=1.2)good.push({platform,signal:label+' · '+name,evidence,action:'Repeat this approach and keep measuring.'});else if(ratio<=.8)adjust.push({platform,signal:label+' · '+name,evidence,action:'Refresh the hook or execution; retest before dropping it.'})})});
+  const old=ps.filter(p=>tpAge(p)>=15&&tpAge(p)<=30),fresh=ps.filter(p=>tpAge(p)<15),og=tpGroups(old,p=>p.type||'Post'),ng=tpGroups(fresh,p=>p.type||'Post');
+  og.forEach(([type,a])=>{const b=(ng.find(x=>x[0]===type)||[])[1]||[];if(a.length>=3&&b.length>=3){const x=tpMed(a.map(tpRate)),y=tpMed(b.map(tpRate));if(x>0&&y/x<=.75)adjust.push({platform,signal:'Cooling format · '+type,evidence:(y/x).toFixed(1)+'× recent vs previous views/day · '+b.length+' recent and '+a.length+' previous posts',action:'Rework the format and check it again next week.'})}})
  });
- platforms.forEach(platform=>{const ps=TP.filter(p=>p.platform===platform&&p.views>0),m=tpMed(ps.map(tpRate));if(ps.length>=4&&m!=null)$('tpSignals').insertAdjacentHTML('beforeend',tpCard('Platform baseline · '+platform,fmt(Math.round(m))+' median views per day across '+ps.length+' recent posts.'))});
- if(cards.length)cards.slice(0,8).forEach(c=>$('tpSignals').insertAdjacentHTML('beforeend',tpCard(c.title,c.text)));
- if(formats.length)formats.forEach((t,i)=>$('tpSignals').insertAdjacentHTML('beforeend',tpCard('Losing effectiveness? (early signal)',t)));
- if(!cards.length&&!formats.length)$('tpSignals').innerHTML=tpCard('Building a reliable baseline','More comparable posts are needed. Group comparisons appear when a platform has enough posts in each group; video length is shown only where the platform supplies it.');
+ $('tpSignals').innerHTML='<div class="signal-split">'+signalTable('What’s going well',good,'No groups are clearly above baseline yet. More comparable posts may reveal a pattern.')+signalTable('What to adjust',adjust,'No clear underperforming or cooling patterns yet. Keep monitoring.')+'</div>';
 }
 function tpWhy(p,week){const R=[],b=tpBase(p),n=b.length,hasEng=tpHasEng(p),eng=tpEng(p),er=hasEng&&p.views>0?eng/p.views*100:null;let erDone=false;
  if(n>=4){
