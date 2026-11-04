@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="locked"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>10K Takes Network Dashboard</title>
+<title>10K Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#eef1f4;--panel:#fff;--ink:#15202b;--mute:#5d6b79;--line:#d9e0e6;--acc:#1d5c48;--up:#17794f;--down:#b3382c;--chip:#e4ebf0;
@@ -15,6 +15,9 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Barlow,system
 h1,h2,.big{font-family:"Barlow Condensed","Arial Narrow",sans-serif;margin:0;letter-spacing:.2px}
 header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
 h1{font-size:28px}
+.brand{display:flex;align-items:center;gap:9px}
+.brand h1{line-height:1}
+.brand-logo{display:block;width:30px;height:30px;flex:none;object-fit:contain;padding:3px;background:#0f161d;border-radius:5px}
 .sub{color:var(--mute);font-size:13px}
 .hero{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:12px;margin:8px 0 16px}
 .kv{display:flex;justify-content:space-between;gap:8px;font-size:13px;margin-top:6px;padding-top:6px;border-top:1px solid var(--line)}
@@ -105,7 +108,7 @@ html.locked #gate{display:flex}
 <div id="gate" role="dialog" aria-modal="true" aria-labelledby="gateT"><div class="gbox"><h1 id="gateT">10K Takes</h1><p>Enter your PIN to continue.</p>
 <input id="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" aria-label="PIN"><button id="pinGo">Unlock</button><div id="pinMsg" role="alert"></div></div></div>
 <div class="wrap">
-<header><div><h1>10K Takes Network Dashboard</h1><div class="sub" id="asof"></div></div>
+<header><div><div class="brand"><img class="brand-logo" src="assets/10k-takes-logo-white.png" alt="10K Takes logo"><h1>10K Hub</h1></div><div class="sub" id="asof"></div></div>
 <div class="row"><button class="alt" id="toggleImport">Import data</button></div></header>
 
 <nav class="tabs top" role="tablist" aria-label="Sections">
