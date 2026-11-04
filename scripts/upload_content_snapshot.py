@@ -41,12 +41,13 @@ def main():
         sys.exit("top_posts.csv contained no importable post rows")
 
     payload = json.dumps({"items": items}, separators=(",", ":")).encode("utf-8")
-    request = urllib.request.Request(
-        base_url + "/v1/import",
-        data=payload,
-        headers={"Authorization": "Bearer " + token, "Content-Type": "application/json"},
-        method="POST",
-    )
+     request = urllib.request.Request(url,data=payload,headers={
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+            "User-Agent": "10K-Takes-Content-Intelligence/1.0",
+    },
+    method="POST",
+)
     try:
         with urllib.request.urlopen(request, timeout=45) as result:
             body = json.loads(result.read().decode("utf-8"))
