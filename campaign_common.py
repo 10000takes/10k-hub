@@ -76,7 +76,7 @@ def metric_rows(key, values):
 
 # ---------------- top posts (main account, last 30 days) ----------------
 TOP_FILE = "top_posts.csv"
-THEADER = ["snapshot", "platform", "url", "posted", "type", "caption", "views", "likes", "comments", "shares", "saves"]
+THEADER = ["snapshot", "platform", "url", "posted", "type", "caption", "views", "likes", "comments", "shares", "saves", "duration_seconds"]
 
 
 def iso_utc(ts):
@@ -92,13 +92,13 @@ def iso_utc(ts):
     return d.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def tp_row(platform, url, posted, kind, caption, views, likes, comments, shares, saves):
+def tp_row(platform, url, posted, kind, caption, views, likes, comments, shares, saves, duration_seconds=None):
     cap = re.sub(r"\s+", " ", caption or "").strip()
     if len(cap) > 140:
         cap = cap[:137].rstrip() + "..."
     num = lambda v: "" if v is None else int(v)
     return [date.today().isoformat(), platform, norm_url(url), iso_utc(posted), kind, cap,
-            num(views), num(likes), num(comments), num(shares), num(saves)]
+            num(views), num(likes), num(comments), num(shares), num(saves), num(duration_seconds)]
 
 
 def save_top_posts(platform, new_rows):

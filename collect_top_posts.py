@@ -72,7 +72,8 @@ def youtube():
             secs = (int(m.group(1) or 0) * 3600 + int(m.group(2) or 0) * 60 + int(m.group(3) or 0)) if m else 999
             rows.append(tp_row("YouTube", "https://youtube.com/watch?v=" + v["id"], sn["publishedAt"],
                                "Short" if secs <= 60 else "Video", sn.get("title"),
-                               st.get("viewCount"), st.get("likeCount"), st.get("commentCount"), 0, 0))
+                               st.get("viewCount"), st.get("likeCount"), st.get("commentCount"), 0, 0,
+                               secs if secs != 999 else None))
     return rows
 
 

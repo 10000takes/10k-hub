@@ -173,7 +173,7 @@ def top_post_rows(access_token):
         from campaign_common import tp_row
     except ImportError:
         return []
-    url = ("https://open.tiktokapis.com/v2/video/list/?fields=id,create_time,video_description,title,"
+    url = ("https://open.tiktokapis.com/v2/video/list/?fields=id,create_time,video_description,title,duration,"
            "view_count,like_count,comment_count,share_count")
     cutoff, rows, cursor, pages = time.time() - 30 * 86400, [], None, 0
     while pages < 3:
@@ -191,7 +191,7 @@ def top_post_rows(access_token):
             posted = time.strftime("%Y-%m-%dT%H:%M:%S+00:00", time.gmtime(v["create_time"]))
             rows.append(tp_row("TikTok", "https://www.tiktok.com/@10ktakes/video/" + str(v["id"]), posted, "Video",
                                v.get("video_description") or v.get("title"), v.get("view_count"), v.get("like_count"),
-                               v.get("comment_count"), v.get("share_count"), 0))
+                               v.get("comment_count"), v.get("share_count"), 0, v.get("duration")))
         pages += 1
         cursor = page.get("cursor")
         if old or not page.get("has_more"):
