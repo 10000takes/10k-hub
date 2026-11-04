@@ -547,7 +547,7 @@ function loadPartner(){
  fetch('posts.csv?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{if(!PDEMO){PO=setPosts(t);renderPartner()}}).catch(()=>renderPartner());
  fetch('post_metrics.csv?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{if(!PDEMO){setPM(parseCSV(t).slice(1).filter(c=>c.length>=4).map(c=>({d:c[0].trim(),u:pNorm(c[1]),m:c[2].trim(),v:Number(c[3])})).filter(r=>isFinite(r.v)));renderPartner()}}).catch(()=>{})}
 renderPartner();loadPartner();
-let TP=[],TPSORT='views',TPN=5;
+let TP=[],TPSORT='views',TPN=5,TPPLATFORM='all';
 const tpEng=p=>(p.likes||0)+(p.comments||0)+(p.shares||0)+(p.saves||0);
 const tpHasEng=p=>!(p.platform==='Facebook'&&/video|reel/i.test(p.type||''));
 const tpMed=a=>{const s=a.filter(x=>x!=null&&isFinite(x)).sort((x,y)=>x-y);if(!s.length)return null;const m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2};
@@ -596,18 +596,19 @@ function renderTop(){
  if(!TP.length){$('tpNote').textContent='Top posts appear after the next daily run collects them.';$('tpSort').innerHTML='';$('tpList').innerHTML='';$('tpFoot').textContent='';return}
  const asof=TP.reduce((m,p)=>p.snap>m?p.snap:m,''),cut=Date.parse(asof+'T23:59:59Z')-7*864e5;
  const week=TP.filter(p=>p.t>cut&&p.views!=null&&p.views>0);
- $('tpNote').textContent='Posts from the last 7 days across all platforms, as of '+new Date(pd(asof)).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'})+'. '+week.length+' posts have view numbers.';
- $('tpSort').innerHTML=[['views','Most views'],['eng','Most tracked interactions'],['rel','Beat their usual the most'],['platform','By platform']].map(x=>'<button class="'+(TPSORT===x[0]?'on':'alt')+'" data-s="'+x[0]+'">'+x[1]+'</button>').join('')+'<button class="alt" data-n="1">'+(TPN===5?'Show top 10':'Show top 5')+'</button>';
+ const platforms=['all',...new Set(week.map(p=>p.platform).sort())],shown=TPPLATFORM==='all'?week:week.filter(p=>p.platform===TPPLATFORM);
+ $('tpNote').textContent='Posts from the last 7 days for '+(TPPLATFORM==='all'?'all platforms':TPPLATFORM)+', as of '+new Date(pd(asof)).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'})+'. '+shown.length+' posts have view numbers.';
+ $('tpSort').innerHTML=[['views','Most views'],['eng','Most tracked interactions'],['rel','Beat their usual the most']].map(x=>'<button class="'+(TPSORT===x[0]?'on':'alt')+'" data-s="'+x[0]+'">'+x[1]+'</button>').join('')+'<label class="sub" for="tpPlatform" style="align-self:center;margin-left:6px">Platform</label><select id="tpPlatform" aria-label="Filter top posts by platform">'+platforms.map(p=>'<option value="'+esc(p)+'"'+(p===TPPLATFORM?' selected':'')+'>'+(p==='all'?'All platforms':esc(p))+'</option>').join('')+'</select>'+'<button class="alt" data-n="1">'+(TPN===5?'Show top 10':'Show top 5')+'</button>';
  $('tpSort').querySelectorAll('button').forEach(b=>b.onclick=()=>{if(b.dataset.s)TPSORT=b.dataset.s;else TPN=TPN===5?10:5;renderTop()});
+ $('tpPlatform').onchange=e=>{TPPLATFORM=e.target.value;renderTop()};
  const key={views:p=>p.views,eng:p=>tpHasEng(p)?tpEng(p):-1,rel:p=>tpRel(p)==null?-1:tpRel(p)};
- const order=['Facebook','Instagram','TikTok','Threads','X/Twitter','YouTube'];
- const sorted=week.slice().sort((a,c)=>TPSORT==='platform'?(order.indexOf(a.platform)-order.indexOf(c.platform)||c.views-a.views):key[TPSORT](c)-key[TPSORT](a)||c.views-a.views);
+ const sorted=shown.slice().sort((a,c)=>key[TPSORT](c)-key[TPSORT](a)||c.views-a.views);
  const top=sorted.slice(0,TPN);
  $('tpList').innerHTML=top.length?top.map((p,i)=>{const eng=tpEng(p),showEng=tpHasEng(p),er=showEng&&p.views>0?eng/p.views*100:null,rel=tpRel(p);
   return '<div class="panel tp"><div class="rk">'+(i+1)+'</div><div><div class="lbl">'+esc(p.platform)+' · '+esc(p.type)+' · '+new Date(p.t).toLocaleDateString('en-US',{month:'short',day:'numeric'})+' · <a href="'+esc(p.url)+'" target="_blank" rel="noopener">open post</a></div>'
   +'<div class="cap">'+(p.caption?'“'+esc(p.caption)+'”':'(no caption)')+'</div>'
   +'<div class="tpm"><div><b>'+fmt(p.views)+'</b><span>views</span></div>'+(showEng?'<div><b>'+fmt(eng)+'</b><span>'+(p.platform==='Facebook'?'known reactions + comments + shares':'tracked interactions')+'</span></div><div><b>'+(er==null?'–':er.toFixed(1)+'%')+'</b><span>'+(p.platform==='Facebook'?'partial interaction rate':'tracked interaction rate')+'</span></div>':'')+(showEng&&rel!=null?'<div><b>'+rel.toFixed(1)+'×</b><span>views/day vs '+esc(p.platform)+' baseline</span></div>':'')+'</div>'
-  +'<div class="lbl" style="margin-top:10px">Why it performed well</div><ul class="why">'+tpWhy(p,week).map(r=>'<li>'+esc(r)+'</li>').join('')+'</ul></div></div>'}).join(''):'<div class="sub">No posts with view numbers in the last 7 days.</div>';
+  +'<div class="lbl" style="margin-top:10px">Why it performed well</div><ul class="why">'+tpWhy(p,shown).map(r=>'<li>'+esc(r)+'</li>').join('')+'</ul></div></div>'}).join(''):'<div class="sub">No posts with view numbers for this platform in the last 7 days.</div>';
  $('tpFoot').textContent='Facebook counts shown here are a partial subtotal of reactions, comments, and shares; they are not Facebook’s full in-app Engagement metric. That makes the Facebook rate partial as well. Other platform counts include the actions available to their collectors. Rates divide the displayed interaction count by views. Treat comparisons as directional and compare within each platform.';
  $('tpSignals').innerHTML='';$('tpReuse').innerHTML='';renderSignals();
  const baseByPlatform=new Map();[...new Set(TP.map(p=>p.platform))].forEach(k=>{const v=TP.filter(p=>p.platform===k&&p.views>0).map(tpRate);baseByPlatform.set(k,tpMed(v))});
