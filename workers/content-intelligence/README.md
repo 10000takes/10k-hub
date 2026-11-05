@@ -100,6 +100,22 @@ In the dashboard's **Content Intelligence** tab, enter the Worker base URL and s
 
 The dashboard's four-digit PIN is checked in browser JavaScript; it is a convenience screen, not server-side access control. Treat files and API data published for this dashboard as public.
 
+## Sales Command Center (first release)
+
+The dashboard now includes an owner-operated CRM view for client, lead, and manually researched prospect records. These records live only in the Worker D1 database; do not export them to GitHub Pages JSON/CSV or commit real sales data. The existing database is shared with Content Intelligence, but sales endpoints are separately gated by the `SALES_API_TOKEN` Worker secret. This token must be different from `AGENT_TOKEN` and must be at least 32 characters. The dashboard asks for it when connecting and keeps it in session storage for the current browser session. Its Worker URL is saved in local storage. Anyone who obtains the token can access the sales records; this is a single shared credential, not user or role management. Do not share the CRM until identity-based access is configured.
+
+Before using the Sales tab, apply the additive schema migration and configure the secret, then deploy the Worker:
+
+```sh
+npx wrangler d1 execute 10k-takes-content-intelligence --remote --file=migrations/0002_sales_command_center.sql
+npx wrangler secret put SALES_API_TOKEN
+npx wrangler deploy
+```
+
+When prompted, enter a random token of 32 or more characters. Keep it private and enter that same token only in the Sales tab. Do not put the token in GitHub Actions variables, HTML, or this repository. The existing `PUBLIC_READ_ORIGIN` must match the dashboard site's origin. The Sales API supports private record CRUD, lead stage movement and activity notes. It does not call external discovery/search providers or send outreach.
+
+Current capabilities include client and prospect forms, revenue totals derived from saved client contracts, lead pipeline and weighted values, follow-up and contract-expiry reminders, lead CSV import, lead search/filter/sorting, and manually researched prospects with source links and a promote-to-lead action. Estimates are user-entered. Historical revenue charts, complete deliverable completion history, automatic AI scoring/recommendations, external brand discovery, proposal/pricing generation, automated renewal emails, and multi-user authorization are not yet implemented. Do not treat a manual fit score or a prospect note as verified budget or intent. No outreach or email is sent automatically.
+
 ## API
 
 - `GET /health` — liveness.
