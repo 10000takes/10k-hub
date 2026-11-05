@@ -391,7 +391,7 @@ html.locked #gate{display:flex}
 <h2>Sales Command Center</h2>
 <div class="sub">Private CRM workspace. Sales data is stored in the Cloudflare Worker database and is never included in GitHub Pages reports.</div>
 <div class="panel tools" style="margin-top:12px">
- <div class="row"><label>Sales Worker URL <input id="salesWorkerUrl" type="url" placeholder="https://your-worker.workers.dev" autocomplete="url"></label><label>Sales access token <input id="salesToken" type="password" placeholder="Enter the private Worker token for this session" autocomplete="off"></label><button id="salesConnect">Connect</button><button class="alt" id="salesForget">Forget access</button></div>
+ <div class="row"><label>Sales Worker URL <input id="salesWorkerUrl" type="url" placeholder="https://10k-takes-sales-command-center.your-subdomain.workers.dev" autocomplete="url"></label><label>Sales access token <input id="salesToken" type="password" placeholder="Enter the private Worker token for this session" autocomplete="off"></label><button id="salesConnect">Connect</button><button class="alt" id="salesForget">Forget access</button></div>
  <div class="sales-note">The token is kept in this browser session only. Never place it in repository files or a GitHub variable. Access is shared by anyone who has this token; configure identity-based access before sharing the CRM with a team.</div>
  <div id="salesStatus" role="status" aria-live="polite">Connect to load private sales records.</div>
 </div>

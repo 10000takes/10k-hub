@@ -1,0 +1,18 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "10k-takes-sales-command-center",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-11-05",
+	"workers_dev": true,
+	"vars": {
+		"PUBLIC_READ_ORIGIN": "https://10000takes.github.io"
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "10k-takes-sales-command-center",
+			"database_id": "REPLACE_WITH_SALES_D1_DATABASE_ID",
+			"preview_database_id": "10k-takes-sales-command-center-local"
+		}
+	]
+}

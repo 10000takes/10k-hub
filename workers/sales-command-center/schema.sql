@@ -1,6 +1,5 @@
 PRAGMA foreign_keys = ON;
 
--- Private CRM data. Never export this table into a GitHub Pages artifact.
 CREATE TABLE IF NOT EXISTS sales_records (
   id TEXT PRIMARY KEY,
   entity_type TEXT NOT NULL CHECK (entity_type IN ('client', 'lead', 'prospect')),
