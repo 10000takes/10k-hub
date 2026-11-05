@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T17:34:20.569478+00:00",
+  "generated_at": "2026-11-05T17:44:12.067597+00:00",
   "status": "ok",
   "source_scope": "Google News RSS searches for Minnesota teams plus configured RSS feeds for tracked accounts.",
   "source_count": 8,
@@ -82,39 +82,6 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "3fd3275728b28c8e",
-      "score": 80,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 93,
-        "virality_potential": 51,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "NFL Week 9 upset alert: Texans allow Chargers their first win, Vikings overtake Josh Allen's Bills",
-      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQejZ0eTZYcGttS1pyREJ3Z28wY1ZOZ2ZiNXpQZFFJbGlFMEp6UDdXanVUNEFoalBOQklDaWRCbjlqN3hPV1pnUnY5cGhUU0RGTk9NZG9TcVFfek4wM29lTjVyT095dWdVZDhEZFFSOTFSX1JOYmxlNjVXenJNOTJvVm8xMnVZbWNrY3phamtySk53Zw?oc=5",
-      "published_at": "2026-11-05T13:33:00+00:00",
-      "category": "Minnesota team news",
-      "source": "CBS Sports",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [
-        "upset"
-      ],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: NFL Week 9 upset alert: Texans allow Chargers their first win, Vikings overtake Josh Allen's Bills",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
       "id": "17763707d39beaf8",
       "score": 80,
       "score_breakdown": {
@@ -136,6 +103,37 @@
       "viral_cues": [],
       "format": "Quick take + 3-point breakdown",
       "hook_draft": "The key question behind this Lynx story: Lynx Guard Kayla McBride Earns WNBA Cares Community Assist Award",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "5d6fbf1ecf920376",
+      "score": 80,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 99,
+        "virality_potential": 46,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "Brock Faber Joins Minnesota Wild Teammates For First Practice Since Suffering A Skull Fracture",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOMkt6dEhlMUJSeVA2ZGw0dG53LWh6a185YUtqV3NBTzFKX3JiSXR4by1QM1FJdjRjSVgzRlptU3U3bmJCYW1CcExVYmVUeWJtWkZGNmV4cVhpLW5lN3VYVzJ3N3FQb2I1UDFBeFg3R1phQXE4amdYOUtIX1BhX0k2MVIzRzVoTFNv?oc=5",
+      "published_at": "2026-11-05T17:08:54+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 2,
+      "trend_signal": "Early signal",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Wild story: Brock Faber Joins Minnesota Wild Teammates For First Practice Since Suffering A Skull Fracture",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
@@ -208,27 +206,29 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "e9472ca7c1cc51b0",
+      "id": "3fd3275728b28c8e",
       "score": 79,
       "score_breakdown": {
         "relevance": 79,
-        "timeliness": 98,
-        "virality_potential": 38,
+        "timeliness": 92,
+        "virality_potential": 51,
         "ease_of_execution": 93
       },
       "team": "Vikings",
-      "title": "NFL Insider Leans Towards Vikings Carson Wentz to Start vs. Bills",
-      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPbThKWTFnYVFOSHRfNGd0VHlGVThuZkdoTXJtMzB2M1hUX2dyZ1RraHRPMGota21QX3lGSklhaHR1aWVlY3pEWjRyUHg5RE5EQXRLZ1ZmSHoxYll0Sk9fWHlaQ01zdi1JNmQ2VHY0bXlBNFA0cDQ3UTZzQ2ZVNG85bWtEVEZPc1B2QWNNTkFMTQ?oc=5",
-      "published_at": "2026-11-05T16:21:53+00:00",
+      "title": "NFL Week 9 upset alert: Texans allow Chargers their first win, Vikings overtake Josh Allen's Bills",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQejZ0eTZYcGttS1pyREJ3Z28wY1ZOZ2ZiNXpQZFFJbGlFMEp6UDdXanVUNEFoalBOQklDaWRCbjlqN3hPV1pnUnY5cGhUU0RGTk9NZG9TcVFfek4wM29lTjVyT095dWdVZDhEZFFSOTFSX1JOYmxlNjVXenJNOTJvVm8xMnVZbWNrY3phamtySk53Zw?oc=5",
+      "published_at": "2026-11-05T13:33:00+00:00",
       "category": "Minnesota team news",
-      "source": "Heavy.com",
+      "source": "CBS Sports",
       "source_kind": "news",
       "tracked_account": null,
       "corroborating_items": 1,
       "trend_signal": "Single-source story",
-      "viral_cues": [],
+      "viral_cues": [
+        "upset"
+      ],
       "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: NFL Insider Leans Towards Vikings Carson Wentz to Start vs. Bills",
+      "hook_draft": "The key question behind this Vikings story: NFL Week 9 upset alert: Texans allow Chargers their first win, Vikings overtake Josh Allen's Bills",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
@@ -334,6 +334,37 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
+      "id": "e9472ca7c1cc51b0",
+      "score": 78,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 97,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "NFL Insider Leans Towards Vikings Carson Wentz to Start vs. Bills",
+      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPbThKWTFnYVFOSHRfNGd0VHlGVThuZkdoTXJtMzB2M1hUX2dyZ1RraHRPMGota21QX3lGSklhaHR1aWVlY3pEWjRyUHg5RE5EQXRLZ1ZmSHoxYll0Sk9fWHlaQ01zdi1JNmQ2VHY0bXlBNFA0cDQ3UTZzQ2ZVNG85bWtEVEZPc1B2QWNNTkFMTQ?oc=5",
+      "published_at": "2026-11-05T16:21:53+00:00",
+      "category": "Minnesota team news",
+      "source": "Heavy.com",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: NFL Insider Leans Towards Vikings Carson Wentz to Start vs. Bills",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
       "id": "b531ea41d8db228f",
       "score": 77,
       "score_breakdown": {
@@ -355,70 +386,6 @@
       "viral_cues": [],
       "format": "Quick take + 3-point breakdown",
       "hook_draft": "The key question behind this Timberwolves story: How to watch Timberwolves vs Rockets: Live stream NBA, TV channel",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "26b85b0935d6c312",
-      "score": 77,
-      "score_breakdown": {
-        "relevance": 67,
-        "timeliness": 97,
-        "virality_potential": 51,
-        "ease_of_execution": 93
-      },
-      "team": "Minnesota United",
-      "title": "Storylines | Minnesota United’s Playoff Probabilities",
-      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNbWVZaEJ1bGRkYXhLWFVFME1GN0IzZ0U0LUIxa0xzbld3WXdJUmVUcDF6TUhPSFNwNnBHZXRyc01PVk51QTRmbDIyRmVyN003MGdtTGs5WEVucy1lWW95X1RfLTJjYXNtNHpWdlJKdnRpRWNSTGttSGlmRXJRcTEtQ25pRWk?oc=5",
-      "published_at": "2026-11-05T15:45:36+00:00",
-      "category": "Minnesota team news",
-      "source": "Minnesota United FC",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [
-        "playoff"
-      ],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Minnesota United story: Storylines | Minnesota United’s Playoff Probabilities",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "9a1ed35b7a7b0067",
-      "score": 76,
-      "score_breakdown": {
-        "relevance": 91,
-        "timeliness": 74,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "Buffalo Bills vs. Minnesota Vikings Week 9 MNF Preview | NFL Daily",
-      "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE9PLXZzNFFKNkZ4b3lRa0ozSFoyaVdDU0JPU3dwOGFTc0VOZ0pHMlcxcVJHM1p0WVpxNkpEV2dqOGtZN0FQME1ReDdTNy1XQjNMQVJmaTVCYmtVRWFXN1hDSU80aWNPZHdhOTdTRGtWN3NmVjZSNi1yajJlcUQ?oc=5",
-      "published_at": "2026-11-05T01:38:54+00:00",
-      "category": "Minnesota team news",
-      "source": "NFL.com",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: Buffalo Bills vs. Minnesota Vikings Week 9 MNF Preview | NFL Daily",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
@@ -493,6 +460,39 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
+      "id": "26b85b0935d6c312",
+      "score": 76,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 96,
+        "virality_potential": 51,
+        "ease_of_execution": 93
+      },
+      "team": "Minnesota United",
+      "title": "Storylines | Minnesota United’s Playoff Probabilities",
+      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNbWVZaEJ1bGRkYXhLWFVFME1GN0IzZ0U0LUIxa0xzbld3WXdJUmVUcDF6TUhPSFNwNnBHZXRyc01PVk51QTRmbDIyRmVyN003MGdtTGs5WEVucy1lWW95X1RfLTJjYXNtNHpWdlJKdnRpRWNSTGttSGlmRXJRcTEtQ25pRWk?oc=5",
+      "published_at": "2026-11-05T15:45:36+00:00",
+      "category": "Minnesota team news",
+      "source": "Minnesota United FC",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [
+        "playoff"
+      ],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Minnesota United story: Storylines | Minnesota United’s Playoff Probabilities",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
       "id": "46f6933604222fb5",
       "score": 75,
       "score_breakdown": {
@@ -514,6 +514,37 @@
       "viral_cues": [],
       "format": "Quick take + 3-point breakdown",
       "hook_draft": "The key question behind this Vikings story: Bills vs. Vikings prediction, odds, pick for Week 9 Monday Night Football",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "9a1ed35b7a7b0067",
+      "score": 75,
+      "score_breakdown": {
+        "relevance": 91,
+        "timeliness": 73,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Buffalo Bills vs. Minnesota Vikings Week 9 MNF Preview | NFL Daily",
+      "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE9PLXZzNFFKNkZ4b3lRa0ozSFoyaVdDU0JPU3dwOGFTc0VOZ0pHMlcxcVJHM1p0WVpxNkpEV2dqOGtZN0FQME1ReDdTNy1XQjNMQVJmaTVCYmtVRWFXN1hDSU80aWNPZHdhOTdTRGtWN3NmVjZSNi1yajJlcUQ?oc=5",
+      "published_at": "2026-11-05T01:38:54+00:00",
+      "category": "Minnesota team news",
+      "source": "NFL.com",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: Buffalo Bills vs. Minnesota Vikings Week 9 MNF Preview | NFL Daily",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
@@ -557,42 +588,11 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "ae38fbba7d2f8b38",
-      "score": 75,
-      "score_breakdown": {
-        "relevance": 67,
-        "timeliness": 99,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "Insiders Expect Vikings QB Change vs Bills; Future Unclear",
-      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxORmZQRVhxS0JLdHhRdUR0RW1WcHFROGxiclhMaVNneElmNk55QWdrcER1bTN5NVJvaGR0VGsyZUJJVHN5UkduMkRZN3pZRF9xWmE2dFo3X3VSNzl3Q29sM0ZJN2pXVXZEYlRJVnRBTm02VDh0SnB0dEM1b0FLT3FETmNoWUNBTllib2c?oc=5",
-      "published_at": "2026-11-05T16:52:15+00:00",
-      "category": "Minnesota team news",
-      "source": "Yahoo Sports",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: Insiders Expect Vikings QB Change vs Bills; Future Unclear",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
       "id": "c7ce24216981dfef",
       "score": 75,
       "score_breakdown": {
         "relevance": 67,
-        "timeliness": 100,
+        "timeliness": 99,
         "virality_potential": 38,
         "ease_of_execution": 93
       },
