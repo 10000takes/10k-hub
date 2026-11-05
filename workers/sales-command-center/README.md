@@ -19,7 +19,7 @@ npx wrangler secret put SALES_API_TOKEN
 npx wrangler deploy
 ```
 
-Use a random token of at least 32 characters. Keep it private and enter it only in the dashboard Sales tab. Do not reuse the Content Intelligence `AGENT_TOKEN` or put this token in GitHub Actions variables, frontend code, or this repository. Set `PUBLIC_READ_ORIGIN` to the exact dashboard origin (scheme + host, no path). After deploy, use `https://10k-takes-sales-command-center.<your-workers-subdomain>.workers.dev` as the Sales Worker URL.
+Use a random token of at least 32 characters. Keep it private and enter it only in the dashboard Partnerships tab. Do not reuse the Content Intelligence `AGENT_TOKEN` or put this token in GitHub Actions variables, frontend code, or this repository. Set `PUBLIC_READ_ORIGIN` to the exact dashboard origin (scheme + host, no path). After deploy, use `https://10k-takes-sales-command-center.<your-workers-subdomain>.workers.dev` as the Partnerships Worker URL.
 
 The dashboard keeps the token in session storage until the browser session ends. This is a single shared credential rather than user accounts or roles. Anyone with the token can access CRM records. Do not share access with a team until identity-based access is configured. CORS is not authentication.
 
