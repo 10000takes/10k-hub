@@ -11,8 +11,14 @@
 		{
 			"binding": "DB",
 			"database_name": "10k-takes-sales-command-center",
-			"database_id": "REPLACE_WITH_SALES_D1_DATABASE_ID",
+			"database_id": "3823f4a6-0ba4-449b-81a5-5fb6a9225b3d",
 			"preview_database_id": "10k-takes-sales-command-center-local"
+		},
+		{
+			"binding": "_10k_takes_sales_command_center",
+			"database_name": "10k-takes-sales-command-center",
+			"database_id": "3823f4a6-0ba4-449b-81a5-5fb6a9225b3d",
+			"remote": true
 		}
 	]
 }
