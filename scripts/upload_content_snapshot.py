@@ -4,6 +4,7 @@
 import csv
 import json
 import os
+import re
 import sys
 import urllib.error
 import urllib.request
@@ -18,11 +19,27 @@ def main():
 
     items = []
     with open("top_posts.csv", newline="", encoding="utf-8-sig") as f:
-        for row in csv.DictReader(f):
+        for row_number, row in enumerate(csv.DictReader(f), start=2):
+            # Older collector output can contain a repeated, shorter CSV header.
+            # Treating that row as a post sends snapshot_date="snapshot" to the Worker.
+            if (row.get("snapshot") or "").strip().lower() == "snapshot":
+                continue
             if not row.get("url") or not row.get("platform") or not row.get("posted"):
                 continue
+            raw_snapshot = (row.get("snapshot") or "").strip()
+            if raw_snapshot:
+                if not re.match(r"^\d{4}-\d{2}-\d{2}(?:$|[T ])", raw_snapshot):
+                    sys.exit("top_posts.csv row {} has an invalid snapshot date".format(row_number))
+                snapshot_date = raw_snapshot[:10]
+                try:
+                    if date.fromisoformat(snapshot_date).isoformat() != snapshot_date:
+                        raise ValueError("not a normalized date")
+                except ValueError:
+                    sys.exit("top_posts.csv row {} has an invalid snapshot date".format(row_number))
+            else:
+                snapshot_date = date.today().isoformat()
             item = {
-                "snapshot_date": row.get("snapshot") or date.today().isoformat(),
+                "snapshot_date": snapshot_date,
                 "platform": row["platform"].strip(),
                 "url": row["url"].strip(),
                 "posted_at": row["posted"].strip(),

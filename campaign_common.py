@@ -106,7 +106,7 @@ def save_top_posts(platform, new_rows):
     rows = []
     if os.path.exists(TOP_FILE):
         with open(TOP_FILE, newline="", encoding="utf-8") as f:
-            rows = [r for r in csv.reader(f) if r and r != THEADER]
+            rows = [r for r in csv.reader(f) if r and r != THEADER and r[0].strip().lower() != "snapshot"]
     rows = [r for r in rows if r[1] != platform] + [list(map(str, r)) for r in new_rows]
     rows.sort(key=lambda r: (r[1], r[3]), reverse=False)
     with open(TOP_FILE, "w", newline="", encoding="utf-8") as f:
