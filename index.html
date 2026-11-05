@@ -4,13 +4,16 @@
 <title>10K Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#eef1f4;--panel:#fff;--ink:#15202b;--mute:#5d6b79;--line:#d9e0e6;--acc:#1d5c48;--up:#17794f;--down:#b3382c;--chip:#e4ebf0;
+:root{--bg:#eef1f4;--panel:#fff;--ink:#15202b;--mute:#5d6b79;--line:#d9e0e6;--acc:#1d5c48;--up:#17794f;--down:#b3382c;--chip:#e4ebf0;--link:#b42318;--link-hover:#8f1d14;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f161d;--panel:#18222c;--ink:#e9eef2;--mute:#93a1ae;--line:#2a3743;--acc:#4fb890;--up:#4fcf94;--down:#f07a6c;--chip:#223140}}
-:root[data-theme="dark"]{--bg:#0f161d;--panel:#18222c;--ink:#e9eef2;--mute:#93a1ae;--line:#2a3743;--acc:#4fb890;--up:#4fcf94;--down:#f07a6c;--chip:#223140}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f161d;--panel:#18222c;--ink:#e9eef2;--mute:#93a1ae;--line:#2a3743;--acc:#4fb890;--up:#4fcf94;--down:#f07a6c;--chip:#223140;--link:#ff8178;--link-hover:#ffaaa4}}
+:root[data-theme="dark"]{--bg:#0f161d;--panel:#18222c;--ink:#e9eef2;--mute:#93a1ae;--line:#2a3743;--acc:#4fb890;--up:#4fcf94;--down:#f07a6c;--chip:#223140;--link:#ff8178;--link-hover:#ffaaa4}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Barlow,system-ui,Arial,sans-serif}
+a,a:visited{color:var(--link);text-decoration:underline;text-decoration-thickness:.08em;text-underline-offset:.16em}
+a:hover,a:focus-visible{color:var(--link-hover)}
+a:focus-visible{outline:2px solid var(--link);outline-offset:3px;border-radius:2px}
 .wrap{max-width:1100px;margin:0 auto;padding:20px 16px 48px}
 h1,h2,.big{font-family:"Barlow Condensed","Arial Narrow",sans-serif;margin:0;letter-spacing:.2px}
 header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
@@ -94,6 +97,7 @@ select,input[type=text],input[type=number],input[type=date],input[type=url],.pfo
 ul.why{margin:4px 0 0;padding-left:20px;font-size:14px}ul.why li{margin:2px 0}
 .ci-grid{display:grid;gap:10px;margin-top:12px}.ci-rec h3{margin:0 0 6px;font-size:18px}.ci-rec p{margin:4px 0}.ci-meta{font-size:12px;color:var(--mute)}.ci-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:13px}.ci-url{min-width:min(440px,100%)}
 .ci-grid.competitor-cards{grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}.ci-post-stats{display:flex;gap:18px;flex-wrap:wrap;margin:8px 0}.ci-post-stats b{font:700 22px "Barlow Condensed","Arial Narrow",sans-serif}.ci-post-stats span{display:block;font-size:11px;color:var(--mute)}.ci-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.ci-tag{background:var(--chip);border-radius:12px;padding:2px 8px;font-size:11px}
+.ci-post-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0}.ci-post-count{font-weight:600}.ci-post-sort-note{font-size:12px;color:var(--mute)}.ci-post-card{display:flex;flex-direction:column;gap:8px}.ci-post-card h4{font-size:17px;margin:0}.ci-post-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.ci-post-head .lbl{margin:0}.ci-post-link{font-weight:700;white-space:nowrap}.ci-post-caption{margin:0;padding:8px 10px;background:var(--chip);border-radius:5px;line-height:1.4}.ci-post-card .ci-post-stats{gap:8px}.ci-post-card .ci-post-stats>div{padding:7px 10px;background:var(--bg);border-radius:5px;min-width:90px}.ci-post-card .ci-post-stats b{font-size:20px}.ci-post-signal{font-size:12px;color:var(--mute)}.ci-post-signal strong{color:var(--up)}
 .ci-filter-group{margin-bottom:12px}
 .ci-directory>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;font-weight:600}.ci-directory>summary::-webkit-details-marker{display:none}.ci-directory>summary::before{content:"+";color:var(--mute);width:14px;text-align:center}.ci-directory[open]>summary::before{content:"−"}
 .ci-section>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;font:700 24px "Barlow Condensed","Arial Narrow",sans-serif;margin:22px 0 8px}.ci-section>summary::-webkit-details-marker{display:none}.ci-section>summary::before{content:"+";color:var(--mute);font:600 18px Barlow,sans-serif;width:16px;text-align:center}.ci-section[open]>summary::before{content:"−"}.ci-section>summary:focus-visible{outline:3px solid var(--acc);outline-offset:3px}.ci-section-body{padding-left:24px}
@@ -357,6 +361,7 @@ html.locked #gate{display:flex}
 <div id="competitorRecommendations" class="ci-grid"></div>
 <h3 class="gh">Top Public Competitor Posts</h3>
 <div class="ci-meta">Instagram results compare likes and comments per follower against that account’s recent-post median. Views, reach, watch time, saves, and retention are not included.</div>
+<div id="competitorPostSummary" class="ci-post-toolbar" role="status" aria-live="polite"></div>
 <div id="competitorPosts" class="ci-grid"></div>
 <button id="competitorMore" class="alt" type="button" style="display:none;margin-top:10px">Show More Posts</button>
 <details class="ci-directory">
@@ -797,14 +802,17 @@ function renderCompetitors(competitors){
  $('competitorDirectory').innerHTML=Object.entries(groups).map(([category,accounts])=>'<section class="op-category"><h3 class="gh">'+esc(category)+' <span class="ci-meta">('+fmt(accounts.length)+')</span></h3><div class="ci-grid">'+accounts.map(card).join('')+'</div></section>').join('');
 }
 let COMPETITOR_INTEL=null,COMPETITOR_PLATFORM='all',COMPETITOR_SIGNAL_CATEGORY='all',COMPETITOR_LIMIT=20;
-function competitorPostCard(post){
+function competitorPostCard(post,rank){
  const url=typeof post.url==='string'&&/^https:\/\/(www\.)?(instagram\.com|tiktok\.com|facebook\.com|x\.com|twitter\.com)\//i.test(post.url)?post.url:'';
  const tags=[...(post.topics||[]),...(post.hashtags||[])].slice(0,5).map(tag=>'<span class="ci-tag">'+esc(tag)+'</span>').join('');
- const ratio=post.relative_to_account_median?'<div><b>'+fmt(post.relative_to_account_median)+'×</b><span>vs account median</span></div>':'';
+ const ratio=post.relative_to_account_median!=null?'<div><b>'+fmt(post.relative_to_account_median)+'×</b><span>vs account median</span></div>':'';
  const rate=post.engagement_rate_proxy!=null?'<div><b>'+(post.engagement_rate_proxy*100).toFixed(2)+'%</b><span>interactions / followers</span></div>':'';
  const delta=post.daily_interaction_change!=null?'<div><b>'+(post.daily_interaction_change>0?'+':'')+fmt(post.daily_interaction_change)+'</b><span>interaction change</span></div>':'';
- const caption=post.caption?'<p>'+esc(post.caption.slice(0,260))+(post.caption.length>260?'…':'')+'</p>':'';
- return '<article class="panel ci-rec"><div class="lbl">'+esc(post.platform)+' · '+esc(post.category||'Other')+' · '+esc(post.format||'Post')+' · '+esc(post.published_at?new Date(post.published_at).toLocaleDateString():'')+'</div><h3><a href="'+esc(url||'#')+'" target="_blank" rel="noopener">'+esc(post.handle||'Competitor post')+' · Open post</a></h3>'+caption+'<div class="ci-post-stats"><div><b>'+fmt(post.likes||0)+'</b><span>likes</span></div><div><b>'+fmt(post.comments||0)+'</b><span>comments</span></div>'+rate+ratio+delta+'</div><div class="ci-meta">Caption opening: '+esc(post.hook_style||'Not classified')+(post.stronger_than_account_baseline?' · Above this account’s recent median':'')+'</div>'+(tags?'<div class="ci-tags">'+tags+'</div>':'')+'</article>';
+ const caption=post.caption?'<p class="ci-post-caption">'+esc(post.caption.slice(0,260))+(post.caption.length>260?'…':'')+'</p>':'';
+ const published=post.published_at?new Date(post.published_at).toLocaleDateString():'Date unavailable';
+ const link=url?'<a class="ci-post-link" href="'+esc(url)+'" target="_blank" rel="noopener">Open post ↗</a>':'';
+ const signal=post.stronger_than_account_baseline?'<div class="ci-post-signal"><strong>Above account median</strong>'+(ratio?' · '+fmt(post.relative_to_account_median)+'× typical interactions':'')+'</div>':'<div class="ci-post-signal">'+(ratio?fmt(post.relative_to_account_median)+'× this account’s median interactions':'Performance comparison unavailable')+'</div>';
+ return '<article class="panel ci-post-card"><div class="ci-post-head"><div><div class="lbl">#'+fmt(rank)+' · '+esc(post.platform)+' · '+esc(post.category||'Other')+' · '+esc(post.format||'Post')+' · '+esc(published)+'</div><h4>'+esc(post.handle||'Competitor post')+'</h4></div>'+link+'</div>'+caption+'<div class="ci-post-stats"><div><b>'+fmt(post.likes||0)+'</b><span>Likes</span></div><div><b>'+fmt(post.comments||0)+'</b><span>Comments</span></div>'+rate+delta+'</div>'+signal+(post.hook_style?'<div class="ci-meta">Caption opening: '+esc(post.hook_style)+'</div>':'')+(tags?'<div class="ci-tags">'+tags+'</div>':'')+'</article>';
 }
 function renderCompetitorSignals(){
  const report=COMPETITOR_INTEL||{},posts=Array.isArray(report.posts)?report.posts:[],recs=Array.isArray(report.recommendations)?report.recommendations:[];
@@ -815,8 +823,10 @@ function renderCompetitorSignals(){
  $('competitorPosts').classList.add('competitor-cards');
  if(!shownRecs.length){$('competitorRecommendations').innerHTML='<div class="panel">No recurring public-post signal is strong enough to suggest an adaptation yet. This will fill in as eligible posts are collected.</div>'}
  else $('competitorRecommendations').innerHTML=shownRecs.map(rec=>'<article class="panel ci-rec"><div class="lbl">'+esc(rec.category)+' · '+esc(rec.platform)+' · '+fmt(rec.account_count)+' account(s) · '+fmt(rec.post_count)+' post(s)</div><h3>'+esc(rec.theme)+' · '+fmt(rec.median_lift)+'× account median</h3><p>'+esc(rec.suggestion)+'</p><div class="ci-meta">Observed formats: '+esc((rec.formats||[]).join(', ')||'not classified')+' · Caption openings: '+esc((rec.hook_styles||[]).join(', ')||'not classified')+'</div><div class="ci-links">'+(rec.example_posts||[]).map(url=>/^https:\/\//i.test(url)?'<a href="'+esc(url)+'" target="_blank" rel="noopener">Example post</a>':'').join('')+'</div></article>').join('');
+ const visiblePosts=shownPosts.slice(0,COMPETITOR_LIMIT);
+ $('competitorPostSummary').innerHTML=shownPosts.length?'<span class="ci-post-count">Showing '+fmt(visiblePosts.length)+' of '+fmt(shownPosts.length)+' matching posts</span><span class="ci-post-sort-note">Ranked by interactions relative to each account’s recent median</span>':'';
  if(!shownPosts.length){$('competitorPosts').innerHTML='<div class="panel">'+(report.status==='not_configured'||report.status==='needs_access'?'Post monitoring has not started. The daily collector requires approved Meta API access and an explicit opt-in in repository settings.':'No posts match these filters yet.')+'</div>'}
- else $('competitorPosts').innerHTML=shownPosts.slice(0,COMPETITOR_LIMIT).map(competitorPostCard).join('');
+ else $('competitorPosts').innerHTML=visiblePosts.map((post,index)=>competitorPostCard(post,index+1)).join('');
  $('competitorMore').style.display=shownPosts.length>COMPETITOR_LIMIT?'inline-block':'none';
 }
 function renderCompetitorIntelligence(report){
