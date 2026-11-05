@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-11-05T17:44:12.067597+00:00",
+  "generated_at": "2026-11-05T17:48:18.767011+00:00",
   "status": "ok",
   "source_scope": "Google News RSS searches for Minnesota teams plus configured RSS feeds for tracked accounts.",
   "source_count": 8,
-  "articles_scanned": 146,
+  "articles_scanned": 143,
   "social_trend_coverage": {
     "Instagram": "not_connected",
     "Facebook": "not_connected",
@@ -53,7 +53,7 @@
       "score": 81,
       "score_breakdown": {
         "relevance": 79,
-        "timeliness": 98,
+        "timeliness": 97,
         "virality_potential": 51,
         "ease_of_execution": 93
       },
@@ -555,39 +555,6 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "fddd75a30698b4f2",
-      "score": 75,
-      "score_breakdown": {
-        "relevance": 67,
-        "timeliness": 90,
-        "virality_potential": 51,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "Vikings Predicted to Make Bold Trade Before Deadline",
-      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOZldCSkxaNmZ5WndVUG1jSnlDVXpvd19OSmZISUJYdFhVZUU4RXllSGMtVjd6cXdtOW1RdEtCMGNoQjBQcWI4STMzZkd2ODFFRXN0VjB0c253cjdZaGY2aHhGb25IMTRGUTd2eVU2VWlxX1VQQ1VQaW9fUjFNSkx2bkpCYXd4ZFpHQUFucW41bDJYT1Zibm9wb0FaVW9WT1U?oc=5",
-      "published_at": "2026-11-05T12:02:24+00:00",
-      "category": "Minnesota team news",
-      "source": "roundtable.io",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [
-        "trade"
-      ],
-      "format": "Fast explainer + reaction",
-      "hook_draft": "What Vikings fans need to know about this: Vikings Predicted to Make Bold Trade Before Deadline",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
       "id": "c7ce24216981dfef",
       "score": 75,
       "score_breakdown": {
@@ -640,6 +607,39 @@
       "viral_cues": [],
       "format": "Quick take + 3-point breakdown",
       "hook_draft": "The key question behind this Gophers story: How to watch No. 5 UCLA vs. Minnesota: TV channel and streaming options for November 7",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "8cdf5dadd7ce4331",
+      "score": 74,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 89,
+        "virality_potential": 51,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Scoggins: Vikings must go all-in at trade deadline — the future can wait",
+      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPWS1mZFVRUE4ta21jNV85c0x5LVU3NUFMWktvUDRvSkRjRmVOaUZTS1NFMnA0b3NyaFZZcHQ1NVQ5LXhNaGxGNkxhckRuMFRzSXpZbkdIdTFrUWFhMDl2Umg3SmNsSWc2ay1xaGF2SjNVTXVUeEhNdkRJXzAyTldrNVMwTGY0Z3Z3Q1lLNXVWRjdVNXVRNzBUSkN6UEJfdUl1VDFDQmg3TnZVSTZsV0ljR0Fmc1U1VkV3eHIzbi14M2lUcVFoVUpoRWVSN2RyQ1k?oc=5",
+      "published_at": "2026-11-05T11:30:00+00:00",
+      "category": "Minnesota team news",
+      "source": "Star Tribune",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [
+        "trade"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Vikings fans need to know about this: Scoggins: Vikings must go all-in at trade deadline — the future can wait",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
