@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-11-05T00:21:33.980373+00:00",
-  "status": "needs_access",
+  "generated_at": "2026-11-05T17:34:24.755335+00:00",
+  "status": "partial",
   "source": "Meta Instagram Business Discovery API",
-  "coverage_note": "No competitor posts were fetched. The collector is opt-in and requires Meta API access; no scraping is used.",
+  "coverage_note": "0 of 41 listed Instagram accounts returned data; 0 public posts captured. Rankings compare interaction-per-follower proxies within each account and do not reveal reach or prove causation.",
   "platforms": {
     "Instagram": {
-      "status": "needs_access",
-      "detail": "Set up and approve the required Meta API access before enabling daily collection."
+      "status": "connected",
+      "detail": "Public Business Discovery results only; some handles may be ineligible or unavailable."
     },
     "TikTok": {
       "status": "not_connected",
@@ -17,7 +17,336 @@
       "detail": "Public Page collection needs separate Meta Page Public Content Access approval."
     }
   },
-  "accounts": [],
+  "accounts": [
+    {
+      "handle": "@kfan1003",
+      "platform": "Instagram",
+      "category": "General Minnesota Sports",
+      "profile_url": "https://www.instagram.com/kfan1003/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @kfan1003: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"AJ7zwJVRe9xsWOQyaj9cBti\"}}"
+    },
+    {
+      "handle": "@skornorthmn",
+      "platform": "Instagram",
+      "category": "General Minnesota Sports",
+      "profile_url": "https://www.instagram.com/skornorthmn/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @skornorthmn: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"AdktTQsfzuEjmubTSl3dpLM\"}}"
+    },
+    {
+      "handle": "@bringmn",
+      "platform": "Instagram",
+      "category": "General Minnesota Sports & News",
+      "profile_url": "https://www.instagram.com/bringmn/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @bringmn: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"Ao6n-ebpm1DU9u0gzZ_ckic\"}}"
+    },
+    {
+      "handle": "@mnsportsnews",
+      "platform": "Instagram",
+      "category": "General Minnesota Sports",
+      "profile_url": "https://www.instagram.com/mnsportsnews/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @mnsportsnews: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"AXts6os_saXVFPgAMPIUoJM\"}}"
+    },
+    {
+      "handle": "@realmnsportsfan",
+      "platform": "Instagram",
+      "category": "General Minnesota Sports",
+      "profile_url": "https://www.instagram.com/realmnsportsfan/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @realmnsportsfan: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"AOM5Fq5N6_SQX-8PofUqtet\"}}"
+    },
+    {
+      "handle": "@mnsportsandevents",
+      "platform": "Instagram",
+      "category": "General Minnesota Sports",
+      "profile_url": "https://www.instagram.com/mnsportsandevents/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @mnsportsandevents: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"AURQdmg7DgEyp9CDo7ZJN1V\"}}"
+    },
+    {
+      "handle": "@mnsportscollective",
+      "platform": "Instagram",
+      "category": "General Minnesota Sports",
+      "profile_url": "https://www.instagram.com/mnsportscollective/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @mnsportscollective: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"Ab3DYcrl6XyCIgJwv1NvpNE\"}}"
+    },
+    {
+      "handle": "@skolbros2",
+      "platform": "Instagram",
+      "category": "General Minnesota Sports",
+      "profile_url": "https://www.instagram.com/skolbros2/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @skolbros2: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"A-WQN6-lkb8BqeNZqDy7tpl\"}}"
+    },
+    {
+      "handle": "@vikingnations",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/vikingnations/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @vikingnations: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"Al6p2CeGLP-hOINxGS-ot1h\"}}"
+    },
+    {
+      "handle": "@skolsundays",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/skolsundays/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @skolsundays: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"Ace2choolUmNlsmK5Q4uuPC\"}}"
+    },
+    {
+      "handle": "@vikesinsider",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/vikesinsider/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @vikesinsider: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"Ay-aJagvI2lvfzTdvEnlyM-\"}}"
+    },
+    {
+      "handle": "@vikeslatest",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/vikeslatest/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @vikeslatest: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"AyYBZnhZ1EWal7iKEuo30ax\"}}"
+    },
+    {
+      "handle": "@vikingzfanpage",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/vikingzfanpage/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @vikingzfanpage: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"AAt4xg-1yFuL2S5DbMd1f-h\"}}"
+    },
+    {
+      "handle": "@everything.wild",
+      "platform": "Instagram",
+      "category": "Wild",
+      "profile_url": "https://www.instagram.com/everything.wild/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @everything.wild: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"ArgAj6SZTCT-PcgsQerWBFb\"}}"
+    },
+    {
+      "handle": "@mnwildplayers",
+      "platform": "Instagram",
+      "category": "Wild",
+      "profile_url": "https://www.instagram.com/mnwildplayers/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @mnwildplayers: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"ACgEq0QOhX400yg8s8YfVBW\"}}"
+    },
+    {
+      "handle": "@twolvesinsider",
+      "platform": "Instagram",
+      "category": "Wolves",
+      "profile_url": "https://www.instagram.com/twolvesinsider/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @twolvesinsider: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"A-Rk7kNA96w4qpPevM6OiQ-\"}}"
+    },
+    {
+      "handle": "@the_daily_wolves",
+      "platform": "Instagram",
+      "category": "Wolves",
+      "profile_url": "https://www.instagram.com/the_daily_wolves/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @the_daily_wolves: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"AOcleWJEs15EB0RR3i5VxKT\"}}"
+    },
+    {
+      "handle": "@trackthepack",
+      "platform": "Instagram",
+      "category": "Wolves",
+      "profile_url": "https://www.instagram.com/trackthepack/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @trackthepack: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"AcjE-L7FtKeZAPH3N93E2CZ\"}}"
+    },
+    {
+      "handle": "@thetwinsdaily",
+      "platform": "Instagram",
+      "category": "Twins",
+      "profile_url": "https://www.instagram.com/thetwinsdaily/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @thetwinsdaily: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"ANvMIo9Yhu9wO6wLVvk4pcQ\"}}"
+    },
+    {
+      "handle": "@twinscenter",
+      "platform": "Instagram",
+      "category": "Twins",
+      "profile_url": "https://www.instagram.com/twinscenter/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @twinscenter: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"A2Yk4FoWl-QN98jKluhaxJV\"}}"
+    },
+    {
+      "handle": "@barstoolgophers",
+      "platform": "Instagram",
+      "category": "Gophers",
+      "profile_url": "https://www.instagram.com/barstoolgophers/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @barstoolgophers: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"AiwZ6CDBb8Nf6sMdxgofmdq\"}}"
+    },
+    {
+      "handle": "@barstoolsports",
+      "platform": "Instagram",
+      "category": "General Sports",
+      "profile_url": "https://www.instagram.com/barstoolsports/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @barstoolsports: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"ACIPFlsEZJjN4VmPwRI6DPv\"}}"
+    },
+    {
+      "handle": "@snapbacksports_",
+      "platform": "Instagram",
+      "category": "General Sports",
+      "profile_url": "https://www.instagram.com/snapbacksports_/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @snapbacksports_: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"AmVlTEqPQOTRvxIP70MQTSy\"}}"
+    },
+    {
+      "handle": "@theathletic",
+      "platform": "Instagram",
+      "category": "General Sports",
+      "profile_url": "https://www.instagram.com/theathletic/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @theathletic: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"AR-WoTkY96JMkY55uSDHDZF\"}}"
+    },
+    {
+      "handle": "@bringmethenews",
+      "platform": "Instagram",
+      "category": "General Minnesota News",
+      "profile_url": "https://www.instagram.com/bringmethenews/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @bringmethenews: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"AVA6XYjyBNwnUZgI9WN9f11\"}}"
+    },
+    {
+      "handle": "@racketmn",
+      "platform": "Instagram",
+      "category": "General Minnesota News",
+      "profile_url": "https://www.instagram.com/racketmn/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @racketmn: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"AlhqXK8K4kJl5hFJc2hlOau\"}}"
+    },
+    {
+      "handle": "@mnmo_mag",
+      "platform": "Instagram",
+      "category": "General Minnesota Sports & News",
+      "profile_url": "https://www.instagram.com/mnmo_mag/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @mnmo_mag: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"AAqiCVCRHqtSpfSEa2ojq38\"}}"
+    },
+    {
+      "handle": "@vikings",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/vikings/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @vikings: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"ATJXXcK1bmkquX3mj-b5IGk\"}}"
+    },
+    {
+      "handle": "@purpleinsider",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/purpleinsider/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @purpleinsider: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"ACXymXUCkwzzBElbXDxHLu1\"}}"
+    },
+    {
+      "handle": "@dailynorseman",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/dailynorseman/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @dailynorseman: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"Adviqfgnw0MXMHRe6ZOTJ4y\"}}"
+    },
+    {
+      "handle": "@vikescentral",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/vikescentral/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @vikescentral: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"ACSaeyWlz-oA-9v1Wx5teLb\"}}"
+    },
+    {
+      "handle": "@vikings_territory",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/vikings_territory/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @vikings_territory: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"ANHxR3xK537OBhLZjLyeRlq\"}}"
+    },
+    {
+      "handle": "@vikesverified",
+      "platform": "Instagram",
+      "category": "Vikings",
+      "profile_url": "https://www.instagram.com/vikesverified/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @vikesverified: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"Aoz8aGqrLT-iUurt7qajmMe\"}}"
+    },
+    {
+      "handle": "@mnwild",
+      "platform": "Instagram",
+      "category": "Wild",
+      "profile_url": "https://www.instagram.com/mnwild/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @mnwild: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"A6SuD1IK4KqiJGItXlJ34Q_\"}}"
+    },
+    {
+      "handle": "@hockeywilderness",
+      "platform": "Instagram",
+      "category": "Wild",
+      "profile_url": "https://www.instagram.com/hockeywilderness/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @hockeywilderness: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"AYmFQCygQjcJ9L8TOGMPRs_\"}}"
+    },
+    {
+      "handle": "@wildon7th",
+      "platform": "Instagram",
+      "category": "Wild",
+      "profile_url": "https://www.instagram.com/wildon7th/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @wildon7th: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"Abmm-wD_y3XAPvMTqFtrltl\"}}"
+    },
+    {
+      "handle": "@bleacherreport",
+      "platform": "Instagram",
+      "category": "General Sports",
+      "profile_url": "https://www.instagram.com/bleacherreport/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @bleacherreport: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"AHAiGZWXqUJWUGAW58eO0jW\"}}"
+    },
+    {
+      "handle": "@houseofhighlights",
+      "platform": "Instagram",
+      "category": "General Sports",
+      "profile_url": "https://www.instagram.com/houseofhighlights/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @houseofhighlights: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"A_mTQv_VMsSEDQpn4QT6UyB\"}}"
+    },
+    {
+      "handle": "@espn",
+      "platform": "Instagram",
+      "category": "General Sports",
+      "profile_url": "https://www.instagram.com/espn/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @espn: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"A4b3FQ1LM8HKjeRxLlOZfio\"}}"
+    },
+    {
+      "handle": "@overtime",
+      "platform": "Instagram",
+      "category": "General Sports",
+      "profile_url": "https://www.instagram.com/overtime/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @overtime: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"AaK6QiPkcAjQiOT-jio4FPZ\"}}"
+    },
+    {
+      "handle": "@jomboymedia",
+      "platform": "Instagram",
+      "category": "General Sports",
+      "profile_url": "https://www.instagram.com/jomboymedia/",
+      "status": "unavailable",
+      "error": "Meta API 400 for @jomboymedia: {\"error\":{\"message\":\"(#10) Application does not have permission for this action\",\"type\":\"OAuthException\",\"code\":10,\"fbtrace_id\":\"ATn2XLkB92hnU9kj_A-E7oG\"}}"
+    }
+  ],
   "posts": [],
   "recommendations": [],
   "post_history": {}
