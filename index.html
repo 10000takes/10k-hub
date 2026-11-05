@@ -123,7 +123,7 @@ html.locked #gate{display:flex}
 <input id="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" aria-label="PIN"><button id="pinGo">Unlock</button><div id="pinMsg" role="alert"></div></div></div>
 <div class="wrap">
 <header><div><div class="brand"><img class="brand-logo" src="assets/10k-takes-logo-white.png" alt="10K Takes logo"><h1>10K Hub</h1></div><div class="sub" id="asof"></div></div>
-<div class="row"><button class="alt" id="toggleImport">Import data</button></div></header>
+<div class="row"><button class="alt" id="toggleImport">Import Data</button></div></header>
 
 <nav class="tabs top" role="tablist" aria-label="Sections">
 <button role="tab" id="secbtn-analytics" aria-controls="sec-analytics" aria-selected="true" data-sec="analytics">Analytics</button>
@@ -305,7 +305,7 @@ html.locked #gate{display:flex}
 </section>
 
 <section id="importBox" style="display:none">
-<h2>Import data</h2>
+<h2>Import Data</h2>
 <div class="panel tools">
 <div class="sub" id="sampleNote"></div>
 <div>Paste rows or choose a CSV file. Columns: <b>date, account, platform, followers</b> (one row per account per platform per day). Existing rows for the same date, account and platform are replaced.</div>
@@ -345,9 +345,20 @@ html.locked #gate{display:flex}
 <div class="ci-section-body">
 <div class="sub" style="margin-bottom:10px">Ranked Minnesota sports story ideas with source links, draft hooks, platform adaptations, and score breakdowns. Scores are triage aids, not predictions.</div>
 <div id="opportunityCoverage" class="ci-meta" role="status" aria-live="polite">Loading daily opportunities…</div>
+<details class="analytics-subsection">
+<summary>Minnesota Team News</summary>
+<div class="analytics-subsection-body">
 <div id="opportunityFilters" class="row" role="group" aria-label="Filter opportunities by category"></div>
 <div id="opportunityResults" class="ci-grid"></div>
 </div>
+</details>
+<details class="analytics-subsection">
+<summary>Ideas for 10K Takes</summary>
+<div class="analytics-subsection-body">
+<div class="ci-meta">Content adaptations based on patterns in eligible public competitor posts.</div>
+<div id="competitorRecommendations" class="ci-grid"></div>
+</div>
+</details>
 </details>
 <hr class="section-divider" aria-hidden="true">
 <details class="ci-section">
@@ -357,8 +368,6 @@ html.locked #gate{display:flex}
 <div id="competitorCoverage" class="ci-meta" role="status" aria-live="polite">Loading competitor intelligence…</div>
 <div id="competitorPlatformFilters" class="row ci-filter-group" role="group" aria-label="Filter competitor intelligence by platform"></div>
 <div id="competitorCategoryFilters" class="row ci-filter-group" role="group" aria-label="Filter competitor intelligence by category"></div>
-<h3 class="gh" style="margin-top:18px">Ideas for 10K Takes</h3>
-<div id="competitorRecommendations" class="ci-grid"></div>
 <h3 class="gh">Top Public Competitor Posts</h3>
 <div class="ci-meta">Instagram results compare likes and comments per follower against that account’s recent-post median. Views, reach, watch time, saves, and retention are not included.</div>
 <div id="competitorPostSummary" class="ci-post-toolbar" role="status" aria-live="polite"></div>
@@ -611,6 +620,7 @@ function pPostsHTML(list,month){const cut=cutFor(month);
  return '<tr><th>Date</th><th>Campaign</th><th>Platform</th><th>Account</th><th>Views</th><th>Engagements</th><th>Rate</th><th>Link</th></tr>'+list.slice().sort((a,b)=>a.posted<b.posted?-1:1).map(p=>{const s=postStat(p,cut),r=s.v>0&&s.e!=null?(s.e/s.v*100).toFixed(2)+'%':'–';
   return '<tr><td>'+p.posted+'</td><td>'+esc(p.campaign)+'</td><td>'+p.platform+'</td><td>'+esc(p.account)+'</td><td>'+(s.v==null?'–':fmt(s.v)+(s.manual?'*':''))+'</td><td>'+(s.e==null?'–':fmt(s.e)+(s.manual?'*':''))+'</td><td>'+r+'</td><td><a href="'+esc(p.url)+'" target="_blank" rel="noopener">View</a></td></tr>'}).join('')}
 const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const titleWords=value=>String(value||'').replace(/\b[\p{L}\p{N}][\p{L}\p{N}'’-]*/gu,word=>word.charAt(0).toLocaleUpperCase()+word.slice(1));
 function pTopHTML(list,month){const cut=cutFor(month);return list.map(p=>({p,s:postStat(p,cut)})).filter(x=>x.s.v!=null).sort((a,b)=>b.s.v-a.s.v).slice(0,3).map(x=>'<div class="panel"><div class="lbl">'+x.p.platform+' · '+esc(x.p.account||'')+' · '+x.p.posted+'</div><div class="big">'+fmt(x.s.v)+'</div><div class="mini">views'+(x.s.e!=null&&x.s.v>0?' · '+(x.s.e/x.s.v*100).toFixed(2)+'% engagement':'')+'<br>'+esc(x.p.campaign)+' · <a href="'+esc(x.p.url)+'" target="_blank" rel="noopener">open post</a></div></div>').join('')}
 function renderPartner(){
  const months=[...new Set(PO.map(p=>p.month))].sort().reverse();
@@ -630,8 +640,8 @@ function buildReport(){const list=pSel(),A=pAgg(list,PSEL.m),pl=pPrev(),P=pl.len
  const asof=A.asof?new Date(pd(A.asof)).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'}):'';
  $('printRoot').innerHTML='<div class="rp"><section class="rcover">'+(LOGO?'<img src="'+LOGO+'" alt="">':'')+'<div class="sub">Sponsored content report</div><h1>'+esc(client)+'</h1><div style="font-size:26px">'+monthName(PSEL.m)+'</div><div class="sub" style="margin-top:30px">Prepared by 10K Media LLC · '+new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})+'</div></section>'
  +'<section><h2>Summary</h2><div class="rcards">'+pCardsHTML(A,P)+'</div>'+(note?'<h2>Highlights</h2><p style="font-size:15px;line-height:1.5">'+esc(note).replace(/\n/g,'<br>')+'</p>':'')
- +(new Set(list.map(p=>p.campaign)).size>1?'<h2>By campaign</h2><table>'+pCampHTML(list,PSEL.m)+'</table>':'')+'<h2>By platform</h2><table>'+pPlatHTML(list,PSEL.m)+'</table><h2>Top posts</h2><div class="rcards">'+pTopHTML(list,PSEL.m)+'</div>'
- +'<h2>All posts</h2><table>'+pPostsHTML(list,PSEL.m)+'</table><h2>Notes on the numbers</h2><div class="note">'+DEFS+(asof?' Figures as of '+asof+'.':'')+'</div></section></div>'}
+ +(new Set(list.map(p=>p.campaign)).size>1?'<h2>By Campaign</h2><table>'+pCampHTML(list,PSEL.m)+'</table>':'')+'<h2>By Platform</h2><table>'+pPlatHTML(list,PSEL.m)+'</table><h2>Top Posts</h2><div class="rcards">'+pTopHTML(list,PSEL.m)+'</div>'
+ +'<h2>All Posts</h2><table>'+pPostsHTML(list,PSEL.m)+'</table><h2>Notes on the Numbers</h2><div class="note">'+DEFS+(asof?' Figures as of '+asof+'.':'')+'</div></section></div>'}
 function sampleData(){const m1=prevMonth(todayS().slice(0,7)),m0=prevMonth(m1),P=[],M=[];let k=0;
  [[m0,0.8],[m1,1]].forEach(([m,f])=>[['YouTube','10K Takes','https://youtube.com/watch?v=sample'],['X/Twitter','10K Takes','https://x.com/10K_Takes/status/'],['Instagram','Wild Takes','https://instagram.com/reel/'],['TikTok','Wild Takes','https://tiktok.com/@wildtakes10k/video/'],['Threads','10K Takes','https://threads.net/@10ktakes/post/'],['Facebook','10K Takes','https://facebook.com/10ktakes/posts/']].forEach(([pl,ac,u],i)=>{k++;
   const url=u+(pl==='YouTube'?String(k).padStart(2,'0'):k),views=Math.round((12000+i*9000+(k*7919%5000))*f),eng=Math.round(views*(0.03+(k%4)*0.012));
@@ -746,7 +756,7 @@ function renderContentAgent(data){
    let href='';try{const u=new URL(p.url);if(u.protocol==='https:'||u.protocol==='http:')href=u.href}catch(e){}
    return href?'<a href="'+esc(href)+'" target="_blank" rel="noopener">View source post</a>':''
   }).filter(Boolean).join(''):'';
-  return '<article class="panel ci-rec"><div class="lbl">'+esc(r.platform)+' · '+esc(r.format)+' · '+esc(r.topic)+' · '+esc(r.confidence)+' confidence</div><h3>Potential repeatable signal</h3><p>'+esc(r.summary)+'</p><div class="ci-meta">'+fmt(evidence.cohort_posts||0)+' source posts · compared with '+fmt(evidence.comparison_posts||0)+' others · '+esc(evidence.date_range?.from||'')+' to '+esc(evidence.date_range?.through||'')+'</div>'+(links?'<div class="ci-links">'+links+'</div>':'')+'</article>'
+  return '<article class="panel ci-rec"><div class="lbl">'+esc(r.platform)+' · '+esc(r.format)+' · '+esc(r.topic)+' · '+esc(titleWords(r.confidence))+' Confidence</div><h3>Potential Repeatable Signal</h3><p>'+esc(r.summary)+'</p><div class="ci-meta">'+fmt(evidence.cohort_posts||0)+' Source Posts · Compared With '+fmt(evidence.comparison_posts||0)+' Others · '+esc(evidence.date_range?.from||'')+' to '+esc(evidence.date_range?.through||'')+'</div>'+(links?'<div class="ci-links">'+links+'</div>':'')+'</article>'
  }).join('');
 }
 async function refreshContentAgent(){
@@ -775,14 +785,14 @@ function renderOpportunityList(){
  if(!shown.length){$('opportunityResults').innerHTML='<div class="panel">No opportunities in this category today.</div>';return}
  if(OPPORTUNITY_CATEGORY!=='all'){$('opportunityResults').innerHTML=shown.map(opportunityCard).join('');return}
  const groups={};for(const o of shown){const category=o.category||'Other';(groups[category]||(groups[category]=[])).push(o)}
- $('opportunityResults').innerHTML=Object.entries(groups).map(([category,items])=>'<section class="op-category"><h3 class="gh">'+esc(category)+' <span class="ci-meta">('+fmt(items.length)+')</span></h3><div class="ci-grid">'+items.map(opportunityCard).join('')+'</div></section>').join('');
+ $('opportunityResults').innerHTML=Object.entries(groups).map(([category,items])=>'<section class="op-category"><h3 class="gh">'+esc(titleWords(category))+' <span class="ci-meta">('+fmt(items.length)+')</span></h3><div class="ci-grid">'+items.map(opportunityCard).join('')+'</div></section>').join('');
 }
 function renderOpportunities(report){
  OPPORTUNITY_REPORT=report;
  const rows=Array.isArray(report.opportunities)?report.opportunities:[];
  $('opportunityCoverage').innerHTML='Updated '+esc(report.generated_at?new Date(report.generated_at).toLocaleString():'not yet')+' · '+fmt(report.articles_scanned||0)+' recent items scanned. '+esc(report.coverage_note||'')+' Platform trend coverage: TikTok is a manual reference; Instagram, Facebook, and X trend feeds are not connected. <a href="https://ads.tiktok.com/business/creativecenter/inspiration/trends/hashtag/pc/en" target="_blank" rel="noopener">Open TikTok Creative Center</a>.';
  const categories=[...new Set(rows.map(o=>o.category||'Other'))].sort();
- const filters=[['all','All']].concat(categories.map(category=>[category,category]));
+ const filters=[['all','All']].concat(categories.map(category=>[category,titleWords(category)]));
  $('opportunityFilters').innerHTML=filters.map(([value,label])=>'<button type="button" class="alt" data-opportunity-category="'+esc(value)+'" aria-pressed="'+(OPPORTUNITY_CATEGORY===value)+'">'+esc(label)+(value==='all'?' ('+fmt(rows.length)+')':' ('+fmt(rows.filter(o=>(o.category||'Other')===value).length)+')')+'</button>').join('');
  $('opportunityFilters').querySelectorAll('button').forEach(button=>button.onclick=()=>{OPPORTUNITY_CATEGORY=button.dataset.opportunityCategory;renderOpportunities(OPPORTUNITY_REPORT)});
  renderOpportunityList();
@@ -799,7 +809,7 @@ function renderCompetitors(competitors){
  const card=c=>'<article class="panel ci-rec"><div class="lbl">'+esc(c.platform)+' · '+esc(c.category||'Other')+'</div><h3><a href="'+esc(c.profile_url)+'" target="_blank" rel="noopener">'+esc(c.handle)+'</a></h3></article>';
  if(COMPETITOR_CATEGORY!=='all'){$('competitorDirectory').innerHTML=shown.map(card).join('');return}
  const groups={};for(const c of shown){const category=c.category||'Other';(groups[category]||(groups[category]=[])).push(c)}
- $('competitorDirectory').innerHTML=Object.entries(groups).map(([category,accounts])=>'<section class="op-category"><h3 class="gh">'+esc(category)+' <span class="ci-meta">('+fmt(accounts.length)+')</span></h3><div class="ci-grid">'+accounts.map(card).join('')+'</div></section>').join('');
+ $('competitorDirectory').innerHTML=Object.entries(groups).map(([category,accounts])=>'<section class="op-category"><h3 class="gh">'+esc(titleWords(category))+' <span class="ci-meta">('+fmt(accounts.length)+')</span></h3><div class="ci-grid">'+accounts.map(card).join('')+'</div></section>').join('');
 }
 let COMPETITOR_INTEL=null,COMPETITOR_PLATFORM='all',COMPETITOR_SIGNAL_CATEGORY='all',COMPETITOR_LIMIT=20;
 function competitorPostCard(post,rank){
@@ -818,11 +828,11 @@ function renderCompetitorSignals(){
  const report=COMPETITOR_INTEL||{},posts=Array.isArray(report.posts)?report.posts:[],recs=Array.isArray(report.recommendations)?report.recommendations:[];
  const match=row=>(COMPETITOR_PLATFORM==='all'||row.platform===COMPETITOR_PLATFORM)&&(COMPETITOR_SIGNAL_CATEGORY==='all'||(row.category||'Other')===COMPETITOR_SIGNAL_CATEGORY);
  const shownPosts=posts.filter(match).sort((a,b)=>(b.relative_to_account_median||0)-(a.relative_to_account_median||0));
- const shownRecs=recs.filter(match);
+ const shownRecs=recs;
  $('competitorRecommendations').classList.add('competitor-cards');
  $('competitorPosts').classList.add('competitor-cards');
  if(!shownRecs.length){$('competitorRecommendations').innerHTML='<div class="panel">No recurring public-post signal is strong enough to suggest an adaptation yet. This will fill in as eligible posts are collected.</div>'}
- else $('competitorRecommendations').innerHTML=shownRecs.map(rec=>'<article class="panel ci-rec"><div class="lbl">'+esc(rec.category)+' · '+esc(rec.platform)+' · '+fmt(rec.account_count)+' account(s) · '+fmt(rec.post_count)+' post(s)</div><h3>'+esc(rec.theme)+' · '+fmt(rec.median_lift)+'× account median</h3><p>'+esc(rec.suggestion)+'</p><div class="ci-meta">Observed formats: '+esc((rec.formats||[]).join(', ')||'not classified')+' · Caption openings: '+esc((rec.hook_styles||[]).join(', ')||'not classified')+'</div><div class="ci-links">'+(rec.example_posts||[]).map(url=>/^https:\/\//i.test(url)?'<a href="'+esc(url)+'" target="_blank" rel="noopener">Example post</a>':'').join('')+'</div></article>').join('');
+ else $('competitorRecommendations').innerHTML=shownRecs.map(rec=>'<article class="panel ci-rec"><div class="lbl">'+esc(titleWords(rec.category))+' · '+esc(rec.platform)+' · '+fmt(rec.account_count)+' Account(s) · '+fmt(rec.post_count)+' Post(s)</div><h3>'+esc(titleWords(rec.theme))+' · '+fmt(rec.median_lift)+'× Account Median</h3><p>'+esc(rec.suggestion)+'</p><div class="ci-meta">Observed Formats: '+esc((rec.formats||[]).map(titleWords).join(', ')||'Not Classified')+' · Caption Openings: '+esc((rec.hook_styles||[]).map(titleWords).join(', ')||'Not Classified')+'</div><div class="ci-links">'+(rec.example_posts||[]).map(url=>/^https:\/\//i.test(url)?'<a href="'+esc(url)+'" target="_blank" rel="noopener">Example Post</a>':'').join('')+'</div></article>').join('');
  const visiblePosts=shownPosts.slice(0,COMPETITOR_LIMIT);
  $('competitorPostSummary').innerHTML=shownPosts.length?'<span class="ci-post-count">Showing '+fmt(visiblePosts.length)+' of '+fmt(shownPosts.length)+' matching posts</span><span class="ci-post-sort-note">Ranked by interactions relative to each account’s recent median</span>':'';
  if(!shownPosts.length){$('competitorPosts').innerHTML='<div class="panel">'+(report.status==='not_configured'||report.status==='needs_access'?'Post monitoring has not started. The daily collector requires approved Meta API access and an explicit opt-in in repository settings.':'No posts match these filters yet.')+'</div>'}
