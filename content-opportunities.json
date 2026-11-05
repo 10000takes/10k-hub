@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T00:16:51.301546+00:00",
+  "generated_at": "2026-11-05T00:21:30.634489+00:00",
   "status": "ok",
   "source_scope": "Google News RSS searches for Minnesota teams plus configured RSS feeds for tracked accounts.",
   "source_count": 8,
@@ -276,39 +276,6 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "fbfe51e129df9a85",
-      "score": 79,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 90,
-        "virality_potential": 51,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "Report Makes 5-Time Pro Bowler Perfect Minnesota Vikings Trade Target Before Deadline",
-      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNbjZ2QW9oLURGUVhaSVdnRWdzQVpMM0tGZ2laNUtZaHBSd2pMdElpQXJhMTRRNTVnNjBXY0VoVGVuM2VfZG16VFludlpIYTdCNDg3NkNrenJ6V1ZQTUhxemtTS3h5dEpjYWxNWEpIcFRBV3RZSkpuZ0tJdDdOTTJ3eTVB?oc=5",
-      "published_at": "2026-11-04T19:02:44+00:00",
-      "category": "Minnesota team news",
-      "source": "Sportsnaut",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [
-        "trade"
-      ],
-      "format": "Fast explainer + reaction",
-      "hook_draft": "What Vikings fans need to know about this: Report Makes 5-Time Pro Bowler Perfect Minnesota Vikings Trade Target Before Deadline",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
       "id": "84592b986b33d1a3",
       "score": 79,
       "score_breakdown": {
@@ -332,6 +299,39 @@
       ],
       "format": "Fast explainer + reaction",
       "hook_draft": "What Vikings fans need to know about this: Vikings Have Potential Jonathan Taylor ‘Plan B’ for NFL Trade Deadline",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "fbfe51e129df9a85",
+      "score": 79,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 90,
+        "virality_potential": 51,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Report Makes 5-Time Pro Bowler Perfect Minnesota Vikings Trade Target Before Deadline",
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNbjZ2QW9oLURGUVhaSVdnRWdzQVpMM0tGZ2laNUtZaHBSd2pMdElpQXJhMTRRNTVnNjBXY0VoVGVuM2VfZG16VFludlpIYTdCNDg3NkNrenJ6V1ZQTUhxemtTS3h5dEpjYWxNWEpIcFRBV3RZSkpuZ0tJdDdOTTJ3eTVB?oc=5",
+      "published_at": "2026-11-04T19:02:44+00:00",
+      "category": "Minnesota team news",
+      "source": "Sportsnaut",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [
+        "trade"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Vikings fans need to know about this: Report Makes 5-Time Pro Bowler Perfect Minnesota Vikings Trade Target Before Deadline",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
@@ -499,37 +499,6 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "dcf762df3b2d0933",
-      "score": 77,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 92,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "How to watch, stream and listen to Buffalo Bills vs. Minnesota Vikings on Monday Night Football",
-      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxNUGZMdWV0Q09ibS1nX3c0NkRZT0dfWGk2UndzTTZwbGJkRnRBOWg2VzVDM25XWjlsYzA0QVQwMXUwR3h2M2ZQeXlhNkU4cmRzWHZtb3JyY2EtMlhDZWlvdThPSWVPOF9KOUtra0hlUTd0enVRQVBFUTVEbkh2UEs3TmZKWFZZRV9fVGdBQTRFRjRmd1VQaWdBRGdRTlhINmgyUHkycWxDUjR4eF8yWTRnNUZfZVNhaE9FZGdQM2FsMmM0UmxibU4tRTBYWDl0aHA5V2fSAdcBQVVfeXFMUGNqa2I5aVIwMzB4czJtTG44OGFIY3JzZFEyMzF1aWNyMXV3bGZyS1duTkRsd1IyZXdjWFNkajRBbWxRaTNhX1RKVG14bmQ4ODNNbTM4RTQ2a3Y2V280Zzl6MWZKRElaT3V6c2VfeXd1MERHZEhpd1FPb3NCUFJwMDJzU1RXYjE2VHdySzJWZkFXajlaUW9EeE1wMFdHVkE1endpNzhEZ0tJU3daS2wzeUswR20tSC1LS3VJaldtbnNmQWctQ2FjcDhId0FxVVkxbWtSOFkyazA?oc=5",
-      "published_at": "2026-11-04T19:44:07+00:00",
-      "category": "Minnesota team news",
-      "source": "WIVB News 4",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: How to watch, stream and listen to Buffalo Bills vs. Minnesota Vikings on Monday Night Football",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
       "id": "ce6e25420d5812d7",
       "score": 76,
       "score_breakdown": {
@@ -561,11 +530,42 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
+      "id": "dcf762df3b2d0933",
+      "score": 76,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 91,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "How to watch, stream and listen to Buffalo Bills vs. Minnesota Vikings on Monday Night Football",
+      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxNUGZMdWV0Q09ibS1nX3c0NkRZT0dfWGk2UndzTTZwbGJkRnRBOWg2VzVDM25XWjlsYzA0QVQwMXUwR3h2M2ZQeXlhNkU4cmRzWHZtb3JyY2EtMlhDZWlvdThPSWVPOF9KOUtra0hlUTd0enVRQVBFUTVEbkh2UEs3TmZKWFZZRV9fVGdBQTRFRjRmd1VQaWdBRGdRTlhINmgyUHkycWxDUjR4eF8yWTRnNUZfZVNhaE9FZGdQM2FsMmM0UmxibU4tRTBYWDl0aHA5V2fSAdcBQVVfeXFMUGNqa2I5aVIwMzB4czJtTG44OGFIY3JzZFEyMzF1aWNyMXV3bGZyS1duTkRsd1IyZXdjWFNkajRBbWxRaTNhX1RKVG14bmQ4ODNNbTM4RTQ2a3Y2V280Zzl6MWZKRElaT3V6c2VfeXd1MERHZEhpd1FPb3NCUFJwMDJzU1RXYjE2VHdySzJWZkFXajlaUW9EeE1wMFdHVkE1endpNzhEZ0tJU3daS2wzeUswR20tSC1LS3VJaldtbnNmQWctQ2FjcDhId0FxVVkxbWtSOFkyazA?oc=5",
+      "published_at": "2026-11-04T19:44:07+00:00",
+      "category": "Minnesota team news",
+      "source": "WIVB News 4",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: How to watch, stream and listen to Buffalo Bills vs. Minnesota Vikings on Monday Night Football",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
       "id": "65b5cb1a937aea67",
       "score": 76,
       "score_breakdown": {
         "relevance": 79,
-        "timeliness": 90,
+        "timeliness": 89,
         "virality_potential": 38,
         "ease_of_execution": 93
       },
@@ -582,39 +582,6 @@
       "viral_cues": [],
       "format": "Quick take + 3-point breakdown",
       "hook_draft": "The key question behind this Vikings story: Minnesota Vikings vs. Buffalo Bills – How to watch, pregame coverage",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "b30efc11b611ed69",
-      "score": 76,
-      "score_breakdown": {
-        "relevance": 67,
-        "timeliness": 93,
-        "virality_potential": 51,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "Vikings See 1 QB Trade Target Stolen Away by Ravens",
-      "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE84NUZRUUR0T0Z2N09ZSjJBSzU3NmRySU91ZHBNTkswVHJndWpVT1V2RkdtalFLU0h2U08yLXZEYTh3MFp4YjhSRTFmb2gtN000R05KMWxXZkZLdjFBNkR3eXVEUjRLV0ZxSHZzZGZ0Q1RxekE2OFlBMWg1Rk5Ydw?oc=5",
-      "published_at": "2026-11-04T20:35:00+00:00",
-      "category": "Minnesota team news",
-      "source": "Vikings Territory",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [
-        "trade"
-      ],
-      "format": "Fast explainer + reaction",
-      "hook_draft": "What Vikings fans need to know about this: Vikings See 1 QB Trade Target Stolen Away by Ravens",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
@@ -646,6 +613,37 @@
       "viral_cues": [],
       "format": "Quick take + 3-point breakdown",
       "hook_draft": "The key question behind this Twins story: Minnesota Twins Prospect Named Fall League Star",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "7b4c8c6113c433bc",
+      "score": 76,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 91,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "Minnesota Wild to Host Military Appreciation Night on November 7",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNY1lmMkNvYzZxRjR0QjducWlOMThjR0l5WVYtQWNhT1ZZMGVvM3hCMzltUjk0cklxZnp0THJsc2t4dGlWeHVueEw4WGJtbXhWQWgyYk9GTWE0dGNkR2dzV2pHRC1nQnU1X2ZrQ2FiLVJPSlZ5WWFaN05OSWdXNEROdnZrMm9zNEROTmEyVXhoSlVJb1J3RGtZQTB5LUNxdDg?oc=5",
+      "published_at": "2026-11-04T19:19:29+00:00",
+      "category": "Minnesota team news",
+      "source": "NHL.com",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Wild story: Minnesota Wild to Host Military Appreciation Night on November 7",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
