@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-11-05T17:48:18.767011+00:00",
+  "generated_at": "2026-11-05T20:12:23.022304+00:00",
   "status": "ok",
   "source_scope": "Google News RSS searches for Minnesota teams plus configured RSS feeds for tracked accounts.",
   "source_count": 8,
-  "articles_scanned": 143,
+  "articles_scanned": 146,
   "social_trend_coverage": {
     "Instagram": "not_connected",
     "Facebook": "not_connected",
@@ -15,30 +15,27 @@
   "source_failures": [],
   "opportunities": [
     {
-      "id": "947ad3dfd6c94d9f",
-      "score": 86,
+      "id": "2ae06cc8bae8ac35",
+      "score": 85,
       "score_breakdown": {
         "relevance": 91,
-        "timeliness": 91,
-        "virality_potential": 64,
+        "timeliness": 99,
+        "virality_potential": 46,
         "ease_of_execution": 93
       },
-      "team": "Wild",
-      "title": "NHL Trade Rumor: Philadelphia Flyers could absorb Yakov Trenin’s contract to help Minnesota Wild land Dyl",
-      "url": "https://news.google.com/rss/articles/CBMi-wJBVV95cUxOYjlhQU1XV2wtcEtMT2owZUxRZXVhdUR2UVFCbDFEX3hITWJZcV9SVVlnLWp3dWpuTG42UThZRDlOUWtOS2VuZURUVXE3RXdLUGE3VW1wLWxoQV9DQlJMbnNudmdmLVNOQWFFYjVRVUpsYmN6U2t2R21JelY0ZlZZVWwwQnloelBjTUlvbW1ja21MODVKZ1hlMURtLVhtaGhkNloxN1BuNWIzanNacEFHUEg2c1pnY0VlbDFqOWI0WVlQSjZsU3pKbHRDZnpSN0EtWFF4bTRleWFIUVhQYUFLVjZvdE5Wc0czNERBZXZMQm1QRk5famJHaEg0YWYwa2RNUG9VTTV3cDk5WVJHTzViNlZZMFN3S3M1UlVLVzVVV1JtMnhWTWNMLXNiMUpWWktuMHhpdnlnUUlnZHhJN094cldyTjhfUGM1NjlhNllhcE54dlBkNHpJemMyLXlxQ0Nyd3RpNUd1elJZbXJYMnRQX01BYU5pNFRhOTJr0gGwAkFVX3lxTFAtVi16RmdoMmlZaG8tRXRMTnFYYnZmYUdIZ0dVZ2pPa21sa0diemVBS2JGLWdPN09oVy12bk5odkVzd3Qxc3dueEFVQ2dkWFlIdnVkSVEtcW9tekUwN0tyYW4wc3haVTNfNUY1ZzQ2UWQ5emFsSVZPSVowR09lWjQxVDEzNEc1c2FmX0RNaExvYUlkMldlUWFBSGwxZXZtWXJTQmVnSzd6TG0tM3RXVnBIODRSWlVidDl0UHZ5TGY0TDlHSndJVDM5RjdKdXo2YWVLRDVyS2hZTkg5alVtR0ExcW85eUxYWi1sQXQ0NnktLUxONWl3dnFrTkExSmRmckZTQ1hfS3hHcDBFZ2x6S1VoQnZzWUtZUEdjMFZGY2hhbEVNeURjd0FSZjV3MWRTR2g?oc=5",
-      "published_at": "2026-11-05T12:40:00+00:00",
+      "team": "Vikings",
+      "title": "Buffalo Bills vs. Minnesota Vikings Week 9 NFL Preview and Predictions",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPanlJakstbkh0dGFvZW1uRXJXZHI2dmRUcFplN3ZNbzRYT2JpUVdxN0ZLSE4wN3FPLWlXdkhrak1NMjlpSXRZZ3JNVUVTUnJ4N0RmTTRLMExFSXM2NUI4bkxGUUg1ZGltcFJpRjRTUXVYdnNsYXhhSHVQNnpobXJuSXQ4emN1UEdz?oc=5",
+      "published_at": "2026-11-05T19:36:08+00:00",
       "category": "Minnesota team news",
-      "source": "The Times of India",
+      "source": "Yahoo Sports",
       "source_kind": "news",
       "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [
-        "rumor",
-        "trade"
-      ],
-      "format": "Fast explainer + reaction",
-      "hook_draft": "What Wild fans need to know about this: NHL Trade Rumor: Philadelphia Flyers could absorb Yakov Trenin’s contract to help Minnesota Wild land Dyl",
+      "corroborating_items": 2,
+      "trend_signal": "Early signal",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: Buffalo Bills vs. Minnesota Vikings Week 9 NFL Preview and Predictions",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
@@ -49,29 +46,190 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "43269764146cccae",
-      "score": 81,
+      "id": "0f3c031c1db027af",
+      "score": 85,
       "score_breakdown": {
-        "relevance": 79,
+        "relevance": 91,
+        "timeliness": 96,
+        "virality_potential": 54,
+        "ease_of_execution": 93
+      },
+      "team": "Lynx",
+      "title": "Minnesota Lynx G Kayla McBride receives WNBA Community Assist Award",
+      "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxPTUR5SE54UU5uLTA0SUlQd3lIRkVJUGNKUG05VVZaQ1QwRDhBUmdVcnlnS0hnWk4tMk50ekx4Q04yYzBJbXBmTmpzdFNCVGxtaG1fRDVoUzdlLVZtUVRpOEZuR3hacDJRRkRZbWc3UmlpeVJSMTF6UUIwNU9VOUxSa3kzQkd6amhqcnF3M3hDbkE0MEVWTzFDcXBnU1Jnd0kzVE93RTZRSUw5UlJMelpxdUhIcGZWWkJaRFhVXzQxNU56bl9lMWdfVGM3V0pDMFVNOFZiUHVpTDR0QmJGU1ZZTEt3?oc=5",
+      "published_at": "2026-11-05T18:15:51+00:00",
+      "category": "Minnesota team news",
+      "source": "kare11.com",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 3,
+      "trend_signal": "Multiple sources",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Lynx story: Minnesota Lynx G Kayla McBride receives WNBA Community Assist Award",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "8dd35012d5097915",
+      "score": 82,
+      "score_breakdown": {
+        "relevance": 67,
         "timeliness": 97,
-        "virality_potential": 51,
+        "virality_potential": 75,
         "ease_of_execution": 93
       },
       "team": "Vikings",
-      "title": "‘Vikings Desperately Need to Make a Trade,’ ‘Rams Should Trade for Brian Thomas Jr.’ — NFL Analysts Debate Which Team Badly Needs a Deal Before Deadline",
-      "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOX1pCVXRvWXJXX19zb090RkVHV3FNOFhfSmJmZVo4SXplbHhVUGYyX3FZMnNQVXV4R2NfOFl4TElscFZoVHJVVnhXUVhEcmFJT1FtY2E2Tmk0QVZaNjJXcnRzRjBOWWk4VFd0a3BiY2xkdXBPc2dHbE0waFpIUmFWaUdHRTZiQm9EMTN2cHFR?oc=5",
-      "published_at": "2026-11-05T16:26:48+00:00",
+      "title": "Vikings to start Carson Wentz vs. Bills on Monday with Kyler Murray battling hamstring injury",
+      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOak5MVnNfTFVmdzJpaW9UeWQ5Y2JoalhuWjdiVXpyNl9HTXpyODZQVVdYZFBWaDljWV96MWVNVGZVMEpzNlpqTFJPOVBBcXZoOGVVY0h0OTBaVUY0NVU3V2xyY1JTTXNuMzRod0RJU0R1WGRVWS1TcklzeTRZSmNENjJtZ0VRclIydUo1Y01ZOA?oc=5",
+      "published_at": "2026-11-05T18:38:34+00:00",
+      "category": "Minnesota team news",
+      "source": "NFL.com",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 6,
+      "trend_signal": "Multiple sources",
+      "viral_cues": [
+        "injury"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Vikings fans need to know about this: Vikings to start Carson Wentz vs. Bills on Monday with Kyler Murray battling hamstring injury",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "facd8a1ac18a1e56",
+      "score": 82,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 97,
+        "virality_potential": 75,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Carson Wentz to start at QB for Vikings on Monday night vs. Bills, with Kyler Murray nursing hamstring injury",
+      "url": "https://news.google.com/rss/articles/CBMigwJBVV95cUxQZlNKOE5PSm9ubS01NG5wM3VCZ2dqcUFhUHR3eUdRS2hlU2RHRWNVUnNLYk5EQzBtQ1JmV0h1VWZfSnBBNjB0amlfc3hMWU1vVU56UERUWnhRZk8wRlFVSWVBdGF0dHc1SndXZmREYmkzdVQzRWZUMDRKNjZ4czVGalY4bnpEQ1V5Q1N4NzZUSFlycG80RkpNN19KVVN6T1ZvVmRPZWQtdXMxQ1NkNGIxZ3ZFa0FId3MzMkdLbkQ3Q2VGUE5EM0xfVVBDOVRhSTRXRDc3Rlo5RGhfZzhYNG0xNHJFNmhHRXltTnVvd1psNWV0cDltX0pzYUVuSktsU1RBcGE4?oc=5",
+      "published_at": "2026-11-05T18:32:32+00:00",
       "category": "Minnesota team news",
       "source": "Yahoo Sports",
       "source_kind": "news",
       "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
+      "corroborating_items": 6,
+      "trend_signal": "Multiple sources",
       "viral_cues": [
-        "trade"
+        "injury"
       ],
       "format": "Fast explainer + reaction",
-      "hook_draft": "What Vikings fans need to know about this: ‘Vikings Desperately Need to Make a Trade,’ ‘Rams Should Trade for Brian Thomas Jr.’ — NFL Analysts Debate Which Team Badly Needs a Deal Before Deadline",
+      "hook_draft": "What Vikings fans need to know about this: Carson Wentz to start at QB for Vikings on Monday night vs. Bills, with Kyler Murray nursing hamstring injury",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "bc729f369e0ed6ca",
+      "score": 82,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 97,
+        "virality_potential": 75,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Vikings Starting Carson Wentz At QB vs. Bills Amid Kyler Murray Injury",
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNWUdRZlFWLUtDaDRpSFhhTDJMeVRLVGp1cVY4Yi1TVmtGTjhpakx1X3FaSVQzVVZqb2lCcy0yQ29zZ2N2S18yT2RubVRtU053VWdSNTZpNm9lZGJFRFpuTHctY0t4UkdwWG0zbUZLbzJqS0dQeFlJUVE0WjZYbG9wRGNEcXZpeUNmTWtsczhaZGViaFM3Q0JXTnV3aFU5dzM5V2FfZ2x6aEN1UVRvM085N1dPY0PSAbQBQVVfeXFMUEZIQmhCbzNlOEtYcXAyX1luWl9qU2hRZzlHLWhQXzk3ZzdTSGMxUTVrbzBJR0gzMG5BNlN1YVBCU0s5ZTFsSXhreF9FV25YdzMxODl0MzVjTWF6cDFfVnVablNRMjA1NWZ1dGlMYmF3WXFWa3lOczFoc1AtcnhLdjRrZDkyT2ZLZjZXZnNpclFWNklYV0cxS2RWQlVmX0g3NHdMeG1nYUU5a3dDOTBEUnByMlJP?oc=5",
+      "published_at": "2026-11-05T18:52:19+00:00",
+      "category": "Minnesota team news",
+      "source": "FOX Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 6,
+      "trend_signal": "Multiple sources",
+      "viral_cues": [
+        "injury"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Vikings fans need to know about this: Vikings Starting Carson Wentz At QB vs. Bills Amid Kyler Murray Injury",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "12027d8f095e873d",
+      "score": 82,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 97,
+        "virality_potential": 75,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Carson Wentz to start for Vikings with Kyler Murray injured",
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNdGFnUXk0dWEtRW1UWkE4MlhmNG9YR1J2M2tlaHo5enJYSmR5Z0RjRnF6dUREby0yZEJLRDRJTVU3MU9JV2o2dXRWX2tYTy03bnd5QTJCYkNUMHhfVG14dXJoZEoxS3BiUU1fa3Y5YWpWekRGZjRXZW5QY0JuV1hlTFpXMHJpd3oxQVN6THF5cWJYdHBxcW9ucXJnLUF1dw?oc=5",
+      "published_at": "2026-11-05T18:45:00+00:00",
+      "category": "Minnesota team news",
+      "source": "New York Post",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 6,
+      "trend_signal": "Multiple sources",
+      "viral_cues": [
+        "injured"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Vikings fans need to know about this: Carson Wentz to start for Vikings with Kyler Murray injured",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "43d4aa31bb4ac965",
+      "score": 80,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 98,
+        "virality_potential": 46,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "NFL Insider Leans Towards Vikings Carson Wentz to Start vs. Bills",
+      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxNSjZKZ01sRGJ1WVROMjVLOG5oVzYwMWRwdnlkcHhfYXNPbkRzNUdKNkVPTTlHQkxUczFDTlNPcmF2VW10UmJzLWk1YXM4YXJxRmI4eDVob3JzaDV5bVd0TUpEeXVyYVAxdVRsTlkwNks4OFh6aDZiQmZqOWZqMHFFcGJtM1FDOXhlakE?oc=5",
+      "published_at": "2026-11-05T19:21:38+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 2,
+      "trend_signal": "Early signal",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: NFL Insider Leans Towards Vikings Carson Wentz to Start vs. Bills",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
@@ -86,8 +244,8 @@
       "score": 80,
       "score_breakdown": {
         "relevance": 79,
-        "timeliness": 98,
-        "virality_potential": 46,
+        "timeliness": 93,
+        "virality_potential": 54,
         "ease_of_execution": 93
       },
       "team": "Lynx",
@@ -98,8 +256,8 @@
       "source": "Minnesota Lynx",
       "source_kind": "news",
       "tracked_account": null,
-      "corroborating_items": 2,
-      "trend_signal": "Early signal",
+      "corroborating_items": 3,
+      "trend_signal": "Multiple sources",
       "viral_cues": [],
       "format": "Quick take + 3-point breakdown",
       "hook_draft": "The key question behind this Lynx story: Lynx Guard Kayla McBride Earns WNBA Cares Community Assist Award",
@@ -113,27 +271,27 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "5d6fbf1ecf920376",
+      "id": "e6d77f4da7e895ed",
       "score": 80,
       "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 99,
-        "virality_potential": 46,
+        "relevance": 91,
+        "timeliness": 90,
+        "virality_potential": 38,
         "ease_of_execution": 93
       },
       "team": "Wild",
-      "title": "Brock Faber Joins Minnesota Wild Teammates For First Practice Since Suffering A Skull Fracture",
-      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOMkt6dEhlMUJSeVA2ZGw0dG53LWh6a185YUtqV3NBTzFKX3JiSXR4by1QM1FJdjRjSVgzRlptU3U3bmJCYW1CcExVYmVUeWJtWkZGNmV4cVhpLW5lN3VYVzJ3N3FQb2I1UDFBeFg3R1phQXE4amdYOUtIX1BhX0k2MVIzRzVoTFNv?oc=5",
-      "published_at": "2026-11-05T17:08:54+00:00",
+      "title": "NHL Rumors: Out Scouting, the Minnesota Wild Feel They Have Made Their Best Offer",
+      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOSzR0WUNKRXZxeFlGaHJNeUhDQzVWTkpYWXBRZ3hGWmEyVjZGZm5tclVKUFJVaHpGUUVEcXhIeHdXS0E2anRnVmQ0dU55SnVrYnY1Yk9TTGNpaDc2NTcxMjBLSnU2WHpfMzdmYUktT1o2c3NvSXhBT1NMV3JFVU9hakZ5VWZpOTJVeHlhbjNFS1NidmZzNjN1WHdudEx5UG0tU0Z0cnlhX1FfYUYyWkw5RGFRUdIBuAFBVV95cUxQYno3a0xxdEs4X2xOT0FMVXRiNGFyY2EtbGVBSjJWQWFvbkFEWDBJTEdkMXI5RWxzMF9fYlR3YUpyUEd1RE1halBOZFlORUc2NGpnMmRsOUFNdGRQWE1iVDRYWFJ3blRqbS01MFVjZ21Va0hGaGlVRHVFUjRHSzlkUVBrRXgxWHpxSm8wd3pmYzV2OTVmWGNxUDlyU1hHSzFBcnVxeC1vYmZieXVGZGE5WmJSaXloVjY5?oc=5",
+      "published_at": "2026-11-05T15:00:39+00:00",
       "category": "Minnesota team news",
-      "source": "Yahoo Sports",
+      "source": "NHLRumors.com",
       "source_kind": "news",
       "tracked_account": null,
-      "corroborating_items": 2,
-      "trend_signal": "Early signal",
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
       "viral_cues": [],
       "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Wild story: Brock Faber Joins Minnesota Wild Teammates For First Practice Since Suffering A Skull Fracture",
+      "hook_draft": "The key question behind this Wild story: NHL Rumors: Out Scouting, the Minnesota Wild Feel They Have Made Their Best Offer",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
@@ -144,27 +302,27 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "3bd03937bc22e3c2",
-      "score": 80,
+      "id": "84d702b30dd87a58",
+      "score": 79,
       "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 99,
-        "virality_potential": 46,
+        "relevance": 67,
+        "timeliness": 97,
+        "virality_potential": 62,
         "ease_of_execution": 93
       },
-      "team": "Wild",
-      "title": "Brock Faber Joins Minnesota Wild Teammates For First Practice Since Suffering A Skull Fracture",
-      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPbXVhejJJUTh4S015bzczNm95ajhuRmx5NURnWEttZkdHcFVEU2JheGxuUGw3SG13NmdVSE1yZjVYVW1GNmJ0aEpKOHNxeWJEZTFIR2x1VmMwUnpSbGpXWkJZOEN6Q2hreE5WRXhYdnRWY2c0TDlrRk95N1o3a2s5OHh3Slh2dw?oc=5",
-      "published_at": "2026-11-05T17:08:54+00:00",
+      "team": "Vikings",
+      "title": "Vikings’ Kyler Murray to miss MNF vs. Bills with hamstring strain, Carson Wentz to start",
+      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQQXZDZXJqOUF3ankxYl9Udmh3dTExb0tqbHJJSFNmV2pGR3JjTzd0aTdCY0F3OWpQN1JfMGxheUhoQlV1NGN3MWJZUmQ1bUZMWElzNXBiNXVzYmZWNm1lME5abUZuU0E3U3RYb2EwRzdxVENRcUFGTWxicVYyQVI3aXNoQWVRb2hqQW9ORWJDbnpyZEV6cFVnYWV3RmJCS1QweEhJc2dR?oc=5",
+      "published_at": "2026-11-05T18:38:03+00:00",
       "category": "Minnesota team news",
-      "source": "Yahoo Sports",
+      "source": "The New York Times",
       "source_kind": "news",
       "tracked_account": null,
-      "corroborating_items": 2,
-      "trend_signal": "Early signal",
+      "corroborating_items": 6,
+      "trend_signal": "Multiple sources",
       "viral_cues": [],
       "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Wild story: Brock Faber Joins Minnesota Wild Teammates For First Practice Since Suffering A Skull Fracture",
+      "hook_draft": "The key question behind this Vikings story: Vikings’ Kyler Murray to miss MNF vs. Bills with hamstring strain, Carson Wentz to start",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
@@ -175,27 +333,27 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "e2d291fe7fec6cb4",
-      "score": 80,
+      "id": "07de714490337ab7",
+      "score": 79,
       "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 99,
-        "virality_potential": 46,
+        "relevance": 67,
+        "timeliness": 97,
+        "virality_potential": 62,
         "ease_of_execution": 93
       },
-      "team": "Wild",
-      "title": "Brock Faber Joins Minnesota Wild Teammates For First Practice Since Suffering A Skull Fracture",
-      "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxQeVFidUkwclNmZF80eHFid01YLURPYmF0d1YxWWdpTFkyWWdDQUk1VG9VdXBWcGhwcjF2M01XZk8wTXR4YTg4YjYtVDMzTjY4aFBsekItcnNsTUxkZG9XNWhiekE5b1JKSE1xbzR0TTlpSHdQZldfa3g3TV9EZnRQeTFGS2cyUXFROVNrWUJHMWtXMHJuWjBtc2RNNklOVUN1ZEFTNXp0YW9BcTBrenZZS1BtdFFqam5LMGY1bmFUMloxZHozRV9FVDIzMHJRN1dacHBtSE1Za0dkRGpvYWJSRmJPRFR4dw?oc=5",
-      "published_at": "2026-11-05T17:17:24+00:00",
+      "team": "Vikings",
+      "title": "Carson Wentz to start for Vikings vs. Bills",
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNbmxxODBLQUpUN0ZNMFkwemJneUtOTndCSTJaeWpFWW9hbjhvTGp4Q3BZVGYzdmw1RmlaZlpRRUxEMFdoZG1wRUVrQXRDR3pqU3U0bUxrUVVMOGx0ZUJSY3d5MFJkSzFmamJaTWlQa1UzdTdtT21YQ1AyUUdtZ1NWbtIBhgFBVV95cUxNU01odTQ5T0JDU3ZrNnBNc0J1dHYybFdVcHljLWtBV0NKN0Y5ZE9BTTBjc01tUGtGMXRDWGxxcUlzQXhNc2pDNk5EZXRlLUE2dWZ0VUZXejRjSmJnSEtoa18tUmJfRk1kT0Zud2VUR00yOFhVcThPd3hQY29hckFkNG9FYWowUQ?oc=5",
+      "published_at": "2026-11-05T18:43:16+00:00",
       "category": "Minnesota team news",
-      "source": "The Hockey News",
+      "source": "KELOLAND.com",
       "source_kind": "news",
       "tracked_account": null,
-      "corroborating_items": 2,
-      "trend_signal": "Early signal",
+      "corroborating_items": 5,
+      "trend_signal": "Multiple sources",
       "viral_cues": [],
       "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Wild story: Brock Faber Joins Minnesota Wild Teammates For First Practice Since Suffering A Skull Fracture",
+      "hook_draft": "The key question behind this Vikings story: Carson Wentz to start for Vikings vs. Bills",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
@@ -207,10 +365,10 @@
     },
     {
       "id": "3fd3275728b28c8e",
-      "score": 79,
+      "score": 78,
       "score_breakdown": {
         "relevance": 79,
-        "timeliness": 92,
+        "timeliness": 88,
         "virality_potential": 51,
         "ease_of_execution": 93
       },
@@ -239,11 +397,104 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "ed099ad04e196f10",
-      "score": 79,
+      "id": "0cd8b3f1d9bd41ae",
+      "score": 78,
       "score_breakdown": {
         "relevance": 79,
-        "timeliness": 90,
+        "timeliness": 97,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Minnesota Vikings fans get their wish heading into crucial Monday Night Football game vs. Buffalo Bills",
+      "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxOLXJFZDVScXg2MkdRTXBUMThiWEdRQXVJcmpmaUV1OXNjM3hzZHdPXzFreVM0dEw2c2hmV2pMUEpEZEE2NVlnc2ZVVDFCMjR4d2hUSXJMUU5XbzJrR0lSX21tdExUYThJZ2FNWVNlbXkzVUwzMWtDUnFGVm5JeENJYlJDemNPdkVVWUFGWEpIX2hHTmVXTU9Eck9OYXp6WXJCTWxyZkI0RjlhM1N5cVExcFg0bFFWMFQ1NUczaUJaemthLWJmclp6QWg1cVZhcmU3UVFQbk12LWVucmFkX2VneGZoMEZRcVZf?oc=5",
+      "published_at": "2026-11-05T18:28:20+00:00",
+      "category": "Minnesota team news",
+      "source": "A to Z Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: Minnesota Vikings fans get their wish heading into crucial Monday Night Football game vs. Buffalo Bills",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "b268784ae199babd",
+      "score": 78,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 97,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Minnesota Vikings Make Major Quarterback Decision Following Loss to Detroit Lions",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPTms1Z1NIWjBlMEV1SUxybnZMLVluVVFrX3o5d2lWcVg5dnZ0RnpkazJZZkdRam9HaE9EV0s2XzlYRy1kY05RX0w5dlBBWWQ0YUFrTF9TVUUtcnl6eTVDVWRucWotWERjLS1pdkc3N3dKaHZJU0dMREhqZFBhSlpUa3hpTklmMWtLaV8tWGF6c2FXMUJKZEF5YQ?oc=5",
+      "published_at": "2026-11-05T18:35:00+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: Minnesota Vikings Make Major Quarterback Decision Following Loss to Detroit Lions",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "2e51a75a4ac2b9e0",
+      "score": 78,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 96,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Minnesota Vikings Receive Bold Prediction for Game Against Buffalo Bills",
+      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQczdja1h4T2wzMWFBZU5SWHNtWGQxZzhRakpwVEc0Q1lwMTl3SWVTYjdUTThTenpYSHBlSTNjZXdNbXU3WWRvbHVvZzU2aE5YNG9BWmNfU0s5WTU2UEhjLVFJU2VPWnRpRkkyZVg1clFBTENfYU1LNDE1Zy1PX1liNGlWRjVQaWVjUlRURDF3Z3BMaC1W?oc=5",
+      "published_at": "2026-11-05T18:00:34+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: Minnesota Vikings Receive Bold Prediction for Game Against Buffalo Bills",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "ed099ad04e196f10",
+      "score": 78,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 86,
         "virality_potential": 51,
         "ease_of_execution": 93
       },
@@ -272,11 +523,104 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "27a025c62d719859",
-      "score": 79,
+      "id": "9f0d324b22727f8d",
+      "score": 78,
       "score_breakdown": {
         "relevance": 79,
-        "timeliness": 98,
+        "timeliness": 97,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "Three Minnesota Wild Veterans Return To Practice, One Key Center Is Absent",
+      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOWF9veVBrZ1AzUDRHN2ZBWVJIajZjV2c5MHpZeG9TeEJBbi1rWWpKa2ZZUEpORlhtVEVWUURDSUpQRnJWaEhBbUUwRllybHNNQW5RYXJhS2pXZ2c2b0lmeGJNaHMtUTh4dGhRY3o2Z2NFRnZYU0RkMjRPamRfaUNfTzl0RVM5OF9hMng4SEtGNlBrUHF5NnN6U3VKSDVMVDNzQjZJWWVjRURmMzFxajBEdUNuV0c3bFhZWVA3ZDdkbkZjRl82M2p4NVV3?oc=5",
+      "published_at": "2026-11-05T18:32:30+00:00",
+      "category": "Minnesota team news",
+      "source": "The Hockey News",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Wild story: Three Minnesota Wild Veterans Return To Practice, One Key Center Is Absent",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "2c04cd0ab97da58a",
+      "score": 78,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 97,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "Minnesota Wild Get Good Brock Faber Update Amid Looming Return",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPTzcyN2NGWndHV3A3c0s2TFBmT20zVVNTUk5iN1JKNWJxekl1MFBzeFNmZ3hjQUJMWjVLdWhOTXVMaWlNTWNSVkVXUml3TUdjcjdTaHl0OW1IaWJJZ1EyaEdsdmxjbXNqV1FvNXkwVGZmS3FRRnF3U3lHcXBtSURrdFVBQ2w4M0twYmhNa29YRk9Ddkh2NGc?oc=5",
+      "published_at": "2026-11-05T18:34:13+00:00",
+      "category": "Minnesota team news",
+      "source": "Heavy.com",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Wild story: Minnesota Wild Get Good Brock Faber Update Amid Looming Return",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "2b8b962b26571eff",
+      "score": 77,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 95,
+        "virality_potential": 54,
+        "ease_of_execution": 93
+      },
+      "team": "Lynx",
+      "title": "Kayla McBride Receives 2026 Seasonlong WNBA Cares Community Assist Award",
+      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxORklybENtVVlWNTBVdWZFc1FacjlyTF9LRWVYb0ZZWG1FSGRGM2RKbDNLcXBqUnhnVFVkN0hYczUzcjVjYkFhMlFlRE4xQ0Rmc2ZldUU1ak1WSlY0UnRiemxkSE51SWUwMjhGTExUOE9SMjZFWUlLZEFoNnFGdnpVTTRHeEtkUUctODdCMHB5MkF1OEE?oc=5",
+      "published_at": "2026-11-05T17:17:21+00:00",
+      "category": "Minnesota team news",
+      "source": "WNBA",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 3,
+      "trend_signal": "Multiple sources",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Lynx story: Kayla McBride Receives 2026 Seasonlong WNBA Cares Community Assist Award",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "27a025c62d719859",
+      "score": 77,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 93,
         "virality_potential": 38,
         "ease_of_execution": 93
       },
@@ -293,353 +637,6 @@
       "viral_cues": [],
       "format": "Quick take + 3-point breakdown",
       "hook_draft": "The key question behind this Wild story: Minnesota Wild and Red Baron® Pizza to Host 10th Annual Girls’ Hockey Weekend",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "ef9921b33fb9e384",
-      "score": 78,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 97,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "Minnesota Vikings pivoting to Carson Wentz as starting QB?",
-      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxOeVBaZFE2SGYyUjEtZ2JoVlR2SnF1bl9walBsajhfNEU5N3RYZ3p0czF0ZEZvNXRqTnowVENDVVNJbHFMQjFOT1pSVzZOMXhROVkxellvS25KdVpaVmhJZVdNSF9Hc2YzMzFZbnB1ZHRjMXFtSHR3UUo1ZFhYZVc3WmJmY1lmd3NXczQ1aw?oc=5",
-      "published_at": "2026-11-05T16:10:29+00:00",
-      "category": "Minnesota team news",
-      "source": "SKOR North",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: Minnesota Vikings pivoting to Carson Wentz as starting QB?",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "e9472ca7c1cc51b0",
-      "score": 78,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 97,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "NFL Insider Leans Towards Vikings Carson Wentz to Start vs. Bills",
-      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPbThKWTFnYVFOSHRfNGd0VHlGVThuZkdoTXJtMzB2M1hUX2dyZ1RraHRPMGota21QX3lGSklhaHR1aWVlY3pEWjRyUHg5RE5EQXRLZ1ZmSHoxYll0Sk9fWHlaQ01zdi1JNmQ2VHY0bXlBNFA0cDQ3UTZzQ2ZVNG85bWtEVEZPc1B2QWNNTkFMTQ?oc=5",
-      "published_at": "2026-11-05T16:21:53+00:00",
-      "category": "Minnesota team news",
-      "source": "Heavy.com",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: NFL Insider Leans Towards Vikings Carson Wentz to Start vs. Bills",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "b531ea41d8db228f",
-      "score": 77,
-      "score_breakdown": {
-        "relevance": 91,
-        "timeliness": 72,
-        "virality_potential": 46,
-        "ease_of_execution": 93
-      },
-      "team": "Timberwolves",
-      "title": "How to watch Timberwolves vs Rockets: Live stream NBA, TV channel",
-      "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQT2lQR0FHcnVOYVBxa1ZaempyYklZcGphc0VJbzZ6R0lzSGRrYzlrbjh1OE94OWdpYzNFQW01dUgzTGh6RXFnMl9FZ1V3MkhDbnc3eGdlMG9mUXh1U21MbG9uS3g5VGdTbGdhVmh1Ti0yQkM5d3lHZy1FUUZoVV9lbU1ram44a2pjV3FV?oc=5",
-      "published_at": "2026-11-05T00:30:00+00:00",
-      "category": "Minnesota team news",
-      "source": "Yahoo Sports",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 2,
-      "trend_signal": "Early signal",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Timberwolves story: How to watch Timberwolves vs Rockets: Live stream NBA, TV channel",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "3aa1b3bc1afd537a",
-      "score": 76,
-      "score_breakdown": {
-        "relevance": 67,
-        "timeliness": 93,
-        "virality_potential": 51,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "Vikings' Biggest Defensive Concern Can Be Solved by a Trade Call With Eagles",
-      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOa05CdXpaWGVBdFpWUEZoVEtKbm1NRnNtVDV3blhMMnl6SExKNEF6QzFSOG9BSV9PaW83UElNU2h5YllZQTBKM0xybEJhdDVFb1RtMFQwd3lTZ1MtbjI1ODdQY2h4MldDYmlGX2pmV1Q4am9aZzZONXJ0dUNwTVVvSEtfRXNuWHRFMENRaTk1NjVycEdpdmIyYmhSRUdqUjVyUFhNLXg1Ty1jZ1Z6RXgtQ1Bza1V5cVZHM3VoNGdDRVZVQQ?oc=5",
-      "published_at": "2026-11-05T13:49:27+00:00",
-      "category": "Minnesota team news",
-      "source": "Sports Illustrated",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [
-        "trade"
-      ],
-      "format": "Fast explainer + reaction",
-      "hook_draft": "What Vikings fans need to know about this: Vikings' Biggest Defensive Concern Can Be Solved by a Trade Call With Eagles",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "2b8b962b26571eff",
-      "score": 76,
-      "score_breakdown": {
-        "relevance": 67,
-        "timeliness": 99,
-        "virality_potential": 46,
-        "ease_of_execution": 93
-      },
-      "team": "Lynx",
-      "title": "Kayla McBride Receives 2026 Seasonlong WNBA Cares Community Assist Award",
-      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxORklybENtVVlWNTBVdWZFc1FacjlyTF9LRWVYb0ZZWG1FSGRGM2RKbDNLcXBqUnhnVFVkN0hYczUzcjVjYkFhMlFlRE4xQ0Rmc2ZldUU1ak1WSlY0UnRiemxkSE51SWUwMjhGTExUOE9SMjZFWUlLZEFoNnFGdnpVTTRHeEtkUUctODdCMHB5MkF1OEE?oc=5",
-      "published_at": "2026-11-05T17:17:21+00:00",
-      "category": "Minnesota team news",
-      "source": "WNBA",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 2,
-      "trend_signal": "Early signal",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Lynx story: Kayla McBride Receives 2026 Seasonlong WNBA Cares Community Assist Award",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "26b85b0935d6c312",
-      "score": 76,
-      "score_breakdown": {
-        "relevance": 67,
-        "timeliness": 96,
-        "virality_potential": 51,
-        "ease_of_execution": 93
-      },
-      "team": "Minnesota United",
-      "title": "Storylines | Minnesota United’s Playoff Probabilities",
-      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNbWVZaEJ1bGRkYXhLWFVFME1GN0IzZ0U0LUIxa0xzbld3WXdJUmVUcDF6TUhPSFNwNnBHZXRyc01PVk51QTRmbDIyRmVyN003MGdtTGs5WEVucy1lWW95X1RfLTJjYXNtNHpWdlJKdnRpRWNSTGttSGlmRXJRcTEtQ25pRWk?oc=5",
-      "published_at": "2026-11-05T15:45:36+00:00",
-      "category": "Minnesota team news",
-      "source": "Minnesota United FC",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [
-        "playoff"
-      ],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Minnesota United story: Storylines | Minnesota United’s Playoff Probabilities",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "46f6933604222fb5",
-      "score": 75,
-      "score_breakdown": {
-        "relevance": 67,
-        "timeliness": 96,
-        "virality_potential": 46,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "Bills vs. Vikings prediction, odds, pick for Week 9 Monday Night Football",
-      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQQVlwNXZvWDZXRjJlbno1UnRBSUJmZDZNVXlhcXdlclBXcEtEbnlHc0Rtc2xCd0VZN0VFZVROOER3OFJRVHFnM3RZZkVKNDRfR293SndKVndWYWRtOXd2Q24zRFNSUTgzRmtNbU1QTVZrMHRQLWNHaEpDYnRxOHhBVTVpVDJ6R1ph?oc=5",
-      "published_at": "2026-11-05T15:31:16+00:00",
-      "category": "Minnesota team news",
-      "source": "Yahoo Sports",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 2,
-      "trend_signal": "Early signal",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: Bills vs. Vikings prediction, odds, pick for Week 9 Monday Night Football",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "9a1ed35b7a7b0067",
-      "score": 75,
-      "score_breakdown": {
-        "relevance": 91,
-        "timeliness": 73,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "Buffalo Bills vs. Minnesota Vikings Week 9 MNF Preview | NFL Daily",
-      "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE9PLXZzNFFKNkZ4b3lRa0ozSFoyaVdDU0JPU3dwOGFTc0VOZ0pHMlcxcVJHM1p0WVpxNkpEV2dqOGtZN0FQME1ReDdTNy1XQjNMQVJmaTVCYmtVRWFXN1hDSU80aWNPZHdhOTdTRGtWN3NmVjZSNi1yajJlcUQ?oc=5",
-      "published_at": "2026-11-05T01:38:54+00:00",
-      "category": "Minnesota team news",
-      "source": "NFL.com",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: Buffalo Bills vs. Minnesota Vikings Week 9 MNF Preview | NFL Daily",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "c7ce24216981dfef",
-      "score": 75,
-      "score_breakdown": {
-        "relevance": 67,
-        "timeliness": 99,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Lynx",
-      "title": "Paige Bueckers Wins 2026 WNBA Dawn Staley Community Leadership Award",
-      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPeGpoaVVCNFZmSjNOb2tGaDc3NmhmcnZnSnZUUy05aDlGQVlOMDRBdDEtUHJTOGkxWnlvWktmelhMZnJmLXY5ZjJxNEpCQ2Frekw0d1FGZmtRV21MYXI2aUpkaFJNUUg4RW05QUUzbVNoUDBfMmhRTENZcFdEOEdUWXpOSUtFWkhtdkpMLUpnb3U3T1RVcUtKc3pUZC1VRWNOMHpHZnhCbENmRGxnVDVxaDd2bw?oc=5",
-      "published_at": "2026-11-05T17:22:46+00:00",
-      "category": "Minnesota team news",
-      "source": "Bleacher Report",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Lynx story: Paige Bueckers Wins 2026 WNBA Dawn Staley Community Leadership Award",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "35260755c45bc869",
-      "score": 75,
-      "score_breakdown": {
-        "relevance": 67,
-        "timeliness": 99,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Gophers",
-      "title": "How to watch No. 5 UCLA vs. Minnesota: TV channel and streaming options for November 7",
-      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNNE5SaGt0MnYxdFROd0YzUV9DTjFYRVYtXzlZZkxZRURoMXRIT281RkJqa2lyVUtTRjJMTktoUlpXMWVrOGZzS0VpRHdnbkxOZ1I3VU1JRUxHRVpiSGxRbVJDc2VIYllUQmpKQWRqODM2ZEozdWJMb1E2WVVFdDBxd0tLRGNUbXpzeUd2YW82R3B6SWZ2TWFBVDhfQzg?oc=5",
-      "published_at": "2026-11-05T17:12:45+00:00",
-      "category": "Minnesota team news",
-      "source": "The New York Times",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Gophers story: How to watch No. 5 UCLA vs. Minnesota: TV channel and streaming options for November 7",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "8cdf5dadd7ce4331",
-      "score": 74,
-      "score_breakdown": {
-        "relevance": 67,
-        "timeliness": 89,
-        "virality_potential": 51,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "Scoggins: Vikings must go all-in at trade deadline — the future can wait",
-      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPWS1mZFVRUE4ta21jNV85c0x5LVU3NUFMWktvUDRvSkRjRmVOaUZTS1NFMnA0b3NyaFZZcHQ1NVQ5LXhNaGxGNkxhckRuMFRzSXpZbkdIdTFrUWFhMDl2Umg3SmNsSWc2ay1xaGF2SjNVTXVUeEhNdkRJXzAyTldrNVMwTGY0Z3Z3Q1lLNXVWRjdVNXVRNzBUSkN6UEJfdUl1VDFDQmg3TnZVSTZsV0ljR0Fmc1U1VkV3eHIzbi14M2lUcVFoVUpoRWVSN2RyQ1k?oc=5",
-      "published_at": "2026-11-05T11:30:00+00:00",
-      "category": "Minnesota team news",
-      "source": "Star Tribune",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [
-        "trade"
-      ],
-      "format": "Fast explainer + reaction",
-      "hook_draft": "What Vikings fans need to know about this: Scoggins: Vikings must go all-in at trade deadline — the future can wait",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
