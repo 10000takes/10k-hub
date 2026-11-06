@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partnerships Tab Guide | 10K Hub</title>
+<style>
+:root{color-scheme:dark;--bg:#0f161d;--panel:#18222c;--ink:#e9eef2;--mute:#aab6c1;--line:#2a3743;--acc:#4fb890;--link:#ff8178}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:900px;margin:0 auto;padding:32px 20px 64px}h1,h2,h3{line-height:1.2}h1{font-size:2rem;margin:12px 0 8px}h2{font-size:1.35rem;margin:28px 0 10px}h3{font-size:1.05rem;margin:18px 0 6px}p,li{color:var(--mute)}a{color:var(--link)}.back{font-size:.95rem}.intro{font-size:1.05rem}.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px 18px;margin:12px 0}ul,ol{padding-left:24px}li{margin:6px 0}strong{color:var(--ink)}code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#223140;border-radius:4px;padding:1px 5px}.note{border-left:4px solid var(--acc)}
+</style>
+</head>
+<body>
+<main>
+<a class="back" href="index.html#partnerships">← Back to Partnerships in 10K Hub</a>
+<h1>Partnerships Tab Guide</h1>
+<p class="intro">A practical guide for Cody and anyone entering 10K Takes client, contract, prospect, and pipeline information.</p>
+
+<section class="card note">
+<strong>What this workspace is:</strong> a private CRM backed by the separate 10K Takes Sales Worker and its D1 database. It is connected to the Partnerships tab, not the public GitHub Pages data files. The first release stores records and calculates simple summaries from the values people enter.
+</section>
+
+<h2>Connect to the Workspace</h2>
+<ol>
+ <li>When the connection panel is shown, enter the Partnerships Worker URL and the private access token provided by the account owner, then choose <strong>Connect</strong>.</li>
+ <li>After a successful connection, the connection panel hides and the CRM loads. It may appear again if the browser session has ended or the connection fails.</li>
+ <li>The token is a shared credential for the CRM. The dashboard PIN is only a convenience screen; it does not control server access. Do not put the token in GitHub files, spreadsheets, email, or other public material.</li>
+</ol>
+
+<h2>Overview</h2>
+<p>Overview summarizes the records saved in the CRM:</p>
+<ul>
+ <li><strong>Monthly Recurring Revenue:</strong> monthly revenue from clients marked Active.</li>
+ <li><strong>Active Clients:</strong> count of client records marked Active.</li>
+ <li><strong>Total Contracted Revenue:</strong> sum of the total contract values entered on client records.</li>
+ <li><strong>Open Sales Pipeline:</strong> total estimated value of leads that are not Closed Won or Closed Lost.</li>
+ <li><strong>Weighted Pipeline:</strong> open lead value multiplied by each lead’s closing probability.</li>
+ <li><strong>New Revenue This Month:</strong> monthly revenue on client records created this calendar month. This is not a payment ledger.</li>
+ <li><strong>Outstanding Proposals:</strong> leads in Proposal Sent or Negotiation.</li>
+ <li><strong>Contracts Expiring in 90 Days:</strong> client records with a contract end date within the next 90 days.</li>
+</ul>
+<p><strong>Today’s Priorities</strong> flags open leads with missing or due follow-up dates and client contracts with an end date in the past or within roughly 90 days. <strong>Pipeline Overview</strong> groups lead counts and estimated values by stage. <strong>Partnership Recommendations</strong> uses simple follow-up and renewal rules; it is not AI-generated advice.</p>
+
+<h2>Active Clients</h2>
+<p>Choose <strong>Active Clients → Add Client</strong> to enter a current sponsor. Use <strong>Edit</strong> to update its record. The form stores company and contact details, contract dates and value, recurring revenue, payment information, renewal likelihood, follow-up dates, deliverable notes, and internal notes.</p>
+<p><strong>Contract Status</strong> is Active or Inactive. Only Active clients are included in the MRR and Active Clients totals. The deliverables field is currently a notes/JSON field; the dashboard does not yet calculate completion percentages or keep monthly deliverable history.</p>
+<p>The Contract Document URL field stores a link only; it does not upload or secure the document. Use a file-sharing link with appropriate permissions. Avoid putting confidential documents in a public repository.</p>
+
+<h2>Leads &amp; Pipeline</h2>
+<p>Choose <strong>Add Lead</strong> to create a prospect you may pursue. The stage dropdown on a card or drag-and-drop lets you move it through the pipeline:</p>
+<p>Discovered → Qualified → Contact Identified → Outreach Sent → Conversation Started → Meeting Scheduled → Proposal Sent → Negotiation → Closed Won / Closed Lost / Nurture.</p>
+<p>Record the estimated monthly and total value, probability, priority, contact details, source, campaign ideas, and next follow-up date. Changing a stage adds an entry to the lead’s Activity Timeline. Open a card with <strong>Edit</strong> to add notes or log a call, meeting, email, proposal, or other activity.</p>
+<p>Use the search box, stage/industry/source filters, and sort menu to find leads. CSV import expects a header row; useful column names include <code>company_name</code>, <code>industry</code>, <code>stage</code>, <code>website</code>, <code>lead_source</code>, <code>priority</code>, <code>estimated_monthly_value</code>, <code>estimated_total_value</code>, <code>probability</code>, <code>last_contact</code>, and <code>next_follow_up</code>. Duplicate company names in the Leads category are skipped.</p>
+
+<h2>Brand Discovery</h2>
+<p>This is a research queue for brands someone has already found. Choose <strong>Add Researched Brand</strong>, capture the source link, research date, confidence, fit rationale, and possible campaign ideas. Choose <strong>Add to Leads</strong> when the company is ready for active follow-up.</p>
+<p>Discovery is manual in this release: the system does not search the web or social platforms, verify company budgets, identify contacts automatically, or generate fit scores. Treat notes and scores as research prompts, not verified facts.</p>
+
+<h2>What It Does Not Do Yet</h2>
+<ul>
+ <li>It does not send email or sales outreach.</li>
+ <li>It does not automatically discover brands or research decision-makers.</li>
+ <li>It does not provide AI lead scoring, AI-generated sales advice, or proposal/pricing generation.</li>
+ <li>It does not yet keep historical revenue charts or a complete monthly deliverables completion tracker.</li>
+ <li>It does not provide separate user accounts or permission levels. Anyone with the shared Worker token can access the CRM.</li>
+</ul>
+
+<section class="card note"><strong>Data entry tip:</strong> use real figures when known, leave estimates blank when uncertain, set a next follow-up date for every active lead, and include a source when recording a researched brand. Never treat an estimate as confirmed budget or buying intent.</section>
+</main>
+</body>
+</html>
