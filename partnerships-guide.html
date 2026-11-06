@@ -14,10 +14,10 @@ main{max-width:900px;margin:0 auto;padding:32px 20px 64px}h1,h2,h3{line-height:1
 <main>
 <a class="back" href="index.html#partnerships">← Back to Partnerships in 10K Hub</a>
 <h1>Partnerships Tab Guide</h1>
-<p class="intro">A practical guide for Cody and anyone entering 10K Takes client, contract, prospect, and pipeline information.</p>
+<p class="intro">A practical guide for Cody and anyone using the 10K Takes client, contract, prospect, outreach, revenue, and deliverables workspace.</p>
 
 <section class="card note">
-<strong>What this workspace is:</strong> a private CRM backed by the separate 10K Takes Sales Worker and its D1 database. It is connected to the Partnerships tab, not the public GitHub Pages data files. The first release stores records and calculates simple summaries from the values people enter.
+<strong>What this workspace is:</strong> a private CRM backed by the separate 10K Takes Partnerships Worker and its D1 database. It is connected to the Partnerships tab, not the public GitHub Pages data files. It can record actual monthly revenue and deliverable completion, search a public news feed for research leads, and prepare AI-assisted drafts when the optional service bindings are configured. Email is sent only one message at a time after a human previews and approves it.
 </section>
 
 <h2>Connect to the Workspace</h2>
@@ -39,7 +39,11 @@ main{max-width:900px;margin:0 auto;padding:32px 20px 64px}h1,h2,h3{line-height:1
  <li><strong>Outstanding Proposals:</strong> leads in Proposal Sent or Negotiation.</li>
  <li><strong>Contracts Expiring in 90 Days:</strong> client records with a contract end date within the next 90 days.</li>
 </ul>
-<p><strong>Today’s Priorities</strong> flags open leads with missing or due follow-up dates and client contracts with an end date in the past or within roughly 90 days. <strong>Pipeline Overview</strong> groups lead counts and estimated values by stage. <strong>Partnership Recommendations</strong> uses simple follow-up and renewal rules; it is not AI-generated advice.</p>
+<p><strong>Today’s Priorities</strong> flags open leads with missing or due follow-up dates and client contracts with an end date in the past or within roughly 90 days. <strong>Pipeline Overview</strong> groups lead counts and estimated values by stage. <strong>Partnership Recommendations</strong> includes rule-based reminders. Optional AI advice and scoring can be requested from the lead tools; treat it as a draft and inspect the evidence and assumptions.</p>
+<h3>Historical Revenue</h3>
+<p>Use the form to log revenue actually received for a client and month. Entries are retained in the private Worker database and shown in a rolling monthly bar chart. Do not use this ledger for estimated contract value. Enter corrections as separate, clearly described entries; the current chart totals received entries only.</p>
+<h3>Monthly Deliverables Tracker</h3>
+<p>Add one commitment for each recurring client deliverable (for example, four short videos each month). Choose a month and set how many units were completed. Add the published URL when available. The tracker shows completed units against the commitment and keeps month-by-month completion history. Define commitments once per client; changing the plan should be reflected in a new or revised definition before tracking subsequent months.</p>
 
 <h2>Active Clients</h2>
 <p>Choose <strong>Active Clients → Add Client</strong> to enter a current sponsor. Use <strong>Edit</strong> to update its record. The form stores company and contact details, contract dates and value, recurring revenue, payment information, renewal likelihood, follow-up dates, deliverable notes, and internal notes.</p>
@@ -53,19 +57,31 @@ main{max-width:900px;margin:0 auto;padding:32px 20px 64px}h1,h2,h3{line-height:1
 <p>Use the search box, stage/industry/source filters, and sort menu to find leads. CSV import expects a header row; useful column names include <code>company_name</code>, <code>industry</code>, <code>stage</code>, <code>website</code>, <code>lead_source</code>, <code>priority</code>, <code>estimated_monthly_value</code>, <code>estimated_total_value</code>, <code>probability</code>, <code>last_contact</code>, and <code>next_follow_up</code>. Duplicate company names in the Leads category are skipped.</p>
 
 <h2>Brand Discovery</h2>
-<p>This is a research queue for brands someone has already found. Choose <strong>Add Researched Brand</strong>, capture the source link, research date, confidence, fit rationale, and possible campaign ideas. Choose <strong>Add to Leads</strong> when the company is ready for active follow-up.</p>
-<p>Discovery is manual in this release: the system does not search the web or social platforms, verify company budgets, identify contacts automatically, or generate fit scores. Treat notes and scores as research prompts, not verified facts.</p>
+<p>Enter a query and choose <strong>Search News</strong> to search Google News RSS for public coverage. Open the cited article, verify the company and Minnesota/sports relevance, and use <strong>Save as Prospect</strong> to keep a sourced research lead. The saved item is explicitly marked unverified. Search does not crawl social media, confirm sponsorship budgets, or prove buying intent. Research decision-maker roles using company-published pages and record source links; do not infer private contact information.</p>
 
-<h2>What It Does Not Do Yet</h2>
+<h2>AI Lead Scoring, Advice, and Proposals</h2>
+<p>In Leads &amp; Pipeline, select a lead and choose <strong>Score Lead</strong>, <strong>Sales Advice</strong>, <strong>Proposal / Pricing Draft</strong>, or <strong>Research Relevant Decision-maker Roles</strong>, then choose <strong>Generate Draft</strong>. The assistant receives the selected CRM fields and any pricing assumptions entered in the form. It can suggest roles to look for, but it does not verify a person's identity or contact details. It should state evidence and assumptions and must not invent budgets, audience figures, contacts, or deal terms. Add only approved rates to the pricing field; if no rates are supplied, verify pricing yourself. Review proposal language before sharing.</p>
+<p>AI use is optional and requires the Cloudflare Workers AI binding to be configured for this Worker. Until it is enabled, the dashboard shows an explanatory unavailable message. Workers AI has a free daily allowance, but usage above the allowance and certain models may incur charges; check current Cloudflare pricing before enabling it.</p>
+
+<h2>Sales Outreach Email</h2>
+<p>In Leads &amp; Pipeline → Draft Sales Outreach, choose the lead, confirm the recipient address, and write or generate a draft. Read the whole message and correct it before using <strong>Preview &amp; Send One Email</strong>. A confirmation dialog displays the recipient, subject, and body before the Worker sends exactly that email and logs it in the lead timeline. There is no automatic bulk sending or scheduled follow-up.</p>
+<p>Email requires an approved sender domain and the optional Worker secrets <code>RESEND_API_KEY</code> and <code>RESEND_FROM</code>. Do not add these to GitHub or the dashboard. Configure them only in Cloudflare Worker secrets after account-owner review. Resend currently offers a free tier with limits; check current pricing before setup. Sending is not active until the secrets are configured and the Worker is deployed.</p>
+
+<h2>Data Quality and Boundaries</h2>
 <ul>
- <li>It does not send email or sales outreach.</li>
- <li>It does not automatically discover brands or research decision-makers.</li>
- <li>It does not provide AI lead scoring, AI-generated sales advice, or proposal/pricing generation.</li>
- <li>It does not yet keep historical revenue charts or a complete monthly deliverables completion tracker.</li>
+ <li>News discovery finds public articles only; it does not automatically identify verified decision-makers, private emails, sponsorship budgets, or buying intent.</li>
+ <li>AI scoring and proposal/pricing suggestions are drafts, not approved prices or a guarantee of deal likelihood. The model only has the CRM facts provided in its request.</li>
+ <li>The historical revenue chart reflects manually entered revenue receipts. It is only complete if all receipts are entered and reconciled.</li>
+ <li>Deliverable completion is a user-maintained tracker. It cannot confirm publication unless a source link is added.</li>
+ <li>Email must be reviewed and confirmed per recipient. Never treat a generated draft as approved outreach.</li>
  <li>It does not provide separate user accounts or permission levels. Anyone with the shared Worker token can access the CRM.</li>
 </ul>
 
 <section class="card note"><strong>Data entry tip:</strong> use real figures when known, leave estimates blank when uncertain, set a next follow-up date for every active lead, and include a source when recording a researched brand. Never treat an estimate as confirmed budget or buying intent.</section>
+
+<h2>Worker Setup Notes for the Owner</h2>
+<p>These code features require applying the additive migration <code>workers/sales-command-center/migrations/0002_partnerships_features.sql</code> to the existing D1 database before deploying the updated Worker. Run this from the sales Worker folder with <code>npx wrangler d1 execute 10k-takes-sales-command-center --remote --file=migrations/0002_partnerships_features.sql</code>. It adds tables and does not delete current CRM records. Back up the database before applying schema changes.</p>
+<p>Optional AI setup requires adding an <code>ai</code> binding named <code>AI</code> in <code>wrangler.jsonc</code> (or the Cloudflare dashboard) and deploying. Optional email setup requires verified Resend sender settings and Worker secrets for <code>RESEND_API_KEY</code> and <code>RESEND_FROM</code>. Wrangler secret commands deploy immediately, so configure secrets and deploy only when ready. Neither optional integration is enabled by this code edit alone.</p>
 </main>
 </body>
 </html>
