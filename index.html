@@ -187,10 +187,10 @@ html.locked #gate{display:flex}
 <div class="scroll gt"><table id="t2"></table></div>
 </div>
 </details>
-<hr class="section-divider" aria-hidden="true">
 </div>
 </details>
 <hr class="section-divider" aria-hidden="true">
+<div id="campaignMainSections"></div>
 </section>
 
 <section role="tabpanel" id="tab-subsidiary" aria-labelledby="tabbtn-subsidiary" hidden>
@@ -242,12 +242,14 @@ html.locked #gate{display:flex}
 <div class="plats" id="pCards"></div>
 <hr class="section-divider" aria-hidden="true">
 <details class="analytics-subsection" id="pCampBox"><summary>By Campaign</summary><div class="analytics-subsection-body"><div class="scroll"><table id="pCampT"></table></div></div></details>
-<hr class="section-divider" aria-hidden="true">
+ </div>
+<div id="campaignMainSectionsSource">
 <details class="analytics-subsection"><summary>By Platform</summary><div class="analytics-subsection-body"><div class="scroll"><table id="pPlat"></table></div></div></details>
 <hr class="section-divider" aria-hidden="true">
 <details class="analytics-subsection"><summary>Top Posts</summary><div class="analytics-subsection-body"><div class="plats" id="pTop"></div></div></details>
 <hr class="section-divider" aria-hidden="true">
 <details class="analytics-subsection"><summary>All Posts</summary><div class="analytics-subsection-body"><div class="scroll"><table id="pPosts"></table></div></div></details>
+</div>
 <hr class="section-divider" aria-hidden="true">
 <details class="analytics-subsection"><summary>Client Report</summary><div class="analytics-subsection-body">
 <div class="panel pform">
@@ -256,7 +258,6 @@ html.locked #gate{display:flex}
 <div class="wide row"><button id="pReport">Create PDF report</button><span class="sub">Opens the print dialog. Choose <b>Save as PDF</b> as the destination.</span></div>
 </div>
 </div></details>
-</div>
 <hr class="section-divider" aria-hidden="true">
 <details class="analytics-subsection"><summary>Add a Post</summary><div class="analytics-subsection-body">
 <div class="sub" style="margin-bottom:6px">Paste every link for one campaign, one per line, and it writes one line per post for posts.csv. Paste those lines at the bottom of the file on GitHub, then the next daily run starts collecting it.</div>
@@ -581,6 +582,7 @@ function renderGrowth(){
  [[1,s1,ann],[2,s2,null],[3,s3,null]].forEach(x=>{drawChart(x[0],x[1],x[2]);statsTable(x[0],x[1])})}
 $('sm').onchange=renderGrowth;
 const SECS=['analytics','content-generation','partnerships','merchandise'],SUBS=['main','subsidiary','partner'];
+const campaignSectionsSource=$('campaignMainSectionsSource'),campaignSectionsTarget=$('campaignMainSections');if(campaignSectionsSource&&campaignSectionsTarget){campaignSectionsTarget.append(...campaignSectionsSource.childNodes);campaignSectionsSource.remove()}
 const SECNAME={analytics:'Analytics','content-generation':'Content Intelligence',partnerships:'Partnerships',merchandise:'Merchandise'},SUBNAME={main:'Main Account',subsidiary:'Subsidiary Accounts',partner:'Campaign Tracker'};
 let lastSub='main';
 function route(){let [sec,sub]=location.hash.slice(1).split('/');
@@ -647,6 +649,7 @@ function pTopHTML(list,month){const cut=cutFor(month);return list.map(p=>({p,s:p
 function renderPartner(){
  const months=[...new Set(PO.map(p=>p.month))].sort().reverse();
  $('pDemo').hidden=!PDEMO;$('pEmpty').hidden=!!PO.length;$('pBody').hidden=!PO.length;
+ $('campaignMainSections').hidden=!PO.length;
  $('dlClient').innerHTML=[...new Set(PO.map(p=>p.client))].map(c=>'<option value="'+esc(c)+'">').join('');
  if(!PO.length)return;
  if(!months.includes(PSEL.m))PSEL.m=months[0];
