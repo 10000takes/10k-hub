@@ -149,6 +149,7 @@ html.locked #gate{display:flex}
 <nav class="tabs subtabs" role="tablist" aria-label="Analytics views">
 <button role="tab" id="tabbtn-main" aria-controls="tab-main" aria-selected="true" data-tab="main">Main Account</button>
 <button role="tab" id="tabbtn-subsidiary" aria-controls="tab-subsidiary" aria-selected="false" tabindex="-1" data-tab="subsidiary">Subsidiary Accounts</button>
+<button role="tab" id="tabbtn-partner" aria-controls="tab-partner" aria-selected="false" tabindex="-1" data-tab="partner">Campaign Tracker</button>
 </nav>
 
 <section role="tabpanel" id="tab-main" aria-labelledby="tabbtn-main">
@@ -579,14 +580,13 @@ function renderGrowth(){
  s3=[{name:'All subsidiaries',color:'var(--ink)',bold:true,pts:tot(s3.map(s=>s.pts))}].concat(s3);
  [[1,s1,ann],[2,s2,null],[3,s3,null]].forEach(x=>{drawChart(x[0],x[1],x[2]);statsTable(x[0],x[1])})}
 $('sm').onchange=renderGrowth;
-const partnerTracker=$('tab-partner');if(partnerTracker){partnerTracker.removeAttribute('hidden');partnerTracker.removeAttribute('role');partnerTracker.removeAttribute('aria-labelledby');partnerTracker.id='mainCampaignTracker';$('tab-main').append(partnerTracker);$('tabbtn-partner').remove()}
-const SECS=['analytics','content-generation','partnerships','merchandise'],SUBS=['main','subsidiary'];
-const SECNAME={analytics:'Analytics','content-generation':'Content Intelligence',partnerships:'Partnerships',merchandise:'Merchandise'},SUBNAME={main:'Main Account',subsidiary:'Subsidiary Accounts',partner:'Partner Analytics'};
+const SECS=['analytics','content-generation','partnerships','merchandise'],SUBS=['main','subsidiary','partner'];
+const SECNAME={analytics:'Analytics','content-generation':'Content Intelligence',partnerships:'Partnerships',merchandise:'Merchandise'},SUBNAME={main:'Main Account',subsidiary:'Subsidiary Accounts',partner:'Campaign Tracker'};
 let lastSub='main';
 function route(){let [sec,sub]=location.hash.slice(1).split('/');
  if(sec==='sales')sec='partnerships'; // keep earlier Sales tab links working
  if(SUBS.includes(sec)){sub=sec;sec='analytics'}      // old bookmarks like #subsidiary still work
- if(!SECS.includes(sec))sec='analytics';if(sub==='partner')sub='main';if(!SUBS.includes(sub))sub=lastSub;lastSub=sub;
+ if(!SECS.includes(sec))sec='analytics';if(!SUBS.includes(sub))sub=lastSub;lastSub=sub;
  SECS.forEach(x=>{const on=x===sec,b=$('secbtn-'+x);$('sec-'+x).hidden=!on;b.setAttribute('aria-selected',on?'true':'false');b.tabIndex=on?0:-1});
  SUBS.forEach(x=>{const on=x===sub,b=$('tabbtn-'+x);$('tab-'+x).hidden=!on;b.setAttribute('aria-selected',on?'true':'false');b.tabIndex=on?0:-1});
  $('toggleImport').hidden=sec!=='analytics';if(sec!=='analytics')$('importBox').style.display='none';
