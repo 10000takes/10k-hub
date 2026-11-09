@@ -3,6 +3,11 @@ name: Collect follower counts
 on:
   schedule:
     - cron: "0 11 * * *"   # every day at 11:00 UTC (6 AM Central during daylight time)
+  push:
+    branches:
+      - main
+    paths:
+      - posts.csv
   workflow_dispatch:        # lets you run it by hand from the Actions tab
 
 permissions:
