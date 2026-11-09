@@ -239,6 +239,7 @@ html.locked #gate{display:flex}
 <div class="panel soon" id="pEmpty" hidden><div class="big">No campaign posts yet</div><div class="sub" style="margin-top:8px">Add posts below, then paste the lines into posts.csv. Or preview the layout with sample data.</div></div>
 <div id="pBody">
 <div class="plats" id="pCards"></div>
+<div class="sub" id="pAsOf"></div>
 <hr class="section-divider" aria-hidden="true">
 <details class="analytics-subsection" id="pCampBox"><summary>By Campaign</summary><div class="analytics-subsection-body"><div class="scroll"><table id="pCampT"></table></div></div></details>
  </div>
@@ -614,7 +615,7 @@ const monthEnd=m=>{const[y,mo]=m.split('-').map(Number);return new Date(Date.UTC
 const prevMonth=m=>{const[y,mo]=m.split('-').map(Number);const d=new Date(Date.UTC(y,mo-2,1));return d.toISOString().slice(0,7)};
 const monthName=m=>new Date(m+'-15T00:00:00Z').toLocaleDateString('en-US',{month:'long',year:'numeric',timeZone:'UTC'});
 const todayS=()=>new Date().toISOString().slice(0,10);
-const cutFor=m=>{const e=monthEnd(m),t=todayS();return e<t?e:t};
+const cutFor=m=>{const t=todayS();return PM.reduce((latest,r)=>r.d<=t&&r.d>latest?r.d:latest,'')||t};
 function postStat(p,cut){const g=m=>{const a=PMX[p.key+'|'+m];return a?at(a,cut):null};
  const hasE=ENG.some(m=>g(m)!=null);let asof='';['views',...ENG].forEach(m=>{const a=PMX[p.key+'|'+m];if(a)a.forEach(x=>{if(x.d<=cut&&x.d>asof)asof=x.d})});
  return{v:p.mv!==''?Number(p.mv):g('views'),e:p.me!==''?Number(p.me):(hasE?ENG.reduce((s,m)=>s+(g(m)||0),0):null),manual:p.mv!==''||p.me!=='',asof}}
@@ -655,7 +656,7 @@ function renderPartner(){
  const ca=[...new Set(PO.filter(p=>p.month===PSEL.m&&(PSEL.c==='*'||p.client===PSEL.c)).map(p=>p.campaign||'(no campaign)'))].sort();if(PSEL.k!=='*'&&!ca.includes(PSEL.k))PSEL.k='*';
  $('pCamp').innerHTML='<option value="*"'+(PSEL.k==='*'?' selected':'')+'>All campaigns</option>'+ca.map(k=>'<option value="'+esc(k)+'"'+(k===PSEL.k?' selected':'')+'>'+esc(k)+'</option>').join('');
  const list=pSel(),A=pAgg(list,PSEL.m),pl=pPrev(),P=pl.length?pAgg(pl,prevMonth(PSEL.m)):null;
- $('pCampBox').hidden=new Set(list.map(p=>p.campaign)).size<2;$('pCampT').innerHTML=pCampHTML(list,PSEL.m);$('pCards').innerHTML=pCardsHTML(A,P);$('pPlat').innerHTML=pPlatHTML(list,PSEL.m);$('pPosts').innerHTML=pPostsHTML(list,PSEL.m);$('pTop').innerHTML=pTopHTML(list,PSEL.m)||'<div class="sub">No numbers yet.</div>'}
+ $('pCampBox').hidden=new Set(list.map(p=>p.campaign)).size<2;$('pCampT').innerHTML=pCampHTML(list,PSEL.m);$('pCards').innerHTML=pCardsHTML(A,P);$('pAsOf').textContent=A.asof?'Performance metrics reflect the latest collected snapshot: '+A.asof+'.':'No collected performance metrics yet for these posts.';$('pPlat').innerHTML=pPlatHTML(list,PSEL.m);$('pPosts').innerHTML=pPostsHTML(list,PSEL.m);$('pTop').innerHTML=pTopHTML(list,PSEL.m)||'<div class="sub">No numbers yet.</div>'}
 const DEFS='YouTube: views are video views; engagements are likes and comments. X: views are post impressions; engagements are likes, replies, reposts, quotes and bookmarks. Instagram: views count plays and displays; engagements are likes, comments, shares and saves. TikTok: views are video views; engagements are likes, comments and shares. Threads: engagements are likes, replies, reposts and quotes. Figures marked * were entered by hand. Engagement rate is engagements divided by views. Platforms count views differently, so compare results within a platform rather than across platforms.';
 function buildReport(){const list=pSel(),A=pAgg(list,PSEL.m),pl=pPrev(),P=pl.length?pAgg(pl,prevMonth(PSEL.m)):null,client=PSEL.c==='*'?'All clients':PSEL.c,note=$('pNote').value.trim();
  const asof=A.asof?new Date(pd(A.asof)).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'}):'';
