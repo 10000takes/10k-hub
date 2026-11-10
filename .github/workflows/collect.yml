@@ -8,6 +8,9 @@ on:
       - main
     paths:
       - posts.csv
+      - collect_posts.py
+      - campaign_common.py
+      - .github/workflows/collect.yml
   workflow_dispatch:        # lets you run it by hand from the Actions tab
 
 permissions:
