@@ -245,16 +245,8 @@ html.locked #gate{display:flex}
 <details class="analytics-subsection"><summary>Campaign Performance</summary><div class="analytics-subsection-body"><p class="sub">Platform totals and post-level results in one view. Top posts are marked by views.</p><div class="scroll"><table id="pPerformance"></table></div><div id="pCampaignBox" hidden><h3 class="gh">By Campaign</h3><div class="scroll"><table id="pCampaignTable"></table></div></div></div></details>
  </div>
 <hr class="section-divider" aria-hidden="true">
-<details class="analytics-subsection"><summary>Client Report</summary><div class="analytics-subsection-body">
-<div class="panel pform">
-<label>Client logo (optional)<input type="file" id="pLogo" accept="image/*"></label>
-<label class="wide">Highlights for the client (optional)<textarea id="pNote" placeholder="Two or three sentences on how the campaign went."></textarea></label>
-<div class="wide row"><button id="pReport">Create PDF report</button><span class="sub">Opens the print dialog. Choose <b>Save as PDF</b> as the destination.</span></div>
-</div>
-</div></details>
-<hr class="section-divider" aria-hidden="true">
 <details class="analytics-subsection"><summary>Add a Post</summary><div class="analytics-subsection-body">
-<div class="sub" style="margin-bottom:6px">Paste every link for one campaign, one per line, and it writes one line per post for posts.csv. Paste those lines at the bottom of the file on GitHub, then the next daily run starts collecting it.</div>
+<div class="sub" style="margin-bottom:6px">Paste links for one campaign, one per line, to create posts.csv rows. For a post that cannot be tracked automatically, select manual stats and enter one link with its views and total engagements. Copy the rows into posts.csv on GitHub; they will appear in Campaign Performance and client reports after the site updates.</div>
 <div class="panel pform" id="pAdd">
 <label>Client<input type="text" id="aClient" list="dlClient"></label>
 <label>Campaign<input type="text" id="aCamp"></label>
@@ -262,10 +254,20 @@ html.locked #gate{display:flex}
 <label>Posted on<input type="date" id="aDate"></label>
 <label>Account<select id="aAcct"></select></label>
 <label>Fee for the whole batch (optional)<input type="number" id="aFee" min="0" step="1"></label>
-<div class="wide"><div class="sub" id="aPlat"></div><textarea id="aOut" readonly style="height:110px"></textarea></div>
+<label class="wide row" style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="aManual">Enter this post's stats manually (one post link only)</label>
+<div class="wide pform" id="aManualFields" hidden><label>Views<input type="number" id="aManualViews" min="0" step="1" inputmode="numeric"></label><label>Total tracked engagements<input type="number" id="aManualEngagements" min="0" step="1" inputmode="numeric"></label><div class="sub wide">Use the total shown in that platform's post insights. Manual numbers are marked with an asterisk in the report.</div></div>
+<div class="wide"><div class="sub" id="aPlat" aria-live="polite"></div><textarea id="aOut" readonly style="height:110px"></textarea></div>
 <div class="wide row"><button id="aCopy">Copy lines</button><a class="btn alt" href="https://github.com/10000takes/10k-takes-data/edit/main/posts.csv" target="_blank" rel="noopener">Open posts.csv on GitHub</a></div>
 </div>
 <datalist id="dlClient"></datalist>
+</div></details>
+<hr class="section-divider" aria-hidden="true">
+<details class="analytics-subsection"><summary>Client Results</summary><div class="analytics-subsection-body">
+<div class="panel pform">
+<label>Client logo (optional)<input type="file" id="pLogo" accept="image/*"></label>
+<label class="wide">Highlights for the client (optional)<textarea id="pNote" placeholder="Two or three sentences on how the campaign went."></textarea></label>
+<div class="wide row"><button id="pReport">Create PDF report</button><span class="sub">Opens the print dialog. Choose <b>Save as PDF</b> as the destination.</span></div>
+</div>
 </div></details>
 </div>
 </details>
@@ -672,14 +674,18 @@ function sampleData(){const m1=prevMonth(todayS().slice(0,7)),m0=prevMonth(m1),P
 const PLATHOST=[[/youtu(\.be|be\.com)/i,'YouTube'],[/(^|\.)(x|twitter)\.com/i,'X/Twitter'],[/instagram\.com/i,'Instagram'],[/tiktok\.com/i,'TikTok'],[/threads\.(net|com)/i,'Threads'],[/(facebook|fb)\.com|fb\.watch/i,'Facebook']];
 function csvQ(x){x=String(x==null?'':x);return /[",\n]/.test(x)?'"'+x.replace(/"/g,'""')+'"':x}
 function updAdd(){const links=$('aUrl').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),out=[],count={};let bad=0;
+ const manual=$('aManual').checked,views=$('aManualViews').value,engagements=$('aManualEngagements').value;
+ $('aManualFields').hidden=!manual;
+ if(manual&&(links.length!==1||views===''||engagements===''||!Number.isInteger(Number(views))||!Number.isInteger(Number(engagements))||Number(views)<0||Number(engagements)<0)){
+  $('aPlat').textContent=links.length!==1?'Manual entry needs exactly one post link.':'Enter whole-number views and total tracked engagements to create the CSV row.';$('aOut').value='';return}
  links.forEach(u=>{let h='';try{h=new URL(u).hostname}catch(e){}const pl=(PLATHOST.find(x=>x[0].test(h))||[0,''])[1];if(!pl){bad++;return}count[pl]=(count[pl]||0)+1;
-  out.push([$('aClient').value.trim(),$('aCamp').value.trim(),pl,$('aAcct').value==='Other'?'':$('aAcct').value,u,$('aDate').value,out.length?'':$('aFee').value,'','',''].map(csvQ).join(','))});
+  out.push([$('aClient').value.trim(),$('aCamp').value.trim(),pl,$('aAcct').value==='Other'?'':$('aAcct').value,u,$('aDate').value,out.length?'':$('aFee').value,manual?views:'',manual?engagements:'',''].map(csvQ).join(','))});
  const own=Object.keys(count).some(k=>k!=='YouTube'&&k!=='X/Twitter');
- $('aPlat').textContent=links.length?(out.length?'Detected '+out.length+' post'+(out.length>1?'s':'')+' ('+Object.entries(count).map(([k,v])=>v+' '+k).join(', ')+').':'')+(bad?' '+bad+' link'+(bad>1?'s':'')+' not recognized and skipped.':'')+($('aAcct').value==='Other'&&own?' Posts on accounts we do not own only show public numbers, so add manual numbers in posts.csv.':''):'';
+ $('aPlat').textContent=links.length?(out.length?'Detected '+out.length+' post'+(out.length>1?'s':'')+' ('+Object.entries(count).map(([k,v])=>v+' '+k).join(', ')+').':'')+(bad?' '+bad+' link'+(bad>1?'s':'')+' not recognized and skipped.':'')+(manual?' Manual stats will be included in the row.':'')+($('aAcct').value==='Other'&&own?' Posts on accounts we do not own only show public numbers, so add manual numbers in posts.csv.':''):'';
  $('aOut').value=out.join('\n')}
 $('aAcct').innerHTML=AC.map(a=>'<option>'+esc(a.n)+'</option>').join('')+'<option value="Other">Other (a creator or partner account)</option>';
 $('aDate').value=todayS();
-['aClient','aCamp','aUrl','aDate','aAcct','aFee'].forEach(id=>{$(id).oninput=updAdd;$(id).onchange=updAdd});
+['aClient','aCamp','aUrl','aDate','aAcct','aFee','aManual','aManualViews','aManualEngagements'].forEach(id=>{$(id).oninput=updAdd;$(id).onchange=updAdd});
 $('aCopy').onclick=()=>{const t=$('aOut');t.select();navigator.clipboard&&navigator.clipboard.writeText(t.value);$('aCopy').textContent='Copied';setTimeout(()=>$('aCopy').textContent='Copy lines',1500)};
 $('pMonth').onchange=e=>{PSEL.m=e.target.value;PSEL.k='*';renderPartner()};
 $('pClient').onchange=e=>{PSEL.c=e.target.value;PSEL.k='*';renderPartner()};
