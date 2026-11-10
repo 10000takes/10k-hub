@@ -255,7 +255,7 @@ html.locked #gate{display:flex}
 <label>Account<select id="aAcct"></select></label>
 <label>Fee for the whole batch (optional)<input type="number" id="aFee" min="0" step="1"></label>
 <label class="wide row" style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="aManual">Enter this post's stats manually (one post link only)</label>
-<div class="wide pform" id="aManualFields" hidden><label>Views<input type="number" id="aManualViews" min="0" step="1" inputmode="numeric"></label><label>Total tracked engagements<input type="number" id="aManualEngagements" min="0" step="1" inputmode="numeric"></label><div class="sub wide">Use the total shown in that platform's post insights. Manual numbers are marked with an asterisk in the report.</div></div>
+<div class="wide pform" id="aManualFields" hidden><label>Platform<select id="aManualPlatform"><option value="">Choose platform</option><option>YouTube</option><option>X/Twitter</option><option>Instagram</option><option>TikTok</option><option>Threads</option><option>Facebook</option></select></label><label>Views<input type="number" id="aManualViews" min="0" step="1" inputmode="numeric"></label><label>Total tracked engagements<input type="number" id="aManualEngagements" min="0" step="1" inputmode="numeric"></label><div class="sub wide">Use the total shown in that platform's post insights. Manual numbers are marked with an asterisk in the report.</div></div>
 <div class="wide"><div class="sub" id="aPlat" aria-live="polite"></div><textarea id="aOut" readonly style="height:110px"></textarea></div>
 <div class="wide row"><button id="aCopy">Copy lines</button><a class="btn alt" href="https://github.com/10000takes/10k-takes-data/edit/main/posts.csv" target="_blank" rel="noopener">Open posts.csv on GitHub</a></div>
 </div>
@@ -674,18 +674,18 @@ function sampleData(){const m1=prevMonth(todayS().slice(0,7)),m0=prevMonth(m1),P
 const PLATHOST=[[/youtu(\.be|be\.com)/i,'YouTube'],[/(^|\.)(x|twitter)\.com/i,'X/Twitter'],[/instagram\.com/i,'Instagram'],[/tiktok\.com/i,'TikTok'],[/threads\.(net|com)/i,'Threads'],[/(facebook|fb)\.com|fb\.watch/i,'Facebook']];
 function csvQ(x){x=String(x==null?'':x);return /[",\n]/.test(x)?'"'+x.replace(/"/g,'""')+'"':x}
 function updAdd(){const links=$('aUrl').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),out=[],count={};let bad=0;
- const manual=$('aManual').checked,views=$('aManualViews').value,engagements=$('aManualEngagements').value;
+ const manual=$('aManual').checked,platform=$('aManualPlatform').value,views=$('aManualViews').value,engagements=$('aManualEngagements').value;
  $('aManualFields').hidden=!manual;
- if(manual&&(links.length!==1||views===''||engagements===''||!Number.isInteger(Number(views))||!Number.isInteger(Number(engagements))||Number(views)<0||Number(engagements)<0)){
-  $('aPlat').textContent=links.length!==1?'Manual entry needs exactly one post link.':'Enter whole-number views and total tracked engagements to create the CSV row.';$('aOut').value='';return}
- links.forEach(u=>{let h='';try{h=new URL(u).hostname}catch(e){}const pl=(PLATHOST.find(x=>x[0].test(h))||[0,''])[1];if(!pl){bad++;return}count[pl]=(count[pl]||0)+1;
+ if(manual&&(links.length!==1||!platform||views===''||engagements===''||!Number.isInteger(Number(views))||!Number.isInteger(Number(engagements))||Number(views)<0||Number(engagements)<0)){
+  $('aPlat').textContent=links.length!==1?'Manual entry needs exactly one post link.':!platform?'Choose the platform for this post.':'Enter whole-number views and total tracked engagements to create the CSV row.';$('aOut').value='';return}
+ links.forEach(u=>{let h='',validUrl=false;try{const parsed=new URL(u);h=parsed.hostname;validUrl=parsed.protocol==='https:'||parsed.protocol==='http:'}catch(e){}const pl=manual?platform:(PLATHOST.find(x=>x[0].test(h))||[0,''])[1];if(!validUrl||!pl){bad++;return}count[pl]=(count[pl]||0)+1;
   out.push([$('aClient').value.trim(),$('aCamp').value.trim(),pl,$('aAcct').value==='Other'?'':$('aAcct').value,u,$('aDate').value,out.length?'':$('aFee').value,manual?views:'',manual?engagements:'',''].map(csvQ).join(','))});
  const own=Object.keys(count).some(k=>k!=='YouTube'&&k!=='X/Twitter');
  $('aPlat').textContent=links.length?(out.length?'Detected '+out.length+' post'+(out.length>1?'s':'')+' ('+Object.entries(count).map(([k,v])=>v+' '+k).join(', ')+').':'')+(bad?' '+bad+' link'+(bad>1?'s':'')+' not recognized and skipped.':'')+(manual?' Manual stats will be included in the row.':'')+($('aAcct').value==='Other'&&own?' Posts on accounts we do not own only show public numbers, so add manual numbers in posts.csv.':''):'';
  $('aOut').value=out.join('\n')}
 $('aAcct').innerHTML=AC.map(a=>'<option>'+esc(a.n)+'</option>').join('')+'<option value="Other">Other (a creator or partner account)</option>';
 $('aDate').value=todayS();
-['aClient','aCamp','aUrl','aDate','aAcct','aFee','aManual','aManualViews','aManualEngagements'].forEach(id=>{$(id).oninput=updAdd;$(id).onchange=updAdd});
+['aClient','aCamp','aUrl','aDate','aAcct','aFee','aManual','aManualPlatform','aManualViews','aManualEngagements'].forEach(id=>{$(id).oninput=updAdd;$(id).onchange=updAdd});
 $('aCopy').onclick=()=>{const t=$('aOut');t.select();navigator.clipboard&&navigator.clipboard.writeText(t.value);$('aCopy').textContent='Copied';setTimeout(()=>$('aCopy').textContent='Copy lines',1500)};
 $('pMonth').onchange=e=>{PSEL.m=e.target.value;PSEL.k='*';renderPartner()};
 $('pClient').onchange=e=>{PSEL.c=e.target.value;PSEL.k='*';renderPartner()};
