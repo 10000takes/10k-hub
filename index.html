@@ -614,8 +614,8 @@ const monthName=m=>new Date(m+'-15T00:00:00Z').toLocaleDateString('en-US',{month
 const todayS=()=>new Date().toISOString().slice(0,10);
 const cutFor=m=>{const t=todayS();return PM.reduce((latest,r)=>r.d<=t&&r.d>latest?r.d:latest,'')||t};
 function postStat(p,cut){const g=m=>{const a=PMX[p.key+'|'+m];return a?at(a,cut):null};
- const hasE=g('engagements')!=null||ENG.some(m=>g(m)!=null);let asof='';['views','engagements',...ENG].forEach(m=>{const a=PMX[p.key+'|'+m];if(a)a.forEach(x=>{if(x.d<=cut&&x.d>asof)asof=x.d})});
- const e=p.me!==''?Number(p.me):(g('engagements')!=null?g('engagements'):(hasE?ENG.reduce((s,m)=>s+(g(m)||0),0):null));
+ const hasE=ENG.some(m=>g(m)!=null);let asof='';['views',...ENG].forEach(m=>{const a=PMX[p.key+'|'+m];if(a)a.forEach(x=>{if(x.d<=cut&&x.d>asof)asof=x.d})});
+ const e=p.me!==''?Number(p.me):(hasE?ENG.reduce((s,m)=>s+(g(m)||0),0):null);
  return{v:p.mv!==''?Number(p.mv):g('views'),e,manual:p.mv!==''||p.me!=='',asof}}
 function pAgg(list,month){const cut=cutFor(month),o={n:list.length,wait:0,v:0,e:0,vE:0,fee:0,asof:''};
  list.forEach(p=>{const s=postStat(p,cut);o.fee+=p.fee;if(s.asof>o.asof)o.asof=s.asof;if(s.v==null){o.wait++;return}o.v+=s.v;if(s.e!=null){o.e+=s.e;o.vE+=s.v}});

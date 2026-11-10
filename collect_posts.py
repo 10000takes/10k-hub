@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Collects numbers for the sponsored posts listed in posts.csv and saves them to
-post_metrics.csv (date,url,metric,value). Metrics: views, likes, comments, shares, saves.
+post_metrics.csv (date,url,metric,value). Metrics: views, likes, comments, shares, reposts, saves.
 
 Covers YouTube and X (any public post), Instagram and Threads (our own accounts).
 TikTok is collected inside collect_tiktok.py, because it shares that script's token
@@ -135,18 +135,32 @@ def instagram(posts):
             if not hit:
                 print("::notice::Instagram post not found among the 50 latest of {}: {}".format(account, p["url"]))
                 continue
-            # The total_* insights include promoted/boosted distribution when
-            # accessed through Instagram API with Facebook Login. Regular
-            # views/likes/comments are organic-only, so prefer these totals.
-            vals = {}
+            # With Facebook Login, IG Media exposes all-surface counters for
+            # boosted media. Prefer these object fields over insight metrics,
+            # which can reflect only organic activity.
+            fields = ("total_views_count,total_like_count,total_comments_count,"
+                      "shares_count,reposts_count,saved_count")
+            try:
+                node = graph_get(hit["id"], {"fields": fields}, tok)
+            except RuntimeError as e:
+                node = {}
+                print("::notice::Instagram aggregate media fields for {}: {}".format(p["url"], e))
+            vals = {name: node[field] for field, name in (
+                ("total_views_count", "views"), ("total_like_count", "likes"),
+                ("total_comments_count", "comments"), ("shares_count", "shares"),
+                ("reposts_count", "reposts"), ("saved_count", "saves"))
+                if node.get(field) is not None}
             for metric, name in (("total_views", "views"), ("total_likes", "likes"),
-                                 ("total_comments", "comments"), ("total_interactions", "engagements"),
-                                 ("shares", "shares"),
+                                 ("total_comments", "comments"), ("shares", "shares"),
                                  ("reposts", "reposts"), ("saved", "saves")):
+                if name in vals:
+                    continue
                 try:
                     vals[name] = insight_value(graph_get(hit["id"] + "/insights", {"metric": metric}, tok))
                 except RuntimeError as e:
                     print("::notice::Instagram {} for {}: {}".format(metric, p["url"], e))
+            print("Instagram campaign metrics {}: {}".format(
+                p["url"], ", ".join("{}={}".format(k, v) for k, v in sorted(vals.items())) or "none returned"))
             rows += metric_rows(p["key"], vals)
     return rows
 
