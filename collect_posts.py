@@ -135,9 +135,13 @@ def instagram(posts):
             if not hit:
                 print("::notice::Instagram post not found among the 50 latest of {}: {}".format(account, p["url"]))
                 continue
-            node = graph_get(hit["id"], {"fields": "like_count,comments_count"}, tok)
-            vals = {"likes": node.get("like_count"), "comments": node.get("comments_count")}
-            for metric, name in (("views", "views"), ("shares", "shares"), ("saved", "saves")):
+            # The total_* insights include promoted/boosted distribution when
+            # accessed through Instagram API with Facebook Login. Regular
+            # views/likes/comments are organic-only, so prefer these totals.
+            vals = {}
+            for metric, name in (("total_views", "views"), ("total_likes", "likes"),
+                                 ("total_comments", "comments"), ("shares", "shares"),
+                                 ("saved", "saves")):
                 try:
                     vals[name] = insight_value(graph_get(hit["id"] + "/insights", {"metric": metric}, tok))
                 except RuntimeError as e:
