@@ -140,7 +140,8 @@ def instagram(posts):
             # views/likes/comments are organic-only, so prefer these totals.
             vals = {}
             for metric, name in (("total_views", "views"), ("total_likes", "likes"),
-                                 ("total_comments", "comments"), ("shares", "shares"),
+                                 ("total_comments", "comments"), ("total_interactions", "engagements"),
+                                 ("shares", "shares"),
                                  ("reposts", "reposts"), ("saved", "saves")):
                 try:
                     vals[name] = insight_value(graph_get(hit["id"] + "/insights", {"metric": metric}, tok))
