@@ -3,9 +3,10 @@
 Collects numbers for the sponsored posts listed in posts.csv and saves them to
 post_metrics.csv (date,url,metric,value). Metrics: views, likes, comments, shares, reposts, saves.
 
-Covers YouTube and X (any public post), Instagram and Threads (our own accounts).
-TikTok is collected inside collect_tiktok.py, because it shares that script's token
-refresh. Facebook and creator-owned posts use the manual columns in posts.csv.
+Covers YouTube and X (any public post), Instagram and Threads (our own accounts),
+and Facebook posts published by the main Page. TikTok is collected inside
+collect_tiktok.py, because it shares that script's token refresh. Creator-owned
+posts use the manual columns in posts.csv.
 Only posts published in the last 35 days are re-checked, so older months stay frozen.
 Standard library only.
 """
@@ -16,6 +17,8 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+from datetime import datetime, timedelta, timezone
+from urllib.parse import parse_qs, urlparse
 
 from campaign_common import env_name, metric_rows, read_posts, save_post_metrics
 
@@ -203,7 +206,110 @@ def threads(posts):
     return rows
 
 
-JOBS = [("YouTube", youtube), ("X/Twitter", x_posts), ("Instagram", instagram), ("Threads", threads)]
+# ---------------- Facebook (main Page posts) ----------------
+def facebook_post_refs(url, page_id=""):
+    """Extract stable post identifiers from common Facebook permalink forms."""
+    refs = set()
+    parsed = urlparse(url or "")
+    query = parse_qs(parsed.query)
+    story = (query.get("story_fbid") or [""])[0]
+    owner = (query.get("id") or [page_id])[0]
+    if story and owner:
+        refs.add("id:" + owner + "_" + story)
+    for key in ("fbid", "v"):
+        value = (query.get(key) or [""])[0]
+        if value:
+            refs.add("id:" + value)
+    parts = [part for part in parsed.path.split("/") if part]
+    for marker in ("posts", "videos", "reel", "reels"):
+        if marker in parts:
+            idx = parts.index(marker)
+            if idx + 1 < len(parts):
+                refs.add("id:" + parts[idx + 1])
+    # Some canonical links contain the composite Page_Post ID directly.
+    for part in parts:
+        if re.match(r"^\d+_(?:\d+|pfbid[A-Za-z0-9]+)$", part):
+            refs.add("id:" + part)
+    return refs
+
+
+def resolve_facebook_url(url):
+    """Follow public permalink redirects (for /share/p/ links) without parsing page content."""
+    req = urllib.request.Request(url, headers={"User-Agent": "10K-Takes-dashboard/1.0"})
+    try:
+        with urllib.request.urlopen(req, timeout=20) as response:
+            return response.geturl()
+    except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as e:
+        print("::notice::Could not resolve Facebook permalink redirect for {}: {}".format(url, e))
+        return url
+
+
+def facebook(posts):
+    page_id = os.environ.get("FACEBOOK_PAGE_ID", "").strip()
+    token = os.environ.get("FACEBOOK_PAGE_TOKEN", "").strip()
+    if not page_id or not token:
+        raise RuntimeError("FACEBOOK_PAGE_ID / FACEBOOK_PAGE_TOKEN not set")
+
+    since = int((datetime.now(timezone.utc) - timedelta(days=35)).timestamp())
+    fields = ("id,created_time,permalink_url,status_type,shares,"
+              "reactions.summary(true).limit(0),comments.summary(true).limit(0)")
+    page = graph_get(page_id + "/posts", {"fields": fields, "limit": 100, "since": since}, token)
+    page_posts = page.get("data", [])
+    # Walk older pages only while they could still contain a tracked campaign post.
+    while page.get("paging", {}).get("next") and len(page_posts) < 1000:
+        next_url = page["paging"]["next"]
+        page = fetch(next_url, headers={"Authorization": "Bearer " + token}, secrets=[token])
+        batch = page.get("data", [])
+        page_posts.extend(batch)
+        if not batch:
+            break
+
+    by_ref = {}
+    for item in page_posts:
+        refs = facebook_post_refs(item.get("permalink_url", ""), page_id)
+        refs.update(facebook_post_refs(item.get("id", ""), page_id))
+        for ref in refs:
+            by_ref[ref] = item
+
+    rows = []
+    for post in posts:
+        possible_urls = [post["url"]]
+        if not facebook_post_refs(post["url"], page_id):
+            resolved = resolve_facebook_url(post["url"])
+            if resolved != post["url"]:
+                possible_urls.append(resolved)
+        refs = set()
+        for url in possible_urls:
+            refs.update(facebook_post_refs(url, page_id))
+        match = next((by_ref[ref] for ref in refs if ref in by_ref), None)
+        if not match:
+            print("::notice::Facebook campaign post not found in the main Page's recent published posts: {}".format(post["url"]))
+            continue
+
+        values = {}
+        try:
+            views = insight_value(graph_get(match["id"] + "/insights", {"metric": "post_media_view"}, token))
+            if views is not None:
+                values["views"] = views
+        except RuntimeError as e:
+            print("::notice::Facebook post views unavailable for {}: {}".format(post["url"], e))
+
+        reaction_summary = match.get("reactions", {}).get("summary", {})
+        comment_summary = match.get("comments", {}).get("summary", {})
+        if reaction_summary.get("total_count") is not None:
+            values["likes"] = reaction_summary["total_count"]
+        if comment_summary.get("total_count") is not None:
+            values["comments"] = comment_summary["total_count"]
+        if match.get("shares", {}).get("count") is not None:
+            values["shares"] = match["shares"]["count"]
+        detail = ", ".join("{}={}".format(k, v) for k, v in sorted(values.items())) or "metrics unavailable"
+        print("Facebook campaign metrics {}: {}".format(post["url"], detail))
+        rows += metric_rows(post["key"], values)
+    return rows
+
+
+JOBS = [("YouTube", youtube), ("X/Twitter", x_posts), ("Instagram", instagram),
+        ("Facebook", facebook), ("Threads", threads)]
 
 
 def main():
