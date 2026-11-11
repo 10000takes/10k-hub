@@ -225,7 +225,12 @@ def facebook_post_refs(url, page_id=""):
         if marker in parts:
             idx = parts.index(marker)
             if idx + 1 < len(parts):
-                refs.add("id:" + parts[idx + 1])
+                post_id = parts[idx + 1]
+                refs.add("id:" + post_id)
+                # Page feed IDs are commonly returned as PAGE_ID_POST_ID,
+                # while Page permalinks expose only the post ID (including pfbid IDs).
+                if page_id and re.match(r"^(?:\d+|pfbid[A-Za-z0-9]+)$", post_id):
+                    refs.add("id:" + page_id + "_" + post_id)
     # Some canonical links contain the composite Page_Post ID directly.
     for part in parts:
         if re.match(r"^\d+_(?:\d+|pfbid[A-Za-z0-9]+)$", part):

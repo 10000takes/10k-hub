@@ -675,7 +675,9 @@ function sampleData(){const m1=prevMonth(todayS().slice(0,7)),m0=prevMonth(m1),P
 const PLATHOST=[[/youtu(\.be|be\.com)/i,'YouTube'],[/(^|\.)(x|twitter)\.com/i,'X/Twitter'],[/instagram\.com/i,'Instagram'],[/tiktok\.com/i,'TikTok'],[/threads\.(net|com)/i,'Threads'],[/(facebook|fb)\.com|fb\.watch/i,'Facebook']];
 function csvQ(x){x=String(x==null?'':x);return /[",\n]/.test(x)?'"'+x.replace(/"/g,'""')+'"':x}
 function updAdd(){const links=$('aUrl').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),out=[],count={};let bad=0;
- const manual=$('aManual').checked,platform=$('aManualPlatform').value,postType=$('aPostType').value,postTitleText=$('aPostTitles').value,postTitles=postTitleText?postTitleText.split(/\r?\n/):[],views=$('aManualViews').value,engagements=$('aManualEngagements').value;
+ const manual=$('aManual').checked;let platform=$('aManualPlatform').value;
+ if(manual&&!platform&&links.length===1){try{const host=new URL(links[0]).hostname;platform=(PLATHOST.find(x=>x[0].test(host))||[0,''])[1];if(platform)$('aManualPlatform').value=platform}catch(e){}}
+ const postType=$('aPostType').value,postTitleText=$('aPostTitles').value,postTitles=postTitleText?postTitleText.split(/\r?\n/):[],views=$('aManualViews').value,engagements=$('aManualEngagements').value;
  $('aManualFields').hidden=!manual;
  if(links.length&&!postType){$('aPlat').textContent='Choose a post type for these campaign posts.';$('aOut').value='';return}
  if(links.length&&postTitleText&&postTitles.length!==links.length){$('aPlat').textContent='Enter one Post Title line per link, in the same order, or leave Post Titles blank.';$('aOut').value='';return}
