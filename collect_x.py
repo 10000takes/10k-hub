@@ -17,6 +17,7 @@ import csv
 import json
 import os
 import sys
+import argparse
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -35,8 +36,8 @@ OUTPUT_FILE = "followers.csv"
 HEADER = ["date", "account", "platform", "followers"]
 
 
-def fetch_followers(token):
-    names = ",".join(HANDLES)
+def fetch_followers(token, handles):
+    names = ",".join(handles)
     url = "https://api.x.com/2/users/by?" + urllib.parse.urlencode(
         {"usernames": names, "user.fields": "public_metrics"})
     req = urllib.request.Request(url, headers={"Authorization": "Bearer " + token})
@@ -70,15 +71,20 @@ def save_rows(new_rows):
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Collect X follower counts.")
+    parser.add_argument("--main-account-only", action="store_true",
+                         help="Collect 10K Takes only; subsidiaries remain on the weekly run.")
+    args = parser.parse_args()
     token = os.environ.get("X_BEARER_TOKEN", "").strip()
     if not token:
         sys.exit("Set the X_BEARER_TOKEN environment variable first.")
     if any(h.startswith("REPLACE_") for h in HANDLES):
         sys.exit("Edit HANDLES in collect_x.py and enter the real X handles first.")
-    found, errors = fetch_followers(token)
+    handles = {"10K_Takes": HANDLES["10K_Takes"]} if args.main_account_only else HANDLES
+    found, errors = fetch_followers(token, handles)
     today = date.today().isoformat()
     new_rows, missing = [], []
-    for handle, account in HANDLES.items():
+    for handle, account in handles.items():
         count = found.get(handle.lower())
         if count is None:
             missing.append(handle)

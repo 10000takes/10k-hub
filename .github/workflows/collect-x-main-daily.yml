@@ -1,0 +1,64 @@
+name: Collect main X followers daily
+
+on:
+  schedule:
+    # The gate keeps only the UTC entry that lands at 6 AM America/Chicago.
+    - cron: "7 11 * * *"
+    - cron: "7 12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: collect-data
+  cancel-in-progress: false
+
+jobs:
+  collect-main-x:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check it is 6 AM Central
+        id: gate
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "$(TZ=America/Chicago date +%H)" = "06" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Not 6 AM Central; skipping the second UTC schedule."
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.run == 'true'
+
+      - uses: actions/setup-python@v5
+        if: steps.gate.outputs.run == 'true'
+        with:
+          python-version: "3.12"
+
+      - name: Collect 10K Takes follower count only
+        if: steps.gate.outputs.run == 'true'
+        env:
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+        run: python collect_x.py --main-account-only
+
+      - name: Save main-account snapshot
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add followers.csv
+          if git diff --cached --quiet; then
+            echo "No follower-count change to save."
+          else
+            git commit -m "Save daily main X follower snapshot $(date -u +%F)"
+            git pull --rebase --autostash
+            git push
+          fi
+
+      - name: Refresh dashboard data
+        if: steps.gate.outputs.run == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || true

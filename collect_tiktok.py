@@ -218,6 +218,18 @@ def main():
     secret = os.environ.get("TIKTOK_CLIENT_SECRET", "").strip()
     if not key or not secret:
         sys.exit("Set TIKTOK_CLIENT_KEY and TIKTOK_CLIENT_SECRET first.")
+    if "--top-posts-only" in sys.argv:
+        token = os.environ.get("TIKTOK_REFRESH_TOKEN_10K_TAKES", "").strip()
+        if not token:
+            sys.exit("Set TIKTOK_REFRESH_TOKEN_10K_TAKES first.")
+        tok = refresh(key, secret, token)
+        rows = top_post_rows(tok["access_token"])
+        from campaign_common import save_top_posts
+        save_top_posts("TikTok", rows)
+        print("TikTok: saved {} main-account top-post rows for the daily report snapshot.".format(len(rows)))
+        if tok.get("refresh_token") and tok["refresh_token"] != token:
+            print("::warning::TikTok returned a rotated refresh token; update TIKTOK_REFRESH_TOKEN_10K_TAKES if TikTok later reports an auth failure.")
+        return
     today, new_rows, metric_rows, failed = date.today().isoformat(), [], [], []
     post_rows_all = []
     for account, var in ACCOUNTS.items():

@@ -1,0 +1,87 @@
+name: Capture midnight content snapshot
+
+on:
+  schedule:
+    # Cover local midnight and a one-hour fallback for the spring-forward gap.
+    - cron: "5 5 * * *"
+    - cron: "5 6 * * *"
+    - cron: "5 7 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Replace today's saved midnight snapshot
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-content-snapshot
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check midnight schedule and duplicate snapshot
+        id: gate
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          FORCE_SNAPSHOT: ${{ inputs.force }}
+        run: |
+          day=$(TZ=America/Chicago date +%F)
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          elif [ "$(TZ=America/Chicago date +%H)" -le "01" ] && { [ ! -f ".github/content-report-data/snapshots/$day.json" ] || [ "$FORCE_SNAPSHOT" = "true" ]; }; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Not the Chicago midnight capture, or today's snapshot already exists. Skipping API calls."
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.gate.outputs.run == 'true'
+        with:
+          python-version: "3.12"
+
+      - name: Collect recent main-account posts
+        if: steps.gate.outputs.run == 'true'
+        continue-on-error: true
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+          INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+          THREADS_ACCESS_TOKEN_10K_TAKES: ${{ secrets.THREADS_ACCESS_TOKEN_10K_TAKES }}
+        run: python collect_top_posts.py
+
+      - name: Collect TikTok main-account post snapshot
+        if: steps.gate.outputs.run == 'true'
+        continue-on-error: true
+        env:
+          TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+          TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+          TIKTOK_REFRESH_TOKEN_10K_TAKES: ${{ secrets.TIKTOK_REFRESH_TOKEN_10K_TAKES }}
+        run: python collect_tiktok.py --top-posts-only
+
+      - name: Save immutable midnight snapshot
+        if: steps.gate.outputs.run == 'true'
+        run: python scripts/generate_daily_content_report.py snapshot
+
+      - name: Persist snapshot and latest collector results
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add top_posts.csv .github/content-report-data/snapshots
+          if git diff --cached --quiet; then
+            echo "No post rows changed; snapshot state is unchanged."
+          else
+            git commit -m "Save midnight content snapshot $(TZ=America/Chicago date +%F)"
+            git pull --rebase --autostash
+            git push
+          fi

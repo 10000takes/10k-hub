@@ -1,0 +1,109 @@
+name: Daily Content Report
+
+on:
+  schedule:
+    # Gate hourly runs to the configured America/Chicago delivery hour.
+    - cron: "0 * * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Preview never emails; Send and Resend are explicit actions
+        type: choice
+        options: [preview, send, resend]
+        default: preview
+      report_date:
+        description: Optional reporting date in America/Chicago (YYYY-MM-DD)
+        type: string
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-content-report
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check configured delivery hour
+        id: gate
+        env:
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          REPORT_MODE: ${{ inputs.mode || 'scheduled' }}
+          DAILY_CONTENT_REPORT_TIME: ${{ vars.DAILY_CONTENT_REPORT_TIME || '08:00' }}
+        run: python3 scripts/daily_report_schedule_gate.py >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-python@v5
+        if: ${{ github.event_name == 'workflow_dispatch' || steps.gate.outputs.run == 'true' }}
+        with:
+          python-version: "3.12"
+
+      - name: Install PDF renderer
+        if: ${{ github.event_name == 'workflow_dispatch' || steps.gate.outputs.run == 'true' }}
+        run: python -m pip install reportlab
+
+      - name: Generate report from saved snapshots
+        if: ${{ github.event_name == 'workflow_dispatch' || steps.gate.outputs.run == 'true' }}
+        env:
+          REPORT_DATE: ${{ inputs.report_date }}
+        run: |
+          if [ -n "$REPORT_DATE" ]; then
+            python scripts/generate_daily_content_report.py generate --date "$REPORT_DATE"
+          else
+            python scripts/generate_daily_content_report.py generate
+          fi
+
+      - name: Save report snapshot before delivery
+        if: ${{ github.event_name == 'schedule' && steps.gate.outputs.run == 'true' || github.event_name == 'workflow_dispatch' && (inputs.mode == 'send' || inputs.mode == 'resend') }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/content-report-data/reports
+          if git diff --cached --quiet; then
+            echo "Report snapshot already persisted."
+          else
+            git commit -m "Save daily content report snapshot"
+            git pull --rebase --autostash
+            git push
+          fi
+
+      - name: Email report using Resend
+        if: ${{ github.event_name == 'schedule' && steps.gate.outputs.run == 'true' || github.event_name == 'workflow_dispatch' && (inputs.mode == 'send' || inputs.mode == 'resend') }}
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          DAILY_CONTENT_REPORT_TO: ${{ secrets.DAILY_CONTENT_REPORT_TO }}
+          OPPORTUNITIES_EMAIL_TO: ${{ secrets.OPPORTUNITIES_EMAIL_TO }}
+          RESEND_FROM: ${{ secrets.RESEND_FROM }}
+          REPORT_DATE: ${{ inputs.report_date }}
+          AUTHORIZED_RESEND: ${{ inputs.mode == 'resend' }}
+        run: |
+          args=()
+          if [ -n "$REPORT_DATE" ]; then args+=(--date "$REPORT_DATE"); fi
+          if [ "$AUTHORIZED_RESEND" = "true" ]; then args+=(--authorized-resend); fi
+          python scripts/generate_daily_content_report.py deliver "${args[@]}"
+
+      - name: Persist delivery status
+        if: ${{ always() && (github.event_name == 'schedule' && steps.gate.outputs.run == 'true' || github.event_name == 'workflow_dispatch' && (inputs.mode == 'send' || inputs.mode == 'resend')) }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/content-report-data/reports
+          if git diff --cached --quiet; then
+            echo "Delivery state already persisted."
+          else
+            git commit -m "Record daily content report delivery status"
+            git pull --rebase --autostash
+            git push
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ github.event_name == 'workflow_dispatch' || steps.gate.outputs.run == 'true' }}
+        with:
+          name: 10K-Takes-Daily-Content-Report
+          path: .github/content-report-data/reports/**
+          if-no-files-found: error
+          retention-days: 90
