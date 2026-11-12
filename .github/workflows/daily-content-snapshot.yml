@@ -70,7 +70,14 @@ jobs:
 
       - name: Save immutable midnight snapshot
         if: steps.gate.outputs.run == 'true'
-        run: python scripts/generate_daily_content_report.py snapshot
+        env:
+          FORCE_SNAPSHOT: ${{ inputs.force }}
+        run: |
+          if [ "$FORCE_SNAPSHOT" = "true" ]; then
+            python scripts/generate_daily_content_report.py snapshot --force
+          else
+            python scripts/generate_daily_content_report.py snapshot
+          fi
 
       - name: Persist snapshot and latest collector results
         if: steps.gate.outputs.run == 'true'
