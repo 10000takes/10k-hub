@@ -8,6 +8,8 @@ import html
 import json
 import os
 import re
+import csv
+import statistics
 import sys
 import urllib.error
 import urllib.parse
@@ -287,7 +289,63 @@ def email_body(report):
             f"   Format: {item['format']}", f"   Hook draft: {item['hook_draft']}", f"   Source: {item['url']}", "",
         ])
     lines.extend(["Scores are triage aids, not predictions. Verify the facts and source before publishing.", "Social trend feeds are not connected; see the dashboard for current coverage."])
+    lines.extend(["", "Latest publish-day performance", ""])
+    lines.extend(daily_performance_digest())
     return "\n".join(lines)
+
+
+def daily_performance_digest():
+    """Summarize the latest publish date using fields from the existing post collector."""
+    path = ROOT / "top_posts.csv"
+    try:
+        with path.open(newline="", encoding="utf-8-sig") as handle:
+            rows = list(csv.DictReader(handle))
+    except (OSError, UnicodeError, csv.Error):
+        return ["No post-level performance data is available in top_posts.csv yet."]
+
+    posts = []
+    for row in rows:
+        if not row.get("url") or not row.get("platform") or not row.get("posted"):
+            continue
+        try:
+            posted = dt.datetime.fromisoformat(row["posted"].replace("Z", "+00:00"))
+            views = int(row.get("views") or "")
+        except (TypeError, ValueError):
+            continue
+        if posted.tzinfo is None:
+            posted = posted.replace(tzinfo=dt.timezone.utc)
+        posted = posted.astimezone(dt.timezone.utc)
+        age_days = max(1.0, (NOW - posted).total_seconds() / 86400)
+        post = {
+            "platform": row["platform"].strip(), "format": (row.get("type") or "Post").strip(),
+            "url": row["url"].strip(), "posted": posted, "date": posted.date().isoformat(),
+            "views": views, "views_per_day": views / age_days,
+            "caption": (row.get("caption") or "").strip(),
+        }
+        posts.append(post)
+    if not posts:
+        return ["No post rows with valid publish dates and views are available yet."]
+
+    report_date = max(post["date"] for post in posts)
+    daily = [post for post in posts if post["date"] == report_date]
+    lines = [f"Latest publish date in collected data: {report_date} · {len(daily)} post(s). Comparisons are directional and use lifetime views per day."]
+    for post in daily:
+        peers = [other for other in posts if other["url"] != post["url"] and other["platform"] == post["platform"] and other["format"].lower() == post["format"].lower() and other["views"] > 0]
+        baseline_label = "same platform and format"
+        if len(peers) < 3:
+            peers = [other for other in posts if other["url"] != post["url"] and other["platform"] == post["platform"] and other["views"] > 0]
+            baseline_label = "same platform (format sample was small)"
+        if peers:
+            baseline = statistics.median(other["views_per_day"] for other in peers)
+        else:
+            baseline = 0
+        ratio = post["views_per_day"] / baseline if baseline > 0 else None
+        finding = f"{ratio:.2f}× the {baseline_label} median views/day (n={len(peers)})" if ratio is not None else "not enough comparable posts for a baseline"
+        caption = post["caption"]
+        hook = "question" if "?" in caption[:80] else "first-person/scene" if re.match(r"(?i)^(we |i |our |my |when |pov)", caption) else "statement/other" if caption else "no caption"
+        lines.append(f"- {post['platform']} · {post['format']} · {post['views']:,} views · {finding} · caption opening: {hook} · {post['url']}")
+    lines.extend(["These are observed results and caption/format clues, not evidence of what caused performance. Paid boosting, timing, distribution, and audience mix are not measured in this report."])
+    return lines
 
 
 def send_email(report):

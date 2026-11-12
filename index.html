@@ -96,6 +96,7 @@ select,input[type=text],input[type=number],input[type=date],input[type=url],.pfo
 .tpm b{font:700 28px "Barlow Condensed","Arial Narrow",sans-serif;line-height:1.05}.tpm span{font-size:12px;color:var(--mute)}
 ul.why{margin:4px 0 0;padding-left:20px;font-size:14px}ul.why li{margin:2px 0}
 .ci-grid{display:grid;gap:10px;margin-top:12px}.ci-rec h3{margin:0 0 6px;font-size:18px}.ci-rec p{margin:4px 0}.ci-meta{font-size:12px;color:var(--mute)}.ci-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:13px}.ci-url{min-width:min(440px,100%)}
+.ci-tool-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:10px;margin:10px 0}.ci-tool-grid label{display:grid;gap:5px;color:var(--mute);font-size:13px}.ci-tool-grid input,.ci-tool-grid select,.ci-tool-grid textarea{width:100%}.ci-tool-result{margin-top:10px}.ci-fact-list{margin:8px 0 0;padding-left:20px}.ci-fact-list li{margin:4px 0}.ci-answer{white-space:normal;line-height:1.5}.ci-inline-form{display:flex;gap:8px;flex-wrap:wrap;align-items:end}.ci-inline-form label{display:grid;gap:5px;color:var(--mute);font-size:13px;flex:1 1 180px}
 .ci-grid.competitor-cards{grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}.ci-post-stats{display:flex;gap:18px;flex-wrap:wrap;margin:8px 0}.ci-post-stats b{font:700 22px "Barlow Condensed","Arial Narrow",sans-serif}.ci-post-stats span{display:block;font-size:11px;color:var(--mute)}.ci-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.ci-tag{background:var(--chip);border-radius:12px;padding:2px 8px;font-size:11px}
 .ci-post-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0}.ci-post-count{font-weight:600}.ci-post-sort-note{font-size:12px;color:var(--mute)}.ci-post-card{display:flex;flex-direction:column;gap:8px}.ci-post-card h4{font-size:17px;margin:0}.ci-post-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.ci-post-head .lbl{margin:0}.ci-post-link{font-weight:700;white-space:nowrap}.ci-post-caption{margin:0;padding:8px 10px;background:var(--chip);border-radius:5px;line-height:1.4}.ci-post-card .ci-post-stats{gap:8px}.ci-post-card .ci-post-stats>div{padding:7px 10px;background:var(--bg);border-radius:5px;min-width:90px}.ci-post-card .ci-post-stats b{font-size:20px}.ci-post-signal{font-size:12px;color:var(--mute)}.ci-post-signal strong{color:var(--up)}
 .ci-filter-group{margin-bottom:12px}
@@ -313,6 +314,53 @@ html.locked #gate{display:flex}
 <div id="contentAgentMeta" class="ci-meta"></div>
 <div id="contentAgentResults" class="ci-grid"></div>
 </div>
+<details class="analytics-subsection">
+<summary>Daily Content Report</summary>
+<div class="analytics-subsection-body">
+<div class="sub">Select a publish date to review every post in the latest collection window. Comparisons use views per day against the same platform and format where there are enough posts. These are measured associations, not proof of cause.</div>
+<div class="row" style="margin-top:10px"><label>Publish date <select id="ciReportDate" aria-label="Choose publish date"></select></label><span id="ciReportCoverage" class="ci-meta" role="status" aria-live="polite"></span></div>
+<div id="ciDailyReport" class="ci-grid ci-tool-result"></div>
+</div>
+</details>
+<details class="analytics-subsection">
+<summary>Individual Post Analyzer</summary>
+<div class="analytics-subsection-body">
+<div class="sub">Inspect one post’s available metrics, platform baseline, creative clues, and evidence links.</div>
+<div class="row" style="margin-top:10px"><label>Post <select id="ciPostSelect" aria-label="Choose a post to analyze"></select></label></div>
+<div id="ciPostAnalysis" class="ci-grid ci-tool-result"></div>
+</div>
+</details>
+<details class="analytics-subsection">
+<summary>Content Experiments</summary>
+<div class="analytics-subsection-body">
+<div class="sub">Record a testable content hypothesis and its outcome. Entries are saved in this browser only; they are not synced across devices.</div>
+<form id="ciExperimentForm" class="panel ci-tool-result">
+<div class="ci-tool-grid">
+<label>Experiment<input id="ciExperimentName" required maxlength="100" placeholder="Example: question hook vs. direct statement"></label>
+<label>Platform<select id="ciExperimentPlatform"><option>Instagram</option><option>Facebook</option><option>TikTok</option><option>X/Twitter</option><option>YouTube</option></select></label>
+<label>Content format<input id="ciExperimentFormat" maxlength="60" placeholder="Reel, photo, short, etc."></label>
+<label>Test date<input id="ciExperimentDate" type="date"></label>
+<label style="grid-column:1/-1">Hypothesis<textarea id="ciExperimentHypothesis" required maxlength="500" rows="2" placeholder="What do you expect to change, and why?"></textarea></label>
+</div>
+<button type="submit">Save Experiment</button>
+</form>
+<div id="ciExperiments" class="ci-grid"></div>
+</div>
+</details>
+<details class="analytics-subsection">
+<summary>Ask Your Content Analyst</summary>
+<div class="analytics-subsection-body">
+<div class="sub">Ask about currently loaded post data. Answers retrieve matching posts and show the metrics used; no unsupported explanations are generated.</div>
+<form id="ciQuestionForm" class="ci-inline-form ci-tool-result"><label>Your question<input id="ciQuestion" required placeholder="Which Instagram posts had the most views per day?"></label><button type="submit">Find Evidence</button></form>
+<div id="ciQuestionAnswer" class="ci-grid"></div>
+</div>
+</details>
+<details class="analytics-subsection">
+<summary>Video Creative Analysis</summary>
+<div class="analytics-subsection-body">
+<div class="panel ci-answer">Available now: platform, post type, caption opening, caption length, and video duration when supplied by the platform. Video files, thumbnails, transcripts, pacing, visuals, and on-screen text are not collected, so this dashboard cannot assess those creative features yet. A multimodal analyzer would require an approved video/transcript source and a separate AI service; no such service or added cost is enabled.</div>
+</div>
+</details>
 <hr class="section-divider" aria-hidden="true">
 <details class="analytics-subsection">
 <summary>Daily Opportunity Radar</summary>
@@ -739,6 +787,7 @@ function loadPartner(){
  fetch('post_metrics.csv?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{if(!PDEMO){setPM(parseCSV(t).slice(1).filter(c=>c.length>=4).map(c=>({d:c[0].trim(),u:pNorm(c[1]),m:c[2].trim(),v:Number(c[3])})).filter(r=>isFinite(r.v)));renderPartner()}}).catch(()=>{})}
 renderPartner();loadPartner();
 let TP=[],TPSORT='views',TPN=5,TPPLATFORM='all';
+const CI_EXPERIMENTS_KEY='tk_content_experiments_v1';
 const tpEng=p=>(p.likes||0)+(p.comments||0)+(p.shares||0)+(p.saves||0);
 const tpHasEng=p=>!(p.platform==='Facebook'&&/video|reel/i.test(p.type||''));
 const tpMed=a=>{const s=a.filter(x=>x!=null&&isFinite(x)).sort((x,y)=>x-y);if(!s.length)return null;const m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2};
@@ -781,7 +830,7 @@ function tpWhy(p,week){const R=[],b=tpBase(p),n=b.length,hasEng=tpHasEng(p),eng=
  if(R.length===0||(R.length===1&&n<4&&byV>2&&byE>2))R.unshift('No single standout signal; it mainly reached a larger audience.');
  return R.slice(0,4)}
 function renderTop(){
- if(!TP.length){$('tpNote').textContent='Top posts appear after the next daily run collects them.';$('tpSort').innerHTML='';$('tpList').innerHTML='';$('tpFoot').textContent='';return}
+ if(!TP.length){$('tpNote').textContent='Top posts appear after the next daily run collects them.';$('tpSort').innerHTML='';$('tpList').innerHTML='';$('tpFoot').textContent='';renderIntelligenceTools();return}
  const asof=TP.reduce((m,p)=>p.snap>m?p.snap:m,''),cut=Date.parse(asof+'T23:59:59Z')-7*864e5;
  const week=TP.filter(p=>p.t>cut&&p.views!=null&&p.views>0);
  const platforms=['all',...new Set(week.map(p=>p.platform).sort())],shown=TPPLATFORM==='all'?week:week.filter(p=>p.platform===TPPLATFORM);
@@ -805,9 +854,27 @@ function renderTop(){
  reuse.slice(0,4).forEach(p=>$('tpReuse').insertAdjacentHTML('beforeend',tpCard('Repurpose · '+p.platform+' · '+p.type,fmt(p.views)+' views; '+(tpRel(p)||0).toFixed(1)+'× platform views/day baseline. Try a fresh hook, cutdown, quote card, or cross-platform edit.',p.url)));
  clips.forEach(p=>$('tpReuse').insertAdjacentHTML('beforeend',tpCard('Give this clip a second life · '+p.platform,fmt(p.views)+' views; '+(tpRel(p)||0).toFixed(1)+'× platform baseline. Try a new opening, tighter cut, or timely follow-up.',p.url)));
  if(!reuse.length)$('tpReuse').innerHTML=tpCard('No clear candidates yet','The current snapshot does not show older posts at least 1.5× above their platform’s typical views/day.');
+ renderIntelligenceTools();
 }
 function loadTop(){fetch('top_posts.csv?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{TP=setTop(t);renderTop()}).catch(()=>renderTop())}
 renderTop();loadTop();
+
+function ciConfidence(n){return n>=8?'Higher (8+ comparison posts)':n>=5?'Moderate (5–7 comparison posts)':'Low (fewer than 5 comparison posts)'}
+function ciMetricPosts(){return TP.filter(p=>p.views!=null&&p.views>=0&&isFinite(p.t))}
+function ciBaseline(p){let peers=ciMetricPosts().filter(q=>q.url!==p.url&&q.platform===p.platform&&q.type===p.type&&q.views>0),scope='same platform and format';if(peers.length<3){peers=ciMetricPosts().filter(q=>q.url!==p.url&&q.platform===p.platform&&q.views>0);scope='same platform (format sample was small)'}return{peers,median:tpMed(peers.map(tpRate)),scope}}
+function ciPostLabel(p){const caption=(p.caption||'').replace(/\s+/g,' ').trim();return p.platform+' · '+new Date(p.t).toLocaleDateString('en-US',{month:'short',day:'numeric'})+' · '+(caption?caption.slice(0,74)+(caption.length>74?'…':''):p.type+' post')}
+function ciPostCard(p,creative=true){const base=ciBaseline(p),perDay=p.views==null?null:tpRate(p),ratio=base.median&&perDay!=null?perDay/base.median:null,engAvailable=tpHasEng(p),eng=tpEng(p),hook=tpHook(p),captionLength=(p.caption||'').length,age=Math.floor(tpAge(p)),status=p.views==null?'No view data collected':ratio==null?'No reliable comparison yet':ratio>=1.25?'Above baseline':ratio<=.75&&age>=7?'Below baseline (mature post)':'Near baseline';return '<article class="panel ci-rec"><div class="lbl">'+esc(p.platform)+' · '+esc(p.type)+' · Published '+esc(new Date(p.t).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}))+'</div><h3>'+esc(ciPostLabel(p))+'</h3><div class="ci-post-stats"><div><b>'+(p.views==null?'Not collected':fmt(p.views))+'</b><span>views</span></div><div><b>'+(perDay==null?'–':Math.round(perDay).toLocaleString('en-US'))+'</b><span>lifetime views/day</span></div>'+(engAvailable&&p.views!=null?'<div><b>'+fmt(eng)+'</b><span>tracked interactions'+(p.platform==='Facebook'?' (partial)':'')+'</span></div><div><b>'+((p.views>0)?((eng/p.views)*100).toFixed(2)+'%':'–')+'</b><span>tracked interaction rate</span></div>':'<div><b>Not shown</b><span>'+(p.platform==='Facebook'?'Facebook video interactions are incomplete':'Interaction data is unavailable')+'</span></div>')+'</div><p><b>Observed:</b> '+esc(status)+(ratio!=null?' · '+ratio.toFixed(2)+'× '+esc(base.scope)+' median ('+Math.round(base.median).toLocaleString('en-US')+' lifetime views/day; n='+base.peers.length+')':' · '+base.peers.length+' comparison post(s)')+'. Sample confidence: '+esc(ciConfidence(base.peers.length))+'.</p>'+(creative?'<p><b>Creative clues (not causal evidence):</b> '+esc(hook)+' hook; '+captionLength+' caption characters'+(p.duration?' · '+p.duration+' second video':'')+'.</p><p><b>Alternative explanations:</b> paid boosting, topic timing, distribution, audience mix, or external events may affect results; these fields are not available to rule them out.</p>':'')+'<div class="ci-links"><a href="'+esc(p.url)+'" target="_blank" rel="noopener">Open post</a></div></article>'}
+function renderDailyContentReport(){const rows=TP.filter(p=>isFinite(p.t)),dates=[...new Set(rows.map(p=>new Date(p.t).toISOString().slice(0,10)))].sort().reverse(),select=$('ciReportDate');if(!select)return;const prior=select.value;select.innerHTML=dates.length?dates.map(d=>'<option value="'+d+'">'+new Date(pd(d)).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'})+'</option>').join(''):'<option value="">No post dates available</option>';if(dates.includes(prior))select.value=prior;const posts=rows.filter(p=>new Date(p.t).toISOString().slice(0,10)===select.value);$('ciReportCoverage').textContent='Based on '+rows.length+' posts in the latest available collection file; refreshed by the daily collector.';if(!posts.length){$('ciDailyReport').innerHTML='<div class="panel">No collected posts for this date.</div>';return}const classified=posts.map(p=>{const b=ciBaseline(p);return{p,b,ratio:p.views!=null&&b.median?tpRate(p)/b.median:null}}),winners=classified.filter(x=>x.ratio!=null&&x.ratio>=1.25),under=classified.filter(x=>x.ratio!=null&&x.ratio<=.75&&tpAge(x.p)>=7);$('ciDailyReport').innerHTML='<div class="panel ci-answer"><b>Observed:</b> '+posts.length+' post(s) published on this date across '+esc([...new Set(posts.map(p=>p.platform))].join(', '))+'. '+winners.length+' exceeded the directional baseline by at least 25%; '+under.length+' mature post(s) were at least 25% below it. Posts younger than 7 days are not labeled underperformers. Baselines use lifetime views/day and may reflect boosting or distribution differences.</div>'+classified.sort((a,b)=>(b.ratio??-1)-(a.ratio??-1)).map(x=>ciPostCard(x.p,true)).join('')}
+function renderIndividualPost(){const rows=TP.filter(p=>isFinite(p.t)).slice().sort((a,b)=>b.t-a.t),select=$('ciPostSelect');if(!select)return;const prior=select.value;select.innerHTML=rows.length?rows.map((p,i)=>'<option value="'+i+'">'+esc(ciPostLabel(p))+'</option>').join(''):'<option value="">No collected posts</option>';if(rows[Number(prior)])select.value=prior;const p=rows[Number(select.value)||0];$('ciPostAnalysis').innerHTML=p?ciPostCard(p,true):'<div class="panel">Post details appear after the next daily collection.</div>'}
+function loadCIExperiments(){try{const rows=JSON.parse(localStorage.getItem(CI_EXPERIMENTS_KEY)||'[]');return Array.isArray(rows)?rows:[]}catch(e){return[]}}
+function saveCIExperiments(rows){try{localStorage.setItem(CI_EXPERIMENTS_KEY,JSON.stringify(rows))}catch(e){$('ciExperiments').innerHTML='<div class="panel">This browser could not save experiments. Check its local storage settings.</div>'}}
+function ciExperimentEvidence(x){if(!x.date||!x.format)return '<p class="ci-meta">Add a test date and format to compare collected posts automatically.</p>';const matching=ciMetricPosts().filter(p=>p.platform===x.platform&&p.type.toLowerCase()===x.format.toLowerCase()),after=matching.filter(p=>new Date(p.t).toISOString().slice(0,10)>=x.date),before=matching.filter(p=>new Date(p.t).toISOString().slice(0,10)<x.date),a=tpMed(after.map(tpRate)),b=tpMed(before.map(tpRate));if(!after.length||!before.length||!a||!b)return '<p class="ci-meta">Automatic result check: '+after.length+' post(s) after the test date and '+before.length+' before it match this platform and format. More comparable posts are needed.</p>';const ratio=a/b;return '<p><b>Collected result:</b> median '+Math.round(a).toLocaleString('en-US')+' lifetime views/day after vs. '+Math.round(b).toLocaleString('en-US')+' before ('+ratio.toFixed(2)+'×; '+after.length+' after, '+before.length+' before). Confidence: '+esc(ciConfidence(Math.min(after.length,before.length)))+'. This is an observational comparison, not a causal test.</p>'}
+function renderCIExperiments(){const rows=loadCIExperiments();$('ciExperiments').innerHTML=rows.length?rows.map((x,i)=>'<article class="panel ci-rec"><div class="lbl">'+esc(x.platform)+' · '+esc(x.format||'Format not set')+' · '+esc(x.date||'Date not set')+'</div><h3>'+esc(x.name)+'</h3><p><b>Hypothesis:</b> '+esc(x.hypothesis)+'</p>'+ciExperimentEvidence(x)+'<label class="ci-meta">Outcome / notes<textarea data-ci-outcome="'+i+'" rows="2" maxlength="500">'+esc(x.outcome||'')+'</textarea></label><div class="row" style="margin-top:8px"><select data-ci-status="'+i+'" aria-label="Experiment status"><option'+(x.status==='Planned'?' selected':'')+'>Planned</option><option'+(x.status==='Running'?' selected':'')+'>Running</option><option'+(x.status==='Reviewed'?' selected':'')+'>Reviewed</option></select><button class="alt" type="button" data-ci-save="'+i+'">Save Update</button><button class="alt" type="button" data-ci-delete="'+i+'">Delete</button></div></article>').join(''):'<div class="panel">No experiments recorded yet.</div>';document.querySelectorAll('[data-ci-save]').forEach(b=>b.onclick=()=>{const all=loadCIExperiments(),i=Number(b.dataset.ciSave);all[i].status=document.querySelector('[data-ci-status="'+i+'"]').value;all[i].outcome=document.querySelector('[data-ci-outcome="'+i+'"]').value;saveCIExperiments(all);renderCIExperiments()});document.querySelectorAll('[data-ci-delete]').forEach(b=>b.onclick=()=>{const all=loadCIExperiments();all.splice(Number(b.dataset.ciDelete),1);saveCIExperiments(all);renderCIExperiments()})}
+function answerCIQuestion(question){const q=question.toLowerCase(),all=ciMetricPosts(),platform=all.find(p=>q.includes(p.platform.toLowerCase()))?.platform,skip=new Set(['which','what','were','with','from','this','that','have','posts','most','show','tell','about','does','did','perform','performance','views','view','engagement','engagements','platform','better','best','last','week','days','content','instagram','facebook','tiktok','youtube','twitter','followers','format','formats']),terms=q.split(/\s+/).filter(w=>w.length>3&&!skip.has(w)),matching=all.filter(p=>(!platform||p.platform===platform)&&(!terms.length||terms.some(w=>(p.caption||'').toLowerCase().includes(w)||tpTopic(p).includes(w)||p.type.toLowerCase().includes(w))));const low=/least|lowest|underperform|worst|fewest/.test(q),ranked=matching.slice().sort((a,b)=>low?tpRate(a)-tpRate(b):tpRate(b)-tpRate(a)),items=ranked.slice(0,5);if(!items.length)return '<div class="panel">I couldn’t find matching collected posts. Try a platform name, content type, hashtag, or phrase from a caption.</div>';return '<div class="panel ci-answer"><b>'+(low?'Lowest':'Highest')+' lifetime views/day among matching posts.</b> Found '+matching.length+' matching post(s)'+(platform?' on '+esc(platform):' across platforms')+'. This uses latest collected views divided by post age. Facebook video interactions are incomplete; causes are not inferred.</div>'+items.map(p=>ciPostCard(p,false)).join('')}
+function renderIntelligenceTools(){if(!$('ciReportDate'))return;renderDailyContentReport();renderIndividualPost();renderCIExperiments()}
+$('ciReportDate').onchange=renderDailyContentReport;$('ciPostSelect').onchange=renderIndividualPost;$('ciExperimentDate').value=new Date().toISOString().slice(0,10);
+$('ciExperimentForm').onsubmit=e=>{e.preventDefault();const rows=loadCIExperiments();rows.unshift({name:$('ciExperimentName').value.trim(),platform:$('ciExperimentPlatform').value,format:$('ciExperimentFormat').value.trim(),date:$('ciExperimentDate').value,hypothesis:$('ciExperimentHypothesis').value.trim(),status:'Planned',outcome:'',created_at:new Date().toISOString()});saveCIExperiments(rows.slice(0,50));e.target.reset();$('ciExperimentDate').value=new Date().toISOString().slice(0,10);renderCIExperiments()};
+$('ciQuestionForm').onsubmit=e=>{e.preventDefault();$('ciQuestionAnswer').innerHTML=answerCIQuestion($('ciQuestion').value.trim())};
 
 const CONTENT_AGENT_URL_KEY='tk_content_agent_url_v1';
 function normalizeAgentUrl(value){

@@ -21,6 +21,38 @@ The current collector uses a rolling 30-day set of posts. D1 preserves each dail
 
 These thresholds are starting rules, not proven 10K Takes targets. The dashboard indicates when the history is too short to produce a comparison. Hashtags are only a rough topic label; content meaning and causal explanations are not inferred in this version.
 
+## Dashboard analysis tools and data coverage
+
+The Content Intelligence page now includes a date-selectable daily post review, a single-post evidence view, a browser-local experiment log, and a constrained evidence finder. These use `top_posts.csv`, which is refreshed daily and contains a rolling 30-day set of owned posts. Comparisons use lifetime views divided by post age and the median of same-platform/same-format posts when available; the dashboard falls back to a same-platform median for small format samples. This is a directional age-normalized proxy, not an age-matched distribution curve. Posts younger than seven days are not called underperformers. Findings show sample size and confidence, and explanations are labeled as creative clues or alternative hypotheses rather than causes.
+
+The existing morning opportunity email now includes a short performance summary for the most recent publish date represented in `top_posts.csv`, alongside its source-linked Minnesota story opportunities. It does not send an email from this code-editing session; the existing scheduled GitHub Action controls delivery and still requires its existing Resend secrets.
+
+| Platform | Currently collected post metrics | Creative/context fields | Not currently collected across the account |
+| --- | --- | --- | --- |
+| Instagram | Views, likes, comments, shares, saves where the authorized API returns them | URL, publish time, media type, caption | Retention curve, watch time, traffic sources, follower conversions, downloaded media or thumbnails |
+| Facebook | Per-post views where Page Insights returns them; reactions, comments, and shares on eligible Page posts | URL, publish time, post type, caption | Complete in-app engagement for all post types, retention, watch time, traffic sources, follower conversions |
+| TikTok | Views, likes, comments, shares from the connected account API | URL, publish time, post type/description, duration when returned | Watch-time/retention distribution, traffic sources, follower conversions, video assets/transcripts |
+| X | Impressions, likes, replies, reposts/quotes, bookmarks where returned by the configured API | URL, publish time, text, post type | Watch time/retention, traffic sources, follower conversions, video assets/transcripts |
+| YouTube | Views, likes, comments from the Data API | URL, publish time, title/caption, video type and duration | Watch time, retention, traffic sources, and subscriber conversions require the separate YouTube Analytics integration |
+
+The published feed does not contain raw media files or thumbnails. Competitor monitoring is currently limited to eligible public Instagram Business/Creator accounts through Meta Business Discovery; it exposes interactions and follower counts but not competitor reach or views. The news opportunity scan uses Google News RSS and should not be mistaken for live trend counts on Instagram, Facebook, TikTok, or X.
+
+The experiment log and evidence finder are intentionally browser-local and deterministic. Experiments compare same-platform/format posts before and after the test date when sufficient collected examples exist, but this remains observational and is not a randomized causal test. The evidence finder retrieves and ranks matching collected posts; it is not a generative AI analyst. A model-backed conversational analyst, durable team-shared experiment records, and multimodal video assessment are not enabled because the current system has no approved model/provider credentials or video asset pipeline. A future multimodal path should first obtain authorized video/transcript assets, derive transcript/hook/pacing/on-screen-text features, retain provenance, and compare those features with platform-specific outcome snapshots; only then should a low-cost, opt-in model be evaluated. Do not infer algorithm weights or treat creative assessments as measured audience behavior.
+
+### Requirement status and next phases
+
+| Spec item | Current state | What is still needed |
+| --- | --- | --- |
+| Daily performance review and winners/underperformers | Date-selectable review over the latest collected posts; small samples and posts younger than seven days are handled conservatively | Longer age-matched cohorts and better historical post coverage |
+| Platform-specific performance and post analysis | Platform and format medians, source post links, and measured fields | Improve baseline quality with more history; unavailable metrics remain excluded |
+| Historical insights | Existing Worker stores daily snapshots and reports supported hashtag comparisons; dashboard shows its current rolling post window | Public Worker endpoint currently returns only its latest recommendation set, not an interactive long-range query API |
+| Trends and opportunity ideas | Google News RSS for Minnesota teams plus the Instagram Business Discovery collector and existing account directory | Live trend measurements for Instagram, Facebook, TikTok, and X need eligible official APIs or another authorized data provider; RSS/news counts are not social trends |
+| Content experiments | Browser-local hypotheses and notes, plus before/after same-format view-rate comparison when sample exists | Shared durable experiment records and stronger causal designs require a private write path and more samples |
+| Ask the analyst | Deterministic retrieval and ranking from currently loaded post records | Natural-language generative answers require an approved model/provider and a server-side, evidence-grounded retrieval path |
+| Video creative analysis | Shows which creative fields are available and which are missing | Authorized media/transcript ingestion and an optional multimodal model are not configured |
+
+The changes in this pass reuse the static dashboard, existing daily collector, existing D1 snapshot store, and current Resend email action. No new credentials, API services, or recurring spend are introduced. A next low-cost phase should expand the existing Worker’s read-only API to serve longer historical D1 series and store experiments through an authenticated write path; a model-backed analyst or multimodal pipeline should remain opt-in after its data access, provider price, and monthly cap are approved.
+
 ## Daily opportunity radar (new)
 
 The scheduled `Content Intelligence snapshot` workflow also runs `scripts/generate_content_opportunities.py`. It:
