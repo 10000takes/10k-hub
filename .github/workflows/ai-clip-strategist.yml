@@ -1,0 +1,35 @@
+name: AI Clip Strategist
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ai-clip-strategist
+  cancel-in-progress: false
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install FFmpeg and Gemini client
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg
+          python -m pip install --upgrade google-genai
+
+      - name: Analyze one queued video
+        env:
+          CONTENT_INTELLIGENCE_API_URL: ${{ vars.CONTENT_INTELLIGENCE_API_URL }}
+          CONTENT_INTELLIGENCE_TOKEN: ${{ secrets.CONTENT_INTELLIGENCE_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python scripts/process_clip_jobs.py

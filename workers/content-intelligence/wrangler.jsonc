@@ -5,8 +5,15 @@
 	"compatibility_date": "2026-11-04",
 	"workers_dev": true,
 	"vars": {
-		"PUBLIC_READ_ORIGIN": "https://10000takes.github.io"
+		"PUBLIC_READ_ORIGIN": "https://10000takes.github.io",
+		"R2_BUCKET_NAME": "10k-takes-clip-strategist"
 	},
+	"r2_buckets": [
+		{
+			"binding": "CLIP_FILES",
+			"bucket_name": "10k-takes-clip-strategist"
+		}
+	],
 	"d1_databases": [
 		{
 			"binding": "DB",

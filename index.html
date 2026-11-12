@@ -356,9 +356,30 @@ html.locked #gate{display:flex}
 </div>
 </details>
 <details class="analytics-subsection">
-<summary>Video Creative Analysis</summary>
+<summary>AI Clip Strategist</summary>
 <div class="analytics-subsection-body">
-<div class="panel ci-answer">Available now: platform, post type, caption opening, caption length, and video duration when supplied by the platform. Video files, thumbnails, transcripts, pacing, visuals, and on-screen text are not collected, so this dashboard cannot assess those creative features yet. A multimodal analyzer would require an approved video/transcript source and a separate AI service; no such service or added cost is enabled.</div>
+<div class="sub">Upload an original long-form video to create a private analysis job. The strategist will recommend timestamped short-form moments for your editors; it will not edit or publish clips.</div>
+<div class="panel tools" style="margin-top:10px">
+<div class="ci-tool-grid">
+<label>Content Intelligence Worker URL<input id="clipWorkerUrl" type="url" inputmode="url" placeholder="https://your-content-intelligence-worker.workers.dev" autocomplete="url"></label>
+<label>Private Clip Strategist token<input id="clipWorkerToken" type="password" autocomplete="off" placeholder="Paste the private worker token"></label>
+</div>
+<div class="row"><button id="clipConnect" type="button">Connect</button><button id="clipRefresh" class="alt" type="button">Refresh Jobs</button><button id="clipForget" class="alt" type="button">Forget access</button><span id="clipConnectionStatus" class="ci-meta" role="status" aria-live="polite">Clip Strategist is not connected.</span></div>
+<div class="ci-meta">The token is kept in this browser tab’s session only. Anyone with it can access uploaded videos and analysis. Never put it in GitHub, a repository file, or the public dashboard URL.</div>
+</div>
+<form id="clipUploadForm" class="panel" style="margin-top:10px">
+<div class="ci-tool-grid">
+<label>Video title<input id="clipTitle" required maxlength="120" placeholder="Example: State Fair vlog — day one"></label>
+<label>Original video file<input id="clipFile" required type="file" accept="video/mp4,video/mov,video/quicktime,video/webm,.m4v"></label>
+</div>
+<div class="row" style="margin-top:10px"><button id="clipUploadButton" type="submit">Upload Video</button><span class="ci-meta">MP4, MOV, M4V, or WebM · up to 2 GB · maximum five active videos · uploaded directly to private Cloudflare R2 storage.</span></div>
+<progress id="clipUploadProgress" max="100" value="0" hidden style="width:100%;margin-top:10px"></progress>
+<div id="clipUploadStatus" class="ci-meta" role="status" aria-live="polite" style="margin-top:8px">Connect using the private worker token before uploading.</div>
+</form>
+<div class="panel ci-answer" style="margin-top:10px"><b>How processing works:</b> Uploads stay in private storage. When a video is queued, start the “AI Clip Strategist” workflow in GitHub Actions to process one video. Gemini creates the transcript and evidence-based clip shortlist; the source is removed from Gemini after processing. The original stays in your private storage until you delete it. Trends and 10K Hub historical comparisons are not connected yet. No video is edited or published automatically.</div>
+<h3 class="gh">Video Jobs</h3>
+<div id="clipJobsStatus" class="ci-meta" role="status" aria-live="polite">Connect to view video jobs.</div>
+<div id="clipJobs" class="ci-grid"></div>
 </div>
 </details>
 <hr class="section-divider" aria-hidden="true">
@@ -817,6 +838,63 @@ try{$('contentAgentUrl').value=localStorage.getItem(CONTENT_AGENT_URL_KEY)||''}c
 $('connectContentAgent').onclick=()=>{const base=normalizeAgentUrl($('contentAgentUrl').value);if(!base){$('contentAgentStatus').textContent='Enter a valid HTTPS Worker URL.';return}try{localStorage.setItem(CONTENT_AGENT_URL_KEY,base)}catch(e){}$('contentAgentUrl').value=base;refreshContentAgent()};
 $('refreshContentAgent').onclick=refreshContentAgent;
 if($('contentAgentUrl').value)refreshContentAgent();
+
+// AI Clip Strategist: browser-session token only; video bytes go directly to R2.
+const CLIP_TOKEN_KEY='tk_clip_strategist_token_v1',CLIP_URL_KEY='tk_clip_strategist_url_v1';
+function clipBase(){return normalizeAgentUrl($('clipWorkerUrl').value)}
+function clipHeaders(){return{Authorization:'Bearer '+$('clipWorkerToken').value.trim(),'Content-Type':'application/json'}}
+function clipMime(file){const extension=(file.name.split('.').pop()||'').toLowerCase();if(extension==='mov')return'video/mov';if(extension==='m4v')return'video/mp4';if(extension==='mp4')return'video/mp4';if(extension==='webm')return'video/webm';if(['video/mp4','video/mov','video/webm'].includes(file.type))return file.type;if(file.type==='video/quicktime')return'video/mov';return''}
+function uploadClipFile(url,file,mime){return new Promise((resolve,reject)=>{const xhr=new XMLHttpRequest();xhr.open('PUT',url);xhr.setRequestHeader('Content-Type',mime);xhr.upload.onprogress=event=>{if(event.lengthComputable){$('clipUploadProgress').value=15+Math.round(event.loaded/event.total*70);$('clipUploadStatus').textContent='Uploading video to private storage… '+Math.round(event.loaded/event.total*100)+'%'}};xhr.onload=()=>xhr.status>=200&&xhr.status<300?resolve():reject(new Error('Private storage rejected the upload ('+xhr.status+'). Check the R2 bucket CORS setup.'));xhr.onerror=()=>reject(new Error('Video upload failed. Check your connection and R2 bucket CORS setup.'));xhr.send(file)})}
+function clipStatusText(status){return({uploading:'Upload incomplete',queued:'Queued · ready to process',processing:'Processing',completed:'Analysis ready',failed:'Analysis failed',deleted:'Deleted'})[status]||status}
+function clipTime(ms){const seconds=Math.floor(Number(ms||0)/1000),minutes=Math.floor(seconds/60);return String(minutes).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0')}
+function clipCandidateHTML(candidate){
+ const e=candidate.evidence||{},p=candidate.edit_plan||{},adapt=candidate.platform_adaptations||{};
+ const quotes=(e.transcript_quotes||[]).map(q=>'<li><b>'+esc(clipTime(q.start_ms))+'–'+esc(clipTime(q.end_ms))+' · '+esc(q.speaker||'Speaker unclear')+':</b> “'+esc(q.quote)+'”</li>').join('');
+ const visuals=(e.visual_moments||[]).map(m=>'<li><b>'+esc(clipTime(m.time_ms))+':</b> '+esc(m.observation)+(m.signal?' <span class="ci-meta">('+esc(m.signal)+')</span>':'')+'</li>').join('');
+ const audio=(e.audio_moments||[]).map(m=>'<li><b>'+esc(clipTime(m.time_ms))+':</b> '+esc(m.observation)+'</li>').join('');
+ const hypotheses=(e.hypotheses||[]).map(h=>'<li>'+esc(h)+'</li>').join('');
+ const adaptationHTML=Object.entries(adapt).map(([platform,text])=>'<div><b>'+esc(platform)+':</b> '+esc(text)+'</div>').join('');
+ return '<article class="panel ci-rec"><div class="lbl">Clip '+fmt(candidate.rank)+' · '+esc(clipTime(candidate.start_ms))+'–'+esc(clipTime(candidate.end_ms))+' · Editorial Priority '+fmt(candidate.editorial_score)+'/100 · '+esc(titleWords(candidate.confidence))+' Confidence</div><h3>'+esc(candidate.title)+'</h3><p><b>Opening hook:</b> '+esc(candidate.hook)+'</p><p><b>Why it may work:</b> '+esc(candidate.rationale)+'</p><div class="ci-meta">Model-cited source evidence · Verify the moments and cut points against the original video.</div>'+(quotes?'<p><b>Transcript evidence</b></p><ul>'+quotes+'</ul>':'')+(visuals?'<p><b>Visual moments</b></p><ul>'+visuals+'</ul>':'')+(audio?'<p><b>Audio moments</b></p><ul>'+audio+'</ul>':'')+(hypotheses?'<p><b>Editorial hypotheses</b></p><ul>'+hypotheses+'</ul>':'')+'<details class="analytics-subsection"><summary>Final Cut Pro Edit Plan</summary><div class="analytics-subsection-body"><p><b>Suggested source cut:</b> '+esc(clipTime(p.suggested_cut_in_ms))+'–'+esc(clipTime(p.suggested_cut_out_ms))+'</p><p><b>Opening:</b> '+esc(p.opening_hook||'')+'</p><p><b>Pacing:</b> '+esc(p.pacing||'')+'</p><p><b>Captions:</b> '+esc(p.captions||'')+'</p><p><b>On-screen text:</b> '+esc(p.on_screen_text||'')+'</p><p><b>Ending:</b> '+esc(p.ending||'')+'</p><p><b>Editor notes:</b> '+esc(p.final_cut_pro_notes||'')+'</p></div></details><details class="analytics-subsection"><summary>Platform Adaptations</summary><div class="analytics-subsection-body">'+adaptationHTML+'</div></details></article>';
+}
+function renderClipAnalysis(data){
+ const job=data.job||{},segments=data.transcript_segments||[],candidates=data.candidates||[];
+ return '<div class="ci-meta">'+esc(job.analysis_note||'Review the source evidence and confidence before editing. Scores are editorial rankings, not virality probabilities.')+'</div><div class="ci-grid">'+candidates.map(clipCandidateHTML).join('')+'</div><details class="analytics-subsection"><summary>Timestamped Transcript ('+fmt(segments.length)+' segments)</summary><div class="analytics-subsection-body">'+segments.map(s=>'<p><b>'+esc(clipTime(s.start_ms))+'–'+esc(clipTime(s.end_ms))+' · '+esc(s.speaker_label||'Speaker unclear')+':</b> '+esc(s.text)+'</p>').join('')+'</div></details>';
+}
+function renderClipJobs(rows){
+ const target=$('clipJobs');
+ if(!rows.length){target.innerHTML='<div class="panel">No video jobs yet. Upload a source video to start.</div>';return}
+ target.innerHTML=rows.map(job=>'<article class="panel ci-rec"><div class="lbl">'+esc(clipStatusText(job.status))+' · '+new Date(job.created_at).toLocaleString()+'</div><h3>'+esc(job.title)+'</h3><div class="ci-meta">'+esc(job.original_filename)+' · '+(Number(job.file_size_bytes)/1024/1024).toFixed(1)+' MB</div>'+(job.error_message?'<p>'+esc(job.error_message)+'</p>':'')+(job.status==='queued'?'<div class="ci-meta">Start the AI Clip Strategist workflow in GitHub Actions to process this video.</div>':'')+(job.status==='completed'?'<button class="alt" type="button" data-clip-view="'+esc(job.id)+'">View Analysis</button>':'')+'<div id="clip-analysis-'+esc(job.id)+'"></div><div class="row" style="margin-top:8px"><button class="alt" type="button" data-clip-delete="'+esc(job.id)+'">Delete Video And Job</button></div></article>').join('');
+ target.querySelectorAll('[data-clip-view]').forEach(button=>button.onclick=async()=>{const id=button.dataset.clipView,slot=$('clip-analysis-'+id);if(slot.innerHTML){slot.innerHTML='';button.textContent='View Analysis';return}button.disabled=true;button.textContent='Loading…';try{const response=await fetch(clipBase()+'/v1/clip-jobs/'+encodeURIComponent(id),{headers:{Authorization:'Bearer '+$('clipWorkerToken').value.trim()},cache:'no-store'});const data=await response.json();if(!response.ok)throw new Error(data.error||'Could not load analysis');slot.innerHTML=renderClipAnalysis(data);button.textContent='Hide Analysis'}catch(error){button.textContent='View Analysis';$('clipJobsStatus').textContent='Could not load analysis. Check the Worker connection.'}finally{button.disabled=false}});
+ target.querySelectorAll('[data-clip-delete]').forEach(button=>button.onclick=async()=>{if(!confirm('Delete this uploaded source video and its job record? This cannot be undone.'))return;try{const response=await fetch(clipBase()+'/v1/clip-jobs/'+encodeURIComponent(button.dataset.clipDelete),{method:'DELETE',headers:{Authorization:'Bearer '+$('clipWorkerToken').value.trim()}});if(!response.ok)throw new Error('Worker returned '+response.status);await refreshClipJobs()}catch(error){$('clipJobsStatus').textContent='Could not delete this video. Check the Worker URL and access token.'}});
+}
+async function refreshClipJobs(){
+ const base=clipBase(),token=$('clipWorkerToken').value.trim();
+ if(!base||!token){$('clipJobsStatus').textContent='Enter the Worker URL and private token, then select Connect.';return false}
+ $('clipJobsStatus').textContent='Loading private video jobs…';
+ try{const response=await fetch(base+'/v1/clip-jobs',{headers:{Authorization:'Bearer '+token},cache:'no-store'});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||('Worker returned '+response.status));renderClipJobs(Array.isArray(data.jobs)?data.jobs:[]);$('clipJobsStatus').textContent='Connected · '+(data.jobs||[]).length+' private video job(s).';$('clipConnectionStatus').textContent='Connected.';return true}
+ catch(error){$('clipJobsStatus').textContent=error.message==='Unauthorized'?'Token was rejected. Check the Clip Strategist token configured on the Worker.':'Could not reach the private Worker. Check its URL, token, and allowed dashboard origin.';$('clipConnectionStatus').textContent='Connection failed.';return false}
+}
+try{$('clipWorkerUrl').value=localStorage.getItem(CLIP_URL_KEY)||localStorage.getItem(CONTENT_AGENT_URL_KEY)||'';$('clipWorkerToken').value=sessionStorage.getItem(CLIP_TOKEN_KEY)||''}catch(error){}
+$('clipConnect').onclick=async()=>{const base=clipBase(),token=$('clipWorkerToken').value.trim();if(!base||!token){$('clipConnectionStatus').textContent='Enter an HTTPS Worker URL and private token.';return}try{localStorage.setItem(CLIP_URL_KEY,base);sessionStorage.setItem(CLIP_TOKEN_KEY,token)}catch(error){$('clipConnectionStatus').textContent='This browser could not save access for this tab.';return}$('clipWorkerUrl').value=base;await refreshClipJobs()};
+$('clipRefresh').onclick=refreshClipJobs;
+$('clipForget').onclick=()=>{try{sessionStorage.removeItem(CLIP_TOKEN_KEY)}catch(error){}$('clipWorkerToken').value='';$('clipJobs').innerHTML='';$('clipJobsStatus').textContent='Connect to view video jobs.';$('clipConnectionStatus').textContent='Access forgotten.'};
+$('clipUploadForm').onsubmit=async event=>{
+ event.preventDefault();const base=clipBase(),token=$('clipWorkerToken').value.trim(),file=$('clipFile').files[0],title=$('clipTitle').value.trim();
+ if(!base||!token){$('clipUploadStatus').textContent='Connect with the private token before uploading.';return}
+ if(!file){$('clipUploadStatus').textContent='Choose a video file first.';return}
+ const mime=clipMime(file);if(!mime){$('clipUploadStatus').textContent='Choose an MP4, MOV, M4V, or WebM video.';return}
+ if(file.size>2_000_000_000){$('clipUploadStatus').textContent='This file is over the 2 GB upload limit.';return}
+ $('clipUploadButton').disabled=true;$('clipUploadProgress').hidden=false;$('clipUploadProgress').value=5;$('clipUploadStatus').textContent='Preparing a private upload…';
+ try{
+  const create=await fetch(base+'/v1/clip-jobs',{method:'POST',headers:clipHeaders(),body:JSON.stringify({title,filename:file.name,content_type:mime,file_size_bytes:file.size})});const created=await create.json();if(!create.ok)throw new Error(created.error||('Worker returned '+create.status));
+  $('clipUploadProgress').value=15;$('clipUploadStatus').textContent='Uploading video directly to private storage…';
+  await uploadClipFile(created.upload_url,file,mime);
+  $('clipUploadProgress').value=90;$('clipUploadStatus').textContent='Verifying uploaded video…';
+  const complete=await fetch(base+'/v1/clip-jobs/'+encodeURIComponent(created.id)+'/complete',{method:'POST',headers:{Authorization:'Bearer '+token}});const result=await complete.json();if(!complete.ok)throw new Error(result.error||('Worker returned '+complete.status));
+  $('clipUploadProgress').value=100;$('clipUploadStatus').textContent='Upload complete. '+(result.message||'');$('clipFile').value='';$('clipTitle').value='';await refreshClipJobs();
+ }catch(error){$('clipUploadStatus').textContent=error.message||'Upload failed. Check the Worker and private storage setup.';await refreshClipJobs()}
+ finally{$('clipUploadButton').disabled=false}
+};
 
 let OPPORTUNITY_REPORT=null,OPPORTUNITY_CATEGORY='all';
 function opportunityCard(o){

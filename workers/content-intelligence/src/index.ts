@@ -8,9 +8,20 @@ interface D1Database {
   prepare(query: string): D1PreparedStatement;
   batch(statements: D1PreparedStatement[]): Promise<unknown[]>;
 }
+interface R2Object { size: number; httpEtag: string }
+interface R2Bucket {
+  head(key: string): Promise<R2Object | null>;
+  delete(key: string): Promise<void>;
+}
 interface Env {
   DB: D1Database;
+  CLIP_FILES: R2Bucket;
   AGENT_TOKEN?: string;
+  CLIP_STRATEGIST_TOKEN?: string;
+  R2_ACCOUNT_ID?: string;
+  R2_BUCKET_NAME?: string;
+  R2_ACCESS_KEY_ID?: string;
+  R2_SECRET_ACCESS_KEY?: string;
   PUBLIC_READ_ORIGIN?: string;
 }
 
@@ -58,6 +69,8 @@ interface ComparedPost {
 }
 
 const MAX_IMPORT_ITEMS = 500;
+const MAX_ACTIVE_CLIP_JOBS = 5;
+const MAX_CLIP_FILE_BYTES = 2_000_000_000;
 const MIN_POSTS_PER_COHORT = 3;
 const MIN_VIEW_UPLIFT = 0.25;
 const MIN_RELATIVE_ENGAGEMENT = 0.8;
@@ -165,6 +178,269 @@ function corsHeaders(request: Request, env: Env): HeadersInit {
     "Access-Control-Allow-Headers": "Content-Type",
     "Vary": "Origin",
   };
+}
+
+function clipCorsHeaders(request: Request, env: Env): HeadersInit {
+  if (!originMatches(request, env)) return {};
+  return {
+    "Access-Control-Allow-Origin": env.PUBLIC_READ_ORIGIN!,
+    "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Authorization, Content-Type",
+    "Access-Control-Max-Age": "600",
+    "Vary": "Origin",
+  };
+}
+
+function encodeRfc3986(value: string): string {
+  return encodeURIComponent(value).replace(/[!'()*]/g, (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`);
+}
+
+function hex(bytes: ArrayBuffer): string {
+  return [...new Uint8Array(bytes)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function hmac(key: ArrayBuffer | Uint8Array, value: string): Promise<ArrayBuffer> {
+  const raw = key instanceof Uint8Array ? key : new Uint8Array(key);
+  const cryptoKey = await crypto.subtle.importKey("raw", raw, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  return crypto.subtle.sign("HMAC", cryptoKey, new TextEncoder().encode(value));
+}
+
+async function presignedR2Url(env: Env, objectKey: string, method: "GET" | "PUT"): Promise<string> {
+  if (!env.R2_ACCOUNT_ID || !env.R2_BUCKET_NAME || !env.R2_ACCESS_KEY_ID || !env.R2_SECRET_ACCESS_KEY) {
+    throw new Error("R2 upload signing is not configured");
+  }
+  const host = `${env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`;
+  const path = `/${encodeRfc3986(env.R2_BUCKET_NAME)}/${objectKey.split("/").map(encodeRfc3986).join("/")}`;
+  const now = new Date();
+  const amzDate = now.toISOString().replace(/[:-]|\.\d{3}/g, "");
+  const date = amzDate.slice(0, 8);
+  const scope = `${date}/auto/s3/aws4_request`;
+  const credential = `${env.R2_ACCESS_KEY_ID}/${scope}`;
+  const params: Array<[string, string]> = [
+    ["X-Amz-Algorithm", "AWS4-HMAC-SHA256"],
+    ["X-Amz-Credential", credential],
+    ["X-Amz-Date", amzDate],
+    ["X-Amz-Expires", method === "PUT" ? "3600" : "900"],
+    ["X-Amz-SignedHeaders", "host"],
+  ];
+  const canonicalQuery = params.map(([key, value]) => `${encodeRfc3986(key)}=${encodeRfc3986(value)}`).sort().join("&");
+  const canonicalRequest = `${method}\n${path}\n${canonicalQuery}\nhost:${host}\n\nhost\nUNSIGNED-PAYLOAD`;
+  const stringToSign = `AWS4-HMAC-SHA256\n${amzDate}\n${scope}\n${hex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(canonicalRequest)))}`;
+  const kDate = await hmac(new TextEncoder().encode(`AWS4${env.R2_SECRET_ACCESS_KEY}`), date);
+  const kRegion = await hmac(kDate, "auto");
+  const kService = await hmac(kRegion, "s3");
+  const kSigning = await hmac(kService, "aws4_request");
+  const signature = hex(await hmac(kSigning, stringToSign));
+  return `https://${host}${path}?${canonicalQuery}&X-Amz-Signature=${signature}`;
+}
+
+function clipAuthorized(request: Request, token: string | undefined): boolean {
+  if (!token || token.length < 32) return false;
+  const supplied = request.headers.get("Authorization") ?? "";
+  const expected = `Bearer ${token}`;
+  if (supplied.length !== expected.length) return false;
+  let difference = 0;
+  for (let i = 0; i < expected.length; i++) difference |= supplied.charCodeAt(i) ^ expected.charCodeAt(i);
+  return difference === 0;
+}
+
+async function createClipJob(request: Request, env: Env): Promise<Response> {
+  if (!originMatches(request, env)) return json({ error: "Origin not allowed" }, 403);
+  let body: unknown;
+  try { body = await request.json(); } catch { return json({ error: "Request body must be valid JSON" }, 400); }
+  if (!body || typeof body !== "object" || Array.isArray(body)) return json({ error: "Invalid job details" }, 400);
+  const row = body as Record<string, unknown>;
+  let title: string, filename: string;
+  try {
+    title = normalizedLabel(row.title, "title", 120);
+    filename = normalizedLabel(row.filename, "filename", 200);
+  } catch (error) { return json({ error: error instanceof Error ? error.message : "Invalid title or filename" }, 400); }
+  const contentType = typeof row.content_type === "string" ? row.content_type.toLowerCase() : "";
+  const fileSize = row.file_size_bytes;
+  if (!/^video\/(mp4|mov|webm)$/.test(contentType)) return json({ error: "Use an MP4, MOV, M4V, or WebM video file" }, 400);
+  if (typeof fileSize !== "number" || !Number.isSafeInteger(fileSize) || fileSize < 1 || fileSize > MAX_CLIP_FILE_BYTES) return json({ error: "Video must be between 1 byte and 2 GB" }, 400);
+  const active = await env.DB.prepare("SELECT COUNT(*) AS count FROM clip_jobs WHERE status != 'deleted'").all<{ count: number }>();
+  if ((active.results?.[0]?.count ?? 0) >= MAX_ACTIVE_CLIP_JOBS) return json({ error: "Delete an old video job before adding another. The private workspace is limited to five active videos." }, 409);
+  const id = crypto.randomUUID();
+  const objectKey = `source/${id}`;
+  const now = new Date().toISOString();
+  try {
+    const uploadUrl = await presignedR2Url(env, objectKey, "PUT");
+    await env.DB.prepare(
+      `INSERT INTO clip_jobs (id, title, original_filename, object_key, mime_type, file_size_bytes, status, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, 'uploading', ?, ?)`,
+    ).bind(id, title, filename, objectKey, contentType, fileSize, now, now).run();
+    return json({ id, upload_url: uploadUrl, upload_expires_in_seconds: 3600 }, 201, clipCorsHeaders(request, env));
+  } catch (error) {
+    return json({ error: error instanceof Error ? error.message : "Could not create upload" }, 503);
+  }
+}
+
+async function completeClipUpload(request: Request, env: Env, id: string): Promise<Response> {
+  if (!originMatches(request, env)) return json({ error: "Origin not allowed" }, 403);
+  const job = await env.DB.prepare("SELECT id, object_key, file_size_bytes, status FROM clip_jobs WHERE id = ?")
+    .bind(id).all<{ id: string; object_key: string; file_size_bytes: number; status: string }>();
+  const current = job.results?.[0];
+  if (!current) return json({ error: "Clip job not found" }, 404);
+  if (current.status !== "uploading") return json({ error: "This upload is not awaiting completion" }, 409);
+  const object = await env.CLIP_FILES.head(current.object_key);
+  if (!object) return json({ error: "Uploaded video was not found in private storage" }, 400);
+  if (object.size !== current.file_size_bytes) return json({ error: "Uploaded video size did not match the original file" }, 400);
+  const now = new Date().toISOString();
+  await env.DB.prepare("UPDATE clip_jobs SET status = 'queued', updated_at = ? WHERE id = ?").bind(now, id).run();
+  return json({ id, status: "queued", message: "Video uploaded. Start the AI Clip Strategist workflow in GitHub Actions to analyze it." }, 202, clipCorsHeaders(request, env));
+}
+
+async function listClipJobs(request: Request, env: Env): Promise<Response> {
+  if (!originMatches(request, env)) return json({ error: "Origin not allowed" }, 403);
+  const jobs = await env.DB.prepare(
+    `SELECT id, title, original_filename, mime_type, file_size_bytes, status, created_at, updated_at, processed_at, error_message, analysis_note
+     FROM clip_jobs WHERE status != 'deleted' ORDER BY created_at DESC LIMIT 30`,
+  ).all();
+  return json({ jobs: jobs.results ?? [] }, 200, clipCorsHeaders(request, env));
+}
+
+async function deleteClipJob(request: Request, env: Env, id: string): Promise<Response> {
+  if (!originMatches(request, env)) return json({ error: "Origin not allowed" }, 403);
+  const found = await env.DB.prepare("SELECT object_key FROM clip_jobs WHERE id = ?").bind(id).all<{ object_key: string }>();
+  const objectKey = found.results?.[0]?.object_key;
+  if (!objectKey) return json({ error: "Clip job not found" }, 404);
+  await env.CLIP_FILES.delete(objectKey);
+  await env.DB.prepare("DELETE FROM clip_jobs WHERE id = ?").bind(id).run();
+  return json({ id, deleted: true }, 200, clipCorsHeaders(request, env));
+}
+
+async function getClipJob(request: Request, env: Env, id: string): Promise<Response> {
+  if (!originMatches(request, env)) return json({ error: "Origin not allowed" }, 403);
+  const found = await env.DB.prepare(
+    `SELECT id, title, original_filename, mime_type, file_size_bytes, status, created_at, updated_at, processed_at, error_message
+     FROM clip_jobs WHERE id = ? AND status != 'deleted'`,
+  ).bind(id).all();
+  const job = found.results?.[0];
+  if (!job) return json({ error: "Clip job not found" }, 404);
+  const transcripts = await env.DB.prepare(
+    `SELECT start_ms, end_ms, speaker_label, text, confidence, evidence_source
+     FROM clip_transcript_segments WHERE job_id = ? ORDER BY start_ms`,
+  ).bind(id).all();
+  const candidates = await env.DB.prepare(
+    `SELECT rank, start_ms, end_ms, title, hook, rationale, editorial_score, evidence_json,
+            edit_plan_json, platform_adaptations_json, confidence, model_provenance_json
+     FROM clip_candidates WHERE job_id = ? ORDER BY rank`,
+  ).bind(id).all<Record<string, unknown>>();
+  const parsedCandidates = (candidates.results ?? []).map((row) => {
+    const parse = (key: string) => { try { return JSON.parse(String(row[key] ?? "{}")); } catch { return {}; } };
+    return { ...row, evidence: parse("evidence_json"), edit_plan: parse("edit_plan_json"), platform_adaptations: parse("platform_adaptations_json"), model_provenance: parse("model_provenance_json") };
+  });
+  return json({ job, transcript_segments: transcripts.results ?? [], candidates: parsedCandidates }, 200, clipCorsHeaders(request, env));
+}
+
+async function claimNextClipJob(env: Env): Promise<Response> {
+  const found = await env.DB.prepare(
+    `SELECT id, title, original_filename, object_key, mime_type, file_size_bytes
+     FROM clip_jobs WHERE status = 'queued' ORDER BY created_at LIMIT 1`,
+  ).all<{ id: string; title: string; original_filename: string; object_key: string; mime_type: string; file_size_bytes: number }>();
+  const job = found.results?.[0];
+  if (!job) return json({ job: null });
+  const now = new Date().toISOString();
+  const claim = await env.DB.prepare("UPDATE clip_jobs SET status = 'processing', updated_at = ?, error_message = NULL WHERE id = ? AND status = 'queued'")
+    .bind(now, job.id).run();
+  if (claim && typeof claim === "object" && "meta" in claim) {
+    const changes = Number((claim as { meta?: { changes?: number } }).meta?.changes ?? 0);
+    if (changes === 0) return json({ job: null });
+  }
+  try {
+    const downloadUrl = await presignedR2Url(env, job.object_key, "GET");
+    return json({ job: { id: job.id, title: job.title, filename: job.original_filename, mime_type: job.mime_type, file_size_bytes: job.file_size_bytes }, download_url: downloadUrl, download_expires_in_seconds: 900 });
+  } catch {
+    await env.DB.prepare("UPDATE clip_jobs SET status = 'failed', updated_at = ?, error_message = ? WHERE id = ?")
+      .bind(new Date().toISOString(), "Private storage download could not be prepared.", job.id).run();
+    return json({ error: "Could not prepare video for processing" }, 503);
+  }
+}
+
+function jsonObject(value: unknown, field: string, maximum = 20_000): string {
+  if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error(`${field} must be an object`);
+  const serialized = JSON.stringify(value);
+  if (serialized.length > maximum) throw new Error(`${field} is too large`);
+  return serialized;
+}
+
+async function saveClipResults(request: Request, env: Env, id: string): Promise<Response> {
+  let body: unknown;
+  try { body = await request.json(); } catch { return json({ error: "Request body must be valid JSON" }, 400); }
+  if (!body || typeof body !== "object" || Array.isArray(body)) return json({ error: "Invalid analysis result" }, 400);
+  const row = body as Record<string, unknown>;
+  const duration = row.duration_ms;
+  const rawSegments = row.transcript_segments;
+  const rawCandidates = row.candidates;
+  if (typeof duration !== "number" || !Number.isSafeInteger(duration) || duration < 1 || duration > 7_200_000) return json({ error: "duration_ms must be between 1 ms and 2 hours" }, 400);
+  if (!Array.isArray(rawSegments) || rawSegments.length > 20_000) return json({ error: "transcript_segments must be an array with at most 20,000 entries" }, 400);
+  if (!Array.isArray(rawCandidates) || rawCandidates.length > 10) return json({ error: "candidates must be an array with at most 10 entries" }, 400);
+  let provenance: string;
+  const analysisNote = typeof row.analysis_note === "string" ? row.analysis_note.trim().slice(0, 1_000) : "";
+  try { provenance = jsonObject(row.model_provenance, "model_provenance"); }
+  catch (error) { return json({ error: error instanceof Error ? error.message : "Invalid model provenance" }, 400); }
+  try {
+    const exists = await env.DB.prepare("SELECT status FROM clip_jobs WHERE id = ?").bind(id).all<{ status: string }>();
+    if (!exists.results?.length) return json({ error: "Clip job not found" }, 404);
+    const transcriptRows = rawSegments.map((item, index) => {
+      if (!item || typeof item !== "object" || Array.isArray(item)) throw new Error(`Transcript segment ${index + 1} must be an object`);
+      const segment = item as Record<string, unknown>;
+      const start = segment.start_ms, end = segment.end_ms;
+      if (typeof start !== "number" || !Number.isSafeInteger(start) || start < 0 || typeof end !== "number" || !Number.isSafeInteger(end) || end <= start || end > duration) throw new Error(`Transcript segment ${index + 1} has invalid timestamps`);
+      const text = normalizedLabel(segment.text, "transcript text", 2_000);
+      const speaker = segment.speaker_label == null ? null : normalizedLabel(segment.speaker_label, "speaker_label", 80);
+      const confidence = segment.confidence == null ? null : segment.confidence;
+      if (confidence !== null && (typeof confidence !== "number" || !Number.isFinite(confidence) || confidence < 0 || confidence > 1)) throw new Error(`Transcript segment ${index + 1} has invalid confidence`);
+      const source = typeof segment.evidence_source === "string" ? segment.evidence_source.slice(0, 40) : "speech_to_text";
+      return env.DB.prepare(
+        `INSERT INTO clip_transcript_segments (id, job_id, start_ms, end_ms, speaker_label, text, confidence, evidence_source)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      ).bind(crypto.randomUUID(), id, start, end, speaker, text, confidence, source);
+    });
+    const candidateRows = rawCandidates.map((item, index) => {
+      if (!item || typeof item !== "object" || Array.isArray(item)) throw new Error(`Candidate ${index + 1} must be an object`);
+      const candidate = item as Record<string, unknown>;
+      const start = candidate.start_ms, end = candidate.end_ms, score = candidate.editorial_score;
+      if (typeof start !== "number" || !Number.isSafeInteger(start) || start < 0 || typeof end !== "number" || !Number.isSafeInteger(end) || end <= start || end > duration || end - start > 180_000) throw new Error(`Candidate ${index + 1} has invalid source timestamps or exceeds 180 seconds`);
+      if (typeof score !== "number" || !Number.isInteger(score) || score < 0 || score > 100) throw new Error(`Candidate ${index + 1} editorial_score must be 0–100`);
+      const confidence = candidate.confidence;
+      if (confidence !== "low" && confidence !== "medium" && confidence !== "high") throw new Error(`Candidate ${index + 1} confidence is invalid`);
+      const rank = index + 1;
+      return env.DB.prepare(
+        `INSERT INTO clip_candidates (id, job_id, rank, start_ms, end_ms, title, hook, rationale, editorial_score,
+          evidence_json, edit_plan_json, platform_adaptations_json, confidence, model_provenance_json, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      ).bind(crypto.randomUUID(), id, rank, start, end,
+        normalizedLabel(candidate.title, "candidate title", 140), normalizedLabel(candidate.hook, "opening hook", 500),
+        normalizedLabel(candidate.rationale, "rationale", 1_000), score,
+        jsonObject(candidate.evidence, "evidence"), jsonObject(candidate.edit_plan, "edit_plan"),
+        jsonObject(candidate.platform_adaptations, "platform_adaptations"), confidence, provenance, new Date().toISOString());
+    });
+    const clear = [
+      env.DB.prepare("DELETE FROM clip_transcript_segments WHERE job_id = ?").bind(id),
+      env.DB.prepare("DELETE FROM clip_candidates WHERE job_id = ?").bind(id),
+    ];
+    await env.DB.batch(clear);
+    for (let i = 0; i < transcriptRows.length; i += 80) await env.DB.batch(transcriptRows.slice(i, i + 80));
+    for (let i = 0; i < candidateRows.length; i += 80) await env.DB.batch(candidateRows.slice(i, i + 80));
+    const processedAt = new Date().toISOString();
+    await env.DB.prepare("UPDATE clip_jobs SET status = 'completed', updated_at = ?, processed_at = ?, error_message = NULL, analysis_note = ? WHERE id = ?")
+      .bind(processedAt, processedAt, analysisNote, id).run();
+    return json({ id, status: "completed", transcript_segments: transcriptRows.length, candidates: candidateRows.length });
+  } catch (error) {
+    return json({ error: error instanceof Error ? error.message : "Could not save analysis results" }, 400);
+  }
+}
+
+async function failClipJob(request: Request, env: Env, id: string): Promise<Response> {
+  let body: unknown;
+  try { body = await request.json(); } catch { return json({ error: "Request body must be valid JSON" }, 400); }
+  const message = body && typeof body === "object" && !Array.isArray(body) && typeof (body as Record<string, unknown>).error === "string"
+    ? ((body as Record<string, string>).error).slice(0, 500) : "Processing failed; review the workflow logs.";
+  await env.DB.prepare("UPDATE clip_jobs SET status = 'failed', updated_at = ?, error_message = ? WHERE id = ?")
+    .bind(new Date().toISOString(), message, id).run();
+  return json({ id, status: "failed" });
 }
 
 function median(values: number[]): number | null {
@@ -380,6 +656,32 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     if (request.method === "GET" && url.pathname === "/health") return json({ ok: true });
+    const isClipRoute = url.pathname === "/v1/clip-jobs" || url.pathname === "/v1/clip-jobs/next" || /^\/v1\/clip-jobs\/[0-9a-f-]+(?:\/(?:complete|results|fail))?$/i.test(url.pathname);
+    if (isClipRoute && request.method === "OPTIONS") {
+      if (!originMatches(request, env)) return json({ error: "Origin not allowed" }, 403);
+      return new Response(null, { status: 204, headers: clipCorsHeaders(request, env) });
+    }
+    if (isClipRoute) {
+      const jobId = url.pathname.split("/")[3] ?? "";
+      const runnerRoute = url.pathname === "/v1/clip-jobs/next" || /\/results$|\/fail$/.test(url.pathname);
+      let response: Response;
+      if (runnerRoute) {
+        if (!authorized(request, env.AGENT_TOKEN)) response = json({ error: "Unauthorized" }, 401);
+        else if (request.method === "POST" && url.pathname === "/v1/clip-jobs/next") response = await claimNextClipJob(env);
+        else if (request.method === "POST" && url.pathname.endsWith("/results")) response = await saveClipResults(request, env, jobId);
+        else if (request.method === "POST" && url.pathname.endsWith("/fail")) response = await failClipJob(request, env, jobId);
+        else response = json({ error: "Not found" }, 404);
+      } else if (!clipAuthorized(request, env.CLIP_STRATEGIST_TOKEN)) response = json({ error: "Unauthorized" }, 401);
+      else if (request.method === "POST" && url.pathname === "/v1/clip-jobs") response = await createClipJob(request, env);
+      else if (request.method === "GET" && url.pathname === "/v1/clip-jobs") response = await listClipJobs(request, env);
+      else if (request.method === "POST" && /^\/v1\/clip-jobs\/[0-9a-f-]+\/complete$/i.test(url.pathname)) response = await completeClipUpload(request, env, jobId);
+      else if (request.method === "GET" && /^\/v1\/clip-jobs\/[0-9a-f-]+$/i.test(url.pathname)) response = await getClipJob(request, env, jobId);
+      else if (request.method === "DELETE" && /^\/v1\/clip-jobs\/[0-9a-f-]+$/i.test(url.pathname)) response = await deleteClipJob(request, env, jobId);
+      else response = json({ error: "Not found" }, 404);
+      const headers = new Headers(response.headers);
+      new Headers(clipCorsHeaders(request, env)).forEach((value, key) => headers.set(key, value));
+      return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+    }
     if (request.method === "OPTIONS" && url.pathname === "/v1/recommendations") {
       if (!originMatches(request, env)) return json({ error: "Origin not allowed" }, 403);
       return new Response(null, { status: 204, headers: corsHeaders(request, env) });
