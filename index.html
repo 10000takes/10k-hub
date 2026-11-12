@@ -477,7 +477,9 @@ function card(title,o){
  const vc=vChg(o),er=rate(o),er1=rate1(o),none=o.coll?'collecting data':'not connected yet';
  const views=o.nV?'<b>'+fmt(o.v)+'</b>'+(vc==null?'':' <span class="'+cls(vc)+'">'+pct(vc)+'</span>'):none;
  const eng=o.nE?'<b>'+fmt(o.e)+'</b> · '+er.toFixed(2)+'%'+(er1!=null?' <span class="'+cls(er-er1)+'">'+pts2(er-er1)+'</span>':''):(o.nV?'–':none);
- return '<div class="panel"><div class="lbl">'+title+'</div><div class="big">'+(o.hasF?fmt(o.f):'–')+'</div><div class="'+cls(o.g)+'" style="font-weight:600">'+sg(o.g)+' this week</div>'
+ const growthLabel=title==='X/Twitter'?' since previous X run':' this week';
+ const growthText=title==='X/Twitter'&&!o.hasGrowth?'Needs another X snapshot':sg(o.g)+growthLabel;
+ return '<div class="panel"><div class="lbl">'+title+'</div><div class="big">'+(o.hasF?fmt(o.f):'–')+'</div><div class="'+cls(o.g)+'" style="font-weight:600">'+growthText+'</div>'
   +'<div class="kv"><span>Views, 7 days</span><span>'+views+'</span></div><div class="kv"><span>Engagement · rate</span><span>'+eng+'</span></div></div>'}
 function render(){
  const S=series(),ix=mIndex(),dates=[...new Set(rows.map(r=>r.d))].sort();
@@ -493,7 +495,15 @@ function render(){
   +'<div class="panel"><div class="lbl">Views, last 7 days</div><div class="big">'+(N.nV?fmt(N.v):'–')+'</div><div class="mini '+cls(vc)+'">'+(N.nV?(vc==null?'No prior week yet':pct(vc)+' vs last week'):'No data yet')+'</div></div>'
   +'<div class="panel"><div class="lbl">Engagement, last 7 days</div><div class="big">'+(N.nE?fmt(N.e):'–')+'</div><div class="mini">'+(N.nE?'Rate '+er.toFixed(2)+'%'+(er1!=null?' ('+pts2(er-er1)+')':''):'No data yet')+'</div></div>';
  $('netNote').textContent='Views and engagement include only the '+N.nV+' of '+KEYS.length+' account and platform pairs that are connected so far.';
- $('mainCards').innerHTML=card('All platforms',M)+AC[0].p.map(p=>card(p,agg([AC[0].n+'|'+p],S,ix,asof))).join('');
+ $('mainCards').innerHTML=card('All platforms',M)+AC[0].p.map(p=>{
+  const o=agg([AC[0].n+'|'+p],S,ix,asof);
+  if(p==='X/Twitter'){
+   const xRows=(S[AC[0].n+'|'+p]||[]).slice().sort((a,b)=>a.d.localeCompare(b.d));
+   if(xRows.length>=2){o.g=xRows[xRows.length-1].f-xRows[xRows.length-2].f;o.gb=xRows[xRows.length-2].f;o.f=xRows[xRows.length-1].f;o.hasF=true;o.hasGrowth=true}
+   else{o.g=0;o.hasGrowth=false}
+  }
+  return card(p,o)
+ }).join('');
  $('subCards').innerHTML=card('All subsidiary platforms',B)+SUBP.map(p=>card(p,agg(subA.map(a=>a.n+'|'+p),S,ix,asof))).join('');
  let h='<tr><th>Account</th>'+SUBP.map(p=>'<th>'+p+'</th>').join('')+'<th>Total</th></tr>';
  subA.forEach(a=>{const t=agg(a.p.map(p=>a.n+'|'+p),S,ix,asof);h+='<tr><td>'+a.n+'</td>'+SUBP.map(p=>{const c=agg([a.n+'|'+p],S,ix,asof);return '<td>'+(c.hasF?fmt(c.f):'–')+'<small class="'+cls(c.g)+'">'+(c.hasF?sg(c.g):'')+'</small></td>'}).join('')+'<td><b>'+fmt(t.f)+'</b><small class="'+cls(t.g)+'">'+sg(t.g)+'</small></td></tr>'});
