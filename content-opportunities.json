@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-11-11T19:48:01.227968+00:00",
+  "generated_at": "2026-11-12T20:17:26.018223+00:00",
   "status": "ok",
   "source_scope": "Google News RSS searches for Minnesota teams plus configured RSS feeds for tracked accounts.",
   "source_count": 8,
-  "articles_scanned": 117,
+  "articles_scanned": 115,
   "social_trend_coverage": {
     "Instagram": "not_connected",
     "Facebook": "not_connected",
@@ -15,27 +15,27 @@
   "source_failures": [],
   "opportunities": [
     {
-      "id": "a6c8d67d37095918",
-      "score": 81,
+      "id": "5299425450cd084f",
+      "score": 87,
       "score_breakdown": {
         "relevance": 91,
-        "timeliness": 91,
-        "virality_potential": 38,
+        "timeliness": 95,
+        "virality_potential": 62,
         "ease_of_execution": 93
       },
-      "team": "Vikings",
-      "title": "2026 NFL Week 10: Minnesota Vikings at Green Bay Packers",
-      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNMGNmS1pRZjF2a0ZOY0phSFJEb013WDBwUkRveHVUZERiUHUzYW85NlowZl9US0VSNFBGYWVNSUhycVhmZWJyNFRTQTR5SVdYM0tzdDBTcm9tdlhNdkZyX0FZeXVVRlBGaE9BN09JU3Aza1FwRUQybGZja2tQVXFRMnppOFY2RWE3S1FwTlpmQ19JT2pMRzVwbkdrRzdGcUdRV0dBcWViM3QyNzVBRW1FdXFreFIwOENDcUZGQmJ5SzRmZw?oc=5",
-      "published_at": "2026-11-11T14:56:37+00:00",
+      "team": "Wild",
+      "title": "Minnesota Wild vs. Toronto Maple Leafs - NHL Expert Picks - November 12, 2026",
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxORUoyaExlZjY1Z3Y2TWdCdXJzMzVQOXkzV0t5Mlg5T2N6cDZpZkxYOUpzM3htQnczVjY2OFcxUUg2cVF0RzFnNHNLSXZQNHRrRVhUTFFVRkdZUXNsbUlRZVZPZjl4MDRJNGdZVGU0ZWR5RFB1ZnJxNGlFdlZQdnkzT3dR?oc=5",
+      "published_at": "2026-11-12T17:31:46+00:00",
       "category": "Minnesota team news",
-      "source": "Daily Norseman",
+      "source": "CBS Sports",
       "source_kind": "news",
       "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
+      "corroborating_items": 4,
+      "trend_signal": "Multiple sources",
       "viral_cues": [],
       "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: 2026 NFL Week 10: Minnesota Vikings at Green Bay Packers",
+      "hook_draft": "The key question behind this Wild story: Minnesota Wild vs. Toronto Maple Leafs - NHL Expert Picks - November 12, 2026",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
@@ -46,18 +46,206 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "811ce8d376495efb",
-      "score": 79,
+      "id": "76702302902241c9",
+      "score": 84,
       "score_breakdown": {
         "relevance": 91,
-        "timeliness": 85,
+        "timeliness": 92,
+        "virality_potential": 54,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "NHL Game Preview: Minnesota Wild at Toronto Maple Leafs with Line Combinations 11/12/2026",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxQaUhTM3RXdDhwdjA3b1p2WmFTempiYWFXY1RvQ0lvYTFaTEt4ZkM4SUtkM3Z6UVNXNHYzbVJMc3JCZ3ljMW0xbjFHemY5M2JtN1pPSW9xN1RYbk9QSTU3d0p2SEVXVS1Rb25ubjVRYjZpSEdhZF9jd1A3NXZHbzBVeERNeTR4QjZDRmR5N2N2YWI5Nmo0bDN5Unl5RWpNOS1aM3pnamJZUGpGUHVVbmxmZ0hGd3Zjako1?oc=5",
+      "published_at": "2026-11-12T16:04:19+00:00",
+      "category": "Minnesota team news",
+      "source": "Inside The Rink",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 3,
+      "trend_signal": "Multiple sources",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Wild story: NHL Game Preview: Minnesota Wild at Toronto Maple Leafs with Line Combinations 11/12/2026",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "75aefc46c0bcedfd",
+      "score": 81,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 94,
+        "virality_potential": 54,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "Wild vs Maple Leafs Prediction, Picks & Odds for Tonight’s NHL Game",
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQNUdtWWdKTThhNC1hWHBPM0N4NklXSWQxWEVwUklwZV9sT0FKU2tMMFY1aWY4SUE4NjhVX01yY3RPMHhiX05WUWpKYkc0NjlJR2V3Q2pveDBSeFhEeVNhNWRvRTBrSDdLT3dtcndWd25Zc0o3QmZXbHF2b041RXBoaw?oc=5",
+      "published_at": "2026-11-12T16:52:00+00:00",
+      "category": "Minnesota team news",
+      "source": "Covers.com",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 3,
+      "trend_signal": "Multiple sources",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Wild story: Wild vs Maple Leafs Prediction, Picks & Odds for Tonight’s NHL Game",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "ce31f667e1f823cc",
+      "score": 81,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 95,
+        "virality_potential": 54,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "Wild vs Maple Leafs Prediction, Picks, NHL Odds for Thursday, November 12",
+      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQRzZNNWtpQ3g1RVJvVVZzcUI0Mm1oOWZ1UE5CZ2Y3aGNhdTZUbWZSMFhhb1pnN0JWeUQycXVvMFFWMHNWVlZmVnJnTDc2QnJrYVBOSVAzSHV6SWRSTTRuTlBqdW4yV1A5XzZVQk5zRVA1S1M3M252MVFzSzg3VjBWWjJFS3pIUQ?oc=5",
+      "published_at": "2026-11-12T17:51:34+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 3,
+      "trend_signal": "Multiple sources",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Wild story: Wild vs Maple Leafs Prediction, Picks, NHL Odds for Thursday, November 12",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "f7ae814d02442e8c",
+      "score": 80,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 97,
+        "virality_potential": 46,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Vikings at Packers: Predictions, picks and odds for NFL Week 10 game",
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOV2dFZXQ2ekx3N2RUVC1ha2Q0aDJtWEQtbVl6RTVxa3NwOW1hbnNGMm5CSjhFSTRyUDljYW9aSXVERXJfWkpDeTBMVTI4dGNTU25BNHpGZlluTXlqcXU2enFHejctOF8wVkFRZVpid2FPakRVcjRLVkljWmZPQWR1NDdHbk1oMVZpSk9EZnlEZ2hOZ0FNS1pYOUVaTEg2QVlQZ2ZhNkt4VW1UTTIxSjE3cTU1bFI?oc=5",
+      "published_at": "2026-11-12T18:34:00+00:00",
+      "category": "Minnesota team news",
+      "source": "USA Today",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 2,
+      "trend_signal": "Early signal",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: Vikings at Packers: Predictions, picks and odds for NFL Week 10 game",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "3c5212fdbdd6c6d2",
+      "score": 80,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 95,
+        "virality_potential": 51,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Vikings Predicted to Take Another Shot at QB in First Round of 2027 NFL Draft",
+      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQOTFMRjJGWk5kblZfTWN6SUdISU96RFdUaFdPXzlJN0Q0WkFYSXRUSVotdFhCeGE0cHozUUUxNmJ4NnZXWEFRZTJHcFMtR0ZsX1R3SVNyc2psUXFfQ1dycDBOMl90SHBzTEFTblJ1TFNmcDRGOFlYZWUxd0FkcEk0YW05YlpMS2VUdUE?oc=5",
+      "published_at": "2026-11-12T17:52:09+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [
+        "draft"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Vikings fans need to know about this: Vikings Predicted to Take Another Shot at QB in First Round of 2027 NFL Draft",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "4e0c9b72e7c06097",
+      "score": 80,
+      "score_breakdown": {
+        "relevance": 91,
+        "timeliness": 89,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Timberwolves",
+      "title": "Mavericks vs Timberwolves Prediction, Pick, NBA Odds for Thursday, November 12",
+      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQSHprMnFTOVBZY0IxdUhveERaNFNmOV9fdzMtUlpwUEplRUdsX0dvSjlhbXRPZVR0dzR4M3ROODQyRXhfWS1CSEJlczBUWFJZTDdScEdyUEFQUnNQUUNDdElaWkE1ZWpoc0xSRHM1czNjRUtqZWM2bHZxR0lvQl9FRHFpQXRfZVNHektWdkZxb1FrOTZjcW1GN1paZmJzZUhJbGdacS1PQTREUHF5N01oZllkOW1xa3BTTVExS1IySQ?oc=5",
+      "published_at": "2026-11-12T14:13:00+00:00",
+      "category": "Minnesota team news",
+      "source": "Action Network",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Timberwolves story: Mavericks vs Timberwolves Prediction, Pick, NBA Odds for Thursday, November 12",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "51f72c4087d6c5d2",
+      "score": 79,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 98,
         "virality_potential": 38,
         "ease_of_execution": 93
       },
       "team": "Vikings",
-      "title": "NFL Power Rankings: Vikings Week 9 Loss to Bills Nudges Minnesota Down in Lists",
-      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1rWDh3ZFlyaG9IR1FCZkNfRWRjZXU4bURsMVdSWVRvYXhSSjVVTzZ6YzBXRThNczlITEI2VFZiTFlDQUQ5YldyMjJOekdUMHJGY1h4TmU0MWYyaThMd09tU2hhZEJFS21PT2d2d0VlaDU0a001WTI0?oc=5",
-      "published_at": "2026-11-11T11:28:50+00:00",
+      "title": "NFL Daily: Vikings at Packers Week 10 Preview",
+      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9YZjVWMHdwMW11Y0NrUmRhM0YtemFnRmpZWG1RZzBHbnQ1RHhHTGFIMnY3U0d4MURfNUZRX01DMGgyQzI4QVMwN29xeHFzWXF5UE91UGxfb09pUDloRzltUGtjaHgtWk1YSi1pZnVlYWszMFV6SUZELXdKVlpoa3c?oc=5",
+      "published_at": "2026-11-12T19:29:42+00:00",
       "category": "Minnesota team news",
       "source": "Minnesota Vikings",
       "source_kind": "news",
@@ -66,7 +254,7 @@
       "trend_signal": "Single-source story",
       "viral_cues": [],
       "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: NFL Power Rankings: Vikings Week 9 Loss to Bills Nudges Minnesota Down in Lists",
+      "hook_draft": "The key question behind this Vikings story: NFL Daily: Vikings at Packers Week 10 Preview",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
@@ -77,92 +265,29 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "9580313d52045552",
+      "id": "1ba8cbce35e01ee3",
       "score": 79,
       "score_breakdown": {
         "relevance": 79,
-        "timeliness": 98,
-        "virality_potential": 38,
+        "timeliness": 90,
+        "virality_potential": 51,
         "ease_of_execution": 93
       },
       "team": "Vikings",
-      "title": "Minnesota Vikings News and Links: Only Way To Go Is Up!",
-      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxORFNRV3dRdENLanIxSkt4ZkNhbWp0ZXVCcVJwUXo5TndhX0tITC1DN3RoMDctSDNTamQ4SmZEM0t3dnlpR2swdDVxZFZUblJGdGV1V0I5enp2OW4tcWY0REVSUm9FOFZnRkVaQTZrWm41MFpsMWNsOFN3VXI4UC1SeEpJM3J2OVBUTFE?oc=5",
-      "published_at": "2026-11-11T18:59:53+00:00",
+      "title": "Skip Bayless says Minnesota Vikings made a trade that he still can’t understand",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPMUVSVk02aXNFSEYwYW9sUVRHM2RyQ3QtYTBLbEV6eVlBMkdZRFZLNnh3YXhyLV9yOVRMUk1FNFpLN25RTDJLWkxUV3NYTFl4eTAwX3J3WnBNWUdQUHQwY0txZGtPQ3RoODZMaU5KNC1ySHNsTExvYVl5OS1la09Dak1PTDNqbnV3Sk00RGhtTnc1UXpTN0F0SXgwYjJOYVZZUUE?oc=5",
+      "published_at": "2026-11-12T15:02:00+00:00",
       "category": "Minnesota team news",
-      "source": "Yahoo Sports",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: Minnesota Vikings News and Links: Only Way To Go Is Up!",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "0b98c75acebc01b6",
-      "score": 79,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 98,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "Man vs. machine NFL power rankings: How much better can Vikings be with Kirk Cousins?",
-      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQRW5nWTl6SnpyTWJ4VUtVRkJPd2xnSjdWZFdQWVFET2RIem1rd181aDZ3aU1TcFFLVEZ1VGoySmVMbkdQRUEyQzR1N29hV3ByTFA0S2FyQ1dnb3VvdHh1Z2dRT2Nqa3hHRmEySjFlb0NCVUlpRkt3THhTQkpFY1E0ZUJ2QTdOakhoMExzUXZDeS1tUGpsOGZ5RElWZUpzWlRDTU9JR0ZWMA?oc=5",
-      "published_at": "2026-11-11T18:29:30+00:00",
-      "category": "Minnesota team news",
-      "source": "The New York Times",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: Man vs. machine NFL power rankings: How much better can Vikings be with Kirk Cousins?",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "ca5935e51df1dfb7",
-      "score": 79,
-      "score_breakdown": {
-        "relevance": 67,
-        "timeliness": 96,
-        "virality_potential": 64,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "Kirk Cousins' 1st Reaction to Vikings-Raiders Trade Revealed, Opens Up on 'Mixed' Emotions",
-      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPeFBtUFkzeEdkMzctUjhUcGozTEFCZUNEVWtyUXlDb3FxMUZLRnEtek9GSjZhY3VkRERZdE9LQWRuS1I2czhncUZkQUdudTh6dzFCS3BCYkpsZHgxbDBUbWg3eHlWQVhuTGg2N0lhcU85d0x1OGhZNmd4RHl2bnBNMUNQWGV1S0E3c1ZRNG1CYnVGMjZOUVdhRFFFR29nV2t6cW01RjZJNXBiVzdBbzlQNzFyY1FFQjg3Tkg3ZW9NZw?oc=5",
-      "published_at": "2026-11-11T17:41:13+00:00",
-      "category": "Minnesota team news",
-      "source": "Bleacher Report",
+      "source": "HITC",
       "source_kind": "news",
       "tracked_account": null,
       "corroborating_items": 1,
       "trend_signal": "Single-source story",
       "viral_cues": [
-        "reaction",
         "trade"
       ],
       "format": "Fast explainer + reaction",
-      "hook_draft": "What Vikings fans need to know about this: Kirk Cousins' 1st Reaction to Vikings-Raiders Trade Revealed, Opens Up on 'Mixed' Emotions",
+      "hook_draft": "What Vikings fans need to know about this: Skip Bayless says Minnesota Vikings made a trade that he still can’t understand",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
@@ -173,20 +298,144 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "7f1c4273b3429701",
+      "id": "3d690807a8ede890",
       "score": 79,
       "score_breakdown": {
         "relevance": 79,
-        "timeliness": 92,
-        "virality_potential": 51,
+        "timeliness": 99,
+        "virality_potential": 38,
         "ease_of_execution": 93
       },
       "team": "Wild",
-      "title": "Jared Spurgeon Returns As Minnesota Wild Receive Timely Injury Boost",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNYmlUem1KeEx6MUVEMFB0MENkbFg4WkdYb0lzVURKYjVhbEVhQ3k5ck43WUlWMEduT0RGY0xpazNzYzhzazZwaC1tamJUU01BbGxGZ1BkT2U0aWJrZUN5S2FCY2llOWdTM1ROUU5ST0MzOXBFSWViMEh6TGV3U0pWRW1QbERFYlcxbUQyWHBEaUFwcmRfcTUzNDZteTM4bGVmcU5FTHY0WG00dFk4?oc=5",
-      "published_at": "2026-11-11T15:43:18+00:00",
+      "title": "Jim Hiller | Pre Game vs Minnesota Wild | November 12, 2026",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxONGFtUndfb183d1pkcVFVNWRIVXlwOUZOMXp1YjhSRHdQMWktcnFPMVN5U3ZDREJ1U09hX2c5NThCczNBNmlITzRNSVZtN1d5Z0JDQUxhcTdJaVJzVVhMN0F4dktlQXFvT0J5TGtwTl9wc0FkNFFwMmRwWWk5RU5lUi00SXM4YzRZYTlfOGpkVTBQQQ?oc=5",
+      "published_at": "2026-11-12T19:41:15+00:00",
       "category": "Minnesota team news",
-      "source": "NDTV Sports",
+      "source": "NHL.com",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Wild story: Jim Hiller | Pre Game vs Minnesota Wild | November 12, 2026",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "5ae63214ef269734",
+      "score": 78,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 97,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "NFL Week 10 Betting Report: Can Cousins Save Vikings' Meager Offense?",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOeElRa3pkYkJwNG9xNGlFUUgtMEZJWDM1Ui16QzdIV2VlQmk4TWZpUGwxNng1UG1MREtyUzZ1VUt0YWR3Tk5hV1cwTnZ6aGFncy16dVAxLTBia0FXLXV1RFlpUnBhVm5FRXJOdERzc0J3LTNiWk03RFF4VTRrRVgxY0RjemtUX0NNWFFtbndlbWs5QzVQRF8zU0Q0TXZvTVZENGVUV0RjVdIBpwFBVV95cUxNU3lITG5UWG1mSC1NOHl4UnowR1pLWlp4X281bHdGbUQ4WXc0RDNsT3hBM1RpYzROeEdiaEk2elRRX0tTUEtoYU9LdXk2Q2xPUGZDaDdTeXp1VWgzOEc2b2pucm5LSHRROVdMbWZMUU90b3NVT2pZQnpOWGluYUZyWmU2X0tKRVp4VE1mV3VWS1l2WUxMc2p2WkJRd1ppN2p0OGJNRnR3SQ?oc=5",
+      "published_at": "2026-11-12T18:41:30+00:00",
+      "category": "Minnesota team news",
+      "source": "FOX Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: NFL Week 10 Betting Report: Can Cousins Save Vikings' Meager Offense?",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "2ca6a046495bf175",
+      "score": 77,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 92,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Why Kirk Cousins made decision to return to Minnesota, reunite with Vikings",
+      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxOUTVCMnlVQXdCSE44TkVCMUY0SUJzVU1RWjYxYzg5Ty1OLWpvdW1pQy1FVlNabHZ4bi04TFdBRVg4N3ZNam9vZ040VkJ1TDU3eE1mc3V5RW9BY1RScmFRY2gxb1llRmFNLTNOdHNrdFVwSnBqMmNDamlFWFpoTi01VGRBbHFybEZvMnB5bWhYRFAwRkRGdmxCYkZUSWxua0hpbll0NndTaFhYNnZyWEJOSUNfUUxHdw?oc=5",
+      "published_at": "2026-11-12T15:51:00+00:00",
+      "category": "Minnesota team news",
+      "source": "CBS Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: Why Kirk Cousins made decision to return to Minnesota, reunite with Vikings",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "5462559d7f8873e4",
+      "score": 77,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 87,
+        "virality_potential": 46,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Packers vs Vikings predictions, picks, odds for NFL Week 10 Sunday",
+      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQZ2tCMndTSzMtcE5hc3cyQVhLQlRuZDJ6OHlZMEp4SGtiLUZWQ3V5T3pBcjFTRnpRcVV3TThESDhOQVVGN2N2UEJaQzR0Y3VRQjBabDAzci0wNlk2MHZ1TmVWTE5KMDRYT0ttem5aN011Q3hhbTQyQmpzRlFMNDhXMGNBV24xREZiMnpiTmlzNHlEVDJFNHNLVFNFaF91a19NeDZWMHZabXd6U3hSWnUxOFMzTXlnWmxuMEJ2ZV9WWS04UkFMZmdkNEk4dTk3bFBUY3c?oc=5",
+      "published_at": "2026-11-12T12:52:00+00:00",
+      "category": "Minnesota team news",
+      "source": "azcentral.com and The Arizona Republic",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 2,
+      "trend_signal": "Early signal",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: Packers vs Vikings predictions, picks, odds for NFL Week 10 Sunday",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "26c2615f806b3d43",
+      "score": 77,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 97,
+        "virality_potential": 51,
+        "ease_of_execution": 93
+      },
+      "team": "Timberwolves",
+      "title": "Wolves vs. Mavericks Prediction: Preview, Injury Report, Advantages, X-Factors",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQOExhMERUZ2ZUOW5KZU5fcWU5WmhpaVhlWXZGWVF6bnVKc2JOUzdDdVNNMUhFTktRNUt6YlV1bEZUenVFS3hjUldjNXZKRjJDLW1BeGZSbWJBZFV6bGNmWTl4SGxJTGV3OHZlQ3lNNE9FM2pKdVFCMWg4SEdaUDdtdlJ3a2paeWMtbTRWNDFKdlQ?oc=5",
+      "published_at": "2026-11-12T18:43:45+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
       "source_kind": "news",
       "tracked_account": null,
       "corroborating_items": 1,
@@ -195,7 +444,7 @@
         "injury"
       ],
       "format": "Fast explainer + reaction",
-      "hook_draft": "What Wild fans need to know about this: Jared Spurgeon Returns As Minnesota Wild Receive Timely Injury Boost",
+      "hook_draft": "What Timberwolves fans need to know about this: Wolves vs. Mavericks Prediction: Preview, Injury Report, Advantages, X-Factors",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
@@ -206,177 +455,18 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "2888787bf0cb6c83",
-      "score": 79,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 90,
-        "virality_potential": 51,
-        "ease_of_execution": 93
-      },
-      "team": "Wild",
-      "title": "Wild walk-off Canadiens in OT on Kaprizov’s NHL-leading 17th goal of the season - The Flag",
-      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPUzFzWERPTjA3RFVrS29lRGgtQzI3b2ltMEhZZlJ1MkxmU0pndzIyWHhoR0M3MG1hYi1meHF3cUhLYmtNREFjUHk2VlRFRjd6N0ZYWUdsSmFvT3VUTXhRcXJieWhKY01HLW1GeUlrOExBRW1RdlFMNEZTY3pCWlU2SjZlX0JsWXRsc1g5N21FUFZSYjM3bDJwUnd2dENrdnpuVWhuNXBXOVExQ0R2OXIzNjdIMVNIaGs?oc=5",
-      "published_at": "2026-11-11T14:34:16+00:00",
-      "category": "Minnesota team news",
-      "source": "The Flag - AM 1100 and FM 92.3 WZFG",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [
-        "walk-off"
-      ],
-      "format": "Big-moment replay + fan reaction",
-      "hook_draft": "This Wild moment deserves a second look: Wild walk-off Canadiens in OT on Kaprizov’s NHL-leading 17th goal of the season - The Flag",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "3e515c3e1ff85aa0",
-      "score": 78,
+      "id": "2ad13f725f06f941",
+      "score": 76,
       "score_breakdown": {
         "relevance": 91,
-        "timeliness": 82,
+        "timeliness": 74,
         "virality_potential": 38,
         "ease_of_execution": 93
       },
       "team": "Timberwolves",
-      "title": "\"He's been consistent his whole life\" - Dwyane Wade shares how LaMelo Ball changed the lazy narratives around him on the Minnesota Timberwolves",
-      "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxOUkh6WHh4d1JCdk1vcVlMbUY5clJYNWw5MHMxQzVOOFpMMVJnUXlJbkpoVU9PUFIwVjBrRE5wVExKcWI3cWM1WllBcGctbDBkUng1QVNIQUNHVmU1TTNSMDRJcVlxbHp5V1VEZUVza1VlYl81NG1LdFl6TXRKVm1TdW9Yb2dpYjBueHdUbUtzZnhUT0R0WXJ4MG9zVlV5WlNBZUEzWm83eHRSSmJfNGFLbmJsYWtZX1hGRDdFbnBpSnVaWFU3VGdJZEFkS1R2c21qMk44d3llMkQ?oc=5",
-      "published_at": "2026-11-11T09:23:00+00:00",
-      "category": "Minnesota team news",
-      "source": "Basketball Network",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Timberwolves story: \"He's been consistent his whole life\" - Dwyane Wade shares how LaMelo Ball changed the lazy narratives around him on the Minnesota Timberwolves",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "1e2a56990e5d262d",
-      "score": 77,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 85,
-        "virality_potential": 51,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "Kirk Cousins sends short and sweet message to Minnesota Vikings after trade",
-      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPQ1NFTndlSmI3MDJLXzJISVJ6aElFWGFhcHY5UEJkbmx3cy1xWHFLSGVYbF8teWNhM0tETGd1QWxTemNlVFBxSDhYU3pWTk5VYVBkeEN0bjVlblVseDRqMnFfemkyRTBrQTc5TDRzUTBiYmNrcks2djIzd29PLXZFdFloa2lKUQ?oc=5",
-      "published_at": "2026-11-11T11:10:00+00:00",
-      "category": "Minnesota team news",
-      "source": "Yahoo Sports",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [
-        "trade"
-      ],
-      "format": "Fast explainer + reaction",
-      "hook_draft": "What Vikings fans need to know about this: Kirk Cousins sends short and sweet message to Minnesota Vikings after trade",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "26949a9b21bcbfdc",
-      "score": 77,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 93,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Twins",
-      "title": "Minnesota Twins Pick Up Some Pitching Depth",
-      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOci0xeFg2WUIwclJWdWRfTm11MkFkVWxfTmVUbV9ON090VURET1NueEJqY0l3RllsWmtYLUVjSHdndHVyeENqdDc5clhkRWtFRlVtbnp6YlFyYlhRRVZ5c3pjZWhuR3Itcm5xMVROdnM3b0NFT0NIZ0o3T29QS3pjaWdOd1Rrd3ZvNWFMbkdoMFY1UnZrejRfYw?oc=5",
-      "published_at": "2026-11-11T16:00:07+00:00",
-      "category": "Minnesota team news",
-      "source": "Minnesota Sports Fan",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Twins story: Minnesota Twins Pick Up Some Pitching Depth",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "f5ea5757e719c6df",
-      "score": 77,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 94,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Timberwolves",
-      "title": "Grizzlies, T’Wolves could be forced into conference move if NBA expands to Vegas, Seattle",
-      "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxNSW9kbFVTU0xleUFlbmFnVUY5M1JuY1hPYjNxZkdwRlR3WGlNdmNlTm5pc2ZKVXhMSmJoc1lHclJSOU1JR2M1WDkzcTdfdm44dFBfQ0p1eFUxMGkwcUlIX0RRRFNOeVFKRkpQdkVldTdUTlY3SV92R0tCRlBacTVua0ptU0ZiVmRaVzM4R3U3OFVOekEtZi1uX1FGWkM5bjE1WTNmdkcxb01nNERJVENCdXNRRjk5OUFvWEpodldTRHEwUzhrREFhZEQxOG5zeTlMalh6N01DT1BVVEFDYmc?oc=5",
-      "published_at": "2026-11-11T16:41:24+00:00",
-      "category": "Minnesota team news",
-      "source": "Sports Business Journal",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Timberwolves story: Grizzlies, T’Wolves could be forced into conference move if NBA expands to Vegas, Seattle",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "9632f0296e031c68",
-      "score": 77,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 94,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Lynx",
-      "title": "New WNBA Rule Prevents Lynx From Using Core Tag on Napheesa Collier Again",
-      "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE9KdHh5eDV5QmlFSDBvTzhIWTVWTGdGNTU0VHdJRS15c21xZHUzd1c4aFA4U2cwSmNZUm9IOFhMN296cmNWOE5XcXFPTWNZUkVDR0ZhYnA5R0RMRmJ5RTAxdkMzQTl4Nkg4WGF3TWJocHlKc0R4YUVzRkx3?oc=5",
-      "published_at": "2026-11-11T16:31:57+00:00",
+      "title": "3 thoughts as the Mavericks begin tough road swing at the Minnesota Timberwolves",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOZGpHUGlVZW9rTUd3SnVvV2hqN0dDSmxxcmtxU1JhdUZ6cnV0aE81OVpoa0E3NDBISmk0cXVNZU5tQ3dWLXZrOTg2YTVyQ0Q1THpZTXZMM0VWMndoMFA5MVg1Z2s1Wk0xWlRhWnZpTlZkbUN6TC0xY2hfU3dVTVowV3ZGTlJ2Wk9n?oc=5",
+      "published_at": "2026-11-12T04:21:07+00:00",
       "category": "Minnesota team news",
       "source": "Yahoo Sports",
       "source_kind": "news",
@@ -385,7 +475,7 @@
       "trend_signal": "Single-source story",
       "viral_cues": [],
       "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Lynx story: New WNBA Rule Prevents Lynx From Using Core Tag on Napheesa Collier Again",
+      "hook_draft": "The key question behind this Timberwolves story: 3 thoughts as the Mavericks begin tough road swing at the Minnesota Timberwolves",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
@@ -396,155 +486,27 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "c6a5037fdd5caef4",
-      "score": 77,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 92,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Wild",
-      "title": "Quinn Hughes Joins Paul Coffey in NHL History With Remarkable Wild Milestone",
-      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxQREcwbDZWV3lfMFJPM0FVUDQ0QzhwVE5ONFpzckM2VVZvRkpJTldpZ2JoSzM0U2JidUxvT0MwY0lmMW1tcXEtbFUwcDlLQVAyM19jcjFxOHFIMFIxUzRwWktnNkZSSHlEcFh0UjNUc1ZfZmd6NDE3WGNDM28yOVRHLXdmWkR4ZGJjOW9fcXBoMGl6ZExGLU1lQUNlNHVnYmdIc3pLaEdpZ1lmc2tXOUhhYzBRRE9FdE1hMk40MzV5b3RaR3FFalZ1UjE4WW1LZw?oc=5",
-      "published_at": "2026-11-11T15:11:15+00:00",
-      "category": "Minnesota team news",
-      "source": "The Hockey News",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Wild story: Quinn Hughes Joins Paul Coffey in NHL History With Remarkable Wild Milestone",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "413ff964ee263c94",
-      "score": 77,
+      "id": "0ac713a2d48d5f87",
+      "score": 76,
       "score_breakdown": {
         "relevance": 67,
         "timeliness": 98,
-        "virality_potential": 51,
-        "ease_of_execution": 93
-      },
-      "team": "Wild",
-      "title": "MN Wild GM Has No Regrets Over Hughes Trade",
-      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQTzJ1ajJ4YzdXR0c2V3ppM0NxLTFMc3dpOVJjdEZueFp2NkExNG1KQ1JocmZJczFRN3RTb3NleVRNSTBteWQxQVRzcjBzRmRxWDZJUVVOM2JNeGxNQ0lSZHg1cHFrRlBadEJwYkw3MUkybmU0eEUxaUItOTBsVlNRb1lwZk5kbHctdnNFMVZPcy1pTmds?oc=5",
-      "published_at": "2026-11-11T18:40:10+00:00",
-      "category": "Minnesota team news",
-      "source": "Minnesota Sports Fan",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [
-        "trade"
-      ],
-      "format": "Fast explainer + reaction",
-      "hook_draft": "What Wild fans need to know about this: MN Wild GM Has No Regrets Over Hughes Trade",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "1d0ea97a179957c9",
-      "score": 76,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 89,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "Stephen A Smith says the Minnesota Vikings should be ‘ashamed’ of themselves",
-      "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQNm9oYnhHTFdzanVhTFVhVllfVUlGNHpoS1YtUHFJRWhkQXBPZERmUXVqNlc3OU5iWDdjbFJEZ2ZMMURmWDFnRWNqT29qQ25MRXhHSkZpVDR3aHo5Rk5PZ2FvajZLOXFXb2VwMk9vaGdYQk9FaGIyN0s3NjBGUnJsa09RN1V1cENuRWFycTZR?oc=5",
-      "published_at": "2026-11-11T13:35:00+00:00",
-      "category": "Minnesota team news",
-      "source": "Yahoo Sports",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: Stephen A Smith says the Minnesota Vikings should be ‘ashamed’ of themselves",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "5e7c61b7db01468b",
-      "score": 76,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 64,
-        "virality_potential": 75,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "Vikings trade for Kirk Cousins: Minnesota reunites with former QB in deal with Raiders",
-      "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxNc0oycTVIcWxkQTI2N2NEM1o4UTUtV0h5RW1NMWhfeEJ0eExBZ0FhZ0J4TnNBbThaOXdjWTREMnQxUzVQUTBKbHI0T1BHQ1kwaWZ2Mk9OWGpCNEFNV1JTSHcyQzhNSjRhYUEtczFuaW9fNkFyazh1Zy1NajRQNmVWVlRWN09qa250Vk9jeFdCZ0ZwZElRaGZVZ0N4bWhxZk85dlVGa0pQcVpBT3ZnNXJEcERrU0ZGeGJpTl82eUhJSXh0bDh1c1JmcWZRSnh6THUzN0NFZlNpYmp0UlZWOVh6TVpYaXg4UQ?oc=5",
-      "published_at": "2026-11-10T20:22:37+00:00",
-      "category": "Minnesota team news",
-      "source": "Yahoo Sports",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 4,
-      "trend_signal": "Multiple sources",
-      "viral_cues": [
-        "trade"
-      ],
-      "format": "Fast explainer + reaction",
-      "hook_draft": "What Vikings fans need to know about this: Vikings trade for Kirk Cousins: Minnesota reunites with former QB in deal with Raiders",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "4357f3545582ce67",
-      "score": 75,
-      "score_breakdown": {
-        "relevance": 91,
-        "timeliness": 66,
         "virality_potential": 46,
         "ease_of_execution": 93
       },
       "team": "Wild",
-      "title": "Canucks claim defenceman Cameron Crotty off NHL waivers from Minnesota Wild",
-      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNZjliMHRLNjN0dUhTMjdDcGxOSFU4SjRYS2QtOE5yTmV4MG9XQldXYklDYTBTcVJ4NjRlaV9QSzhKLVV6VWd1YkNJaHVLeE1zWFFOZUEyMk1OSWRmQ1FmdDZDeGtROV9kY3RaRUNCSURjNmdZakRKX2hNeVlMYnNDTzh3SWxmTE9NSERPSl9TTkdYem51WEk1YW5CT0oxMVlsdk56X01uSlBGcGxSaHRoMw?oc=5",
-      "published_at": "2026-11-10T22:13:00+00:00",
+      "title": "Game Preview: Wild at Maple Leafs",
+      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1uNXJlS1cwbGg4RXpBTFVIQ1hlNzNZZkxVRlRaNWoza0JqN2IzSHg1WHB1dUotZU1Qdzh6MGdBMDRwcEhwV0lrSkhEMHpoMWpWVENDcjNidU8xUEcxVW5kbzFyWjYxM0NaVzl4dkdUME1Gc2ZOSS1Hdw?oc=5",
+      "published_at": "2026-11-12T19:10:11+00:00",
       "category": "Minnesota team news",
-      "source": "Canucks Army",
+      "source": "NHL.com",
       "source_kind": "news",
       "tracked_account": null,
       "corroborating_items": 2,
       "trend_signal": "Early signal",
       "viral_cues": [],
       "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Wild story: Canucks claim defenceman Cameron Crotty off NHL waivers from Minnesota Wild",
+      "hook_draft": "The key question behind this Wild story: Game Preview: Wild at Maple Leafs",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
@@ -555,60 +517,27 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "eb237fb9c6232313",
+      "id": "8b29152a0f7cf491",
       "score": 75,
       "score_breakdown": {
         "relevance": 67,
-        "timeliness": 90,
-        "virality_potential": 51,
-        "ease_of_execution": 93
-      },
-      "team": "Wild",
-      "title": "6 Trade Landing Spots for Matvei Michkov Amid NHL Rumors",
-      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPelU0eS16UjRSdTROeFVnVHhHTTFJMHN0R0l3ZUZ2eG1CTjlLQlcwQ0pyWFB3bGs1TDR5LTR0UERPWldHTG1rOGdsdnFnV0VSNElXVG5QcmNmZG5iVWFkSk1tekc2LWhsN2hiNTQyX2RqajhUOXRmWWd3MDRZYnltNVotdEc3TVFkYWxYRVFQbmFIMEhVd2hYakRvc0tDQQ?oc=5",
-      "published_at": "2026-11-11T14:33:06+00:00",
-      "category": "Minnesota team news",
-      "source": "Bleacher Report",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [
-        "trade"
-      ],
-      "format": "Fast explainer + reaction",
-      "hook_draft": "What Wild fans need to know about this: 6 Trade Landing Spots for Matvei Michkov Amid NHL Rumors",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "8858b606eb8de39b",
-      "score": 74,
-      "score_breakdown": {
-        "relevance": 91,
-        "timeliness": 69,
+        "timeliness": 100,
         "virality_potential": 38,
         "ease_of_execution": 93
       },
-      "team": "Vikings",
-      "title": "Minnesota Vikings acquire quarterback Kirk Cousins from Las Vegas Raiders | 'The NFL Report'",
-      "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQNV9BTHhHZEluY1kwdDVaZ3VET01WVGFvU0E2NHJ0cTNIQ1pxMWMzWGJVNzB0aTNrVy1EbXdzc1pncks5clRwMTNoSm1kT2hHUUlhZzh5bW0zZ1JVR3R0SmdRRmFGbHVUcE1kX2VzSkVncC00VVdlSlNLR2RKbFloT1A4aFNMSGptal9V?oc=5",
-      "published_at": "2026-11-11T00:13:12+00:00",
+      "team": "Wild",
+      "title": "Wild hope to have Brock Faber back on Saturday",
+      "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNT19KRUVZVW5wdnBua05maF9TZHUyaGpwaVkzQzNmaTEtZzZ1NDVmVDU1aER4Y0d6UkRJOTF2Y2Mya1hFNTBuanhkbjQyT184RUluelhkd1ZsbmFLc2h0a1ctU2RUTUxTOUtpSFI0MVhNMnBHeVFnTmliM3I5RDVRdXpNeDFsMFFjb1FkWjZR?oc=5",
+      "published_at": "2026-11-12T20:05:22+00:00",
       "category": "Minnesota team news",
-      "source": "NFL.com",
+      "source": "Pioneer Press",
       "source_kind": "news",
       "tracked_account": null,
       "corroborating_items": 1,
       "trend_signal": "Single-source story",
       "viral_cues": [],
       "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: Minnesota Vikings acquire quarterback Kirk Cousins from Las Vegas Raiders | 'The NFL Report'",
+      "hook_draft": "The key question behind this Wild story: Wild hope to have Brock Faber back on Saturday",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
@@ -619,18 +548,18 @@
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     },
     {
-      "id": "28791cff4955e5dd",
+      "id": "ed978b4b10be2c56",
       "score": 74,
       "score_breakdown": {
         "relevance": 67,
-        "timeliness": 97,
+        "timeliness": 96,
         "virality_potential": 38,
         "ease_of_execution": 93
       },
       "team": "Vikings",
-      "title": "Vikings’ Surprising Kevin O’Connell Hot Seat Rumors Take New Turn",
-      "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNZlRxVGNFbUVNY0NXRWZTekY0cEVjY2lPY3Q2bTZBbEtrRVRJeXd4M01GanNJLURzZ1UxMXhrcmUxQWplRjNUNU5TaVBuMWxSOHFSbmhtNDhCbHJhNlJZdmhWbXFaME9zSHBHWGtEMkZ6OG9kSW02M05RUUNTUTN1VjRJWS1OVTMtWXMw?oc=5",
-      "published_at": "2026-11-11T18:05:57+00:00",
+      "title": "Vikings Pull the Next Lever, Make 2 Moves to Shore Up Depth",
+      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9YaDJQOVpHQlFNa1d4cHVHQTZHeGxoQ1JtWXFCU01TVW8wckEtMUFtRDZGdnJaOHppSFZGYWhpVExHOVBRNUpmN3NQN1B0a1hWeDBLSjFCU3JyUDU2ZzRkdEpCeXpXU3pCRlNyVkpQX0daOFF6SmhCeEoxdUxCNkE?oc=5",
+      "published_at": "2026-11-12T18:05:00+00:00",
       "category": "Minnesota team news",
       "source": "Yahoo Sports",
       "source_kind": "news",
@@ -639,7 +568,73 @@
       "trend_signal": "Single-source story",
       "viral_cues": [],
       "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: Vikings’ Surprising Kevin O’Connell Hot Seat Rumors Take New Turn",
+      "hook_draft": "The key question behind this Vikings story: Vikings Pull the Next Lever, Make 2 Moves to Shore Up Depth",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "0e312c1a83ddde4d",
+      "score": 74,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 89,
+        "virality_potential": 51,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Worrying Development Arises From First Vikings Injury Report",
+      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPOHUzc0JZZUlwT0dYTWp4d0tYQ09SVGhpd010OWltQjUxZ1dGUWFza01neG0zdHJHRlAwMnViYlQ0M0d0WFRJdzVVVGJteFEzamRfaG9STlkzd3l4YXc1SjBHVFhFN1paUjZTblFwd0hsRzJXT2JDcUQ1Mzd1N2hmaE5uMzZoeExPZ1NWN0hzeDR5dVBm?oc=5",
+      "published_at": "2026-11-12T14:25:00+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [
+        "injury"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Vikings fans need to know about this: Worrying Development Arises From First Vikings Injury Report",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "b252311da0e6f151",
+      "score": 74,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 89,
+        "virality_potential": 51,
+        "ease_of_execution": 93
+      },
+      "team": "Twins",
+      "title": "Twins Face New Trade Dilemma After Trevor Larnach Surgery",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNRHhEb0VmUTA0Q3BPMEFrRlNzR1NYS2ljU0VBNUJGaTg2SnFWSUpoOGdmSHJNb21LdktHN2ItZ1RwUXZvR3dsOThBR1dqYmRlMmoyNi1RSTJONjVsbFFaWWtRTjFMaGJ3cmZPeDJzUmg1TW9ybTdFUWtLaWJ6a2hvSGhxcDZLWGlWS2FuLUQ4V053ZUhWTkE?oc=5",
+      "published_at": "2026-11-12T14:00:05+00:00",
+      "category": "Minnesota team news",
+      "source": "Sports Illustrated",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [
+        "trade"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Twins fans need to know about this: Twins Face New Trade Dilemma After Trevor Larnach Surgery",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
