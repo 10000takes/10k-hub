@@ -387,33 +387,6 @@ html.locked #gate{display:flex}
 </details>
 <hr class="section-divider" aria-hidden="true">
 <details class="ci-section">
-<summary>Top Posts This Week</summary>
-<div class="ci-section-body">
-<div class="sub" id="tpNote">Loading…</div>
-<div class="sub">Facebook video and Reel posts show views only because the interaction count is incomplete. Other Facebook posts show the available reactions, comments, and shares; other platforms show their collected interaction metrics.</div>
-<div class="rng" id="tpSort"></div>
-<div id="tpList"></div>
-<div class="sub" id="tpFoot"></div>
-</div>
-</details>
-<hr class="section-divider" aria-hidden="true">
-<details class="ci-section">
-<summary>What’s Working vs What to Adjust</summary>
-<div class="ci-section-body">
-<div class="sub">Patterns compare views per day with recent posts on the same platform. Each row shows its platform and sample size. Hook style comes from the caption opening, topics from hashtags, and caption length from characters; no video transcript is available.</div>
-<div id="tpSignals"></div>
-</div>
-</details>
-<hr class="section-divider" aria-hidden="true">
-<details class="ci-section">
-<summary>Content to Repurpose</summary>
-<div class="ci-section-body">
-<div class="sub">Candidates are older posts with strong views per day versus their platform baseline. Review rights, freshness, and context before reposting.</div>
-<div id="tpReuse" class="rcards"></div>
-</div>
-</details>
-<hr class="section-divider" aria-hidden="true">
-<details class="ci-section">
 <summary>Competitor Pages</summary>
 <div class="ci-section-body">
 <div class="sub" style="margin-bottom:10px">Public-post signals and adaptation ideas from eligible competitor accounts. Rankings use visible interactions and are not a measure of reach or proof of what caused a post to perform.</div>
@@ -786,78 +759,18 @@ function loadPartner(){
  fetch('posts.csv?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{if(!PDEMO){PO=setPosts(t);renderPartner()}}).catch(()=>renderPartner());
  fetch('post_metrics.csv?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{if(!PDEMO){setPM(parseCSV(t).slice(1).filter(c=>c.length>=4).map(c=>({d:c[0].trim(),u:pNorm(c[1]),m:c[2].trim(),v:Number(c[3])})).filter(r=>isFinite(r.v)));renderPartner()}}).catch(()=>{})}
 renderPartner();loadPartner();
-let TP=[],TPSORT='views',TPN=5,TPPLATFORM='all';
+let TP=[];
 const CI_EXPERIMENTS_KEY='tk_content_experiments_v1';
 const tpEng=p=>(p.likes||0)+(p.comments||0)+(p.shares||0)+(p.saves||0);
 const tpHasEng=p=>!(p.platform==='Facebook'&&/video|reel/i.test(p.type||''));
 const tpMed=a=>{const s=a.filter(x=>x!=null&&isFinite(x)).sort((x,y)=>x-y);if(!s.length)return null;const m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2};
 const tpAge=p=>Math.max(1,(Date.now()-p.t)/864e5),tpRate=p=>p.views/tpAge(p);
-const tpBase=p=>TP.filter(q=>q.platform===p.platform&&q.url!==p.url&&q.views>0);
-function tpRel(p){const b=tpBase(p);if(b.length<4)return null;const m=tpMed(b.map(tpRate));return m>0?tpRate(p)/m:null}
 function setTop(t){const r=parseCSV(t);if(!r.length)return[];const h=r[0].map(x=>x.trim().toLowerCase()),n=v=>v===''||v==null?null:Number(v);
  return r.slice(1).map(c=>{const o={};h.forEach((k,i)=>o[k]=(c[i]||'').trim());return{snap:o.snapshot,platform:o.platform,url:o.url,posted:o.posted,t:Date.parse(o.posted),type:o.type||'Post',caption:o.caption||'',views:n(o.views),likes:n(o.likes),comments:n(o.comments),shares:n(o.shares),saves:n(o.saves),duration:n(o.duration_seconds)}}).filter(p=>p.url&&isFinite(p.t))}
 function tpHook(p){const s=(p.caption||'').trim().toLowerCase();if(!s)return 'No caption';if(/[?？]/.test(s.slice(0,70)))return 'Question';if(/^(did|do|does|what|why|how|is|are|can|should)\b/.test(s))return 'Question / direct prompt';if(/^(we |i |our |my |when |watching |trying |imagine )/.test(s))return 'First-person / scene';return 'Statement / other'}
 function tpTopic(p){const tags=(p.caption.match(/#[\p{L}\p{N}_]+/gu)||[]).slice(0,2);return tags.length?tags.map(x=>x.toLowerCase()).join(' '):'No hashtag topic'}
-function tpLength(p){const l=(p.caption||'').length;return l<45?'Short caption':l<=110?'Medium caption':'Long caption'}
-function tpGroups(items,key){const m=new Map();items.forEach(p=>{const k=key(p);if(!m.has(k))m.set(k,[]);m.get(k).push(p)});return [...m.entries()]}
-function tpCard(title,text,url){return '<div class="panel"><div class="lbl">'+esc(title)+'</div><div>'+esc(text)+(url?' <a href="'+esc(url)+'" target="_blank" rel="noopener">Open source post</a>':'')+'</div></div>'}
-function signalTable(title,rows,empty){const body=rows.length?rows.map(r=>'<tr><td>'+esc(r.platform)+'</td><td>'+esc(r.signal)+'</td><td>'+esc(r.evidence)+'</td><td>'+esc(r.action)+'</td></tr>').join(''):'<tr><td colspan="4" class="sub">'+esc(empty)+'</td></tr>';return '<section class="panel signal-panel"><h3>'+esc(title)+'</h3><div class="scroll signal-scroll"><table class="signal-table"><thead><tr><th>Platform</th><th>Pattern</th><th>Evidence</th><th>Next step</th></tr></thead><tbody>'+body+'</tbody></table></div></section>'}
-function renderSignals(){const good=[],adjust=[],platforms=[...new Set(TP.map(p=>p.platform))];
- platforms.forEach(platform=>{const ps=TP.filter(p=>p.platform===platform&&p.views>0),base=tpMed(ps.map(tpRate));if(ps.length<6||!base)return;
-  const dimensions=[['Content type',p=>p.type||'Post'],['Opening style (caption proxy)',tpHook],['Topic hashtag',tpTopic],['Caption length',tpLength],['Video length',p=>p.duration>0?(p.duration<=30?'≤30 sec':p.duration<=60?'31–60 sec':p.duration<=180?'1–3 min':'>3 min'):null]];
-  dimensions.forEach(([label,key])=>{const groups=tpGroups(ps.filter(p=>key(p)!=null),key);groups.forEach(([name,items])=>{const vals=items.map(tpRate),m=tpMed(vals),n=vals.length;if(n<3||m==null)return;const ratio=m/base,evidence=ratio.toFixed(1)+'× platform median · '+n+' posts · '+fmt(Math.round(base))+' views/day across '+ps.length+' posts';if(ratio>=1.2)good.push({platform,signal:label+' · '+name,evidence,action:'Repeat this approach and keep measuring.'});else if(ratio<=.8)adjust.push({platform,signal:label+' · '+name,evidence,action:'Refresh the hook or execution; retest before dropping it.'})})});
-  const old=ps.filter(p=>tpAge(p)>=15&&tpAge(p)<=30),fresh=ps.filter(p=>tpAge(p)<15),og=tpGroups(old,p=>p.type||'Post'),ng=tpGroups(fresh,p=>p.type||'Post');
-  og.forEach(([type,a])=>{const b=(ng.find(x=>x[0]===type)||[])[1]||[];if(a.length>=3&&b.length>=3){const x=tpMed(a.map(tpRate)),y=tpMed(b.map(tpRate));if(x>0&&y/x<=.75)adjust.push({platform,signal:'Cooling format · '+type,evidence:(y/x).toFixed(1)+'× recent vs previous views/day · '+b.length+' recent and '+a.length+' previous posts',action:'Rework the format and check it again next week.'})}})
- });
- $('tpSignals').innerHTML='<div class="signal-split">'+signalTable('What’s going well',good,'No groups are clearly above baseline yet. More comparable posts may reveal a pattern.')+signalTable('What to adjust',adjust,'No clear underperforming or cooling patterns yet. Keep monitoring.')+'</div>';
-}
-function tpWhy(p,week){const R=[],b=tpBase(p),n=b.length,hasEng=tpHasEng(p),eng=tpEng(p),er=hasEng&&p.views>0?eng/p.views*100:null;let erDone=false;
- if(n>=4){
-  const mv=tpMed(b.map(tpRate));
-  if(mv>0&&tpRate(p)/mv>=1.5)R.push('Views per day were '+(tpRate(p)/mv).toFixed(1)+'× the usual '+p.platform+' post rate ('+fmt(Math.round(mv))+' views/day median across '+n+' recent posts).');
-  const eligible=b.filter(tpHasEng),mer=hasEng?tpMed(eligible.map(q=>tpEng(q)/q.views*100)):null;
-  if(er!=null&&mer>0&&er/mer>=1.25&&eng>=30){R.push('Tracked interaction rate of '+er.toFixed(1)+'% beat the usual '+mer.toFixed(1)+'% for '+p.platform+'.');erDone=true}
-  if(hasEng)[['shares','Highly shareable: ','shares'],['saves','Worth keeping: ','saves'],['comments','Started a conversation: ','comments']].forEach(([m,lead,word])=>{const c=p[m]||0;if(c<5)return;
-   const rate=c/p.views*1000,med=tpMed(eligible.map(q=>(q[m]||0)/q.views*1000))||0;
-   if(med===0?c>=10:rate/med>=1.5)R.push(lead+fmt(c)+' '+word+' ('+rate.toFixed(1)+' per 1,000 views'+(med>0?' vs '+med.toFixed(1)+' typical':', which is rare for this platform')+').')});
-  const same=b.filter(q=>q.type===p.type),oth=b.filter(q=>q.type!==p.type);
-  if(same.length>=3&&oth.length>=3){const a=tpMed(same.map(tpRate)),o=tpMed(oth.map(tpRate));if(o>0&&a/o>=1.4)R.push(p.type+' posts on '+p.platform+' have averaged '+(a/o).toFixed(1)+'× the views/day of other formats lately.')}}
- const pw=week.filter(q=>q.platform===p.platform),byV=pw.slice().sort((a,c)=>c.views-a.views).findIndex(q=>q.url===p.url),ew=pw.filter(tpHasEng),byE=hasEng?ew.slice().sort((a,c)=>tpEng(c)-tpEng(a)).findIndex(q=>q.url===p.url):-1;
- if(byV===0)R.push('Most-viewed '+p.platform+' post this week.');else if(byV<3)R.push('Top 3 for views on '+p.platform+' this week.');
- if(byE===0)R.push('Most tracked interactions on '+p.platform+' this week.');else if(byE>0&&byE<3&&byV>2)R.push('Top 3 for tracked interactions on '+p.platform+' this week.');
- const w=ew.filter(q=>q.views>0);if(hasEng&&!erDone&&w.length>=3&&er!=null){const avg=w.reduce((s,q)=>s+tpEng(q),0)/w.reduce((s,q)=>s+q.views,0)*100;if(avg>0&&er/avg>=1.25&&eng>=30)R.push('Tracked interaction rate of '+er.toFixed(1)+'% was above '+p.platform+' posts\' weekly average of '+avg.toFixed(1)+'%.')}
- if(n<4)R.push('Not enough recent '+p.platform+' posts to compare this one with its usual performance.');
- if(R.length===0||(R.length===1&&n<4&&byV>2&&byE>2))R.unshift('No single standout signal; it mainly reached a larger audience.');
- return R.slice(0,4)}
-function renderTop(){
- if(!TP.length){$('tpNote').textContent='Top posts appear after the next daily run collects them.';$('tpSort').innerHTML='';$('tpList').innerHTML='';$('tpFoot').textContent='';renderIntelligenceTools();return}
- const asof=TP.reduce((m,p)=>p.snap>m?p.snap:m,''),cut=Date.parse(asof+'T23:59:59Z')-7*864e5;
- const week=TP.filter(p=>p.t>cut&&p.views!=null&&p.views>0);
- const platforms=['all',...new Set(week.map(p=>p.platform).sort())],shown=TPPLATFORM==='all'?week:week.filter(p=>p.platform===TPPLATFORM);
- $('tpNote').textContent='Posts from the last 7 days for '+(TPPLATFORM==='all'?'all platforms':TPPLATFORM)+', as of '+new Date(pd(asof)).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'})+'. '+shown.length+' posts have view numbers.';
- $('tpSort').innerHTML=[['views','Most views'],['eng','Most tracked interactions'],['rel','Beat their usual the most']].map(x=>'<button class="'+(TPSORT===x[0]?'on':'alt')+'" data-s="'+x[0]+'">'+x[1]+'</button>').join('')+'<label class="sub" for="tpPlatform" style="align-self:center;margin-left:6px">Platform</label><select id="tpPlatform" aria-label="Filter top posts by platform">'+platforms.map(p=>'<option value="'+esc(p)+'"'+(p===TPPLATFORM?' selected':'')+'>'+(p==='all'?'All platforms':esc(p))+'</option>').join('')+'</select>'+'<button class="alt" data-n="1">'+(TPN===5?'Show top 10':'Show top 5')+'</button>';
- $('tpSort').querySelectorAll('button').forEach(b=>b.onclick=()=>{if(b.dataset.s)TPSORT=b.dataset.s;else TPN=TPN===5?10:5;renderTop()});
- $('tpPlatform').onchange=e=>{TPPLATFORM=e.target.value;renderTop()};
- const key={views:p=>p.views,eng:p=>tpHasEng(p)?tpEng(p):-1,rel:p=>tpRel(p)==null?-1:tpRel(p)};
- const sorted=shown.slice().sort((a,c)=>key[TPSORT](c)-key[TPSORT](a)||c.views-a.views);
- const top=sorted.slice(0,TPN);
- $('tpList').innerHTML=top.length?top.map((p,i)=>{const eng=tpEng(p),showEng=tpHasEng(p),er=showEng&&p.views>0?eng/p.views*100:null,rel=tpRel(p);
-  return '<div class="panel tp"><div class="rk">'+(i+1)+'</div><div><div class="lbl">'+esc(p.platform)+' · '+esc(p.type)+' · '+new Date(p.t).toLocaleDateString('en-US',{month:'short',day:'numeric'})+' · <a href="'+esc(p.url)+'" target="_blank" rel="noopener">open post</a></div>'
-  +'<div class="cap">'+(p.caption?'“'+esc(p.caption)+'”':'(no caption)')+'</div>'
-  +'<div class="tpm"><div><b>'+fmt(p.views)+'</b><span>views</span></div>'+(showEng?'<div><b>'+fmt(eng)+'</b><span>'+(p.platform==='Facebook'?'known reactions + comments + shares':'tracked interactions')+'</span></div><div><b>'+(er==null?'–':er.toFixed(1)+'%')+'</b><span>'+(p.platform==='Facebook'?'partial interaction rate':'tracked interaction rate')+'</span></div>':'')+(showEng&&rel!=null?'<div><b>'+rel.toFixed(1)+'×</b><span>views/day vs '+esc(p.platform)+' baseline</span></div>':'')+'</div>'
-  +'<div class="lbl" style="margin-top:10px">Why it performed well</div><ul class="why">'+tpWhy(p,shown).map(r=>'<li>'+esc(r)+'</li>').join('')+'</ul></div></div>'}).join(''):'<div class="sub">No posts with view numbers for this platform in the last 7 days.</div>';
- $('tpFoot').textContent='Facebook counts shown here are a partial subtotal of reactions, comments, and shares; they are not Facebook’s full in-app Engagement metric. That makes the Facebook rate partial as well. Other platform counts include the actions available to their collectors. Rates divide the displayed interaction count by views. Treat comparisons as directional and compare within each platform.';
- $('tpSignals').innerHTML='';$('tpReuse').innerHTML='';renderSignals();
- const baseByPlatform=new Map();[...new Set(TP.map(p=>p.platform))].forEach(k=>{const v=TP.filter(p=>p.platform===k&&p.views>0).map(tpRate);baseByPlatform.set(k,tpMed(v))});
- const reuse=TP.filter(p=>p.views>0&&tpAge(p)>=7&&baseByPlatform.get(p.platform)>0&&tpRate(p)/baseByPlatform.get(p.platform)>=1.5).sort((a,b)=>tpRel(b)-tpRel(a)).slice(0,6);
- const clips=reuse.filter(p=>/video|reel|short|clip/i.test(p.type)&&tpAge(p)>=14).slice(0,4);
- reuse.slice(0,4).forEach(p=>$('tpReuse').insertAdjacentHTML('beforeend',tpCard('Repurpose · '+p.platform+' · '+p.type,fmt(p.views)+' views; '+(tpRel(p)||0).toFixed(1)+'× platform views/day baseline. Try a fresh hook, cutdown, quote card, or cross-platform edit.',p.url)));
- clips.forEach(p=>$('tpReuse').insertAdjacentHTML('beforeend',tpCard('Give this clip a second life · '+p.platform,fmt(p.views)+' views; '+(tpRel(p)||0).toFixed(1)+'× platform baseline. Try a new opening, tighter cut, or timely follow-up.',p.url)));
- if(!reuse.length)$('tpReuse').innerHTML=tpCard('No clear candidates yet','The current snapshot does not show older posts at least 1.5× above their platform’s typical views/day.');
- renderIntelligenceTools();
-}
-function loadTop(){fetch('top_posts.csv?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{TP=setTop(t);renderTop()}).catch(()=>renderTop())}
-renderTop();loadTop();
+function loadTop(){fetch('top_posts.csv?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{TP=setTop(t);renderIntelligenceTools()}).catch(()=>renderIntelligenceTools())}
+loadTop();
 
 function ciConfidence(n){return n>=8?'Higher (8+ comparison posts)':n>=5?'Moderate (5–7 comparison posts)':'Low (fewer than 5 comparison posts)'}
 function ciMetricPosts(){return TP.filter(p=>p.views!=null&&p.views>=0&&isFinite(p.t))}
