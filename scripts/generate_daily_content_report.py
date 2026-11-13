@@ -261,7 +261,10 @@ def load_or_create(day, force=False):
         before, after = read_snapshot(day), read_snapshot(day + timedelta(days=1))
         report = build_report(day, before, after)
         json_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        status_path.write_text(json.dumps({"reporting_date": day.isoformat(), "state": "ready", "updated_at": datetime.now(timezone.utc).isoformat()}, indent=2) + "\n", encoding="utf-8")
+        # Rebuilding a report must not erase a prior delivery state. Otherwise a
+        # preview could reset "sent" to "ready" and accidentally permit a duplicate.
+        if not status_path.exists():
+            status_path.write_text(json.dumps({"reporting_date": day.isoformat(), "state": "ready", "updated_at": datetime.now(timezone.utc).isoformat()}, indent=2) + "\n", encoding="utf-8")
     render_pdf(report, pdf_path)
     return report, json_path, pdf_path, status_path
 
@@ -433,6 +436,11 @@ def deliver(day, status_path, pdf_path, authorized_resend=False):
         saved_report = json.loads(report_paths(day)[1].read_text(encoding="utf-8"))
     except OSError:
         pass
+    window = saved_report.get("window", {})
+    if not window.get("start_capture") or not window.get("end_capture"):
+        status.update({"state": "delivery_blocked", "error": "Both daily snapshots are required before email delivery.", "updated_at": datetime.now(timezone.utc).isoformat()})
+        status_path.write_text(json.dumps(status, indent=2) + "\n", encoding="utf-8")
+        raise RuntimeError("Report email blocked: one or both daily snapshots are missing. Generate a preview after both snapshots are saved.")
     material_gaps = [note.rstrip(".") for note in saved_report.get("measurement_notes", [])
                      if any(term in note.casefold() for term in ("missing", "unavailable", "does not include", "require"))]
     gap_text = "; ".join(material_gaps[:3]) if material_gaps else "No major gap was detected in the available feeds; coverage is not a full-account guarantee"

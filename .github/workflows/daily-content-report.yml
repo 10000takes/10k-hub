@@ -51,10 +51,12 @@ jobs:
         env:
           REPORT_DATE: ${{ inputs.report_date }}
         run: |
+          # Manual previews and sends must rebuild from the latest saved snapshots;
+          # otherwise a cached empty report can be reused after new data arrives.
           if [ -n "$REPORT_DATE" ]; then
-            python scripts/generate_daily_content_report.py generate --date "$REPORT_DATE"
+            python scripts/generate_daily_content_report.py generate --date "$REPORT_DATE" --force
           else
-            python scripts/generate_daily_content_report.py generate
+            python scripts/generate_daily_content_report.py generate --force
           fi
 
       - name: Save report snapshot before delivery
