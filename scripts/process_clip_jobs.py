@@ -85,7 +85,13 @@ RESPONSE_SCHEMA: dict[str, Any] = {
 
 def api_request(url: str, token: str, method: str = "GET", payload: dict[str, Any] | None = None) -> dict[str, Any]:
     data = json.dumps(payload).encode("utf-8") if payload is not None else None
-    headers = {"Authorization": f"Bearer {token}"}
+    # Cloudflare applies Browser Integrity checks to workers.dev requests.
+    # urllib's default Python-urllib User-Agent is blocked with error 1010,
+    # so identify this automated client explicitly.
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "User-Agent": "10K-Hub-AI-Clip-Strategist/1.0",
+    }
     if data is not None:
         headers["Content-Type"] = "application/json"
     request = urllib.request.Request(url, data=data, headers=headers, method=method)
