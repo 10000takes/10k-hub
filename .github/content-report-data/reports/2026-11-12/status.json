@@ -1,8 +1,9 @@
 {
   "reporting_date": "2026-11-12",
-  "state": "delivery_failed",
-  "updated_at": "2026-11-13T18:34:25.272819+00:00",
-  "attempt": 1,
+  "state": "sent",
+  "updated_at": "2026-11-13T18:40:38.174278+00:00",
+  "attempt": 2,
   "idempotency_key": "10k-daily-content-report-2026-11-12-1",
-  "error": "Resend HTTP 403: error code: 1010\n"
+  "error": "Resend HTTP 403: error code: 1010\n",
+  "provider_id": "01a1d636-30bb-79c3-85fd-b70cf8f98657"
 }
