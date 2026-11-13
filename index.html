@@ -364,8 +364,9 @@ html.locked #gate{display:flex}
 <label>Content Intelligence Worker URL<input id="clipWorkerUrl" type="url" inputmode="url" placeholder="https://your-content-intelligence-worker.workers.dev" autocomplete="url"></label>
 <label>Private Clip Strategist token<input id="clipWorkerToken" type="password" autocomplete="off" placeholder="Paste the private worker token"></label>
 </div>
+<label class="ci-meta" style="display:flex;align-items:center;gap:8px;margin:8px 0"><input id="clipRememberAccess" type="checkbox"> Remember access on this browser</label>
 <div class="row"><button id="clipConnect" type="button">Connect</button><button id="clipRefresh" class="alt" type="button">Refresh Jobs</button><button id="clipForget" class="alt" type="button">Forget access</button><span id="clipConnectionStatus" class="ci-meta" role="status" aria-live="polite">Clip Strategist is not connected.</span></div>
-<div class="ci-meta">The token is kept in this browser tab’s session only. Anyone with it can access uploaded videos and analysis. Never put it in GitHub, a repository file, or the public dashboard URL.</div>
+<div class="ci-meta">By default, the token is kept in this browser tab’s session only. If you choose Remember access, it stays in this browser profile until you forget access or clear browser data. Anyone using this browser profile can access uploaded videos and analysis. Never put the token in GitHub, a repository file, or the public dashboard URL.</div>
 </div>
 <form id="clipUploadForm" class="panel" style="margin-top:10px">
 <div class="ci-tool-grid">
@@ -874,10 +875,11 @@ async function refreshClipJobs(){
  try{const response=await fetch(base+'/v1/clip-jobs',{headers:{Authorization:'Bearer '+token},cache:'no-store'});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||('Worker returned '+response.status));renderClipJobs(Array.isArray(data.jobs)?data.jobs:[]);$('clipJobsStatus').textContent='Connected · '+(data.jobs||[]).length+' private video job(s).';$('clipConnectionStatus').textContent='Connected.';return true}
  catch(error){$('clipJobsStatus').textContent=error.message==='Unauthorized'?'Token was rejected. Check the Clip Strategist token configured on the Worker.':'Could not reach the private Worker. Check its URL, token, and allowed dashboard origin.';$('clipConnectionStatus').textContent='Connection failed.';return false}
 }
-try{$('clipWorkerUrl').value=localStorage.getItem(CLIP_URL_KEY)||localStorage.getItem(CONTENT_AGENT_URL_KEY)||'';$('clipWorkerToken').value=sessionStorage.getItem(CLIP_TOKEN_KEY)||''}catch(error){}
-$('clipConnect').onclick=async()=>{const base=clipBase(),token=$('clipWorkerToken').value.trim();if(!base||!token){$('clipConnectionStatus').textContent='Enter an HTTPS Worker URL and private token.';return}try{localStorage.setItem(CLIP_URL_KEY,base);sessionStorage.setItem(CLIP_TOKEN_KEY,token)}catch(error){$('clipConnectionStatus').textContent='This browser could not save access for this tab.';return}$('clipWorkerUrl').value=base;await refreshClipJobs()};
+try{$('clipWorkerUrl').value=localStorage.getItem(CLIP_URL_KEY)||localStorage.getItem(CONTENT_AGENT_URL_KEY)||'';const savedToken=localStorage.getItem(CLIP_TOKEN_KEY)||'';$('clipWorkerToken').value=sessionStorage.getItem(CLIP_TOKEN_KEY)||savedToken;$('clipRememberAccess').checked=Boolean(savedToken)}catch(error){}
+$('clipRememberAccess').onchange=()=>{if(!$('clipRememberAccess').checked){try{localStorage.removeItem(CLIP_TOKEN_KEY)}catch(error){}}else{const token=$('clipWorkerToken').value.trim();if(token){try{localStorage.setItem(CLIP_TOKEN_KEY,token)}catch(error){$('clipConnectionStatus').textContent='This browser could not remember access.'}}}};
+$('clipConnect').onclick=async()=>{const base=clipBase(),token=$('clipWorkerToken').value.trim();if(!base||!token){$('clipConnectionStatus').textContent='Enter an HTTPS Worker URL and private token.';return}try{localStorage.setItem(CLIP_URL_KEY,base);sessionStorage.setItem(CLIP_TOKEN_KEY,token);if($('clipRememberAccess').checked)localStorage.setItem(CLIP_TOKEN_KEY,token);else localStorage.removeItem(CLIP_TOKEN_KEY)}catch(error){$('clipConnectionStatus').textContent='This browser could not save access. Check its storage settings.';return}$('clipWorkerUrl').value=base;await refreshClipJobs()};
 $('clipRefresh').onclick=refreshClipJobs;
-$('clipForget').onclick=()=>{try{sessionStorage.removeItem(CLIP_TOKEN_KEY)}catch(error){}$('clipWorkerToken').value='';$('clipJobs').innerHTML='';$('clipJobsStatus').textContent='Connect to view video jobs.';$('clipConnectionStatus').textContent='Access forgotten.'};
+$('clipForget').onclick=()=>{try{sessionStorage.removeItem(CLIP_TOKEN_KEY);localStorage.removeItem(CLIP_TOKEN_KEY)}catch(error){}$('clipRememberAccess').checked=false;$('clipWorkerToken').value='';$('clipJobs').innerHTML='';$('clipJobsStatus').textContent='Connect to view video jobs.';$('clipConnectionStatus').textContent='Access forgotten.'};
 $('clipUploadForm').onsubmit=async event=>{
  event.preventDefault();const base=clipBase(),token=$('clipWorkerToken').value.trim(),file=$('clipFile').files[0],title=$('clipTitle').value.trim();
  if(!base||!token){$('clipUploadStatus').textContent='Connect with the private token before uploading.';return}
@@ -895,6 +897,7 @@ $('clipUploadForm').onsubmit=async event=>{
  }catch(error){$('clipUploadStatus').textContent=error.message||'Upload failed. Check the Worker and private storage setup.';await refreshClipJobs()}
  finally{$('clipUploadButton').disabled=false}
 };
+if($('clipWorkerToken').value)refreshClipJobs();
 
 let OPPORTUNITY_REPORT=null,OPPORTUNITY_CATEGORY='all';
 function opportunityCard(o){
