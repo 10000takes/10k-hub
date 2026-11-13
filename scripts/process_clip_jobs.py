@@ -22,67 +22,6 @@ TRANSCRIPTION_CHUNK_SECONDS = 6 * 60
 MODEL_VIDEO = os.getenv("CLIP_VIDEO_MODEL", "gemini-3.8-flash")
 MODEL_TRANSCRIBE = "gemini-3.5-transcribe"
 
-RESPONSE_SCHEMA: dict[str, Any] = {
-    "type": "object",
-    "properties": {
-        "analysis_note": {"type": "string"},
-        "candidates": {
-            "type": "array",
-            "maxItems": 10,
-            "items": {
-                "type": "object",
-                "properties": {
-                    "start_ms": {"type": "integer"},
-                    "end_ms": {"type": "integer"},
-                    "title": {"type": "string"},
-                    "hook": {"type": "string"},
-                    "rationale": {"type": "string"},
-                    "editorial_score": {"type": "integer"},
-                    "confidence": {"type": "string", "enum": ["low", "medium", "high"]},
-                    "evidence": {
-                        "type": "object",
-                        "properties": {
-                            "transcript_quotes": {"type": "array", "items": {"type": "object", "properties": {"start_ms": {"type": "integer"}, "end_ms": {"type": "integer"}, "speaker": {"type": "string"}, "quote": {"type": "string"}}, "required": ["start_ms", "end_ms", "speaker", "quote"]}},
-                            "visual_moments": {"type": "array", "items": {"type": "object", "properties": {"time_ms": {"type": "integer"}, "observation": {"type": "string"}, "signal": {"type": "string"}}, "required": ["time_ms", "observation", "signal"]}},
-                            "audio_moments": {"type": "array", "items": {"type": "object", "properties": {"time_ms": {"type": "integer"}, "observation": {"type": "string"}}, "required": ["time_ms", "observation"]}},
-                            "hypotheses": {"type": "array", "items": {"type": "string"}},
-                        },
-                        "required": ["transcript_quotes", "visual_moments", "audio_moments", "hypotheses"],
-                    },
-                    "edit_plan": {
-                        "type": "object",
-                        "properties": {
-                            "suggested_cut_in_ms": {"type": "integer"},
-                            "suggested_cut_out_ms": {"type": "integer"},
-                            "opening_hook": {"type": "string"},
-                            "pacing": {"type": "string"},
-                            "captions": {"type": "string"},
-                            "on_screen_text": {"type": "string"},
-                            "ending": {"type": "string"},
-                            "final_cut_pro_notes": {"type": "string"},
-                        },
-                        "required": ["suggested_cut_in_ms", "suggested_cut_out_ms", "opening_hook", "pacing", "captions", "on_screen_text", "ending", "final_cut_pro_notes"],
-                    },
-                    "platform_adaptations": {
-                        "type": "object",
-                        "properties": {
-                            "Instagram Reels": {"type": "string"},
-                            "Facebook Reels": {"type": "string"},
-                            "TikTok": {"type": "string"},
-                            "YouTube Shorts": {"type": "string"},
-                            "X": {"type": "string"},
-                        },
-                        "required": ["Instagram Reels", "Facebook Reels", "TikTok", "YouTube Shorts", "X"],
-                    },
-                },
-                "required": ["start_ms", "end_ms", "title", "hook", "rationale", "editorial_score", "confidence", "evidence", "edit_plan", "platform_adaptations"],
-            },
-        },
-    },
-    "required": ["analysis_note", "candidates"],
-}
-
-
 def api_request(url: str, token: str, method: str = "GET", payload: dict[str, Any] | None = None) -> dict[str, Any]:
     data = json.dumps(payload).encode("utf-8") if payload is not None else None
     # Cloudflare applies Browser Integrity checks to workers.dev requests.
@@ -318,7 +257,10 @@ If fast action is not visibly sampled clearly enough to assess, state that as a 
         response = client.interactions.create(
             model=MODEL_VIDEO,
             input=[{**input_file(video_resource, "video"), "processing": processing_mode}, {"type": "text", "text": prompt}],
-            response_format={"type": "text", "mime_type": "application/json", "schema": RESPONSE_SCHEMA},
+            # The nested schema exceeded Gemini's constrained-output limit
+            # ("Constraint is too tall"). Ask for JSON MIME output, then rely
+            # on the parsing and semantic validation below instead.
+            response_format={"type": "text", "mime_type": "application/json"},
             generation_config={"max_output_tokens": 20_000, "temperature": 0.2},
             background=True,
         )
