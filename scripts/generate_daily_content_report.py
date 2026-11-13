@@ -441,7 +441,20 @@ def deliver(day, status_path, pdf_path, authorized_resend=False):
                          "subject": "10K Takes Daily Content Report - " + day.strftime("%B %-d, %Y"),
                          "text": email_body,
                          "attachments": [{"filename": "10K_Takes_Daily_Content_Report_{}.pdf".format(day.isoformat()), "content": attachment}]}).encode()
-    request = urllib.request.Request("https://api.resend.com/emails", data=payload, method="POST", headers={"Authorization": "Bearer " + api_key, "Content-Type": "application/json", "Idempotency-Key": idem})
+    request = urllib.request.Request(
+        "https://api.resend.com/emails",
+        data=payload,
+        method="POST",
+        headers={
+            "Authorization": "Bearer " + api_key,
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Idempotency-Key": idem,
+            # Identify the automated sender instead of urllib's default
+            # Python-urllib user agent, which can be blocked by edge security.
+            "User-Agent": "10K-Hub-Daily-Content-Report/1.0",
+        },
+    )
     result = None
     for retry in range(3):
         try:
