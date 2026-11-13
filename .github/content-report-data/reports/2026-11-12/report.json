@@ -1,0 +1,94 @@
+{
+  "reporting_date": "2026-11-12",
+  "generated_at": "2026-11-13T12:34:22.374242-06:00",
+  "timezone": "America/Chicago",
+  "window": {
+    "reporting_start": "2026-11-12T00:00:00-06:00",
+    "reporting_end_exclusive": "2026-11-13T00:00:00-06:00",
+    "start_capture": "2026-11-12T14:58:27.058876-06:00",
+    "end_capture": null
+  },
+  "publication_cohort_count": 0,
+  "covered_platform_count": 0,
+  "covered_platforms": [],
+  "all_account_impressions": null,
+  "score": null,
+  "platforms": [
+    {
+      "platform": "Instagram",
+      "measure": "views",
+      "observed": null,
+      "baseline": null,
+      "delta_percent": null,
+      "baseline_days": 0,
+      "posts_measured": 0,
+      "signal": "No matching post counters in both snapshots"
+    },
+    {
+      "platform": "Facebook",
+      "measure": "views",
+      "observed": null,
+      "baseline": null,
+      "delta_percent": null,
+      "baseline_days": 0,
+      "posts_measured": 0,
+      "signal": "No matching post counters in both snapshots"
+    },
+    {
+      "platform": "TikTok",
+      "measure": "views",
+      "observed": null,
+      "baseline": null,
+      "delta_percent": null,
+      "baseline_days": 0,
+      "posts_measured": 0,
+      "signal": "No matching post counters in both snapshots"
+    },
+    {
+      "platform": "X/Twitter",
+      "measure": "impressions",
+      "observed": null,
+      "baseline": null,
+      "delta_percent": null,
+      "baseline_days": 0,
+      "posts_measured": 0,
+      "signal": "No matching post counters in both snapshots"
+    },
+    {
+      "platform": "YouTube",
+      "measure": "views",
+      "observed": null,
+      "baseline": null,
+      "delta_percent": null,
+      "baseline_days": 0,
+      "posts_measured": 0,
+      "signal": "No matching post counters in both snapshots"
+    },
+    {
+      "platform": "Threads",
+      "measure": "views",
+      "observed": null,
+      "baseline": null,
+      "delta_percent": null,
+      "baseline_days": 0,
+      "posts_measured": 0,
+      "signal": "No matching post counters in both snapshots"
+    }
+  ],
+  "publication_cohort": [],
+  "publication_cohort_total": 0,
+  "measurement_notes": [
+    "One or both midnight snapshots are missing; daily activity cannot be measured yet.",
+    "Collectors sample posts shortly after midnight. Reported changes are capture-to-capture deltas; counters may include a short collection delay around midnight.",
+    "The post feed covers a limited recent-post set (up to each platform collector's API limit and roughly 30 days). It does not include older posts, so an all-post account impression total is unavailable.",
+    "Views and X impressions are different platform measures and are compared only within their platform.",
+    "Platform baselines require at least 7 valid historical daily comparisons; missing or stale days are not counted as zero."
+  ],
+  "diagnosis": "A verified yesterday-only diagnosis is not available yet because matching post snapshots are missing. The report does not substitute lifetime counters or estimated account totals.",
+  "actions": [
+    "Before repeating yesterday's creative, open its platform insights and record the reporting-window metrics; no publication-cohort counter delta is available yet.",
+    "Collect a complete daily snapshot series for at least 7 days before ranking platform performance; keep the first comparison within each platform.",
+    "Log post type, hook, topic, length, and any paid boost for each new post today so future recommendations can separate observed patterns from missing context."
+  ],
+  "confidence": "High confidence: reporting-date boundaries and publication dates are assigned in America/Chicago. Moderate confidence: counter changes for posts present in both snapshots; platform API counters can arrive late. Historical comparisons are not available until at least 7 valid daily pairs exist. Low confidence: whole-account impressions, older posts outside the collector window, unsupported metrics, and causal explanations. 0 platform(s) had measurable tracked-post changes."
+}
