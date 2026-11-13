@@ -279,6 +279,8 @@ If fast action is not visibly sampled clearly enough to assess, state that as a 
     if not output:
         raise RuntimeError("Video analysis returned no structured output.")
     result = json.loads(output)
+    if not isinstance(result, dict):
+        raise RuntimeError(f"Video analysis returned JSON with the wrong top-level type ({type(result).__name__}); expected an object.")
     result["_video_processing_mode"] = processing_mode
     if processing_mode == "static":
         result["analysis_note"] = (
@@ -287,7 +289,13 @@ If fast action is not visibly sampled clearly enough to assess, state that as a 
         )
     candidates = result.get("candidates")
     if not isinstance(candidates, list) or len(candidates) > 10:
-        raise RuntimeError("Video analysis returned an invalid candidate list.")
+        candidate_type = type(candidates).__name__ if candidates is not None else "missing"
+        candidate_count = len(candidates) if isinstance(candidates, list) else "not applicable"
+        result_keys = ", ".join(sorted(str(key) for key in result if key != "_video_processing_mode"))[:300]
+        raise RuntimeError(
+            "Video analysis returned an invalid candidate list "
+            f"(candidates type={candidate_type}, count={candidate_count}, top-level keys={result_keys or 'none'})."
+        )
     for candidate in candidates:
         start, end = candidate.get("start_ms"), candidate.get("end_ms")
         if not isinstance(start, int) or not isinstance(end, int) or start < 0 or end <= start or end > duration_ms or end - start > 180_000 or start % 1000 or end % 1000:
