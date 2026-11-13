@@ -133,7 +133,8 @@ def interaction_failure_details(interaction: Any) -> str:
             for key in ("type", "status", "error", "last_error", "incomplete_details", "message", "code")
             if key in item and item[key] is not None
         }
-        if summary:
+        # The normal input step is not a failure explanation.
+        if summary and (set(summary) - {"type"} or summary.get("type") not in {"user_input", "input"}):
             step_summaries.append(summary)
     if step_summaries:
         safe["steps"] = step_summaries
@@ -141,7 +142,7 @@ def interaction_failure_details(interaction: Any) -> str:
     # Keep output compact enough for an Actions log while preserving API detail.
     rendered = json.dumps(safe, default=str, ensure_ascii=True)
     if not safe:
-        rendered = f"no error fields exposed by SDK response (type={type(interaction).__name__}, fields={sorted(details)})"
+        rendered = f"no API error details provided (interaction_type={type(interaction).__name__})"
     return rendered[:2500]
 
 
@@ -360,6 +361,29 @@ If fast action is not visibly sampled clearly enough to assess, state that as a 
     return result
 
 
+def transcribe_audio_chunk(client: Any, audio_upload: Any, offset_ms: int, duration_ms: int) -> list[dict[str, Any]]:
+    """Retry a chunk when Gemini marks an accepted transcription interaction failed."""
+    attempts = 3
+    for attempt in range(1, attempts + 1):
+        try:
+            response = client.interactions.create(
+                model=MODEL_TRANSCRIBE,
+                input=[input_file(audio_upload, "audio")],
+                generation_config={"transcription_config": {"mode": {"type": "verbatim", "diarization_mode": "speaker", "timestamp_granularities": ["word"]}}},
+                background=True,
+            )
+            response = wait_for_interaction(client, response, "transcription")
+            return transcript_segments(response, duration_ms, offset_ms)
+        except RuntimeError as error:
+            is_terminal_failure = str(error).startswith("Gemini transcription failed:")
+            if not is_terminal_failure or attempt == attempts:
+                raise
+            delay = 10 * attempt
+            print(f"Transcription range {offset_ms // 1000}s–{(offset_ms + duration_ms) // 1000}s failed without a reported cause; retry {attempt + 1}/{attempts} in {delay}s.")
+            time.sleep(delay)
+    raise RuntimeError("Transcription retries ended unexpectedly.")
+
+
 def process() -> None:
     base = os.getenv("CONTENT_INTELLIGENCE_API_URL", "").strip().rstrip("/")
     worker_token = os.getenv("CONTENT_INTELLIGENCE_TOKEN", "").strip()
@@ -402,14 +426,7 @@ def process() -> None:
                 if audio_name:
                     uploaded.append(str(audio_name))
                 audio_upload = wait_for_file(client, audio_upload)
-                transcript_response = client.interactions.create(
-                    model=MODEL_TRANSCRIBE,
-                    input=[input_file(audio_upload, "audio")],
-                    generation_config={"transcription_config": {"mode": {"type": "verbatim", "diarization_mode": "speaker", "timestamp_granularities": ["word"]}}},
-                    background=True,
-                )
-                transcript_response = wait_for_interaction(client, transcript_response, "transcription")
-                transcript.extend(transcript_segments(transcript_response, chunk_duration_ms, offset_ms))
+                transcript.extend(transcribe_audio_chunk(client, audio_upload, offset_ms, chunk_duration_ms))
                 audio_path.unlink(missing_ok=True)
                 print(f"Transcribed source range {offset_ms // 1000}s–{(offset_ms + chunk_duration_ms) // 1000}s.")
             print(f"Transcript: {len(transcript)} timestamped speaker segments.")
