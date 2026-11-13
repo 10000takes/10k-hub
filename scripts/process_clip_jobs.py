@@ -117,7 +117,7 @@ def interaction_failure_details(interaction: Any) -> str:
     """Extract useful failure metadata without logging uploaded content or prompts."""
     details = mapping(interaction)
     fields = (
-        "error", "last_error", "incomplete_details", "failure_reason", "message",
+        "id", "error", "last_error", "incomplete_details", "failure_reason", "message",
         "code", "status", "usage",
     )
     safe: dict[str, Any] = {key: details[key] for key in fields if key in details and details[key] is not None}
@@ -314,18 +314,35 @@ For each candidate, cite observable evidence with transcript quote timestamps an
 Give a practical Final Cut Pro edit plan: source cut in/out, first-second hook, pacing, caption treatment, on-screen text, ending, and editor notes. Provide a short adaptation for Instagram Reels, Facebook Reels, TikTok, YouTube Shorts, and X. These are editorial adaptations, not verified trend claims. Current platform trend data and 10K Hub historical performance context are not connected: say so in analysis_note and do not invent them.
 
 If fast action is not visibly sampled clearly enough to assess, state that as a limitation. Do not claim to have identified an individual by name. Do not invent audio intensity measurements; qualitative sound descriptions only when clearly audible. Output only the required structured object."""
-    response = client.interactions.create(
-        model=MODEL_VIDEO,
-        input=[{**input_file(video_resource, "video"), "processing": "agentic"}, {"type": "text", "text": prompt}],
-        response_format={"type": "text", "mime_type": "application/json", "schema": RESPONSE_SCHEMA},
-        generation_config={"max_output_tokens": 20_000, "temperature": 0.2},
-        background=True,
-    )
-    response = wait_for_interaction(client, response, "video analysis")
+    def run_video_review(processing_mode: str) -> Any:
+        response = client.interactions.create(
+            model=MODEL_VIDEO,
+            input=[{**input_file(video_resource, "video"), "processing": processing_mode}, {"type": "text", "text": prompt}],
+            response_format={"type": "text", "mime_type": "application/json", "schema": RESPONSE_SCHEMA},
+            generation_config={"max_output_tokens": 20_000, "temperature": 0.2},
+            background=True,
+        )
+        return wait_for_interaction(client, response, "video analysis")
+
+    processing_mode = "agentic"
+    try:
+        response = run_video_review(processing_mode)
+    except RuntimeError as error:
+        if not str(error).startswith("Gemini video analysis failed:"):
+            raise
+        print("Gemini agentic video review failed; retrying once with standard 1 FPS video sampling.")
+        processing_mode = "static"
+        response = run_video_review(processing_mode)
     output = getattr(response, "output_text", None)
     if not output:
         raise RuntimeError("Video analysis returned no structured output.")
     result = json.loads(output)
+    result["_video_processing_mode"] = processing_mode
+    if processing_mode == "static":
+        result["analysis_note"] = (
+            "Standard 1 FPS video sampling was used after agentic review failed; brief reactions or fast action between sampled frames may be missed. "
+            + str(result.get("analysis_note", ""))
+        )
     candidates = result.get("candidates")
     if not isinstance(candidates, list) or len(candidates) > 10:
         raise RuntimeError("Video analysis returned an invalid candidate list.")
@@ -443,9 +460,11 @@ def process() -> None:
                 "transcription_model": MODEL_TRANSCRIBE,
                 "video_analysis_model": MODEL_VIDEO,
                 "created_at": datetime.now(timezone.utc).isoformat(),
-                "method": "Gemini dedicated word-timestamped diarization + agentic multimodal video review",
+                "method": f"Gemini dedicated word-timestamped diarization + {analysis.get('_video_processing_mode', 'agentic')} multimodal video review",
                 "limitations": ["Speaker labels are diarization labels, not verified identities, and may restart at each six-minute transcription chunk.", "Editorial hypotheses and scores are not performance predictions.", "Platform trends and 10K Hub history were not supplied to this run."],
             }
+            if analysis.get("_video_processing_mode") == "static":
+                provenance["limitations"].append("Video review sampled at 1 FPS; brief reactions or fast action between sampled frames may be missed.")
             api_request(base + f"/v1/clip-jobs/{job_id}/results", worker_token, method="POST", payload={
                 "duration_ms": duration_ms,
                 "transcript_segments": transcript,
