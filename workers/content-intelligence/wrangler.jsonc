@@ -6,7 +6,8 @@
 	"workers_dev": true,
 	"vars": {
 		"PUBLIC_READ_ORIGIN": "https://10000takes.github.io",
-		"R2_BUCKET_NAME": "10k-takes-clip-strategist"
+		"R2_BUCKET_NAME": "10k-takes-clip-strategist",
+		"R2_ACCOUNT_ID": "addb28a75be1df2f0a95f33a82dd5a1d"
 	},
 	"r2_buckets": [
 		{
