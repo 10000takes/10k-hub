@@ -338,6 +338,7 @@ def process() -> None:
         raise RuntimeError("CONTENT_INTELLIGENCE_TOKEN must be a long secret (at least 32 characters).")
 
     from google import genai
+    from google.genai import types
 
     job_data = api_request(base + "/v1/clip-jobs/next", worker_token, method="POST", payload={})
     job = job_data.get("job")
@@ -346,7 +347,12 @@ def process() -> None:
         return
     job_id = job["id"]
     print(f"Processing one video job: {job.get('title', job_id)}")
-    client = genai.Client(api_key=gemini_key)
+    # Word-level speaker diarization is still exposed only on Gemini's beta
+    # API version; the current Python SDK otherwise defaults to stable v1.
+    client = genai.Client(
+        api_key=gemini_key,
+        http_options=types.HttpOptions(api_version="v1beta"),
+    )
     uploaded: list[str] = []
     try:
         with tempfile.TemporaryDirectory(prefix="10k-clip-") as temporary:
