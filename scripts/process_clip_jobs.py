@@ -113,6 +113,38 @@ def mapping(value: Any) -> dict[str, Any]:
     return {}
 
 
+def interaction_failure_details(interaction: Any) -> str:
+    """Extract useful failure metadata without logging uploaded content or prompts."""
+    details = mapping(interaction)
+    fields = (
+        "error", "last_error", "incomplete_details", "failure_reason", "message",
+        "code", "status", "usage",
+    )
+    safe: dict[str, Any] = {key: details[key] for key in fields if key in details and details[key] is not None}
+
+    # Some SDK/API versions expose failure data on individual steps rather than
+    # the interaction. Keep only step type/status/error metadata, never content.
+    raw_steps = details.get("steps") or getattr(interaction, "steps", None) or []
+    step_summaries: list[dict[str, Any]] = []
+    for step in raw_steps[-8:]:
+        item = mapping(step)
+        summary = {
+            key: item[key]
+            for key in ("type", "status", "error", "last_error", "incomplete_details", "message", "code")
+            if key in item and item[key] is not None
+        }
+        if summary:
+            step_summaries.append(summary)
+    if step_summaries:
+        safe["steps"] = step_summaries
+
+    # Keep output compact enough for an Actions log while preserving API detail.
+    rendered = json.dumps(safe, default=str, ensure_ascii=True)
+    if not safe:
+        rendered = f"no error fields exposed by SDK response (type={type(interaction).__name__}, fields={sorted(details)})"
+    return rendered[:2500]
+
+
 def seconds_to_ms(value: Any) -> int | None:
     if value is None:
         return None
@@ -148,16 +180,8 @@ def wait_for_interaction(client: Any, interaction: Any, description: str, deadli
         if status_name == "completed":
             return current
         if status_name in {"failed", "cancelled", "canceled", "incomplete", "budget_exceeded"}:
-            details = mapping(current)
-            error = (
-                getattr(current, "error", None)
-                or getattr(current, "incomplete_details", None)
-                or details.get("error")
-                or details.get("incomplete_details")
-            )
-            if status_name == "incomplete" and not error:
-                error = "Gemini returned incomplete output without a reason; the request may have reached an output limit."
-            raise RuntimeError(f"Gemini {description} {status_name}: {error or 'no additional error details'}")
+            failure = interaction_failure_details(current)
+            raise RuntimeError(f"Gemini {description} {status_name}: {failure}")
         time.sleep(10)
         current = client.interactions.get(id=interaction_id)
     raise RuntimeError(f"Gemini {description} did not finish within {deadline_seconds // 60} minutes.")
