@@ -18,7 +18,7 @@ from typing import Any
 
 MAX_VIDEO_BYTES = 2_000_000_000
 MAX_ANALYSIS_SECONDS = 7200
-TRANSCRIPTION_CHUNK_SECONDS = 24 * 60
+TRANSCRIPTION_CHUNK_SECONDS = 6 * 60
 MODEL_VIDEO = os.getenv("CLIP_VIDEO_MODEL", "gemini-3.8-flash")
 MODEL_TRANSCRIBE = "gemini-3.5-transcribe"
 
@@ -147,8 +147,16 @@ def wait_for_interaction(client: Any, interaction: Any, description: str, deadli
         status_name = str(getattr(status, "value", None) or getattr(status, "name", None) or status or "").lower()
         if status_name == "completed":
             return current
-        if status_name in {"failed", "cancelled", "canceled", "incomplete"}:
-            error = getattr(current, "error", None) or mapping(current).get("error")
+        if status_name in {"failed", "cancelled", "canceled", "incomplete", "budget_exceeded"}:
+            details = mapping(current)
+            error = (
+                getattr(current, "error", None)
+                or getattr(current, "incomplete_details", None)
+                or details.get("error")
+                or details.get("incomplete_details")
+            )
+            if status_name == "incomplete" and not error:
+                error = "Gemini returned incomplete output without a reason; the request may have reached an output limit."
             raise RuntimeError(f"Gemini {description} {status_name}: {error or 'no additional error details'}")
         time.sleep(10)
         current = client.interactions.get(id=interaction_id)
@@ -395,7 +403,7 @@ def process() -> None:
                 "video_analysis_model": MODEL_VIDEO,
                 "created_at": datetime.now(timezone.utc).isoformat(),
                 "method": "Gemini dedicated word-timestamped diarization + agentic multimodal video review",
-                "limitations": ["Speaker labels are diarization labels, not verified identities, and may restart at each 24-minute transcription chunk.", "Editorial hypotheses and scores are not performance predictions.", "Platform trends and 10K Hub history were not supplied to this run."],
+                "limitations": ["Speaker labels are diarization labels, not verified identities, and may restart at each six-minute transcription chunk.", "Editorial hypotheses and scores are not performance predictions.", "Platform trends and 10K Hub history were not supplied to this run."],
             }
             api_request(base + f"/v1/clip-jobs/{job_id}/results", worker_token, method="POST", payload={
                 "duration_ms": duration_ms,
