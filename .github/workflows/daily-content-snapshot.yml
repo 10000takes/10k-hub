@@ -47,6 +47,14 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Prepare main Meta Page credential
+        if: steps.gate.outputs.run == 'true'
+        continue-on-error: true
+        env:
+          FACEBOOK_SYSTEM_USER_TOKEN: ${{ secrets.FACEBOOK_SYSTEM_USER_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+        run: python scripts/prepare_meta_token.py
+
       - name: Collect recent main-account posts
         if: steps.gate.outputs.run == 'true'
         continue-on-error: true
@@ -55,7 +63,7 @@ jobs:
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
           INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID }}
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+          FACEBOOK_PAGE_TOKEN: ${{ env.FACEBOOK_PAGE_TOKEN }}
           THREADS_ACCESS_TOKEN_10K_TAKES: ${{ secrets.THREADS_ACCESS_TOKEN_10K_TAKES }}
         run: python collect_top_posts.py
 
