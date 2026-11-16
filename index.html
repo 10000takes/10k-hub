@@ -141,7 +141,7 @@ html.locked #gate{display:flex}
 <details class="analytics-section" open>
 <summary>All Accounts Combined</summary>
 <div class="analytics-section-body">
-<div class="sub" style="margin-top:14px">Live totals and recent change for connected accounts.</div>
+<div class="sub" style="margin-top:14px">Latest collected totals and recent change for connected accounts. Collection dates vary by platform.<div id="collectionHealth" role="status" aria-live="polite"></div></div>
 <section class="hero" id="netTop"></section>
 </div>
 </details>
@@ -509,31 +509,50 @@ const pct=n=>n==null?'':(n>0?'+':n<0?'−':'')+Math.abs(n).toFixed(1)+'%';
 const pts2=n=>(n>=0?'+':'−')+Math.abs(n).toFixed(2)+' pts';
 function mIndex(){const ix={};MET.forEach(r=>{const k=r.a+'|'+r.p+'|'+r.m;(ix[k]=ix[k]||[]).push({d:r.d,f:r.v})});Object.values(ix).forEach(a=>a.sort((x,y)=>x.d<y.d?-1:1));return ix}
 function agg(keys,S,ix,asof){
- const o={f:0,hasF:false,g:0,gb:0,g2:0,v:0,pv:0,nV:0,nPV:0,e:0,vE:0,pe:0,pvE:0,nE:0,nPE:0,coll:false};
+ const o={f:0,hasF:false,g:0,gb:0,g2:0,v:0,pv:0,nV:0,nPV:0,e:0,vE:0,pe:0,pvE:0,nE:0,nPE:0,coll:false,fd:[],vd:[],ed:[]};
  keys.forEach(k=>{const a=S[k],c=at(a,asof),p1=at(a,ad(asof,-7)),p2=at(a,ad(asof,-14));
-  if(c!=null){o.f+=c;o.hasF=true}
+  if(c!=null){o.f+=c;o.hasF=true;o.fd.push(a.filter(r=>r.d<=asof).slice(-1)[0].d)}
   if(c!=null&&p1!=null){o.g+=c-p1;o.gb+=p1}
   if(p1!=null&&p2!=null)o.g2+=p1-p2;
   const V=ix[k+'|views_7d'],E=ix[k+'|engagements_7d'];
-  if(V&&V.length){const d=V[V.length-1].d,v=at(V,d),v1=at(V,ad(d,-7));o.v+=v;o.nV++;if(v1!=null){o.pv+=v1;o.nPV++}
-   if(E&&E.length){const e=at(E,d),e1=at(E,ad(d,-7));o.e+=e;o.vE+=v;o.nE++;if(e1!=null&&v1!=null){o.pe+=e1;o.pvE+=v1;o.nPE++}}}
+  if(V&&V.length){const d=V[V.length-1].d,v=at(V,d),v1=at(V,ad(d,-7));o.v+=v;o.nV++;o.vd.push(d);if(v1!=null){o.pv+=v1;o.nPV++}
+   if(E&&E.length){const e=at(E,d),e1=at(E,ad(d,-7));if(e!=null){o.e+=e;o.vE+=v;o.nE++;o.ed.push(E.filter(r=>r.d<=d).slice(-1)[0].d);} if(e1!=null&&v1!=null){o.pe+=e1;o.pvE+=v1;o.nPE++}}}
   else if(ix[k+'|views_total'])o.coll=true});
  return o}
 function vChg(o){return o.nV&&o.nPV===o.nV?pc(o.v,o.pv):null}
 function rate(o){return o.vE>0?o.e/o.vE*100:null}
 function rate1(o){return o.nE&&o.nPE===o.nE&&o.pvE>0?o.pe/o.pvE*100:null}
+function collectionDateLabel(dates){
+ const unique=[...new Set(dates)].sort();
+ return unique.length?(unique.length===1?unique[0]:unique[0]+' to '+unique[unique.length-1]):'not collected';
+}
+function centralToday(){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
+function renderCollectionHealth(S,ix){
+ const today=centralToday(),cut=ad(today,-1),items=[];
+ AC.forEach(a=>a.p.forEach(p=>{const key=a.n+'|'+p;
+  const last=list=>list&&list.length?list[list.length-1].d:'';
+  const f=last(S[key]),v=last(ix[key+'|views_7d']),e=last(ix[key+'|engagements_7d']);
+  if(!f&&!v&&!e)return;
+  const stale=[f,v,e].some(d=>d&&d<cut),missing=!f||!v||!e;
+  items.push({a:a.n,p,f,v,e,stale,missing});
+ }));
+ const stale=items.filter(x=>x.stale).length;
+ $('collectionHealth').innerHTML='<p class="'+(stale?'down':'')+'">'+(stale?'Attention: '+stale+' account/platform combination(s) include data older than yesterday. Totals include older snapshots.':'Collection dates are shown below; these totals are snapshots, not live app counts.')+'</p><details><summary>Collection dates by account and platform</summary><table><thead><tr><th>Account / platform</th><th>Followers</th><th>7-day views</th><th>7-day engagement</th><th>Status</th></tr></thead><tbody>'+items.map(x=>'<tr><td>'+x.a+' / '+x.p+'</td><td>'+(x.f||'Not collected')+'</td><td>'+(x.v||'Not collected')+'</td><td>'+(x.e||'Not collected')+'</td><td>'+(x.stale?'Stale':x.missing?'Partial coverage':'Recent snapshot')+'</td></tr>').join('')+'</tbody></table></details>';
+}
 function card(title,o){
  const vc=vChg(o),er=rate(o),er1=rate1(o),none=o.coll?'collecting data':'not connected yet';
  const views=o.nV?'<b>'+fmt(o.v)+'</b>'+(vc==null?'':' <span class="'+cls(vc)+'">'+pct(vc)+'</span>'):none;
  const eng=o.nE?'<b>'+fmt(o.e)+'</b> · '+er.toFixed(2)+'%'+(er1!=null?' <span class="'+cls(er-er1)+'">'+pts2(er-er1)+'</span>':''):(o.nV?'–':none);
  const growthText=o.growthLabel?(o.hasGrowth===false?'Needs another X snapshot':sg(o.g)+o.growthLabel):sg(o.g)+' this week';
  return '<div class="panel"><div class="lbl">'+title+'</div><div class="big">'+(o.hasF?fmt(o.f):'–')+'</div><div class="'+cls(o.g)+'" style="font-weight:600">'+growthText+'</div>'
+  +'<div class="mini">Followers collected: '+collectionDateLabel(o.fd)+'<br>Views collected: '+collectionDateLabel(o.vd)+'<br>Engagement collected: '+collectionDateLabel(o.ed)+'</div>'
   +'<div class="kv"><span>Views, 7 days</span><span>'+views+'</span></div><div class="kv"><span>Engagement · rate</span><span>'+eng+'</span></div></div>'}
 function render(){
  const S=series(),ix=mIndex(),dates=[...new Set(rows.map(r=>r.d))].sort();
  if(!dates.length){$('asof').textContent='No data yet. Import rows to begin.';return}
  const asof=dates[dates.length-1];
- $('asof').textContent='Data as of '+new Date(pd(asof)).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'})+'. Week = last 7 days.';
+ $('asof').textContent='Newest follower snapshot: '+new Date(pd(asof)).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'})+'. Dates vary by platform. Week = last 7 days.';
+ renderCollectionHealth(S,ix);
  const mainK=AC[0].p.map(p=>AC[0].n+'|'+p),subA=AC.slice(1),subK=[];subA.forEach(a=>a.p.forEach(p=>subK.push(a.n+'|'+p)));
  const N=agg(KEYS,S,ix,asof),M=agg(mainK,S,ix,asof),B=agg(subK,S,ix,asof);
  const er=rate(N),er1=rate1(N),vc=vChg(N),dd=N.g-N.g2;

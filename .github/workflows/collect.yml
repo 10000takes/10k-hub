@@ -31,59 +31,76 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Prepare main Meta Page credential
+        id: meta_token
+        continue-on-error: true
+        env:
+          FACEBOOK_SYSTEM_USER_TOKEN: ${{ secrets.FACEBOOK_SYSTEM_USER_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+        run: python scripts/prepare_meta_token.py
+
       - name: Collect YouTube subscribers
+        id: collector_1
         continue-on-error: true
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: python collect_youtube.py
 
       - name: Collect YouTube views and engagement
+        id: collector_2
         continue-on-error: true
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: python collect_youtube_metrics.py
 
       - name: Collect Facebook followers (main Page)
+        id: collector_3
         continue-on-error: true
         env:
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+          FACEBOOK_PAGE_TOKEN: ${{ env.FACEBOOK_PAGE_TOKEN }}
         run: python collect_facebook.py
 
       - name: Collect Facebook views and engagement
+        id: collector_4
         continue-on-error: true
         env:
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+          FACEBOOK_PAGE_TOKEN: ${{ env.FACEBOOK_PAGE_TOKEN }}
         run: python collect_facebook_metrics.py
 
       - name: Collect Facebook subsidiary Pages
+        id: collector_5
         continue-on-error: true
         env:
           FACEBOOK_SYSTEM_USER_TOKEN: ${{ secrets.FACEBOOK_SYSTEM_USER_TOKEN }}
         run: python collect_facebook_subsidiaries.py
 
       - name: Collect Instagram subsidiary accounts
+        id: collector_6
         continue-on-error: true
         env:
           FACEBOOK_SYSTEM_USER_TOKEN: ${{ secrets.FACEBOOK_SYSTEM_USER_TOKEN }}
         run: python collect_instagram_subsidiaries.py
 
       - name: Collect Instagram followers (main account)
+        id: collector_7
         continue-on-error: true
         env:
           INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID }}
-          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+          FACEBOOK_PAGE_TOKEN: ${{ env.FACEBOOK_PAGE_TOKEN }}
         run: python collect_instagram.py
 
       - name: Collect Instagram views and engagement
+        id: collector_8
         continue-on-error: true
         env:
           INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID }}
-          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+          FACEBOOK_PAGE_TOKEN: ${{ env.FACEBOOK_PAGE_TOKEN }}
         run: python collect_instagram_metrics.py
 
       - name: Collect TikTok followers
+        id: collector_9
         continue-on-error: true
         env:
           TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
@@ -97,6 +114,7 @@ jobs:
         run: python collect_tiktok.py
 
       - name: Collect Threads followers
+        id: collector_10
         continue-on-error: true
         env:
           THREADS_ACCESS_TOKEN_10K_TAKES: ${{ secrets.THREADS_ACCESS_TOKEN_10K_TAKES }}
@@ -108,24 +126,26 @@ jobs:
         run: python collect_threads.py
 
       - name: Collect top posts (main account)
+        id: collector_11
         continue-on-error: true
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
           INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID }}
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+          FACEBOOK_PAGE_TOKEN: ${{ env.FACEBOOK_PAGE_TOKEN }}
           THREADS_ACCESS_TOKEN_10K_TAKES: ${{ secrets.THREADS_ACCESS_TOKEN_10K_TAKES }}
         run: python collect_top_posts.py
 
       - name: Collect sponsored post numbers
+        id: collector_12
         continue-on-error: true
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
           INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID }}
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+          FACEBOOK_PAGE_TOKEN: ${{ env.FACEBOOK_PAGE_TOKEN }}
           FACEBOOK_SYSTEM_USER_TOKEN: ${{ secrets.FACEBOOK_SYSTEM_USER_TOKEN }}
           THREADS_ACCESS_TOKEN_10K_TAKES: ${{ secrets.THREADS_ACCESS_TOKEN_10K_TAKES }}
           THREADS_ACCESS_TOKEN_WILD_TAKES: ${{ secrets.THREADS_ACCESS_TOKEN_WILD_TAKES }}
@@ -146,3 +166,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || true
+
+      - name: Report collection failures and missing snapshots
+        if: always()
+        env:
+          COLLECTION_STEPS: ${{ toJSON(steps) }}
+        run: python scripts/check_collection_health.py
