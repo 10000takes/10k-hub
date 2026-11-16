@@ -17,14 +17,14 @@ main{max-width:900px;margin:0 auto;padding:32px 20px 64px}h1,h2,h3{line-height:1
 <p class="intro">A practical guide for Cody and anyone using the 10K Takes client, contract, prospect, outreach, revenue, and deliverables workspace.</p>
 
 <section class="card note">
-<strong>What this workspace is:</strong> a private CRM backed by the separate 10K Takes Partnerships Worker and its D1 database. It is connected to the Partnerships tab, not the public GitHub Pages data files. It can record actual monthly revenue and deliverable completion, search a public news feed for research leads, and prepare AI-assisted drafts when the optional service bindings are configured. Email is sent only one message at a time after a human previews and approves it.
+<strong>What this workspace is:</strong> a private CRM backed by the separate 10K Takes Partnerships Worker and its D1 database. It is connected to the Partnerships tab, not the public GitHub Pages data files. It can record actual monthly revenue and deliverable completion, search a public news feed for research leads, and prepare AI-assisted drafts when the optional service bindings are configured. Jack and Cody use separate access tokens; actions are attributed to the signed-in user in the audit log. Email is sent only one message at a time after a human previews and confirms it. Existing clients, suppressed recipients, and recent duplicate sends are blocked.
 </section>
 
 <h2>Connect to the Workspace</h2>
 <ol>
- <li>When the connection panel is shown, enter the Partnerships Worker URL and the private access token provided by the account owner, then choose <strong>Connect</strong>.</li>
+ <li>When the connection panel is shown, enter the Partnerships Worker URL and your individual Jack or Cody access token, then choose <strong>Connect</strong>. The dashboard displays the authenticated name and role.</li>
  <li>After a successful connection, the connection panel hides and the CRM loads. It may appear again if the browser session has ended or the connection fails.</li>
- <li>The token is a shared credential for the CRM. The dashboard PIN is only a convenience screen; it does not control server access. Do not put the token in GitHub files, spreadsheets, email, or other public material.</li>
+ <li>Jack and Cody have separate Worker tokens. The dashboard PIN is only a convenience screen; it does not control server access. Do not put either token in GitHub files, spreadsheets, email, or other public material.</li>
 </ol>
 
 <h2>Overview</h2>
@@ -74,13 +74,13 @@ main{max-width:900px;margin:0 auto;padding:32px 20px 64px}h1,h2,h3{line-height:1
  <li>The historical revenue chart reflects manually entered revenue receipts. It is only complete if all receipts are entered and reconciled.</li>
  <li>Deliverable completion is a user-maintained tracker. It cannot confirm publication unless a source link is added.</li>
  <li>Email must be reviewed and confirmed per recipient. Never treat a generated draft as approved outreach.</li>
- <li>It does not provide separate user accounts or permission levels. Anyone with the shared Worker token can access the CRM.</li>
+ <li>Worker access is attributed to Jack or Cody and changes are written to the security log. The current roles identify users for accountability; granular restrictions between these two roles are not yet implemented.</li>
 </ul>
 
 <section class="card note"><strong>Data entry tip:</strong> use real figures when known, leave estimates blank when uncertain, set a next follow-up date for every active lead, and include a source when recording a researched brand. Never treat an estimate as confirmed budget or buying intent.</section>
 
 <h2>Worker Setup Notes for the Owner</h2>
-<p>These code features require applying the additive migration <code>workers/sales-command-center/migrations/0002_partnerships_features.sql</code> to the existing D1 database before deploying the updated Worker. Run this from the sales Worker folder with <code>npx wrangler d1 execute 10k-takes-sales-command-center --remote --file=migrations/0002_partnerships_features.sql</code>. It adds tables and does not delete current CRM records. Back up the database before applying schema changes.</p>
+<p>The Phase 1 identity, audit, suppression, research-evidence, agency relationship, discovery-source, and configurable-target foundation requires the additive migration <code>workers/sales-command-center/migrations/0003_sales_foundation.sql</code> after migration 0002 and before deploying the updated Worker. Run both migration files from the sales Worker folder. They add tables without deleting current CRM records. Back up D1 before applying schema changes. Configure individual Worker secrets <code>SALES_JACK_TOKEN</code> and <code>SALES_CODY_TOKEN</code> before deployment; each should be a different random token of at least 32 characters. Do not store these in GitHub or this repository. Add an HTTPS source URL to the lead's Contact Source URL field before sending to document where the address was verified.</p>
 <p>Optional AI setup requires adding an <code>ai</code> binding named <code>AI</code> in <code>wrangler.jsonc</code> (or the Cloudflare dashboard) and deploying. Optional email setup requires verified Resend sender settings and Worker secrets for <code>RESEND_API_KEY</code> and <code>RESEND_FROM</code>. Wrangler secret commands deploy immediately, so configure secrets and deploy only when ready. Neither optional integration is enabled by this code edit alone.</p>
 </main>
 </body>

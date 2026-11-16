@@ -10,11 +10,15 @@ interface D1Database {
 interface Env {
   DB: D1Database;
   SALES_API_TOKEN?: string;
+  SALES_JACK_TOKEN?: string;
+  SALES_CODY_TOKEN?: string;
   PUBLIC_READ_ORIGIN?: string;
   RESEND_API_KEY?: string;
   RESEND_FROM?: string;
   AI?: { run(model: string, input: Record<string, unknown>): Promise<unknown> };
 }
+
+interface SalesActor { id: string; display_name: string; role: string; legacy: boolean }
 
 const SALES_TYPES = new Set(["client", "lead", "prospect"]);
 const SALES_STAGES = new Set(["Discovered", "Qualified", "Contact Identified", "Outreach Sent", "Conversation Started", "Meeting Scheduled", "Proposal Sent", "Negotiation", "Closed Won", "Closed Lost", "Nurture"]);
@@ -37,14 +41,29 @@ function dateOnly(value: unknown, name: string): string {
   return value;
 }
 
-function authorized(request: Request, token: string | undefined): boolean {
+function sameSecret(supplied: string, token: string | undefined): boolean {
   if (!token || token.length < 32) return false;
-  const supplied = request.headers.get("Authorization") ?? "";
   const expected = `Bearer ${token}`;
   if (supplied.length !== expected.length) return false;
   let difference = 0;
   for (let i = 0; i < expected.length; i++) difference |= supplied.charCodeAt(i) ^ expected.charCodeAt(i);
   return difference === 0;
+}
+
+function identifyActor(request: Request, env: Env): SalesActor | null {
+  const supplied = request.headers.get("Authorization") ?? "";
+  if (sameSecret(supplied, env.SALES_JACK_TOKEN)) return { id: "jack", display_name: "Jack Leverentz", role: "sales_admin", legacy: false };
+  if (sameSecret(supplied, env.SALES_CODY_TOKEN)) return { id: "cody", display_name: "Cody", role: "sales_lead", legacy: false };
+  // Keep existing CRM access working during rollout, but the shared credential cannot send email.
+  if (!env.SALES_JACK_TOKEN && !env.SALES_CODY_TOKEN && sameSecret(supplied, env.SALES_API_TOKEN)) {
+    return { id: "legacy_shared", display_name: "Legacy shared access", role: "legacy", legacy: true };
+  }
+  return null;
+}
+
+async function audit(env: Env, actor: SalesActor, action: string, entityType = "", entityId = "", metadata: Record<string, unknown> = {}): Promise<void> {
+  await env.DB.prepare("INSERT INTO sales_audit_log (id, actor_id, action, entity_type, entity_id, metadata_json, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)")
+    .bind(crypto.randomUUID(), actor.id, action, entityType, entityId, JSON.stringify(metadata), new Date().toISOString()).run();
 }
 
 function originMatches(request: Request, env: Env): boolean {
@@ -86,9 +105,105 @@ function salesDate(value: unknown): string | null {
 async function salesRoute(request: Request, env: Env, url: URL): Promise<Response> {
   if (!originMatches(request, env)) return json({ error: "Origin not allowed" }, 403);
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: salesCors(request, env) });
-  if (!authorized(request, env.SALES_API_TOKEN)) return json({ error: "Unauthorized" }, 401, salesCors(request, env));
+  const actor = identifyActor(request, env);
+  if (!actor) return json({ error: "Unauthorized. Use your individual Partnerships access token." }, 401, salesCors(request, env));
   const path = url.pathname.replace(/\/+$/, "");
   try {
+    if (path === "/v1/sales/session" && request.method === "GET") {
+      const user = await env.DB.prepare("SELECT display_name, role, active FROM sales_users WHERE id = ?").bind(actor.id).all<Record<string, unknown>>();
+      if (!actor.legacy && Number(user.results?.[0]?.active) !== 1) return json({ error: "This user is inactive. Contact the workspace owner." }, 403, salesCors(request, env));
+      const row = user.results?.[0];
+      return json({ user: { id: actor.id, name: String(row?.display_name || actor.display_name), role: String(row?.role || actor.role), legacy: actor.legacy } }, 200, salesCors(request, env));
+    }
+    if (!actor.legacy) {
+      const user = await env.DB.prepare("SELECT active FROM sales_users WHERE id = ?").bind(actor.id).all<Record<string, unknown>>();
+      if (Number(user.results?.[0]?.active) !== 1) return json({ error: "This user is inactive. Contact the workspace owner." }, 403, salesCors(request, env));
+    }
+    if (path === "/v1/sales/audit" && request.method === "GET") {
+      const limit = Math.max(1, Math.min(100, Number(url.searchParams.get("limit") || 30)));
+      const rows = await env.DB.prepare("SELECT a.*, u.display_name FROM sales_audit_log a LEFT JOIN sales_users u ON u.id = a.actor_id ORDER BY a.created_at DESC LIMIT ?").bind(limit).all();
+      return json({ entries: rows.results ?? [] }, 200, salesCors(request, env));
+    }
+    if (path === "/v1/sales/suppressions" && request.method === "GET") {
+      const rows = await env.DB.prepare("SELECT * FROM sales_suppressions ORDER BY created_at DESC LIMIT 500").all();
+      return json({ suppressions: rows.results ?? [] }, 200, salesCors(request, env));
+    }
+    if (path === "/v1/sales/suppressions" && request.method === "POST") {
+      const body = salesObject(await request.json()), type = salesString(body.match_type, "email", 20), value = salesString(body.value, "", 254).toLowerCase(), reason = salesString(body.reason, "opt-out", 300);
+      if (!["email", "domain"].includes(type) || !value || (type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))) return json({ error: "Provide a valid email address or domain." }, 400, salesCors(request, env));
+      const now = new Date().toISOString();
+      await env.DB.prepare("INSERT INTO sales_suppressions (id, match_type, value, reason, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(match_type, value) DO UPDATE SET reason=excluded.reason, created_by=excluded.created_by")
+        .bind(crypto.randomUUID(), type, value, reason, actor.id, now).run();
+      await audit(env, actor, "suppression_added", "suppression", value, { match_type: type, reason });
+      return json({ saved: true }, 201, salesCors(request, env));
+    }
+    if (path === "/v1/sales/relationships" && request.method === "GET") {
+      const rows = await env.DB.prepare(`SELECT rel.*, a.name AS agency_name, b.name AS brand_name FROM sales_record_relationships rel
+        JOIN sales_records a ON a.id=rel.from_record_id JOIN sales_records b ON b.id=rel.to_record_id
+        ORDER BY rel.created_at DESC LIMIT 500`).all();
+      return json({ relationships: rows.results ?? [] }, 200, salesCors(request, env));
+    }
+    if (path === "/v1/sales/research-sources" && request.method === "GET") {
+      const recordId = salesString(url.searchParams.get("record_id"), "", 80);
+      if (!recordId) return json({ error: "record_id is required" }, 400, salesCors(request, env));
+      const rows = await env.DB.prepare("SELECT * FROM sales_research_sources WHERE record_id=? ORDER BY captured_at DESC LIMIT 100").bind(recordId).all();
+      return json({ sources: rows.results ?? [] }, 200, salesCors(request, env));
+    }
+    if (path === "/v1/sales/research-sources" && request.method === "POST") {
+      const body = salesObject(await request.json()), recordId = salesString(body.record_id, "", 80), title = salesString(body.title, "", 160), sourceUrl = salesString(body.url, "", 1000);
+      if (!recordId || !title || !/^https:\/\//i.test(sourceUrl)) return json({ error: "record_id, source title, and an HTTPS source URL are required." }, 400, salesCors(request, env));
+      const record = await env.DB.prepare("SELECT id FROM sales_records WHERE id=?").bind(recordId).all();
+      if (!record.results?.length) return json({ error: "Record not found." }, 404, salesCors(request, env));
+      const confidence = salesString(body.confidence, "unverified", 20).toLowerCase();
+      if (!["unverified","low","medium","high"].includes(confidence)) return json({ error: "confidence must be unverified, low, medium, or high." }, 400, salesCors(request, env));
+      const id = crypto.randomUUID(), now = new Date().toISOString();
+      await env.DB.prepare("INSERT INTO sales_research_sources (id, record_id, source_type, title, url, fact_summary, confidence, captured_at, added_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
+        .bind(id, recordId, salesString(body.source_type, "public_web", 40), title, sourceUrl, salesString(body.fact_summary, "", 1000), confidence, now, actor.id).run();
+      await audit(env, actor, "research_source_added", "sales_record", recordId, { source_id: id, title, url: sourceUrl, confidence });
+      return json({ id, captured_at: now }, 201, salesCors(request, env));
+    }
+    if (path === "/v1/sales/agent-settings" && request.method === "GET") {
+      const rows = await env.DB.prepare("SELECT setting_key, value_json, updated_at, updated_by FROM sales_agent_settings ORDER BY setting_key").all<Record<string, unknown>>();
+      return json({ settings: rows.results ?? [] }, 200, salesCors(request, env));
+    }
+    if (path === "/v1/sales/agent-settings" && request.method === "PATCH") {
+      const body = salesObject(await request.json());
+      const targets = salesObject(body.weekly_targets);
+      const normalized: Record<string, { min: number; max: number }> = {};
+      for (const key of ["discovered", "qualified", "outreach_drafts"]) {
+        const target = salesObject(targets[key]);
+        const min = Math.round(salesNumber(target.min, -1)), max = Math.round(salesNumber(target.max, -1));
+        if (min < 0 || max < min || max > 500) return json({ error: `weekly_targets.${key} must have a valid minimum and maximum (0–500).` }, 400, salesCors(request, env));
+        normalized[key] = { min, max };
+      }
+      const monthlyLimit = Number(body.monthly_cost_limit_usd);
+      if (!Number.isFinite(monthlyLimit) || monthlyLimit < 0 || monthlyLimit > 50) return json({ error: "monthly_cost_limit_usd must be between $0 and $50." }, 400, salesCors(request, env));
+      const now = new Date().toISOString();
+      await env.DB.prepare("INSERT INTO sales_agent_settings (setting_key,value_json,updated_by,updated_at) VALUES ('weekly_targets',?,?,?) ON CONFLICT(setting_key) DO UPDATE SET value_json=excluded.value_json, updated_by=excluded.updated_by, updated_at=excluded.updated_at").bind(JSON.stringify(normalized), actor.id, now).run();
+      await env.DB.prepare("INSERT INTO sales_agent_settings (setting_key,value_json,updated_by,updated_at) VALUES ('monthly_cost_limit_usd',?,?,?) ON CONFLICT(setting_key) DO UPDATE SET value_json=excluded.value_json, updated_by=excluded.updated_by, updated_at=excluded.updated_at").bind(JSON.stringify(monthlyLimit), actor.id, now).run();
+      await audit(env, actor, "agent_settings_updated", "agent_settings", "weekly_targets", { weekly_targets: normalized, monthly_cost_limit_usd: monthlyLimit });
+      return json({ saved: true, updated_at: now }, 200, salesCors(request, env));
+    }
+    if (path === "/v1/sales/relationships" && request.method === "POST") {
+      const body = salesObject(await request.json()), agencyId = salesString(body.agency_id, "", 80), brandId = salesString(body.brand_id, "", 80), evidenceUrl = salesString(body.evidence_url, "", 1000);
+      if (!agencyId || !brandId || agencyId === brandId) return json({ error: "Select two different records: an agency and a represented brand." }, 400, salesCors(request, env));
+      if (!/^https:\/\//i.test(evidenceUrl)) return json({ error: "Provide an HTTPS source documenting the agency-to-brand relationship." }, 400, salesCors(request, env));
+      const pair = await env.DB.prepare("SELECT id, data_json FROM sales_records WHERE id IN (?, ?)").bind(agencyId, brandId).all<Record<string, unknown>>();
+      if (pair.results?.length !== 2) return json({ error: "Agency or brand record was not found." }, 404, salesCors(request, env));
+      const agency = pair.results.find((row) => row.id === agencyId);
+      let agencyData: Record<string, unknown> = {};
+      try { agencyData = JSON.parse(String(agency?.data_json || "{}")); } catch { agencyData = {}; }
+      if (String(agencyData.lead_category || "brand").toLowerCase() !== "agency") return json({ error: "Mark the agency record's Lead Category as Agency before linking represented brands." }, 400, salesCors(request, env));
+      const existing = await env.DB.prepare("SELECT id FROM sales_record_relationships WHERE from_record_id=? AND to_record_id=? AND relationship_type='represents' LIMIT 1").bind(agencyId, brandId).all();
+      if (existing.results?.length) return json({ error: "This agency-to-brand relationship is already recorded." }, 409, salesCors(request, env));
+      const id = crypto.randomUUID(), now = new Date().toISOString(), sourceId = crypto.randomUUID();
+      await env.DB.prepare("INSERT INTO sales_research_sources (id, record_id, source_type, title, url, fact_summary, confidence, captured_at, added_by) VALUES (?, ?, 'agency_relationship', 'Agency relationship evidence', ?, 'Source supplied to document this represented-brand relationship; verify before acting.', 'unverified', ?, ?)")
+        .bind(sourceId, agencyId, evidenceUrl, now, actor.id).run();
+      await env.DB.prepare("INSERT INTO sales_record_relationships (id, from_record_id, to_record_id, relationship_type, evidence_source_id, created_by, created_at) VALUES (?, ?, ?, 'represents', ?, ?, ?) ON CONFLICT(from_record_id,to_record_id,relationship_type) DO NOTHING")
+        .bind(id, agencyId, brandId, sourceId, actor.id, now).run();
+      await audit(env, actor, "agency_brand_relationship_added", "sales_record_relationship", id, { agency_id: agencyId, brand_id: brandId, evidence_source_id: sourceId || null });
+      return json({ id, saved: true }, 201, salesCors(request, env));
+    }
     if (path === "/v1/sales/revenue" && request.method === "GET") {
       const rows = await env.DB.prepare(`SELECT e.*, r.name AS client_name FROM revenue_entries e JOIN sales_records r ON r.id=e.client_id ORDER BY e.month DESC, r.name LIMIT 240`).all();
       return json({ entries: rows.results ?? [] }, 200, salesCors(request, env));
@@ -100,6 +215,7 @@ async function salesRoute(request: Request, env: Env, url: URL): Promise<Respons
       const id = crypto.randomUUID(), now = new Date().toISOString();
       await env.DB.prepare("INSERT INTO revenue_entries (id, client_id, month, amount, entry_type, reference, notes, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
         .bind(id, clientId, month, amount, ["received", "contracted", "adjustment"].includes(String(body.entry_type)) ? body.entry_type : "received", salesString(body.reference, "", 160), salesString(body.notes, "", 1000), now).run();
+      await audit(env, actor, "revenue_logged", "revenue_entry", id, { client_id: clientId, month, amount });
       return json({ id, created_at: now }, 201, salesCors(request, env));
     }
     if (path === "/v1/sales/deliverables" && request.method === "GET") {
@@ -113,6 +229,7 @@ async function salesRoute(request: Request, env: Env, url: URL): Promise<Respons
       if (!clientId || !name) return json({ error: "client_id and name are required" }, 400, salesCors(request, env));
       const id = crypto.randomUUID(), now = new Date().toISOString();
       await env.DB.prepare("INSERT INTO deliverable_definitions (id, client_id, name, monthly_commitment, notes, created_at) VALUES (?, ?, ?, ?, ?, ?)").bind(id, clientId, name, Math.round(salesNumber(body.monthly_commitment, 1)), salesString(body.notes, "", 1000), now).run();
+      await audit(env, actor, "deliverable_created", "deliverable", id, { client_id: clientId, name });
       return json({ id }, 201, salesCors(request, env));
     }
     if (path === "/v1/sales/deliverables/completions" && request.method === "POST") {
@@ -122,6 +239,7 @@ async function salesRoute(request: Request, env: Env, url: URL): Promise<Respons
       const now = new Date().toISOString();
       await env.DB.prepare(`INSERT INTO deliverable_monthly (id, definition_id, month, completed_units, completed_at, published_url, notes, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(definition_id, month) DO UPDATE SET completed_units=excluded.completed_units, completed_at=excluded.completed_at, published_url=excluded.published_url, notes=excluded.notes, updated_at=excluded.updated_at`)
         .bind(crypto.randomUUID(), definitionId, month, units, units ? now : null, salesString(body.published_url, "", 500), salesString(body.notes, "", 1000), now).run();
+      await audit(env, actor, "deliverable_completion_updated", "deliverable", definitionId, { month, completed_units: units });
       return json({ saved: true, updated_at: now }, 200, salesCors(request, env));
     }
     if (path === "/v1/sales/discovery" && request.method === "GET") {
@@ -148,14 +266,52 @@ async function salesRoute(request: Request, env: Env, url: URL): Promise<Respons
     if (path === "/v1/sales/outreach" && request.method === "POST") {
       const body = salesObject(await request.json());
       if (body.confirm_send !== true) return json({ error: "Email is sent only after an explicit confirm_send approval." }, 400, salesCors(request, env));
+      if (actor.legacy) return json({ error: "Email sending requires an individual Jack or Cody access token. Reconnect with your named-user token." }, 403, salesCors(request, env));
       if (!env.RESEND_API_KEY || !env.RESEND_FROM) return json({ error: "Email sending is not configured. Add RESEND_API_KEY and RESEND_FROM Worker secrets after verifying the sender domain." }, 503, salesCors(request, env));
       const recipient = salesString(body.to, "", 254), subject = salesString(body.subject, "", 200), content = salesString(body.body, "", 10000);
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipient) || !subject || !content) return json({ error: "A valid recipient, subject, and message body are required." }, 400, salesCors(request, env));
-      const sent = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" }, body: JSON.stringify({ from: env.RESEND_FROM, to: [recipient], subject, text: content }) });
-      const result = await sent.json() as Record<string, unknown>;
-      if (!sent.ok) return json({ error: "Email provider rejected the request", details: result }, sent.status, salesCors(request, env));
-      const now = new Date().toISOString(), leadId = salesString(body.lead_id, "", 80);
+      const normalizedRecipient = recipient.toLowerCase();
+      const suppression = await env.DB.prepare("SELECT id FROM sales_suppressions WHERE (match_type='email' AND value=?) OR (match_type='domain' AND value=?) LIMIT 1").bind(normalizedRecipient, normalizedRecipient.split("@")[1] || "").all();
+      if (suppression.results?.length) { await audit(env, actor, "outreach_blocked_suppressed", "outreach", "", { recipient: normalizedRecipient }); return json({ error: "This recipient is on the suppression list. No email was sent." }, 409, salesCors(request, env)); }
+      const leadId = salesString(body.lead_id, "", 80);
+      if (!leadId) return json({ error: "Select a lead record before sending so the outreach can be checked and audited." }, 400, salesCors(request, env));
+      const leadRows = await env.DB.prepare("SELECT id, entity_type, name, data_json FROM sales_records WHERE id=?").bind(leadId).all<Record<string, unknown>>();
+      const lead = leadRows.results?.[0];
+      if (!lead || lead.entity_type !== "lead") return json({ error: "Outreach can only be sent for a lead record." }, 400, salesCors(request, env));
+      let leadData: Record<string, unknown> = {};
+      try { leadData = JSON.parse(String(lead.data_json || "{}")); } catch { leadData = {}; }
+      const contactEmail = typeof leadData.contact_email === "string" ? leadData.contact_email.toLowerCase() : "";
+      const contactEvidenceUrl = typeof leadData.contact_source_url === "string" ? leadData.contact_source_url : "";
+      if (!contactEmail || contactEmail !== normalizedRecipient || !/^https:\/\//i.test(contactEvidenceUrl)) {
+        await audit(env, actor, "outreach_blocked_missing_contact_evidence", "lead", leadId, { recipient: normalizedRecipient });
+        return json({ error: "Add the recipient to this lead and provide an HTTPS Contact Source URL before sending." }, 409, salesCors(request, env));
+      }
+      const clients = await env.DB.prepare("SELECT name, data_json FROM sales_records WHERE entity_type='client'").all<Record<string, unknown>>();
+      const leadName = String(lead.name || "").trim().toLowerCase();
+      const isExistingClient = (clients.results ?? []).some((row) => { try { const d = JSON.parse(String(row.data_json || "{}")); const sameCompany = String(row.name || "").trim().toLowerCase() === leadName; return sameCompany || [d.contact_email, ...(Array.isArray(d.additional_contacts) ? d.additional_contacts.map((c: Record<string, unknown>) => c.email) : [])].some((email) => typeof email === "string" && email.toLowerCase() === normalizedRecipient); } catch { return false; } });
+      if (isExistingClient) { await audit(env, actor, "outreach_blocked_existing_client", "outreach", "", { recipient: normalizedRecipient }); return json({ error: "This address belongs to an existing client. Outreach was not sent." }, 409, salesCors(request, env)); }
+      const recent = await env.DB.prepare("SELECT id FROM outreach_log WHERE (lower(recipient)=? OR lead_id=?) AND sent_at >= ? LIMIT 1").bind(normalizedRecipient, leadId, new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()).all();
+      if (recent.results?.length) { await audit(env, actor, "outreach_blocked_duplicate_window", "outreach", "", { recipient: normalizedRecipient }); return json({ error: "An email was already sent to this address in the last 24 hours. Duplicate send blocked." }, 409, salesCors(request, env)); }
+      const lockedAt = new Date().toISOString(), cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      const guard = await env.DB.prepare(`INSERT INTO outreach_send_guards (recipient, locked_at) VALUES (?, ?)
+        ON CONFLICT(recipient) DO UPDATE SET locked_at=excluded.locked_at WHERE outreach_send_guards.locked_at <= ? RETURNING recipient`).bind(normalizedRecipient, lockedAt, cutoff).all();
+      if (!guard.results?.length) { await audit(env, actor, "outreach_blocked_duplicate_window", "outreach", "", { recipient: normalizedRecipient }); return json({ error: "An email was already sent to this address in the last 24 hours. Duplicate send blocked." }, 409, salesCors(request, env)); }
+      let sent: Response;
+      let result: Record<string, unknown>;
+      try {
+        sent = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" }, body: JSON.stringify({ from: env.RESEND_FROM, to: [recipient], subject, text: content }) });
+        result = await sent.json() as Record<string, unknown>;
+      } catch (error) {
+        await env.DB.prepare("DELETE FROM outreach_send_guards WHERE recipient=? AND locked_at=?").bind(normalizedRecipient, lockedAt).run();
+        throw error;
+      }
+      if (!sent.ok) {
+        await env.DB.prepare("DELETE FROM outreach_send_guards WHERE recipient=? AND locked_at=?").bind(normalizedRecipient, lockedAt).run();
+        return json({ error: "Email provider rejected the request", details: result }, sent.status, salesCors(request, env));
+      }
+      const now = new Date().toISOString();
       await env.DB.prepare("INSERT INTO outreach_log (id, lead_id, recipient, subject, body, provider_id, sent_at) VALUES (?, ?, ?, ?, ?, ?, ?)").bind(crypto.randomUUID(), leadId || null, recipient, subject, content, salesString(result.id, "", 160), now).run();
+      await audit(env, actor, "outreach_sent", "lead", leadId, { recipient: normalizedRecipient, subject, provider_id: salesString(result.id, "", 160) });
       if (leadId) await env.DB.prepare("INSERT INTO sales_activities (id, record_id, activity_type, summary, occurred_at, created_at) VALUES (?, ?, 'email_sent', ?, ?, ?)").bind(crypto.randomUUID(), leadId, `Approved email sent to ${recipient}: ${subject}`, now, now).run();
       return json({ sent: true, provider_id: result.id, sent_at: now }, 200, salesCors(request, env));
     }
@@ -190,6 +346,11 @@ async function salesRoute(request: Request, env: Env, url: URL): Promise<Respons
           salesNumber(data.monthly_revenue ?? data.estimated_monthly_value), salesNumber(data.total_value ?? data.estimated_total_value),
           Math.min(100, Math.round(salesNumber(data.probability))), salesDate(data.next_follow_up), salesDate(data.contract_end ?? data.contract_expiration_date),
           salesDate(data.last_contact), JSON.stringify(data), now, now).run();
+      await audit(env, actor, "record_created", type, id, { name, stage, category: salesString(data.lead_category, "brand", 40) });
+      if (data.source_url && typeof data.source_url === "string") await env.DB.prepare("INSERT INTO sales_research_sources (id, record_id, source_type, title, url, fact_summary, confidence, captured_at, added_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
+        .bind(crypto.randomUUID(), id, salesString(data.source_type, "public_web", 40), salesString(data.source_name, "Research source", 160), salesString(data.source_url, "", 1000), salesString(data.company_description, "", 1000), ["high","medium","low"].includes(salesString(data.research_confidence, "unverified", 30).toLowerCase()) ? salesString(data.research_confidence, "unverified", 30).toLowerCase() : "unverified", now, actor.id).run();
+      if (typeof data.contact_source_url === "string" && /^https:\/\//i.test(data.contact_source_url)) await env.DB.prepare("INSERT INTO sales_research_sources (id, record_id, source_type, title, url, fact_summary, confidence, captured_at, added_by) VALUES (?, ?, 'contact_verification', 'Contact information source', ?, 'Source supplied for the lead contact details.', 'unverified', ?, ?)")
+        .bind(crypto.randomUUID(), id, data.contact_source_url.slice(0, 1000), now, actor.id).run();
       return json({ id, created_at: now }, 201, salesCors(request, env));
     }
     const match = path.match(/^\/v1\/sales\/records\/([\w-]+)$/);
@@ -210,6 +371,9 @@ async function salesRoute(request: Request, env: Env, url: URL): Promise<Respons
           salesNumber(data.monthly_revenue ?? data.estimated_monthly_value, Number(row.monthly_revenue)), salesNumber(data.total_value ?? data.estimated_total_value, Number(row.total_value)),
           Math.min(100, Math.round(salesNumber(data.probability, Number(row.probability)))), salesDate(data.next_follow_up), salesDate(data.contract_end ?? data.contract_expiration_date),
           salesDate(data.last_contact), JSON.stringify(data), now, match[1]).run();
+      await audit(env, actor, "record_updated", String(row.entity_type), match[1], { changed_fields: Object.keys(patch) });
+      if (typeof data.contact_source_url === "string" && /^https:\/\//i.test(data.contact_source_url) && data.contact_source_url !== prev.contact_source_url) await env.DB.prepare("INSERT INTO sales_research_sources (id, record_id, source_type, title, url, fact_summary, confidence, captured_at, added_by) VALUES (?, ?, 'contact_verification', 'Contact information source', ?, 'Source supplied for the lead contact details.', 'unverified', ?, ?)")
+        .bind(crypto.randomUUID(), match[1], data.contact_source_url.slice(0, 1000), now, actor.id).run();
       if (data.stage !== prev.stage && row.entity_type === "lead") {
         await env.DB.prepare("INSERT INTO sales_activities (id, record_id, activity_type, summary, occurred_at, created_at) VALUES (?, ?, 'stage_change', ?, ?, ?)")
           .bind(crypto.randomUUID(), match[1], `Stage changed to ${stage}`, now, now).run();
@@ -218,6 +382,7 @@ async function salesRoute(request: Request, env: Env, url: URL): Promise<Respons
     }
     if (match && request.method === "DELETE") {
       await env.DB.prepare("DELETE FROM sales_records WHERE id = ?").bind(match[1]).run();
+      await audit(env, actor, "record_deleted", "sales_record", match[1]);
       return json({ deleted: true }, 200, salesCors(request, env));
     }
     if (path === "/v1/sales/activities" && request.method === "GET") {
@@ -232,6 +397,7 @@ async function salesRoute(request: Request, env: Env, url: URL): Promise<Respons
       const now = new Date().toISOString();
       await env.DB.prepare("INSERT INTO sales_activities (id, record_id, activity_type, summary, occurred_at, created_at) VALUES (?, ?, ?, ?, ?, ?)")
         .bind(crypto.randomUUID(), recordId, salesString(body.activity_type, "note", 40), summary, salesDate(body.occurred_at) ? `${body.occurred_at}T12:00:00Z` : now, now).run();
+      await audit(env, actor, "activity_logged", "sales_record", recordId, { activity_type: salesString(body.activity_type, "note", 40) });
       return json({ saved: true }, 201, salesCors(request, env));
     }
     return json({ error: "Not found" }, 404, salesCors(request, env));
