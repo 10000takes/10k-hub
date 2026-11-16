@@ -4,12 +4,28 @@ import os
 import sys
 import urllib.request
 import urllib.error
+import urllib.parse
 
 def main():
     token = os.environ.get('FACEBOOK_SYSTEM_USER_TOKEN', '').strip()
     page = os.environ.get('FACEBOOK_PAGE_ID', '').strip()
     if not token or not page:
         sys.exit('System user token and main Page ID are required.')
+    # Verify the stored system token has no scheduled expiry without logging it.
+    debug_request = urllib.request.Request(
+        'https://graph.facebook.com/v26.0/debug_token?' + urllib.parse.urlencode({'input_token': token}),
+        headers={'Authorization': 'Bearer ' + token})
+    try:
+        with urllib.request.urlopen(debug_request, timeout=30) as response:
+            info = json.load(response).get('data', {})
+        if not info.get('is_valid'):
+            sys.exit('The business system user token is invalid.')
+        if info.get('expires_at') == 0:
+            print('Business system user token verified: no scheduled expiration.')
+        else:
+            print('::warning::Business system user token has a scheduled expiry or unknown expiration; replace it with a Never-expiring token in Meta Business Settings.')
+    except urllib.error.HTTPError:
+        print('::warning::Meta token expiration could not be verified; Page access will still be tested.')
     request = urllib.request.Request(
         'https://graph.facebook.com/v26.0/' + page + '?fields=access_token',
         headers={'Authorization': 'Bearer ' + token})
