@@ -1620,19 +1620,19 @@ date,account,platform,metric,value
 2026-11-16,10K Howls,Facebook,engagements_7d,17
 2026-11-16,10K Howls,Facebook,views_7d,227
 2026-11-16,10K Howls,Instagram,engagements_7d,8971
-2026-11-16,10K Howls,Instagram,views_7d,113510
+2026-11-16,10K Howls,Instagram,views_7d,113511
 2026-11-16,10K Howls,Threads,engagements_7d,40
 2026-11-16,10K Howls,Threads,views_7d,808
 2026-11-16,10K Howls,TikTok,engagements_7d,0
 2026-11-16,10K Howls,TikTok,views_7d,0
 2026-11-16,10K Takes,Facebook,engagements_7d,63010
-2026-11-16,10K Takes,Facebook,views_7d,951564
-2026-11-16,10K Takes,Instagram,engagements_7d,63023
-2026-11-16,10K Takes,Instagram,views_7d,1009171
+2026-11-16,10K Takes,Facebook,views_7d,963564
+2026-11-16,10K Takes,Instagram,engagements_7d,63326
+2026-11-16,10K Takes,Instagram,views_7d,1012359
 2026-11-16,10K Takes,Threads,engagements_7d,260
 2026-11-16,10K Takes,Threads,views_7d,15507
-2026-11-16,10K Takes,TikTok,engagements_7d,5666
-2026-11-16,10K Takes,TikTok,views_7d,79034
+2026-11-16,10K Takes,TikTok,engagements_7d,5670
+2026-11-16,10K Takes,TikTok,views_7d,79084
 2026-11-16,10K Takes,YouTube,engagements_7d,0
 2026-11-16,10K Takes,YouTube,engagements_total,15891
 2026-11-16,10K Takes,YouTube,views_7d,82648
@@ -1646,9 +1646,9 @@ date,account,platform,metric,value
 2026-11-16,Captain's Patch,TikTok,engagements_7d,3
 2026-11-16,Captain's Patch,TikTok,views_7d,121
 2026-11-16,State of Skol,Facebook,engagements_7d,4348
-2026-11-16,State of Skol,Facebook,views_7d,124570
+2026-11-16,State of Skol,Facebook,views_7d,124607
 2026-11-16,State of Skol,Instagram,engagements_7d,968
-2026-11-16,State of Skol,Instagram,views_7d,17629
+2026-11-16,State of Skol,Instagram,views_7d,17644
 2026-11-16,State of Skol,Threads,engagements_7d,46
 2026-11-16,State of Skol,Threads,views_7d,1749
 2026-11-16,State of Skol,TikTok,engagements_7d,0
@@ -1664,7 +1664,7 @@ date,account,platform,metric,value
 2026-11-16,Wild Takes,Facebook,engagements_7d,3871
 2026-11-16,Wild Takes,Facebook,views_7d,82843
 2026-11-16,Wild Takes,Instagram,engagements_7d,28391
-2026-11-16,Wild Takes,Instagram,views_7d,354745
+2026-11-16,Wild Takes,Instagram,views_7d,354894
 2026-11-16,Wild Takes,Threads,engagements_7d,91
 2026-11-16,Wild Takes,Threads,views_7d,1395
 2026-11-16,Wild Takes,TikTok,engagements_7d,0
