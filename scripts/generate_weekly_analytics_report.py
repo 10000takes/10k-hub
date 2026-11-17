@@ -129,8 +129,14 @@ def period_posts(start_day, end_day):
             covered_pairs += 1
             accumulated[key] = accumulated.get(key, 0) + delta
             metadata[key] = row
+    # Partial windows are not ranked as if they represented a complete week.
+    complete_window = not missing_days and all(
+        platform_days.get(platform, 0) == (end_day - start_day).days
+        for platform in ("Facebook", "Instagram", "TikTok", "Threads", "X/Twitter", "YouTube"))
     posts = []
     for key, value in accumulated.items():
+        if not complete_window:
+            break
         row = metadata[key]
         platform = row.get("platform", "Unknown")
         try:
@@ -152,7 +158,7 @@ def period_posts(start_day, end_day):
     total = sum(complete_platform_totals.values()) if all(value is not None for value in complete_platform_totals.values()) else None
     return {"posts": posts, "by_platform": complete_platform_totals, "missing_days": missing_days,
             "pairs_seen": covered_pairs, "platform_days": platform_days, "expected_days": expected_days,
-            "total": total}
+            "total": total, "complete_window": complete_window}
 
 
 def follower_deltas(start_day, end_day):
@@ -177,13 +183,40 @@ def follower_deltas(start_day, end_day):
 
 def latest_snapshot_date(requested=None):
     if requested:
-        return date.fromisoformat(requested)
+        requested_day = date.fromisoformat(requested)
+        if read_snapshot(requested_day):
+            return requested_day
+        if save_current_posts_snapshot(requested_day):
+            return requested_day
+        raise RuntimeError("No saved post snapshot exists for {} and top_posts.csv has no matching rows.".format(requested_day.isoformat()))
     today = datetime.now(TZ).date()
+    if read_snapshot(today):
+        return today
+    if save_current_posts_snapshot(today):
+        return today
     for offset in range(0, 4):
         candidate = today - timedelta(days=offset)
         if read_snapshot(candidate):
             return candidate
-    raise RuntimeError("No recent midnight post snapshot was found (checked today and the prior 3 days).")
+    raise RuntimeError("No current post snapshot could be made from today's top_posts.csv, and no recent saved snapshot was found (checked today and the prior 3 days).")
+
+
+def save_current_posts_snapshot(day):
+    """Create a report endpoint from today's already-collected top_posts.csv rows."""
+    source = ROOT / "top_posts.csv"
+    if not source.exists():
+        return False
+    with source.open(newline="", encoding="utf-8-sig") as stream:
+        has_rows = any(row.get("snapshot", "").strip() == day.isoformat()
+                       and row.get("platform") and row.get("url")
+                       for row in csv.DictReader(stream))
+    if not has_rows:
+        return False
+    # Reuse the established snapshot normalizer. This fallback is a same-day
+    # collector capture; its timestamp is stored and coverage notes disclose gaps.
+    from generate_daily_content_report import snapshot as save_snapshot
+    save_snapshot(day, source=source)
+    return read_snapshot(day) is not None
 
 
 def build_report(end_day):
@@ -235,7 +268,9 @@ def build_report(end_day):
                             "current_pairs": current_posts["pairs_seen"], "previous_pairs": previous_posts["pairs_seen"],
                             "current_platform_days": current_posts["platform_days"],
                             "previous_platform_days": previous_posts["platform_days"],
-                            "expected_days_per_period": current_posts["expected_days"]},
+                            "expected_days_per_period": current_posts["expected_days"],
+                            "current_window_complete": current_posts["complete_window"],
+                            "previous_window_complete": previous_posts["complete_window"]},
             "top_posts": current_posts["posts"][:5]}
 
 
@@ -356,6 +391,8 @@ def render_pdf(report, path):
     missing = sorted(set(imp["current_missing_days"] + imp["previous_missing_days"]))
     if missing:
         notes.append("Missing midnight snapshot pairs: " + ", ".join(missing) + ".")
+    if not imp["current_window_complete"]:
+        notes.append("The top-five weekly post ranking is unavailable because the current seven-day capture window is incomplete.")
     story += [Paragraph("Data notes", s["section"])]
     story.extend(Paragraph("• " + note, s["small"]) for note in notes)
 
