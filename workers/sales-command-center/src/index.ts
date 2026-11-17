@@ -257,11 +257,37 @@ async function salesRoute(request: Request, env: Env, url: URL): Promise<Respons
       return json({ query, source: "Google News RSS", disclaimer: "Search results are leads for human review. They do not verify sponsorship fit, budgets, contacts, or buying intent.", items }, 200, salesCors(request, env));
     }
     if (path === "/v1/sales/assist" && request.method === "POST") {
-      if (!env.AI) return json({ error: "AI is not enabled on this Worker. Configure the optional Cloudflare Workers AI binding, deploy it, then retry." }, 503, salesCors(request, env));
       const body = salesObject(await request.json()), task = salesString(body.task, "advice", 30), context = salesString(body.context, "", 6000);
       if (!context) return json({ error: "Provide CRM facts to analyze" }, 400, salesCors(request, env));
-      const roleTask = task === "contact_roles" ? "For this task, suggest relevant job titles only. Return suggested_roles as an array of objects with title, why_relevant, and public_search_terms. Do not claim to have searched the web. Do not name or infer specific employees, titles held by supplied contacts, verified contact details, budget, or buying intent. If a contact is supplied without a title, explicitly say their role is unknown. Make clear the role titles are research suggestions, not verified people." : "";
-      const prompt = `You are a cautious sponsorship sales assistant for 10K Takes, a Minnesota sports media business. Return only valid JSON, without Markdown fences, with keys: summary (string), score (integer 0-100 or null), score_breakdown (array of {criterion,points,max,evidence}), confidence (low, medium, or high), suggested_roles (array of {title,why_relevant,public_search_terms}), evidence (array), next_steps (array), assumptions (array), draft (string). Task: ${task}. ${roleTask} Use only facts in the supplied context. Do not infer facts from a company name or invent contacts, budgets, audience metrics, or deal terms. Mark uncertainty and keep all advice as a draft for human review. If task is score, give an editorial fit ranking (not a probability of winning) using: brand/audience fit 0-30, Minnesota relevance 0-20, documented sponsorship or marketing activity 0-20, activation fit for 10K Takes 0-15, and verified contactability 0-15. Award points only when supported by context; missing evidence receives zero points and must be named as a data gap, not treated as proof of poor fit. Return null only if the context contains no usable company or fit information beyond the company name. For other tasks, score may be null. Context: ${context}`;
+      if (task === "contact_roles") {
+        let lead: Record<string, unknown> = {};
+        try { lead = salesObject(JSON.parse(context)); } catch { lead = {}; }
+        const company = salesString(lead.company, "This company", 160);
+        const industry = salesString(lead.industry, "", 100);
+        const description = salesString(lead.description, "", 1000);
+        const campaign = salesString(lead.campaign_ideas, "", 1000);
+        const isAutomotiveDealer = /dealership|automotive|ford|auto dealer|car dealer/i.test(`${industry} ${description}`);
+        const roleSuggestions = isAutomotiveDealer
+          ? [
+              { title: "Marketing Manager or Marketing Director", why_relevant: "A common role to check for someone who manages advertising and local campaigns.", public_search_terms: `"${company}" marketing manager` },
+              { title: "Local or Regional Marketing Manager", why_relevant: "A possible role to check when dealership or regional marketing is relevant; verify whether it exists.", public_search_terms: `"${company}" regional marketing` },
+              { title: "Dealer Principal or General Manager", why_relevant: "A possible senior contact for dealership-level partnership decisions; verify their responsibilities.", public_search_terms: `"${company}" dealer principal OR general manager` },
+              { title: "Partnerships or Sponsorship Manager", why_relevant: "A title to check for people who handle sponsorships, if the organization has that function.", public_search_terms: `"${company}" sponsorship OR partnerships` },
+            ]
+          : [
+              { title: "Marketing Manager or Marketing Director", why_relevant: "A common role to check for someone who manages advertising and campaigns.", public_search_terms: `"${company}" marketing manager` },
+              { title: "Brand Partnerships or Sponsorship Manager", why_relevant: "A title to check for someone who handles media partnerships, if the organization has that function.", public_search_terms: `"${company}" partnerships OR sponsorship` },
+              { title: "Regional Marketing Manager", why_relevant: "A possible role when regional campaigns are relevant; verify whether it exists.", public_search_terms: `"${company}" regional marketing` },
+            ];
+        const evidence = [
+          industry ? { field: "Industry", text: industry } : null,
+          description ? { field: "Company description", text: description } : null,
+          campaign ? { field: "Campaign ideas", text: campaign } : null,
+        ].filter(Boolean);
+        return json({ result: { summary: `Generic job titles to look for at ${company}. No employees or job titles were searched or verified.`, suggested_roles: roleSuggestions, evidence, next_steps: ["Search the company’s official website and professional profiles using the suggested terms.", "Confirm the person’s current title and responsibilities from a reliable public source before outreach."], assumptions: ["These titles may not exist at this company.", "The lead record does not establish who approves marketing or sponsorship decisions."] }, model: "rule_based_role_suggestions", disclaimer: "Generic title suggestions based on CRM fields only. No live web research or person/contact verification was performed." }, 200, salesCors(request, env));
+      }
+      if (!env.AI) return json({ error: "AI is not enabled on this Worker. Configure the optional Cloudflare Workers AI binding, deploy it, then retry." }, 503, salesCors(request, env));
+      const prompt = `You are a cautious sponsorship sales assistant for 10K Takes, a Minnesota sports media business. Return only valid JSON, without Markdown fences, with keys: summary (string), score (integer 0-100 or null), score_breakdown (array of {criterion,points,max,evidence}), confidence (low, medium, or high), evidence (array), next_steps (array), assumptions (array), draft (string). Task: ${task}. Use only facts in the supplied context. Do not infer facts from a company name or invent contacts, budgets, audience metrics, or deal terms. Mark uncertainty and keep all advice as a draft for human review. If task is score, give an editorial fit ranking (not a probability of winning) using: brand/audience fit 0-30, Minnesota relevance 0-20, documented sponsorship or marketing activity 0-20, activation fit for 10K Takes 0-15, and verified contactability 0-15. Award points only when supported by context; missing evidence receives zero points and must be named as a data gap, not treated as proof of poor fit. Return null only if the context contains no usable company or fit information beyond the company name. For other tasks, score may be null. Context: ${context}`;
       const result = await env.AI.run("@cf/meta/llama-3.1-8b-instruct-fast", { messages: [{ role: "user", content: prompt }], max_tokens: 700 });
       return json({ result, model: "@cf/meta/llama-3.1-8b-instruct-fast", disclaimer: "AI output is a draft based only on supplied facts; review before using." }, 200, salesCors(request, env));
     }
