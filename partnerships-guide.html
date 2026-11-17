@@ -14,7 +14,7 @@ main{max-width:900px;margin:0 auto;padding:32px 20px 64px}h1,h2,h3{line-height:1
 <main>
 <a class="back" href="index.html#partnerships">← Back to Partnerships in 10K Hub</a>
 <h1>Partnerships Tab Guide</h1>
-<p class="intro">A practical guide for Cody and anyone using the 10K Takes client, contract, prospect, outreach, revenue, and deliverables workspace.</p>
+<p class="intro">A practical guide for Cody and anyone using the 10K Takes client, contract, prospect, revenue, and deliverables workspace.</p>
 
 <section class="card note">
 <strong>What this workspace is:</strong> a private CRM backed by the 10K Takes Partnerships Worker and D1 database. The page has separate Prospects, Current Clients, and Past Clients tabs. Jack and Cody use individual access tokens; changes are attributed to the signed-in user in the audit log. Outbound email always requires a human to review and confirm each message. Existing clients, suppressed recipients, and recent duplicate sends are blocked.
@@ -53,14 +53,14 @@ main{max-width:900px;margin:0 auto;padding:32px 20px 64px}h1,h2,h3{line-height:1
 <p>Historical partnership records imported from the Partnership History workbook are marked inactive. Repeated partner names were consolidated, with the source rows and amounts retained in the record and activity history. The imported monthly amounts are historical amounts collected per month; they are not current recurring revenue. The workbook did not provide most contract end dates. The previously unnamed $1,999.99 row was identified as Chill Boys and is now included in its history.</p>
 
 <h2>Prospects</h2>
-<p>The <strong>Prospects</strong> tab combines qualified lead management, public-source discovery, outreach preparation, and prospecting controls. Choose <strong>Add Lead</strong> to create a company you may pursue. The stage dropdown on a card or drag-and-drop moves a lead through these five stages:</p>
+<p>The <strong>Prospects</strong> tab combines lead management, public-source discovery, AI sales advice, and prospecting controls. Choose <strong>Add Lead</strong> to create a company you may pursue. The stage dropdown on a card or drag-and-drop moves a lead through these five stages:</p>
 <p><strong>New → Qualified → Contacted → Proposal → Closed.</strong> New leads start in New; Qualified is not offered as an initial stage but remains available as a later pipeline stage. Set the separate <strong>Closed Outcome</strong> to Won or Lost when closing a lead. Older stage labels are mapped into the simplified stages when displayed; the prior stage is retained in the record when it is edited.</p>
 <p>The Add Lead form captures company details, source, campaign ideas, contact information, and follow-up dates. It no longer asks for priority, fit score, value estimates, closing probability, or a contact-source URL. Changing a stage adds an entry to the lead’s Activity Timeline. Open a card with <strong>Edit</strong> to add notes or log a call, meeting, email, proposal, or other activity.</p>
 <p>The lead search, stage/industry/source filters, and sort menu sit above the pipeline. CSV import expects a header row; useful column names include <code>company_name</code>, <code>industry</code>, <code>stage</code>, <code>website</code>, <code>lead_source</code>, <code>priority</code>, <code>estimated_monthly_value</code>, <code>estimated_total_value</code>, <code>probability</code>, <code>last_contact</code>, and <code>next_follow_up</code>. Duplicate company names in the Leads category are skipped.</p>
 <p><strong>Today’s Priorities</strong> flags open leads that need a next action and client contracts ending soon. <strong>Partnership Recommendations</strong> shows cross-CRM follow-up, proposal, and renewal reminders. These sections are available only in Prospects. Pipeline totals and stage counts are shown on the lead board.</p>
 
 <h3>Brand Discovery and Agencies</h3>
-<p>Enter a query and choose <strong>Search News</strong> to search Google News RSS for public coverage. Open the cited article, verify the company and Minnesota/sports relevance, and use <strong>Save as Prospect</strong> to keep a sourced research lead. The saved item is explicitly marked unverified. Search does not crawl social media, confirm sponsorship budgets, or prove buying intent. Research decision-maker roles using company-published pages and record source links; do not infer private contact information.</p>
+<p>Expand <strong>Research &amp; Discovered Prospects</strong>, enter a query, and choose <strong>Search News</strong> to search Google News RSS for public coverage. Open the cited article, verify the company and Minnesota/sports relevance, and use <strong>Save as Prospect</strong> to keep a sourced research lead. The saved item is explicitly marked unverified. Search does not crawl social media, confirm sponsorship budgets, or prove buying intent. Research decision-maker roles using company-published pages and record source links; do not infer private contact information.</p>
 <p>Use <strong>Agency Relationships</strong> to link a marketing or PR agency to a represented brand. Add a public evidence URL for each relationship. Weekly discovery, qualification, and outreach-draft targets are planning ranges, not quotas; the monthly cost limit is configurable up to $50.</p>
 
 <h2>AI Lead Scoring, Advice, and Proposals</h2>
@@ -68,8 +68,7 @@ main{max-width:900px;margin:0 auto;padding:32px 20px 64px}h1,h2,h3{line-height:1
 <p>AI use is optional and requires the Cloudflare Workers AI binding to be configured for this Worker. Until it is enabled, the dashboard shows an explanatory unavailable message. AI processing may incur usage charges; check the provider’s current pricing before enabling it.</p>
 
 <h2>Sales Outreach Email</h2>
-<p>In Prospects → Draft Sales Outreach, choose the lead, confirm the recipient address, and write or generate a draft. Read the whole message and correct it before using <strong>Preview &amp; Send One Email</strong>. A confirmation dialog displays the recipient, subject, and body before the Worker sends exactly that email and logs it in the lead timeline. There is no automatic bulk sending or scheduled follow-up.</p>
-<p>Email requires an approved sender domain and the optional Worker secrets <code>RESEND_API_KEY</code> and <code>RESEND_FROM</code>. Do not add these to GitHub or the dashboard. Configure them only in Cloudflare Worker secrets. Check Resend’s current pricing and limits before enabling sending. Sending is not active until the secrets are configured and the Worker is deployed.</p>
+<p>The Partnerships dashboard does not currently create Gmail drafts or send email. Use verified CRM contact details and AI advice as research inputs, then prepare, review, and send outreach manually in Gmail. AI-generated Gmail drafts and inbox synchronization are not implemented.</p>
 
 <h2>Data Quality and Boundaries</h2>
 <ul>
@@ -77,15 +76,15 @@ main{max-width:900px;margin:0 auto;padding:32px 20px 64px}h1,h2,h3{line-height:1
  <li>AI scoring and proposal/pricing suggestions are drafts, not approved prices or a guarantee of deal likelihood. The model only has the CRM facts provided in its request.</li>
  <li>The historical revenue chart reflects manually entered revenue receipts. It is only complete if all receipts are entered and reconciled.</li>
  <li>The monthly deliverables tracker is separate from the deliverables notes field. Its checkbox marks the full monthly commitment complete; publication links are managed on the post-tracking screen.</li>
- <li>Email must be reviewed and confirmed per recipient. Never treat a generated draft as approved outreach.</li>
+ <li>Review each message and recipient in Gmail before sending. AI advice is not an approved email draft.</li>
  <li>Worker access is attributed to Jack or Cody and changes are written to the security log. The current roles identify users for accountability; granular restrictions between these two roles are not yet implemented.</li>
 </ul>
 
 <section class="card note"><strong>Data entry tip:</strong> use real figures when known, leave estimates blank when uncertain, set a next follow-up date for active leads, and include a source when recording researched prospects. Never treat an estimate as confirmed budget or buying intent. Unlabeled historical amounts should remain unassigned until their partner is verified.</section>
 
 <h2>Owner Setup Notes</h2>
-<p>The Worker must accept the same five pipeline stages shown in the dashboard. When deploying a new version, deploy the Sales Worker and publish the GitHub Pages dashboard from the same code revision. Jack and Cody's individual tokens belong only in Cloudflare Worker secrets as <code>SALES_JACK_TOKEN</code> and <code>SALES_CODY_TOKEN</code>; never store them in GitHub or this repository. Add an HTTPS source URL to a lead's Contact Source URL field when recording a verified contact address.</p>
-<p>Optional AI setup requires the Worker AI binding named <code>AI</code>. Email setup requires a verified Resend sender and Worker secrets <code>RESEND_API_KEY</code> and <code>RESEND_FROM</code>. Keep all credentials in Worker secrets, not page files or repository variables.</p>
+<p>The Worker must accept the same five pipeline stages shown in the dashboard. When deploying a new version, deploy the Sales Worker and publish the GitHub Pages dashboard from the same code revision. Jack and Cody's individual tokens belong only in Cloudflare Worker secrets as <code>SALES_JACK_TOKEN</code> and <code>SALES_CODY_TOKEN</code>; never store them in GitHub or this repository.</p>
+<p>Optional AI setup requires the Worker AI binding named <code>AI</code>. Keep all credentials in Worker secrets, not page files or repository variables.</p>
 </main>
 </body>
 </html>
