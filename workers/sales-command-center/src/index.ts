@@ -237,8 +237,9 @@ async function salesRoute(request: Request, env: Env, url: URL): Promise<Respons
       if (!definitionId || !/^\d{4}-(0[1-9]|1[0-2])$/.test(month)) return json({ error: "definition_id and month (YYYY-MM) are required" }, 400, salesCors(request, env));
       const units = Math.round(salesNumber(body.completed_units)); if (units < 0) return json({ error: "completed_units must be zero or greater" }, 400, salesCors(request, env));
       const now = new Date().toISOString();
-      await env.DB.prepare(`INSERT INTO deliverable_monthly (id, definition_id, month, completed_units, completed_at, published_url, notes, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(definition_id, month) DO UPDATE SET completed_units=excluded.completed_units, completed_at=excluded.completed_at, published_url=excluded.published_url, notes=excluded.notes, updated_at=excluded.updated_at`)
-        .bind(crypto.randomUUID(), definitionId, month, units, units ? now : null, salesString(body.published_url, "", 500), salesString(body.notes, "", 1000), now).run();
+      const hasPublishedUrl = Object.prototype.hasOwnProperty.call(body, "published_url");
+      await env.DB.prepare(`INSERT INTO deliverable_monthly (id, definition_id, month, completed_units, completed_at, published_url, notes, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(definition_id, month) DO UPDATE SET completed_units=excluded.completed_units, completed_at=excluded.completed_at, published_url=CASE WHEN ? THEN excluded.published_url ELSE deliverable_monthly.published_url END, notes=excluded.notes, updated_at=excluded.updated_at`)
+        .bind(crypto.randomUUID(), definitionId, month, units, units ? now : null, salesString(body.published_url, "", 500), salesString(body.notes, "", 1000), now, hasPublishedUrl ? 1 : 0).run();
       await audit(env, actor, "deliverable_completion_updated", "deliverable", definitionId, { month, completed_units: units });
       return json({ saved: true, updated_at: now }, 200, salesCors(request, env));
     }
