@@ -21,7 +21,7 @@ interface Env {
 interface SalesActor { id: string; display_name: string; role: string; legacy: boolean }
 
 const SALES_TYPES = new Set(["client", "lead", "prospect"]);
-const SALES_STAGES = new Set(["Discovered", "Qualified", "Contact Identified", "Outreach Sent", "Conversation Started", "Meeting Scheduled", "Proposal Sent", "Negotiation", "Closed Won", "Closed Lost", "Nurture"]);
+const SALES_STAGES = new Set(["New", "Qualified", "Contacted", "Proposal", "Closed"]);
 const jsonHeaders = {
   "Content-Type": "application/json; charset=utf-8",
   "Cache-Control": "no-store",
@@ -337,7 +337,7 @@ async function salesRoute(request: Request, env: Env, url: URL): Promise<Respons
       if (!name) return json({ error: "company_name is required" }, 400, salesCors(request, env));
       const duplicate = await env.DB.prepare("SELECT id FROM sales_records WHERE entity_type = ? AND lower(name) = lower(?) LIMIT 1").bind(type, name).all();
       if (duplicate.results?.length) return json({ error: "A record with that company name already exists in this category" }, 409, salesCors(request, env));
-      const stage = salesString(data.stage, type === "lead" ? "Discovered" : "", 40);
+      const stage = salesString(data.stage, type === "lead" ? "New" : "", 40);
       if (type === "lead" && !SALES_STAGES.has(stage)) return json({ error: "Unknown lead stage" }, 400, salesCors(request, env));
       const id = crypto.randomUUID(), now = new Date().toISOString();
       await env.DB.prepare(`INSERT INTO sales_records (id, entity_type, name, stage, industry, status, monthly_revenue, total_value, probability, next_follow_up, contract_end, last_contact, data_json, created_at, updated_at)
