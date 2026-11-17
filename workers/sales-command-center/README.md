@@ -17,6 +17,7 @@ Copy the returned database UUID into `wrangler.jsonc`, replacing `REPLACE_WITH_S
 npx wrangler d1 execute 10k-takes-sales-command-center --remote --file=schema.sql
 npx wrangler d1 execute 10k-takes-sales-command-center --remote --file=migrations/0002_partnerships_features.sql
 npx wrangler d1 execute 10k-takes-sales-command-center --remote --file=migrations/0003_sales_foundation.sql
+npx wrangler d1 execute 10k-takes-sales-command-center --remote --file=migrations/0004_simplify_sales_stages.sql
 npx wrangler secret put SALES_JACK_TOKEN
 npx wrangler secret put SALES_CODY_TOKEN
 npx wrangler deploy
@@ -33,9 +34,10 @@ Before deploying the updated Worker, apply the additive migration to the existin
 ```sh
 npx wrangler d1 execute 10k-takes-sales-command-center --remote --file=migrations/0002_partnerships_features.sql
 npx wrangler d1 execute 10k-takes-sales-command-center --remote --file=migrations/0003_sales_foundation.sql
+npx wrangler d1 execute 10k-takes-sales-command-center --remote --file=migrations/0004_simplify_sales_stages.sql
 ```
 
-Migration 0002 adds monthly received-revenue entries, recurring deliverable definitions, month-by-month completion records, and an outreach log. Migration 0003 adds named users, audit history, opt-out suppression, evidence provenance, agency relationships, modular discovery source configuration, configurable weekly targets and cost ceiling, and scheduled-agent run tracking. Both are additive and preserve existing CRM records. Back up the D1 database before applying migrations.
+Migration 0002 adds monthly received-revenue entries, recurring deliverable definitions, month-by-month completion records, and an outreach log. Migration 0003 adds named users, audit history, opt-out suppression, evidence provenance, agency relationships, modular discovery source configuration, configurable weekly targets and cost ceiling, and scheduled-agent run tracking. Migration 0004 maps legacy lead stages to New, Contacted, Proposal Sent, or Closed; it maps Qualified leads to New and Proposal leads to Proposal Sent. Back up the D1 database before applying migrations.
 
 ## API
 

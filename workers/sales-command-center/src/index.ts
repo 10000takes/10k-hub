@@ -21,7 +21,7 @@ interface Env {
 interface SalesActor { id: string; display_name: string; role: string; legacy: boolean }
 
 const SALES_TYPES = new Set(["client", "lead", "prospect"]);
-const SALES_STAGES = new Set(["New", "Qualified", "Contacted", "Proposal", "Closed"]);
+const SALES_STAGES = new Set(["New", "Contacted", "Proposal Sent", "Closed"]);
 const jsonHeaders = {
   "Content-Type": "application/json; charset=utf-8",
   "Cache-Control": "no-store",
