@@ -17,71 +17,75 @@ main{max-width:900px;margin:0 auto;padding:32px 20px 64px}h1,h2,h3{line-height:1
 <p class="intro">A practical guide for Cody and anyone using the 10K Takes client, contract, prospect, outreach, revenue, and deliverables workspace.</p>
 
 <section class="card note">
-<strong>What this workspace is:</strong> a private CRM backed by the separate 10K Takes Partnerships Worker and its D1 database. It is connected to the Partnerships tab, not the public GitHub Pages data files. It can record actual monthly revenue and deliverable completion, search a public news feed for research leads, and prepare AI-assisted drafts when the optional service bindings are configured. Jack and Cody use separate access tokens; actions are attributed to the signed-in user in the audit log. Email is sent only one message at a time after a human previews and confirms it. Existing clients, suppressed recipients, and recent duplicate sends are blocked.
+<strong>What this workspace is:</strong> a private CRM backed by the 10K Takes Partnerships Worker and D1 database. The page has separate Prospects, Current Clients, and Past Clients tabs. Jack and Cody use individual access tokens; changes are attributed to the signed-in user in the audit log. Outbound email always requires a human to review and confirm each message. Existing clients, suppressed recipients, and recent duplicate sends are blocked.
 </section>
 
 <h2>Connect to the Workspace</h2>
 <ol>
  <li>When the connection panel is shown, enter the Partnerships Worker URL and your individual Jack or Cody access token, then choose <strong>Connect</strong>. The dashboard displays the authenticated name and role.</li>
- <li>After a successful connection, the connection panel hides and the CRM loads. It may appear again if the browser session has ended or the connection fails.</li>
- <li>Jack and Cody have separate Worker tokens. The dashboard PIN is only a convenience screen; it does not control server access. Do not put either token in GitHub files, spreadsheets, email, or other public material.</li>
+ <li>After a successful connection, the token is remembered in that browser profile and the CRM reconnects automatically on later visits. It is not shared across browsers or devices. Choose <strong>Forget Access</strong> in the connected workspace to remove it from that browser.</li>
+ <li>Only remember the token on a private device. Anyone who can use that browser profile can use its CRM access. The dashboard PIN unlocks the site; your named Worker token authenticates CRM requests. Never put either token in GitHub files, spreadsheets, email, or other public material.</li>
 </ol>
 
-<h2>Overview</h2>
-<p>Overview summarizes the records saved in the CRM:</p>
+<h2>Current Clients</h2>
+<p>The <strong>Current Clients</strong> tab contains active client records and the account overview. Records marked Active contribute to the Active Clients and monthly revenue totals.</p>
+<p>The overview summarizes:</p>
 <ul>
- <li><strong>Monthly Recurring Revenue:</strong> monthly revenue from clients marked Active.</li>
- <li><strong>Active Clients:</strong> count of client records marked Active.</li>
- <li><strong>Total Contracted Revenue:</strong> sum of the total contract values entered on client records.</li>
- <li><strong>Open Sales Pipeline:</strong> total estimated value of leads that are not Closed Won or Closed Lost.</li>
- <li><strong>Weighted Pipeline:</strong> open lead value multiplied by each lead’s closing probability.</li>
- <li><strong>New Revenue This Month:</strong> monthly revenue on client records created this calendar month. This is not a payment ledger.</li>
- <li><strong>Outstanding Proposals:</strong> leads in Proposal Sent or Negotiation.</li>
- <li><strong>Contracts Expiring in 90 Days:</strong> client records with a contract end date within the next 90 days.</li>
+ <li><strong>Monthly revenue:</strong> sum of monthly revenue on active client records.</li>
+ <li><strong>Active clients:</strong> count of records marked Active.</li>
+ <li><strong>Total contracted value:</strong> sum of contract values entered on client records.</li>
+ <li><strong>Open and weighted pipeline:</strong> value of leads outside the Closed stage, and that value adjusted by each lead’s entered probability.</li>
+ <li><strong>New revenue this month:</strong> monthly revenue on client records created this calendar month. This is not a payment ledger.</li>
+ <li><strong>Proposals:</strong> leads in the Proposal stage.</li>
+ <li><strong>Contracts expiring:</strong> current clients with a contract end date within the next 90 days.</li>
 </ul>
-<p><strong>Today’s Priorities</strong> flags open leads with missing or due follow-up dates and client contracts with an end date in the past or within roughly 90 days. <strong>Pipeline Overview</strong> groups lead counts and estimated values by stage. <strong>Partnership Recommendations</strong> includes rule-based reminders. Optional AI advice and scoring can be requested from the lead tools; treat it as a draft and inspect the evidence and assumptions.</p>
+<p><strong>Today’s Priorities</strong> flags open leads that need a next action and current client contracts ending soon. <strong>Pipeline Overview</strong> summarizes lead counts and estimated values by stage. <strong>Partnership Recommendations</strong> includes rule-based reminders. The overview is shown inside the Current Clients tab.</p>
 <h3>Historical Revenue</h3>
 <p>Use the form to log revenue actually received for a client and month. Entries are retained in the private Worker database and shown in a rolling monthly bar chart. Do not use this ledger for estimated contract value. Enter corrections as separate, clearly described entries; the current chart totals received entries only.</p>
 <h3>Monthly Deliverables Tracker</h3>
 <p>Add one commitment for each recurring client deliverable (for example, four short videos each month). Choose a month and set how many units were completed. Add the published URL when available. The tracker shows completed units against the commitment and keeps month-by-month completion history. Define commitments once per client; changing the plan should be reflected in a new or revised definition before tracking subsequent months.</p>
 
-<h2>Active Clients</h2>
-<p>Choose <strong>Active Clients → Add Client</strong> to enter a current sponsor. Use <strong>Edit</strong> to update its record. The form stores company and contact details, contract dates and value, recurring revenue, payment information, renewal likelihood, follow-up dates, deliverable notes, and internal notes.</p>
-<p><strong>Contract Status</strong> is Active or Inactive. Only Active clients are included in the MRR and Active Clients totals. The deliverables field is currently a notes/JSON field; the dashboard does not yet calculate completion percentages or keep monthly deliverable history.</p>
+<p>Choose <strong>Add Client</strong> to enter a current sponsor. Use <strong>Edit</strong> to update its record. The form stores company and contact details, contract dates and value, monthly revenue, payment information, renewal likelihood, follow-up dates, deliverable notes, and internal notes.</p>
+<p><strong>Contract Status</strong> determines whether the record appears under Current Clients or Past Clients. Only Active clients are included in active client and monthly revenue totals.</p>
 <p>The Contract Document URL field stores a link only; it does not upload or secure the document. Use a file-sharing link with appropriate permissions. Avoid putting confidential documents in a public repository.</p>
 
-<h2>Leads &amp; Pipeline</h2>
-<p>Choose <strong>Add Lead</strong> to create a prospect you may pursue. The stage dropdown on a card or drag-and-drop lets you move it through the pipeline:</p>
-<p>Discovered → Qualified → Contact Identified → Outreach Sent → Conversation Started → Meeting Scheduled → Proposal Sent → Negotiation → Closed Won / Closed Lost / Nurture.</p>
-<p>Record the estimated monthly and total value, probability, priority, contact details, source, campaign ideas, and next follow-up date. Changing a stage adds an entry to the lead’s Activity Timeline. Open a card with <strong>Edit</strong> to add notes or log a call, meeting, email, proposal, or other activity.</p>
-<p>Use the search box, stage/industry/source filters, and sort menu to find leads. CSV import expects a header row; useful column names include <code>company_name</code>, <code>industry</code>, <code>stage</code>, <code>website</code>, <code>lead_source</code>, <code>priority</code>, <code>estimated_monthly_value</code>, <code>estimated_total_value</code>, <code>probability</code>, <code>last_contact</code>, and <code>next_follow_up</code>. Duplicate company names in the Leads category are skipped.</p>
+<h2>Past Clients</h2>
+<p>The <strong>Past Clients</strong> tab contains client records with Contract Status set to Inactive. Edit a record and change its status to move it between the current and past client lists. Past records remain available for reference and future re-engagement.</p>
+<p>Historical partnership records imported from the Partnership History workbook are marked inactive. Repeated partner names were consolidated, with the source rows and amounts retained in the record and activity history. The imported monthly amounts are historical amounts collected per month; they are not current recurring revenue. The workbook did not provide most contract end dates. The previously unnamed $1,999.99 row was identified as Chill Boys and is now included in its history.</p>
 
-<h2>Brand Discovery</h2>
+<h2>Prospects</h2>
+<p>The <strong>Prospects</strong> tab combines qualified lead management, public-source discovery, outreach preparation, and prospecting controls. Choose <strong>Add Lead</strong> to create a company you may pursue. The stage dropdown on a card or drag-and-drop moves a lead through these five stages:</p>
+<p><strong>New → Qualified → Contacted → Proposal → Closed.</strong> Set the separate <strong>Closed Outcome</strong> to Won or Lost when closing a lead. Older stage labels are mapped into the simplified stages when displayed; the prior stage is retained in the record when it is edited.</p>
+<p>Record the estimated monthly and total value, probability, priority, contact details, source, campaign ideas, and next follow-up date. Changing a stage adds an entry to the lead’s Activity Timeline. Open a card with <strong>Edit</strong> to add notes or log a call, meeting, email, proposal, or other activity.</p>
+<p>The lead search, stage/industry/source filters, and sort menu sit above the pipeline. CSV import expects a header row; useful column names include <code>company_name</code>, <code>industry</code>, <code>stage</code>, <code>website</code>, <code>lead_source</code>, <code>priority</code>, <code>estimated_monthly_value</code>, <code>estimated_total_value</code>, <code>probability</code>, <code>last_contact</code>, and <code>next_follow_up</code>. Duplicate company names in the Leads category are skipped.</p>
+
+<h3>Brand Discovery and Agencies</h3>
 <p>Enter a query and choose <strong>Search News</strong> to search Google News RSS for public coverage. Open the cited article, verify the company and Minnesota/sports relevance, and use <strong>Save as Prospect</strong> to keep a sourced research lead. The saved item is explicitly marked unverified. Search does not crawl social media, confirm sponsorship budgets, or prove buying intent. Research decision-maker roles using company-published pages and record source links; do not infer private contact information.</p>
+<p>Use <strong>Agency Relationships</strong> to link a marketing or PR agency to a represented brand. Add a public evidence URL for each relationship. Weekly discovery, qualification, and outreach-draft targets are planning ranges, not quotas; the monthly cost limit is configurable up to $50.</p>
 
 <h2>AI Lead Scoring, Advice, and Proposals</h2>
-<p>In Leads &amp; Pipeline, select a lead and choose <strong>Score Lead</strong>, <strong>Sales Advice</strong>, <strong>Proposal / Pricing Draft</strong>, or <strong>Research Relevant Decision-maker Roles</strong>, then choose <strong>Generate Draft</strong>. The assistant receives the selected CRM fields and any pricing assumptions entered in the form. It can suggest roles to look for, but it does not verify a person's identity or contact details. It should state evidence and assumptions and must not invent budgets, audience figures, contacts, or deal terms. Add only approved rates to the pricing field; if no rates are supplied, verify pricing yourself. Review proposal language before sharing.</p>
-<p>AI use is optional and requires the Cloudflare Workers AI binding to be configured for this Worker. Until it is enabled, the dashboard shows an explanatory unavailable message. Workers AI has a free daily allowance, but usage above the allowance and certain models may incur charges; check current Cloudflare pricing before enabling it.</p>
+<p>In Prospects, select a lead and choose <strong>Score Lead</strong>, <strong>Sales Advice</strong>, <strong>Proposal / Pricing Draft</strong>, or <strong>Research Relevant Decision-maker Roles</strong>, then choose <strong>Generate Draft</strong>. The assistant receives selected CRM fields and any pricing assumptions entered in the form. It can suggest roles to research, but it does not verify a person's identity or contact details. Review evidence and assumptions; never rely on generated budgets, audience figures, contacts, or deal terms without verification. Enter only approved rates and review proposal language before sharing.</p>
+<p>AI use is optional and requires the Cloudflare Workers AI binding to be configured for this Worker. Until it is enabled, the dashboard shows an explanatory unavailable message. AI processing may incur usage charges; check the provider’s current pricing before enabling it.</p>
 
 <h2>Sales Outreach Email</h2>
-<p>In Leads &amp; Pipeline → Draft Sales Outreach, choose the lead, confirm the recipient address, and write or generate a draft. Read the whole message and correct it before using <strong>Preview &amp; Send One Email</strong>. A confirmation dialog displays the recipient, subject, and body before the Worker sends exactly that email and logs it in the lead timeline. There is no automatic bulk sending or scheduled follow-up.</p>
-<p>Email requires an approved sender domain and the optional Worker secrets <code>RESEND_API_KEY</code> and <code>RESEND_FROM</code>. Do not add these to GitHub or the dashboard. Configure them only in Cloudflare Worker secrets after account-owner review. Resend currently offers a free tier with limits; check current pricing before setup. Sending is not active until the secrets are configured and the Worker is deployed.</p>
+<p>In Prospects → Draft Sales Outreach, choose the lead, confirm the recipient address, and write or generate a draft. Read the whole message and correct it before using <strong>Preview &amp; Send One Email</strong>. A confirmation dialog displays the recipient, subject, and body before the Worker sends exactly that email and logs it in the lead timeline. There is no automatic bulk sending or scheduled follow-up.</p>
+<p>Email requires an approved sender domain and the optional Worker secrets <code>RESEND_API_KEY</code> and <code>RESEND_FROM</code>. Do not add these to GitHub or the dashboard. Configure them only in Cloudflare Worker secrets. Check Resend’s current pricing and limits before enabling sending. Sending is not active until the secrets are configured and the Worker is deployed.</p>
 
 <h2>Data Quality and Boundaries</h2>
 <ul>
  <li>News discovery finds public articles only; it does not automatically identify verified decision-makers, private emails, sponsorship budgets, or buying intent.</li>
  <li>AI scoring and proposal/pricing suggestions are drafts, not approved prices or a guarantee of deal likelihood. The model only has the CRM facts provided in its request.</li>
  <li>The historical revenue chart reflects manually entered revenue receipts. It is only complete if all receipts are entered and reconciled.</li>
- <li>Deliverable completion is a user-maintained tracker. It cannot confirm publication unless a source link is added.</li>
+ <li>The monthly deliverables tracker is separate from the deliverables notes field. It compares manually entered completed units with a saved monthly commitment and cannot confirm publication unless a source link is added.</li>
  <li>Email must be reviewed and confirmed per recipient. Never treat a generated draft as approved outreach.</li>
  <li>Worker access is attributed to Jack or Cody and changes are written to the security log. The current roles identify users for accountability; granular restrictions between these two roles are not yet implemented.</li>
 </ul>
 
-<section class="card note"><strong>Data entry tip:</strong> use real figures when known, leave estimates blank when uncertain, set a next follow-up date for every active lead, and include a source when recording a researched brand. Never treat an estimate as confirmed budget or buying intent.</section>
+<section class="card note"><strong>Data entry tip:</strong> use real figures when known, leave estimates blank when uncertain, set a next follow-up date for active leads, and include a source when recording researched prospects. Never treat an estimate as confirmed budget or buying intent. Unlabeled historical amounts should remain unassigned until their partner is verified.</section>
 
-<h2>Worker Setup Notes for the Owner</h2>
-<p>The Phase 1 identity, audit, suppression, research-evidence, agency relationship, discovery-source, and configurable-target foundation requires the additive migration <code>workers/sales-command-center/migrations/0003_sales_foundation.sql</code> after migration 0002 and before deploying the updated Worker. Run both migration files from the sales Worker folder. They add tables without deleting current CRM records. Back up D1 before applying schema changes. Configure individual Worker secrets <code>SALES_JACK_TOKEN</code> and <code>SALES_CODY_TOKEN</code> before deployment; each should be a different random token of at least 32 characters. Do not store these in GitHub or this repository. Add an HTTPS source URL to the lead's Contact Source URL field before sending to document where the address was verified.</p>
-<p>Optional AI setup requires adding an <code>ai</code> binding named <code>AI</code> in <code>wrangler.jsonc</code> (or the Cloudflare dashboard) and deploying. Optional email setup requires verified Resend sender settings and Worker secrets for <code>RESEND_API_KEY</code> and <code>RESEND_FROM</code>. Wrangler secret commands deploy immediately, so configure secrets and deploy only when ready. Neither optional integration is enabled by this code edit alone.</p>
+<h2>Owner Setup Notes</h2>
+<p>The Worker must accept the same five pipeline stages shown in the dashboard. When deploying a new version, deploy the Sales Worker and publish the GitHub Pages dashboard from the same code revision. Jack and Cody's individual tokens belong only in Cloudflare Worker secrets as <code>SALES_JACK_TOKEN</code> and <code>SALES_CODY_TOKEN</code>; never store them in GitHub or this repository. Add an HTTPS source URL to a lead's Contact Source URL field when recording a verified contact address.</p>
+<p>Optional AI setup requires the Worker AI binding named <code>AI</code>. Email setup requires a verified Resend sender and Worker secrets <code>RESEND_API_KEY</code> and <code>RESEND_FROM</code>. Keep all credentials in Worker secrets, not page files or repository variables.</p>
 </main>
 </body>
 </html>
