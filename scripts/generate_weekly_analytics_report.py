@@ -338,10 +338,11 @@ def make_table(data, widths, header=True, font_size=8):
 
 class PlatformStatusLabel(Flowable):
     """Draw a status mark and platform label without relying on symbol fonts."""
-    def __init__(self, label, available):
+    def __init__(self, label, available, text_color=colors.white):
         super().__init__()
         self.label = label
         self.available = available
+        self.text_color = text_color
         self.width = 12 + stringWidth(label, "Helvetica-Bold", 7.5)
         self.height = 11
 
@@ -359,7 +360,7 @@ class PlatformStatusLabel(Flowable):
             c.line(0, 1.5, 6, 7.5)
             c.line(0, 7.5, 6, 1.5)
         c.setFont("Helvetica-Bold", 7.5)
-        c.setFillColor(colors.white)
+        c.setFillColor(self.text_color)
         c.drawString(11, 2, self.label)
 
 
@@ -420,15 +421,16 @@ def render_pdf(report, path):
     story.append(Paragraph("Main Account Followers Gained", s["section"]))
 
     def follower_table(section, platforms, total):
-        rows = [[Paragraph(x, s["tablehead"]) for x in ("Platform", "Net Follower Change", "Coverage")]]
+        rows = [[Paragraph("Platform", s["tablehead"]),
+                 Paragraph("Net Follower Change", s["tablehead"])]]
         for platform in platforms:
             item = total["platforms"][platform]
-            rows.append([Paragraph(platform, s["cell"]), Paragraph(fmt(item["gained"], signed=True), s["cellright"]),
-                         Paragraph("{}/{} accounts".format(item["coverage"], item["expected"]), s["cellright"])])
+            rows.append([PlatformStatusLabel(platform, item["coverage"] == item["expected"], INK),
+                         Paragraph(fmt(item["gained"], signed=True), s["cellright"])])
         summary = fmt(total["total"] if total["complete"] else total["partial_total"], signed=True)
         coverage = "Complete" if total["complete"] else "Partial · {}/{} pairs".format(total["observed_pairs"], total["expected_pairs"])
-        rows.append([Paragraph("Total", s["cell"]), Paragraph(summary, s["cellright"]), Paragraph(coverage, s["cellright"])])
-        return make_table(rows, [doc.width*.42, doc.width*.31, doc.width*.27])
+        rows.append([Paragraph("Total · " + coverage, s["cell"]), Paragraph(summary, s["cellright"])])
+        return make_table(rows, [doc.width*.68, doc.width*.32])
 
     follower_range = "Follower count comparison: {} to {} (latest saved readings).".format(
         date.fromisoformat(report["follower_window"]["start"]).strftime("%b %-d"),
