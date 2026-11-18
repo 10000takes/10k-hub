@@ -1,0 +1,164 @@
+{
+  "report_date": "2026-11-17",
+  "generated_at": "2026-11-18T12:57:37.253410-06:00",
+  "window": {
+    "start": "2026-11-10",
+    "end_exclusive": "2026-11-17",
+    "previous_start": "2026-11-03",
+    "previous_end_exclusive": "2026-11-10"
+  },
+  "follower_window": {
+    "start": "2026-11-10",
+    "end": "2026-11-17"
+  },
+  "main_followers": {
+    "platforms": {
+      "Facebook": {
+        "gained": 1215,
+        "coverage": 1,
+        "expected": 1
+      },
+      "Instagram": {
+        "gained": 174,
+        "coverage": 1,
+        "expected": 1
+      },
+      "TikTok": {
+        "gained": 100,
+        "coverage": 1,
+        "expected": 1
+      },
+      "Threads": {
+        "gained": -4,
+        "coverage": 1,
+        "expected": 1
+      },
+      "X/Twitter": {
+        "gained": null,
+        "coverage": 0,
+        "expected": 1
+      },
+      "YouTube": {
+        "gained": 30,
+        "coverage": 1,
+        "expected": 1
+      }
+    },
+    "total": null,
+    "partial_total": 1515,
+    "complete": false,
+    "observed_pairs": 5,
+    "expected_pairs": 6
+  },
+  "subsidiary_followers": {
+    "platforms": {
+      "Facebook": {
+        "gained": 691,
+        "coverage": 5,
+        "expected": 5
+      },
+      "Instagram": {
+        "gained": 53,
+        "coverage": 5,
+        "expected": 5
+      },
+      "TikTok": {
+        "gained": -3,
+        "coverage": 5,
+        "expected": 5
+      },
+      "Threads": {
+        "gained": 35,
+        "coverage": 5,
+        "expected": 5
+      },
+      "X/Twitter": {
+        "gained": null,
+        "coverage": 0,
+        "expected": 5
+      }
+    },
+    "total": null,
+    "partial_total": 776,
+    "complete": false,
+    "observed_pairs": 20,
+    "expected_pairs": 25
+  },
+  "impressions": {
+    "platforms": [
+      {
+        "platform": "Facebook",
+        "measure": "views",
+        "current": 1282866,
+        "previous": 1206385,
+        "current_date": "2026-11-17",
+        "previous_date": "2026-11-10",
+        "change": 76481,
+        "change_pct": "+6.3%"
+      },
+      {
+        "platform": "Instagram",
+        "measure": "views",
+        "current": 967464,
+        "previous": 865825,
+        "current_date": "2026-11-17",
+        "previous_date": "2026-11-10",
+        "change": 101639,
+        "change_pct": "+11.7%"
+      },
+      {
+        "platform": "TikTok",
+        "measure": "views",
+        "current": 84778,
+        "previous": 154709,
+        "current_date": "2026-11-17",
+        "previous_date": "2026-11-10",
+        "change": -69931,
+        "change_pct": "-45.2%"
+      },
+      {
+        "platform": "Threads",
+        "measure": "views",
+        "current": 15081,
+        "previous": 197541,
+        "current_date": "2026-11-17",
+        "previous_date": "2026-11-10",
+        "change": -182460,
+        "change_pct": "-92.4%"
+      },
+      {
+        "platform": "X/Twitter",
+        "measure": "impressions",
+        "current": null,
+        "previous": null,
+        "current_date": null,
+        "previous_date": null,
+        "change": null,
+        "change_pct": "Unavailable"
+      },
+      {
+        "platform": "YouTube",
+        "measure": "views",
+        "current": 122050,
+        "previous": 30335,
+        "current_date": "2026-11-17",
+        "previous_date": "2026-11-10",
+        "change": 91715,
+        "change_pct": "+302.3%"
+      }
+    ],
+    "current_total": 2472239,
+    "previous_total": 2454795,
+    "change": 17444,
+    "change_pct": "+0.7%",
+    "coverage": 5,
+    "expected_platforms": 6,
+    "current_dates": [
+      "2026-11-17"
+    ],
+    "missing_platforms": [
+      "X/Twitter"
+    ]
+  },
+  "top_posts": []
+}

@@ -87,78 +87,23 @@ def exposure_value(row):
     return as_int(row.get("views"))
 
 
-def period_posts(start_day, end_day):
-    """Sum daily post-counter changes across [start_day, end_day) captures."""
-    accumulated = {}
-    metadata = {}
-    covered_pairs = 0
-    missing_days = []
-    platform_days = {}
-    for offset in range((end_day - start_day).days):
-        left_day = start_day + timedelta(days=offset)
-        before, after = read_snapshot(left_day), read_snapshot(left_day + timedelta(days=1))
-        if not before or not after:
-            missing_days.append(left_day.isoformat())
-            continue
-        old_rows = {post_key(row): row for row in before["posts"]}
-        old_platforms = {row.get("platform") for row in before["posts"] if exposure_value(row) is not None}
-        new_platforms = {row.get("platform") for row in after["posts"] if exposure_value(row) is not None}
-        for platform in old_platforms & new_platforms:
-            platform_days[platform] = platform_days.get(platform, 0) + 1
-        for row in after["posts"]:
-            key = post_key(row)
-            old = old_rows.get(key)
-            current_count = exposure_value(row)
-            if current_count is None:
+def latest_follower_date(report_day):
+    path = ROOT / "followers.csv"
+    if not path.exists():
+        return None
+    dates = []
+    with path.open(newline="", encoding="utf-8-sig") as stream:
+        for row in csv.DictReader(stream):
+            try:
+                captured = date.fromisoformat(row.get("date", ""))
+            except ValueError:
                 continue
-            if old:
-                prior_count = exposure_value(old)
-                if prior_count is None or current_count < prior_count:
-                    continue
-                delta = current_count - prior_count
-            else:
-                # A post first seen after publication within this reporting window has
-                # no start counter; its cumulative counter is its within-window activity.
-                try:
-                    posted = datetime.fromisoformat(str(row.get("posted_at", "")).replace("Z", "+00:00"))
-                    if posted.tzinfo is None or not (start_day <= posted.astimezone(TZ).date() < end_day):
-                        continue
-                except (TypeError, ValueError):
-                    continue
-                delta = current_count
-            covered_pairs += 1
-            accumulated[key] = accumulated.get(key, 0) + delta
-            metadata[key] = row
-    # Partial windows are not ranked as if they represented a complete week.
-    complete_window = not missing_days and all(
-        platform_days.get(platform, 0) == (end_day - start_day).days
-        for platform in ("Facebook", "Instagram", "TikTok", "Threads", "X/Twitter", "YouTube"))
-    posts = []
-    for key, value in accumulated.items():
-        if not complete_window:
-            break
-        row = metadata[key]
-        platform = row.get("platform", "Unknown")
-        try:
-            published = datetime.fromisoformat(str(row.get("posted_at", "")).replace("Z", "+00:00"))
-            published_label = published.astimezone(TZ).strftime("%b %-d") if published.tzinfo else "Date unavailable"
-        except (TypeError, ValueError):
-            published_label = "Date unavailable"
-        posts.append({"platform": platform, "url": row.get("url", ""),
-                      "title": pdf_text((row.get("caption") or "").strip().replace("\n", " ")[:145]) or row.get("format") or "Untitled post",
-                      "format": row.get("format") or "Post", "published": published_label,
-                      "exposure": value, "measure": EXPOSURE.get(platform, EXPOSURE["default"])[1]})
-    posts.sort(key=lambda item: item["exposure"], reverse=True)
-    by_platform = {}
-    for post in posts:
-        by_platform[post["platform"]] = by_platform.get(post["platform"], 0) + post["exposure"]
-    expected_days = (end_day - start_day).days
-    complete_platform_totals = {platform: (by_platform.get(platform, 0) if platform_days.get(platform, 0) == expected_days else None)
-                                for platform in ("Facebook", "Instagram", "TikTok", "Threads", "X/Twitter", "YouTube")}
-    total = sum(complete_platform_totals.values()) if all(value is not None for value in complete_platform_totals.values()) else None
-    return {"posts": posts, "by_platform": complete_platform_totals, "missing_days": missing_days,
-            "pairs_seen": covered_pairs, "platform_days": platform_days, "expected_days": expected_days,
-            "total": total, "complete_window": complete_window}
+            if captured <= report_day:
+                dates.append(captured)
+    if not dates:
+        return None
+    latest = max(dates)
+    return latest if (report_day - latest).days <= 1 else None
 
 
 def follower_deltas(start_day, end_day):
@@ -181,6 +126,90 @@ def follower_deltas(start_day, end_day):
     return result
 
 
+def weekly_rolling_metrics(report_day):
+    """Compare saved rolling 7-day account metrics with the same reading 7 days earlier."""
+    path = ROOT / "metrics.csv"
+    series = {}
+    if path.exists():
+        with path.open(newline="", encoding="utf-8-sig") as stream:
+            for row in csv.DictReader(stream):
+                if row.get("account", "").strip() != MAIN or row.get("metric", "").strip() != "views_7d":
+                    continue
+                platform = row.get("platform", "").strip()
+                try:
+                    captured = date.fromisoformat(row.get("date", ""))
+                except ValueError:
+                    continue
+                value = as_int(row.get("value"))
+                if value is not None and captured <= report_day:
+                    series.setdefault(platform, {})[captured] = value
+
+    rows = []
+    for platform in MAIN_PLATFORMS:
+        dated = series.get(platform, {})
+        current_date = max((d for d in dated if (report_day - d).days <= 1), default=None)
+        current = dated.get(current_date) if current_date else None
+        previous_date = current_date - timedelta(days=7) if current_date else None
+        previous = dated.get(previous_date) if previous_date else None
+        rows.append({"platform": platform,
+                     "measure": "impressions" if platform == "X/Twitter" else "views",
+                     "current": current, "previous": previous,
+                     "current_date": current_date.isoformat() if current_date else None,
+                     "previous_date": previous_date.isoformat() if previous_date else None,
+                     "change": current - previous if current is not None and previous is not None else None,
+                     "change_pct": pct_change(current, previous)})
+    comparable = [row for row in rows if row["current"] is not None and row["previous"] is not None]
+    current_total = sum(row["current"] for row in comparable) if comparable else None
+    previous_total = sum(row["previous"] for row in comparable) if comparable else None
+    return {"platforms": rows, "current_total": current_total, "previous_total": previous_total,
+            "change": current_total - previous_total if current_total is not None and previous_total is not None else None,
+            "change_pct": pct_change(current_total, previous_total), "coverage": len(comparable),
+            "expected_platforms": len(MAIN_PLATFORMS),
+            "current_dates": sorted({row["current_date"] for row in comparable if row["current_date"]}),
+            "missing_platforms": [row["platform"] for row in rows if row["current"] is None or row["previous"] is None]}
+
+
+def top_posts_for_week(start_day, end_day):
+    snapshot_day = end_day
+    snapshot = read_snapshot(snapshot_day)
+    if not snapshot or not snapshot["posts"]:
+        snapshot = None
+        for offset in range(0, 3):
+            candidate = end_day - timedelta(days=offset)
+            candidate_snapshot = read_snapshot(candidate)
+            if not candidate_snapshot or not candidate_snapshot["posts"]:
+                save_current_posts_snapshot(candidate)
+            candidate_snapshot = read_snapshot(candidate)
+            if candidate_snapshot and candidate_snapshot["posts"]:
+                snapshot_day, snapshot = candidate, candidate_snapshot
+                break
+    if not snapshot:
+        return []
+    ranked = []
+    for row in snapshot["posts"]:
+        try:
+            posted = datetime.fromisoformat(str(row.get("posted_at", "")).replace("Z", "+00:00"))
+            if posted.tzinfo is None:
+                continue
+            posted_date = posted.astimezone(TZ).date()
+        except (TypeError, ValueError):
+            continue
+        if not (start_day <= posted_date < end_day):
+            continue
+        count = exposure_value(row)
+        if count is None:
+            continue
+        platform = row.get("platform", "Unknown")
+        ranked.append({"platform": platform, "url": row.get("url", ""),
+                       "title": pdf_text((row.get("caption") or "").strip().replace("\n", " ")[:145]) or row.get("format") or "Untitled post",
+                       "format": row.get("format") or "Post",
+                       "published": posted.astimezone(TZ).strftime("%b %-d"),
+                       "captured": snapshot_day.isoformat(),
+                       "exposure": count, "measure": EXPOSURE.get(platform, EXPOSURE["default"])[1]})
+    ranked.sort(key=lambda item: item["exposure"], reverse=True)
+    return ranked[:5]
+
+
 def latest_snapshot_date(requested=None):
     if requested:
         requested_day = date.fromisoformat(requested)
@@ -198,11 +227,13 @@ def latest_snapshot_date(requested=None):
         candidate = today - timedelta(days=offset)
         if read_snapshot(candidate):
             return candidate
+        if save_current_posts_snapshot(candidate):
+            return candidate
     raise RuntimeError("No current post snapshot could be made from today's top_posts.csv, and no recent saved snapshot was found (checked today and the prior 3 days).")
 
 
 def save_current_posts_snapshot(day):
-    """Create a report endpoint from today's already-collected top_posts.csv rows."""
+    """Create a report endpoint from the matching dated rows already in top_posts.csv."""
     source = ROOT / "top_posts.csv"
     if not source.exists():
         return False
@@ -222,9 +253,9 @@ def save_current_posts_snapshot(day):
 def build_report(end_day):
     start = end_day - timedelta(days=7)
     prior_start = end_day - timedelta(days=14)
-    current_posts = period_posts(start, end_day)
-    previous_posts = period_posts(prior_start, start)
-    current_followers = follower_deltas(start, end_day)
+    follower_end = latest_follower_date(end_day)
+    follower_start = follower_end - timedelta(days=7) if follower_end else None
+    current_followers = follower_deltas(follower_start, follower_end) if follower_start else {}
 
     def audience_section(accounts, platforms):
         by_platform = {}
@@ -245,33 +276,15 @@ def build_report(end_day):
 
     main = audience_section((MAIN,), MAIN_PLATFORMS)
     subsidiaries = audience_section(SUBSIDIARIES, SUB_PLATFORMS)
-    current_total = current_posts["total"]
-    previous_total = previous_posts["total"]
-    platform_rows = []
-    for platform in ("Facebook", "Instagram", "TikTok", "Threads", "X/Twitter", "YouTube"):
-        cur = current_posts["by_platform"].get(platform)
-        prev = previous_posts["by_platform"].get(platform)
-        platform_rows.append({"platform": platform, "measure": EXPOSURE.get(platform, EXPOSURE["default"])[1],
-                              "current": cur, "previous": prev,
-                              "change": cur - prev if cur is not None and prev is not None else None,
-                              "change_pct": pct_change(cur, prev)})
+    impressions = weekly_rolling_metrics(end_day)
     return {"report_date": end_day.isoformat(), "generated_at": datetime.now(TZ).isoformat(),
             "window": {"start": start.isoformat(), "end_exclusive": end_day.isoformat(),
                        "previous_start": prior_start.isoformat(), "previous_end_exclusive": start.isoformat()},
+            "follower_window": {"start": follower_start.isoformat() if follower_start else None,
+                                "end": follower_end.isoformat() if follower_end else None},
             "main_followers": main, "subsidiary_followers": subsidiaries,
-            "impressions": {"platforms": platform_rows, "current_total": current_total,
-                            "previous_total": previous_total,
-                            "change": current_total - previous_total if current_total is not None and previous_total is not None else None,
-                            "change_pct": pct_change(current_total, previous_total),
-                            "current_missing_days": current_posts["missing_days"],
-                            "previous_missing_days": previous_posts["missing_days"],
-                            "current_pairs": current_posts["pairs_seen"], "previous_pairs": previous_posts["pairs_seen"],
-                            "current_platform_days": current_posts["platform_days"],
-                            "previous_platform_days": previous_posts["platform_days"],
-                            "expected_days_per_period": current_posts["expected_days"],
-                            "current_window_complete": current_posts["complete_window"],
-                            "previous_window_complete": previous_posts["complete_window"]},
-            "top_posts": current_posts["posts"][:5]}
+            "impressions": impressions,
+            "top_posts": top_posts_for_week(start, end_day)}
 
 
 def report_paths(end_day):
@@ -323,7 +336,7 @@ def render_pdf(report, path):
     follower_main = report["main_followers"]
     main_value = fmt(follower_main["total"] if follower_main["complete"] else follower_main["partial_total"], signed=True)
     main_hint = "All expected platform snapshots" if follower_main["complete"] else "Partial · {}/{} account-platform pairs".format(follower_main["observed_pairs"], follower_main["expected_pairs"])
-    imp_hint = "Views + X impressions; tracked-post feed" if imp["current_total"] is not None else "Unavailable · incomplete post snapshots"
+    imp_hint = "Rolling 7-day measures · {}/{} platforms".format(imp["coverage"], imp["expected_platforms"]) if imp["current_total"] is not None else "Unavailable · no comparable platform readings"
     kpis = Table([[kpi("MAIN FOLLOWERS GAINED", main_value, main_hint),
                    kpi("MAIN VIEWS / IMPRESSIONS", fmt(imp["current_total"]), imp_hint),
                    kpi("VS. PRIOR 7 DAYS", pct_change(imp["current_total"], imp["previous_total"]), "{} change".format(fmt(imp["change"])))]],
@@ -340,9 +353,9 @@ def render_pdf(report, path):
     else:
         lead_parts.append("Subsidiary follower gain is partial: {} across {}/{} pairs.".format(fmt(subs["partial_total"], signed=True), subs["observed_pairs"], subs["expected_pairs"]))
     if imp["current_total"] is not None and imp["previous_total"] is not None:
-        lead_parts.append("Tracked views/impressions changed {} versus the previous 7 days.".format(pct_change(imp["current_total"], imp["previous_total"])))
+        lead_parts.append("Views/impressions changed {} versus the previous 7 days across {}/{} comparable platforms.".format(pct_change(imp["current_total"], imp["previous_total"]), imp["coverage"], imp["expected_platforms"]))
     else:
-        lead_parts.append("A complete week-over-week views/impressions comparison is not yet available in the saved snapshots.")
+        lead_parts.append("A comparable week-over-week views/impressions reading is not available yet.")
     if report["top_posts"]:
         top_post = report["top_posts"][0]
         lead_parts.append("Top measured post: {} on {} ({} {}).".format(html.escape(top_post["title"]), top_post["platform"], fmt(top_post["exposure"]), top_post["measure"]))
@@ -359,11 +372,14 @@ def render_pdf(report, path):
         rows.append([Paragraph("TOTAL", s["cell"]), Paragraph(summary, s["cellright"]), Paragraph(coverage, s["cellright"])])
         return make_table(rows, [doc.width*.42, doc.width*.31, doc.width*.27])
 
-    story += [follower_table("main", MAIN_PLATFORMS, follower_main),
+    follower_range = "Follower count comparison: {} to {} (latest saved readings).".format(
+        date.fromisoformat(report["follower_window"]["start"]).strftime("%b %-d"),
+        date.fromisoformat(report["follower_window"]["end"]).strftime("%b %-d, %Y")) if report["follower_window"]["start"] else "Follower count readings for a 7-day comparison are unavailable."
+    story += [Paragraph(follower_range, s["small"]), follower_table("main", MAIN_PLATFORMS, follower_main),
               Paragraph("Subsidiary account followers gained", s["section"]),
               follower_table("subs", SUB_PLATFORMS, report["subsidiary_followers"]), PageBreak(),
               Paragraph("Main account views and impressions", s["section"]),
-              Paragraph("Total combines native platform counters (views on most platforms and impressions on X). Figures are changes in tracked post counters, not a complete account-wide platform insight total.", s["small"]), Spacer(1, 5)]
+              Paragraph("Each value is the platform's saved rolling 7-day views metric (impressions for X), compared with that platform's reading from seven days earlier. The total is a convenience sum of native metrics; coverage is shown because platform definitions differ.", s["small"]), Spacer(1, 5)]
     imp_rows = [[Paragraph(x, s["tablehead"]) for x in ("Platform", "Measure", "Last 7 days", "Prior 7 days", "Change", "% change")]]
     for row in imp["platforms"]:
         imp_rows.append([Paragraph(row["platform"], s["cell"]), Paragraph(row["measure"], s["cell"]),
@@ -375,7 +391,7 @@ def render_pdf(report, path):
     story += [make_table(imp_rows, [doc.width*.18, doc.width*.15, doc.width*.17, doc.width*.17, doc.width*.16, doc.width*.17]),
               Paragraph("Top 5 posts across platforms", s["section"])]
     top = report["top_posts"]
-    top_rows = [[Paragraph(x, s["tablehead"]) for x in ("#", "Post", "Platform", "Weekly views / impressions")]]
+    top_rows = [[Paragraph(x, s["tablehead"]) for x in ("#", "Post", "Platform", "Views / impressions at capture")]]
     for index, post in enumerate(top, 1):
         label = "{} · {} · {}".format(post["published"], post["format"], html.escape(post["title"]))
         if post.get("url", "").startswith(("https://", "http://")):
@@ -383,16 +399,16 @@ def render_pdf(report, path):
         top_rows.append([Paragraph(str(index), s["cell"]), Paragraph(label, s["cell"]),
                          Paragraph(post["platform"], s["cell"]), Paragraph("{} {}".format(fmt(post["exposure"]), post["measure"]), s["cellright"])])
     if not top:
-        top_rows.append([Paragraph("-", s["cell"]), Paragraph("No post counters could be compared across the reporting window.", s["cell"]), Paragraph("-", s["cell"]), Paragraph("Unavailable", s["cellright"])])
+        top_rows.append([Paragraph("-", s["cell"]), Paragraph("No posts published in the reporting window had a usable counter in the latest saved post snapshot.", s["cell"]), Paragraph("-", s["cell"]), Paragraph("Unavailable", s["cellright"])])
     story += [make_table(top_rows, [doc.width*.06, doc.width*.56, doc.width*.17, doc.width*.21]), Spacer(1, 6)]
-    notes = ["Follower changes compare the saved account snapshots on the period start and end dates. Coverage shows how many expected account-platform pairs had both readings.",
-             "Post activity is summed from consecutive midnight snapshots. Missing snapshots or reset counters are not counted as zero. Feeds contain a limited recent-post set, so older posts may be outside coverage.",
-             "Views and X impressions are different native measures; platform totals are shown separately. The combined total is a convenience sum, not a standardized cross-platform metric."]
-    missing = sorted(set(imp["current_missing_days"] + imp["previous_missing_days"]))
-    if missing:
-        notes.append("Missing midnight snapshot pairs: " + ", ".join(missing) + ".")
-    if not imp["current_window_complete"]:
-        notes.append("The top-five weekly post ranking is unavailable because the current seven-day capture window is incomplete.")
+    top_capture = report["top_posts"][0].get("captured") if report["top_posts"] else None
+    notes = ["Follower changes compare saved counts 7 days apart. The capture dates are shown above; stale or missing account-platform pairs are unavailable, not zero.",
+             "Top posts are posts published during the reporting week, ranked by their cumulative view or impression counters at the latest saved capture{}. The posts have different ages, so these are not equal-age comparisons.".format(" on " + top_capture if top_capture else ""),
+             "Views and X impressions are different native measures. The combined total is a convenience sum, not a standardized cross-platform metric."]
+    if imp["current_dates"]:
+        notes.append("Comparable rolling-metric captures: {}. Missing or stale platforms: {}.".format(", ".join(imp["current_dates"]), ", ".join(imp["missing_platforms"]) if imp["missing_platforms"] else "none"))
+    elif imp["missing_platforms"]:
+        notes.append("No comparable rolling-metric pairs were available. Missing or stale platforms: {}.".format(", ".join(imp["missing_platforms"])))
     story += [Paragraph("Data notes", s["section"])]
     story.extend(Paragraph("• " + note, s["small"]) for note in notes)
 
@@ -411,6 +427,8 @@ def render_pdf(report, path):
 def generate(end_day, force=False):
     folder, json_path, pdf_path, _ = report_paths(end_day)
     folder.mkdir(parents=True, exist_ok=True)
+    if not read_snapshot(end_day):
+        save_current_posts_snapshot(end_day)
     if json_path.exists() and not force:
         report = json.loads(json_path.read_text(encoding="utf-8"))
     else:
