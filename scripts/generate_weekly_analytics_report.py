@@ -346,7 +346,7 @@ class PlatformStatusLabel(Flowable):
         self.label = label
         self.available = available
         self.text_color = text_color
-        self.width = 12 + stringWidth(label, "Helvetica-Bold", 7.5)
+        self.width = 12 + stringWidth(label, "Helvetica", 7.5)
         self.height = 11
 
     def wrap(self, avail_width, avail_height):
@@ -362,7 +362,7 @@ class PlatformStatusLabel(Flowable):
         else:
             c.line(0, 1.5, 6, 7.5)
             c.line(0, 7.5, 6, 1.5)
-        c.setFont("Helvetica-Bold", 7.5)
+        c.setFont("Helvetica", 7.5)
         c.setFillColor(self.text_color)
         c.drawString(11, 2, self.label)
 
