@@ -398,9 +398,7 @@ def render_pdf(report, path):
         date.fromisoformat(report["follower_window"]["start"]).strftime("%b %-d"),
         date.fromisoformat(report["follower_window"]["end"]).strftime("%b %-d, %Y")) if report["follower_window"]["start"] else "Follower count readings for a 7-day comparison are unavailable."
     story += [Paragraph(follower_range, s["small"]), follower_table("main", MAIN_PLATFORMS, follower_main),
-              Paragraph("Subsidiary Account Followers Gained", s["section"]),
-              follower_table("subs", SUB_PLATFORMS, report["subsidiary_followers"]), PageBreak(),
-              Paragraph("Subsidiary Follower Gains By Account", s["section"])]
+              Paragraph("Subsidiary Followers Gained By Account", s["section"])]
     account_rows = [[Paragraph(x, s["tablehead"]) for x in
                      ("Account", "Total", "Facebook", "Instagram", "TikTok", "Threads", "X/Twitter", "Coverage")]]
     for account in report.get("subsidiaries_by_account", []):
@@ -409,9 +407,15 @@ def render_pdf(report, path):
                              Paragraph(fmt(total, signed=True), s["cellright"])] +
                             [Paragraph(fmt(account["platforms"].get(platform), signed=True), s["cellright"])
                              for platform in SUB_PLATFORMS] +
-                            [Paragraph("{}/{}".format(account["coverage"], account["expected"]), s["cellright"])])
+                            [Paragraph("{}/{} platforms".format(account["coverage"], account["expected"]), s["cellright"])])
+    subsidiary_total = report["subsidiary_followers"]
+    account_rows.append([Paragraph("All Subsidiaries", s["cell"]),
+                         Paragraph(fmt(subsidiary_total["total"] if subsidiary_total["complete"] else subsidiary_total["partial_total"], signed=True), s["cellright"])] +
+                        [Paragraph(fmt(subsidiary_total["platforms"][platform]["gained"], signed=True), s["cellright"])
+                         for platform in SUB_PLATFORMS] +
+                        [Paragraph("{}/{} pairs".format(subsidiary_total["observed_pairs"], subsidiary_total["expected_pairs"]), s["cellright"])])
     account_widths = [doc.width*.19, doc.width*.11] + [doc.width*.105]*5 + [doc.width*.175]
-    story += [make_table(account_rows, account_widths),
+    story += [make_table(account_rows, account_widths), PageBreak(),
               Paragraph("Main Account Views And Impressions", s["section"]),
               Paragraph("Each value is the platform's saved rolling 7-day views metric (impressions for X), compared with that platform's reading from seven days earlier. The total is a convenience sum of native metrics; coverage is shown because platform definitions differ.", s["small"]), Spacer(1, 5)]
     imp_rows = [[Paragraph(x, s["tablehead"]) for x in ("Platform", "Measure", "Last 7 Days", "Prior 7 Days", "Change", "% Change")]]
