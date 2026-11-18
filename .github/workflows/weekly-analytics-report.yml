@@ -2,9 +2,9 @@ name: Weekly Analytics Report
 
 on:
   schedule:
-    # Run at 8:00 AM America/Chicago on Friday (DST / standard time).
-    - cron: "0 13 * * 5"
+    # Run at 9:00 AM America/Chicago on Friday, after the 6 AM X collector.
     - cron: "0 14 * * 5"
+    - cron: "0 15 * * 5"
   workflow_dispatch:
     inputs:
       mode:
@@ -35,17 +35,38 @@ jobs:
         env:
           EVENT_NAME: ${{ github.event_name }}
         run: |
-          if [ "$EVENT_NAME" = "workflow_dispatch" ] || { [ "$(TZ=America/Chicago date +%u)" = "5" ] && [ "$(TZ=America/Chicago date +%H)" = "08" ]; }; then
+          if [ "$EVENT_NAME" = "workflow_dispatch" ] || { [ "$(TZ=America/Chicago date +%u)" = "5" ] && [ "$(TZ=America/Chicago date +%H)" = "09" ]; }; then
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
-            echo "Not Friday at 8 AM Central; skipping report generation and email."
+            echo "Not Friday at 9 AM Central; skipping report generation and email."
           fi
 
       - uses: actions/setup-python@v5
         if: steps.gate.outputs.run == 'true'
         with:
           python-version: "3.12"
+
+      - name: Confirm today's X metrics are saved
+        if: steps.gate.outputs.run == 'true' && github.event_name == 'schedule'
+        run: |
+          python - <<'PY'
+          import csv, sys
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          day = datetime.now(ZoneInfo("America/Chicago")).date().isoformat()
+          try:
+              with open("metrics.csv", newline="", encoding="utf-8-sig") as source:
+                  rows = csv.DictReader(source)
+                  ready = any(r.get("date") == day and r.get("account") == "10K Takes"
+                              and r.get("platform") == "X/Twitter" and r.get("metric") == "views_7d"
+                              and r.get("value", "").strip() for r in rows)
+          except OSError:
+              ready = False
+          if not ready:
+              sys.exit("X/Twitter metrics were not saved for today. Stopping so the scheduled report cannot email stale X numbers; check the Collect X workflow and retry.")
+          print("Fresh X/Twitter metrics found for " + day)
+          PY
 
       - name: Check whether today's post snapshot needs a refresh
         id: posts

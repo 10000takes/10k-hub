@@ -19,7 +19,7 @@ from reportlab.lib.enums import TA_LEFT, TA_RIGHT
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch
-from reportlab.platypus import (Paragraph, SimpleDocTemplate, Spacer, Table,
+from reportlab.platypus import (Image, Paragraph, SimpleDocTemplate, Spacer, Table,
                                 TableStyle, PageBreak)
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -276,6 +276,19 @@ def build_report(end_day):
 
     main = audience_section((MAIN,), MAIN_PLATFORMS)
     subsidiaries = audience_section(SUBSIDIARIES, SUB_PLATFORMS)
+    subsidiaries_by_account = []
+    for account in SUBSIDIARIES:
+        platforms = {platform: current_followers.get((account, platform))
+                     for platform in SUB_PLATFORMS}
+        available = [value for value in platforms.values() if value is not None]
+        complete = len(available) == len(SUB_PLATFORMS)
+        subsidiaries_by_account.append({
+            "account": account, "platforms": platforms,
+            "total": sum(available) if complete else None,
+            "partial_total": sum(available) if available else None,
+            "coverage": len(available), "expected": len(SUB_PLATFORMS),
+            "complete": complete,
+        })
     impressions = weekly_rolling_metrics(end_day)
     return {"report_date": end_day.isoformat(), "generated_at": datetime.now(TZ).isoformat(),
             "window": {"start": start.isoformat(), "end_exclusive": end_day.isoformat(),
@@ -283,6 +296,7 @@ def build_report(end_day):
             "follower_window": {"start": follower_start.isoformat() if follower_start else None,
                                 "end": follower_end.isoformat() if follower_end else None},
             "main_followers": main, "subsidiary_followers": subsidiaries,
+            "subsidiaries_by_account": subsidiaries_by_account,
             "impressions": impressions,
             "top_posts": top_posts_for_week(start, end_day)}
 
@@ -323,11 +337,19 @@ def make_table(data, widths, header=True, font_size=8):
 def render_pdf(report, path):
     s = styles()
     doc = SimpleDocTemplate(str(path), pagesize=letter, rightMargin=.55*inch, leftMargin=.55*inch, topMargin=.48*inch, bottomMargin=.48*inch, title="10K Takes Weekly Analytics")
-    story = [Paragraph("10K Takes Weekly Analytics", s["title"]),
+    logo = Image(str(ROOT / "assets" / "10k-takes-logo-red.png"), width=.48*inch, height=.48*inch)
+    report_heading = [Paragraph("10K Takes Weekly Analytics", s["title"]),
              Paragraph("Week of {} through {} | Prepared {} | America/Chicago".format(
                  date.fromisoformat(report["window"]["start"]).strftime("%b %-d"),
                  (date.fromisoformat(report["window"]["end_exclusive"]) - timedelta(days=1)).strftime("%b %-d, %Y"),
                  datetime.fromisoformat(report["generated_at"]).strftime("%b %-d, %I:%M %p")), s["subtitle"])]
+    header = Table([[logo, report_heading]], colWidths=[.62*inch, doc.width-.62*inch], hAlign="LEFT")
+    header.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                                ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                                ("TOPPADDING", (0, 0), (-1, -1), 0),
+                                ("BOTTOMPADDING", (0, 0), (-1, -1), 0)]))
+    story = [header, Spacer(1, 3)]
 
     def kpi(label, value, detail=""):
         return [Paragraph(label, s["kpilabel"]), Spacer(1, 3), Paragraph(value, s["kpivalue"]), Paragraph(detail, s["small"]) if detail else Spacer(1, 1)]
@@ -337,9 +359,9 @@ def render_pdf(report, path):
     main_value = fmt(follower_main["total"] if follower_main["complete"] else follower_main["partial_total"], signed=True)
     main_hint = "All expected platform snapshots" if follower_main["complete"] else "Partial · {}/{} account-platform pairs".format(follower_main["observed_pairs"], follower_main["expected_pairs"])
     imp_hint = "Rolling 7-day measures · {}/{} platforms".format(imp["coverage"], imp["expected_platforms"]) if imp["current_total"] is not None else "Unavailable · no comparable platform readings"
-    kpis = Table([[kpi("MAIN FOLLOWERS GAINED", main_value, main_hint),
-                   kpi("MAIN VIEWS / IMPRESSIONS", fmt(imp["current_total"]), imp_hint),
-                   kpi("VS. PRIOR 7 DAYS", pct_change(imp["current_total"], imp["previous_total"]), "{} change".format(fmt(imp["change"])))]],
+    kpis = Table([[kpi("Main Followers Gained", main_value, main_hint),
+                   kpi("Main Views / Impressions", fmt(imp["current_total"]), imp_hint),
+                   kpi("Vs. Prior 7 Days", pct_change(imp["current_total"], imp["previous_total"]), "{} change".format(fmt(imp["change"])))]],
                  colWidths=[doc.width/3]*3)
     kpis.setStyle(TableStyle([("BACKGROUND", (0,0),(-1,-1), PALE), ("BOX",(0,0),(-1,-1),.5,RULE), ("INNERGRID",(0,0),(-1,-1),.5,RULE), ("VALIGN",(0,0),(-1,-1),"TOP"), ("LEFTPADDING",(0,0),(-1,-1),10), ("RIGHTPADDING",(0,0),(-1,-1),10), ("TOPPADDING",(0,0),(-1,-1),9), ("BOTTOMPADDING",(0,0),(-1,-1),8)]))
     lead_parts = []
@@ -359,39 +381,51 @@ def render_pdf(report, path):
     if report["top_posts"]:
         top_post = report["top_posts"][0]
         lead_parts.append("Top measured post: {} on {} ({} {}).".format(html.escape(top_post["title"]), top_post["platform"], fmt(top_post["exposure"]), top_post["measure"]))
-    story += [kpis, Paragraph("Weekly readout", s["section"]), Paragraph(" ".join(lead_parts), s["body"]), Paragraph("Main account followers gained", s["section"])]
+    story += [kpis, Paragraph("Weekly Readout", s["section"]), Paragraph(" ".join(lead_parts), s["body"]), Paragraph("Main Account Followers Gained", s["section"])]
 
     def follower_table(section, platforms, total):
-        rows = [[Paragraph(x, s["tablehead"]) for x in ("Platform", "Net follower change", "Coverage")]]
+        rows = [[Paragraph(x, s["tablehead"]) for x in ("Platform", "Net Follower Change", "Coverage")]]
         for platform in platforms:
             item = total["platforms"][platform]
             rows.append([Paragraph(platform, s["cell"]), Paragraph(fmt(item["gained"], signed=True), s["cellright"]),
                          Paragraph("{}/{} accounts".format(item["coverage"], item["expected"]), s["cellright"])])
         summary = fmt(total["total"] if total["complete"] else total["partial_total"], signed=True)
         coverage = "Complete" if total["complete"] else "Partial · {}/{} pairs".format(total["observed_pairs"], total["expected_pairs"])
-        rows.append([Paragraph("TOTAL", s["cell"]), Paragraph(summary, s["cellright"]), Paragraph(coverage, s["cellright"])])
+        rows.append([Paragraph("Total", s["cell"]), Paragraph(summary, s["cellright"]), Paragraph(coverage, s["cellright"])])
         return make_table(rows, [doc.width*.42, doc.width*.31, doc.width*.27])
 
     follower_range = "Follower count comparison: {} to {} (latest saved readings).".format(
         date.fromisoformat(report["follower_window"]["start"]).strftime("%b %-d"),
         date.fromisoformat(report["follower_window"]["end"]).strftime("%b %-d, %Y")) if report["follower_window"]["start"] else "Follower count readings for a 7-day comparison are unavailable."
     story += [Paragraph(follower_range, s["small"]), follower_table("main", MAIN_PLATFORMS, follower_main),
-              Paragraph("Subsidiary account followers gained", s["section"]),
+              Paragraph("Subsidiary Account Followers Gained", s["section"]),
               follower_table("subs", SUB_PLATFORMS, report["subsidiary_followers"]), PageBreak(),
-              Paragraph("Main account views and impressions", s["section"]),
+              Paragraph("Subsidiary Follower Gains By Account", s["section"])]
+    account_rows = [[Paragraph(x, s["tablehead"]) for x in
+                     ("Account", "Total", "Facebook", "Instagram", "TikTok", "Threads", "X/Twitter", "Coverage")]]
+    for account in report.get("subsidiaries_by_account", []):
+        total = account["total"] if account["complete"] else account["partial_total"]
+        account_rows.append([Paragraph(account["account"], s["cell"]),
+                             Paragraph(fmt(total, signed=True), s["cellright"])] +
+                            [Paragraph(fmt(account["platforms"].get(platform), signed=True), s["cellright"])
+                             for platform in SUB_PLATFORMS] +
+                            [Paragraph("{}/{}".format(account["coverage"], account["expected"]), s["cellright"])])
+    account_widths = [doc.width*.19, doc.width*.11] + [doc.width*.105]*5 + [doc.width*.175]
+    story += [make_table(account_rows, account_widths),
+              Paragraph("Main Account Views And Impressions", s["section"]),
               Paragraph("Each value is the platform's saved rolling 7-day views metric (impressions for X), compared with that platform's reading from seven days earlier. The total is a convenience sum of native metrics; coverage is shown because platform definitions differ.", s["small"]), Spacer(1, 5)]
-    imp_rows = [[Paragraph(x, s["tablehead"]) for x in ("Platform", "Measure", "Last 7 days", "Prior 7 days", "Change", "% change")]]
+    imp_rows = [[Paragraph(x, s["tablehead"]) for x in ("Platform", "Measure", "Last 7 Days", "Prior 7 Days", "Change", "% Change")]]
     for row in imp["platforms"]:
         imp_rows.append([Paragraph(row["platform"], s["cell"]), Paragraph(row["measure"], s["cell"]),
                          Paragraph(fmt(row["current"]), s["cellright"]), Paragraph(fmt(row["previous"]), s["cellright"]),
                          Paragraph(fmt(row["change"]), s["cellright"]), Paragraph(row["change_pct"], s["cellright"])])
-    imp_rows.append([Paragraph("TOTAL", s["cell"]), Paragraph("Mixed native measures", s["small"]),
+    imp_rows.append([Paragraph("Total", s["cell"]), Paragraph("Mixed Native Measures", s["small"]),
                      Paragraph(fmt(imp["current_total"]), s["cellright"]), Paragraph(fmt(imp["previous_total"]), s["cellright"]),
                      Paragraph(fmt(imp["change"]), s["cellright"]), Paragraph(imp["change_pct"], s["cellright"])])
     story += [make_table(imp_rows, [doc.width*.18, doc.width*.15, doc.width*.17, doc.width*.17, doc.width*.16, doc.width*.17]),
-              Paragraph("Top 5 posts across platforms", s["section"])]
+              Paragraph("Top 5 Posts Across Platforms", s["section"])]
     top = report["top_posts"]
-    top_rows = [[Paragraph(x, s["tablehead"]) for x in ("#", "Post", "Platform", "Views / impressions at capture")]]
+    top_rows = [[Paragraph(x, s["tablehead"]) for x in ("#", "Post", "Platform", "Views / Impressions At Capture")]]
     for index, post in enumerate(top, 1):
         label = "{} · {} · {}".format(post["published"], post["format"], html.escape(post["title"]))
         if post.get("url", "").startswith(("https://", "http://")):
@@ -409,7 +443,7 @@ def render_pdf(report, path):
         notes.append("Comparable rolling-metric captures: {}. Missing or stale platforms: {}.".format(", ".join(imp["current_dates"]), ", ".join(imp["missing_platforms"]) if imp["missing_platforms"] else "none"))
     elif imp["missing_platforms"]:
         notes.append("No comparable rolling-metric pairs were available. Missing or stale platforms: {}.".format(", ".join(imp["missing_platforms"])))
-    story += [Paragraph("Data notes", s["section"])]
+    story += [Paragraph("Data Notes", s["section"])]
     story.extend(Paragraph("• " + note, s["small"]) for note in notes)
 
     def footer(canvas, document):
