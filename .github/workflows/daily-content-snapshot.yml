@@ -22,9 +22,9 @@ concurrency:
 
 jobs:
   snapshot:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Check midnight schedule and duplicate snapshot
         id: gate
@@ -42,7 +42,7 @@ jobs:
             echo "Not the Chicago midnight capture, or today's snapshot already exists. Skipping API calls."
           fi
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         if: steps.gate.outputs.run == 'true'
         with:
           python-version: "3.12"

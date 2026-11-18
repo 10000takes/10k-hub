@@ -19,7 +19,7 @@ concurrency:
  
 jobs:
   collect-x:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Check it is Friday 6 AM Central
         id: gate
@@ -31,10 +31,10 @@ jobs:
             echo "Not 6 AM Central right now, so this run is skipped."
           fi
  
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         if: steps.gate.outputs.run == 'true'
  
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         if: steps.gate.outputs.run == 'true'
         with:
           python-version: "3.12"

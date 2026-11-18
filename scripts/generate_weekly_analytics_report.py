@@ -319,6 +319,9 @@ def styles():
         "tablehead": ParagraphStyle("TH", parent=base["BodyText"], fontName="Helvetica-Bold", fontSize=7.5, leading=9, textColor=colors.white),
         "cell": ParagraphStyle("Cell", parent=base["BodyText"], fontSize=8, leading=10, textColor=INK),
         "cellright": ParagraphStyle("CellRight", parent=base["BodyText"], fontSize=8, leading=10, textColor=INK, alignment=TA_RIGHT),
+        "cellbold": ParagraphStyle("CellBold", parent=base["BodyText"], fontName="Helvetica-Bold", fontSize=8, leading=10, textColor=INK),
+        "cellrightbold": ParagraphStyle("CellRightBold", parent=base["BodyText"], fontName="Helvetica-Bold", fontSize=8, leading=10, textColor=INK, alignment=TA_RIGHT),
+        "smallbold": ParagraphStyle("SmallBold", parent=base["BodyText"], fontName="Helvetica-Bold", fontSize=7.2, leading=9, textColor=MUTED),
         "kpilabel": ParagraphStyle("KpiLabel", parent=base["BodyText"], fontSize=7.3, leading=9, textColor=MUTED),
         "kpivalue": ParagraphStyle("KpiValue", parent=base["BodyText"], fontName="Helvetica-Bold", fontSize=16, leading=19, textColor=NAVY),
     }
@@ -429,7 +432,7 @@ def render_pdf(report, path):
                          Paragraph(fmt(item["gained"], signed=True), s["cellright"])])
         summary = fmt(total["total"] if total["complete"] else total["partial_total"], signed=True)
         coverage = "Complete" if total["complete"] else "Partial · {}/{} pairs".format(total["observed_pairs"], total["expected_pairs"])
-        rows.append([Paragraph("Total · " + coverage, s["cell"]), Paragraph(summary, s["cellright"])])
+        rows.append([Paragraph("Total · " + coverage, s["cellbold"]), Paragraph(summary, s["cellrightbold"])])
         return make_table(rows, [doc.width*.68, doc.width*.32])
 
     follower_range = "Follower count comparison: {} to {} (latest saved readings).".format(
@@ -451,9 +454,9 @@ def render_pdf(report, path):
                              for platform in SUB_PLATFORMS] +
                             [])
     subsidiary_total = report["subsidiary_followers"]
-    account_rows.append([Paragraph("All Subsidiaries", s["cell"]),
-                         Paragraph(fmt(subsidiary_total["total"] if subsidiary_total["complete"] else subsidiary_total["partial_total"], signed=True), s["cellright"])] +
-                        [Paragraph(fmt(subsidiary_total["platforms"][platform]["gained"], signed=True), s["cellright"])
+    account_rows.append([Paragraph("All Subsidiaries", s["cellbold"]),
+                         Paragraph(fmt(subsidiary_total["total"] if subsidiary_total["complete"] else subsidiary_total["partial_total"], signed=True), s["cellrightbold"])] +
+                        [Paragraph(fmt(subsidiary_total["platforms"][platform]["gained"], signed=True), s["cellrightbold"])
                          for platform in SUB_PLATFORMS] +
                         [])
     account_widths = [doc.width*.22, doc.width*.12] + [doc.width*.132]*5
@@ -466,9 +469,9 @@ def render_pdf(report, path):
         imp_rows.append([Paragraph(row["platform"], s["cell"]), Paragraph(row["measure"], s["cell"]),
                          Paragraph(fmt(row["current"]), s["cellright"]), Paragraph(fmt(row["previous"]), s["cellright"]),
                          Paragraph(fmt(row["change"]), s["cellright"]), Paragraph(row["change_pct"], s["cellright"])])
-    imp_rows.append([Paragraph("Total", s["cell"]), Paragraph("Mixed Native Measures", s["small"]),
-                     Paragraph(fmt(imp["current_total"]), s["cellright"]), Paragraph(fmt(imp["previous_total"]), s["cellright"]),
-                     Paragraph(fmt(imp["change"]), s["cellright"]), Paragraph(imp["change_pct"], s["cellright"])])
+    imp_rows.append([Paragraph("Total", s["cellbold"]), Paragraph("Mixed Native Measures", s["smallbold"]),
+                     Paragraph(fmt(imp["current_total"]), s["cellrightbold"]), Paragraph(fmt(imp["previous_total"]), s["cellrightbold"]),
+                     Paragraph(fmt(imp["change"]), s["cellrightbold"]), Paragraph(imp["change_pct"], s["cellrightbold"])])
     story += [make_table(imp_rows, [doc.width*.18, doc.width*.15, doc.width*.17, doc.width*.17, doc.width*.16, doc.width*.17])]
     story.extend(section_rule())
     story.append(Paragraph("Top 5 Posts Across Platforms", s["section"]))

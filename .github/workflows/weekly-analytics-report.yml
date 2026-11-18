@@ -26,9 +26,9 @@ concurrency:
 
 jobs:
   report:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Check Friday morning schedule
         id: gate
@@ -42,7 +42,7 @@ jobs:
             echo "Not Friday at 9 AM Central; skipping report generation and email."
           fi
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         if: steps.gate.outputs.run == 'true'
         with:
           python-version: "3.12"
@@ -174,7 +174,7 @@ jobs:
             git push
           fi
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: steps.gate.outputs.run == 'true'
         with:
           name: 10K-Takes-Weekly-Analytics

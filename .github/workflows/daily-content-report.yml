@@ -25,9 +25,9 @@ concurrency:
 
 jobs:
   report:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Check configured delivery hour
         id: gate
@@ -37,7 +37,7 @@ jobs:
           DAILY_CONTENT_REPORT_TIME: ${{ vars.DAILY_CONTENT_REPORT_TIME || '08:00' }}
         run: python3 scripts/daily_report_schedule_gate.py >> "$GITHUB_OUTPUT"
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         if: ${{ github.event_name == 'workflow_dispatch' || steps.gate.outputs.run == 'true' }}
         with:
           python-version: "3.12"
@@ -102,7 +102,7 @@ jobs:
             git push
           fi
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: ${{ github.event_name == 'workflow_dispatch' || steps.gate.outputs.run == 'true' }}
         with:
           name: 10K-Takes-Daily-Content-Report
