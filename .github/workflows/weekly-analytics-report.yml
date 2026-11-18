@@ -47,6 +47,57 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Check whether today's post snapshot needs a refresh
+        id: posts
+        if: steps.gate.outputs.run == 'true' && (github.event_name == 'schedule' || inputs.report_date == '')
+        run: |
+          day=$(TZ=America/Chicago date +%F)
+          if [ -f ".github/content-report-data/snapshots/$day.json" ]; then
+            echo "refresh=false" >> "$GITHUB_OUTPUT"
+            echo "A current saved post snapshot is already available."
+          elif python -c 'import csv,sys
+          try: f=open("top_posts.csv",newline="",encoding="utf-8-sig")
+          except OSError: sys.exit(1)
+          sys.exit(not any(r.get("snapshot","").strip()==sys.argv[1] for r in csv.DictReader(f)))' "$day"; then
+            echo "refresh=false" >> "$GITHUB_OUTPUT"
+            echo "Today's post collector data is already available; it will be saved as a report snapshot."
+          else
+            echo "refresh=true" >> "$GITHUB_OUTPUT"
+            echo "No current post snapshot; refresh recent posts before reporting."
+          fi
+
+      - name: Prepare main Meta Page credential
+        if: steps.gate.outputs.run == 'true' && steps.posts.outputs.refresh == 'true'
+        continue-on-error: true
+        env:
+          FACEBOOK_SYSTEM_USER_TOKEN: ${{ secrets.FACEBOOK_SYSTEM_USER_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+        run: python scripts/prepare_meta_token.py
+
+      - name: Refresh recent main-account posts
+        if: steps.gate.outputs.run == 'true' && steps.posts.outputs.refresh == 'true'
+        continue-on-error: true
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+          INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          THREADS_ACCESS_TOKEN_10K_TAKES: ${{ secrets.THREADS_ACCESS_TOKEN_10K_TAKES }}
+        run: python collect_top_posts.py
+
+      - name: Refresh TikTok main-account posts
+        if: steps.gate.outputs.run == 'true' && steps.posts.outputs.refresh == 'true'
+        continue-on-error: true
+        env:
+          TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+          TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+          TIKTOK_REFRESH_TOKEN_10K_TAKES: ${{ secrets.TIKTOK_REFRESH_TOKEN_10K_TAKES }}
+        run: python collect_tiktok.py --top-posts-only
+
+      - name: Save current post snapshot
+        if: steps.gate.outputs.run == 'true' && steps.posts.outputs.refresh == 'true'
+        run: python scripts/generate_daily_content_report.py snapshot --force
+
       - name: Install PDF renderer
         if: steps.gate.outputs.run == 'true'
         run: python -m pip install reportlab
@@ -65,7 +116,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .github/content-report-data/weekly-reports .github/content-report-data/snapshots
+          git add top_posts.csv .github/content-report-data/weekly-reports .github/content-report-data/snapshots
           if git diff --cached --quiet; then
             echo "Weekly report snapshot already persisted."
           else

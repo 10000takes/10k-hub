@@ -11,6 +11,8 @@ Use **Actions → Weekly Analytics Report → Run workflow → Preview** to gene
 - Top posts are ranked by measured views or impressions accrued during the current seven-day window, using paired counter snapshots. Posts without enough counter evidence are excluded.
 - The midnight snapshots sample recent posts and do not represent a guaranteed complete account-wide platform-insights total. Missing snapshots, stale counters, and incomplete platform coverage remain visible as unavailable in the report.
 
+If the report run has no snapshot for its current date and `top_posts.csv` also has no current rows, the workflow refreshes recent main-account posts using the existing collector credentials, then saves a same-day snapshot. This prevents a stale checkout from stopping PDF generation. A same-day refresh can occur later than midnight, and the capture time is retained in the saved snapshot. It cannot reconstruct missed historical captures, so the first report can still show post-performance sections as unavailable.
+
 The first weekly report may have an unavailable previous-week comparison until 14 days of midnight snapshots exist. Subsidiary X follower change requires X follower snapshots at both weekly endpoints; the existing Friday X collector supplies these readings.
 
 The workflow is scheduled for Friday at 8:00 a.m. Central and uses the existing Resend configuration. GitHub scheduled workflow starts can be delayed; the schedule gate skips late starts outside the delivery hour rather than sending the report at an unexpected time.
