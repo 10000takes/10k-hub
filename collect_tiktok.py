@@ -145,7 +145,9 @@ def campaign_post_rows(access_token, account):
         if m:
             wanted[m.group(1)] = p["key"]
     rows, cursor, pages = [], None, 0
-    while wanted and pages < 5:
+    # Search farther back for campaign links; the previous 5-page limit only
+    # covered the newest 100 videos, so older active posts silently stayed blank.
+    while wanted and pages < 25:
         body = {"max_count": 20}
         if cursor:
             body["cursor"] = cursor

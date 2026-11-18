@@ -42,10 +42,16 @@ def fetch(url, headers=None, secrets=()):
 def insight_value(data):
     for item in data.get("data", []):
         if "total_value" in item:
-            return int(item["total_value"].get("value", 0))
+            value = item["total_value"].get("value", 0)
+            if isinstance(value, dict):
+                return sum(int(v or 0) for v in value.values() if isinstance(v, (int, float)))
+            return int(value)
         vals = item.get("values") or []
         if vals:
-            return int(vals[0].get("value", 0))
+            value = vals[0].get("value", 0)
+            if isinstance(value, dict):
+                return sum(int(v or 0) for v in value.values() if isinstance(v, (int, float)))
+            return int(value)
     return None
 
 
@@ -128,7 +134,21 @@ def instagram(posts):
         mine = [p for p in posts if p.get("account", "") == account]
         try:
             ig, tok = ig_context(account)
-            media = graph_get(ig + "/media", {"fields": "id,permalink", "limit": 50}, tok).get("data", [])
+            page = graph_get(ig + "/media", {"fields": "id,permalink", "limit": 50}, tok)
+            media = page.get("data", [])
+            # Campaign links may point to older posts. Follow the media cursor
+            # until each submitted permalink is found, or the API has no more.
+            wanted = {re.search(r"/(?:p|reel|reels|tv)/([A-Za-z0-9_-]+)", p["url"]).group(1)
+                      for p in mine if re.search(r"/(?:p|reel|reels|tv)/([A-Za-z0-9_-]+)", p["url"])}
+            found = {slug for slug in wanted if any("/" + slug in x.get("permalink", "") for x in media)}
+            while page.get("paging", {}).get("next") and wanted - found:
+                page = fetch(page["paging"]["next"], {"Authorization": "Bearer " + tok}, [tok])
+                batch = page.get("data", [])
+                media.extend(batch)
+                found.update(slug for slug in wanted - found
+                             if any("/" + slug in x.get("permalink", "") for x in batch))
+                if not batch:
+                    break
         except RuntimeError as e:
             print("::warning::Instagram {}: {}".format(account or "(no account)", e))
             continue
@@ -136,7 +156,7 @@ def instagram(posts):
             m = re.search(r"/(?:p|reel|reels|tv)/([A-Za-z0-9_-]+)", p["url"])
             hit = next((x for x in media if m and "/" + m.group(1) in x.get("permalink", "")), None)
             if not hit:
-                print("::notice::Instagram post not found among the 50 latest of {}: {}".format(account, p["url"]))
+                print("::notice::Instagram post not found in the account media returned by Graph API for {}: {}".format(account, p["url"]))
                 continue
             # With Facebook Login, IG Media exposes all-surface counters for
             # boosted media. Prefer these object fields over insight metrics,
@@ -288,6 +308,33 @@ def facebook(posts):
             refs.update(facebook_post_refs(url, page_id))
         match = next((by_ref[ref] for ref in refs if ref in by_ref), None)
         if not match:
+            # Page Posts doesn't return Reels. Their public link contains the
+            # video ID, which can be queried directly for Reel insights.
+            reel_match = re.search(r"/reel/(\d+)", post["url"])
+            if reel_match:
+                video_id = reel_match.group(1)
+                try:
+                    values = {}
+                    reel_views = insight_value(graph_get(video_id + "/video_insights",
+                                                         {"metric": "fb_reels_total_plays"}, token))
+                    if reel_views is not None:
+                        values["views"] = reel_views
+                    for metric, name in (("post_video_likes_by_reaction_type", "likes"),
+                                         ("post_video_social_actions", "social")):
+                        try:
+                            val = insight_value(graph_get(video_id + "/video_insights", {"metric": metric}, token))
+                            if val is not None:
+                                values[name] = val
+                        except RuntimeError as e:
+                            print("::notice::Facebook Reel {} unavailable for {}: {}".format(metric, post["url"], e))
+                    if "social" in values:
+                        values["comments"] = values.pop("social")
+                    print("Facebook Reel metrics {}: {}".format(
+                        post["url"], ", ".join("{}={}".format(k, v) for k, v in sorted(values.items())) or "none returned"))
+                    rows += metric_rows(post["key"], values)
+                    continue
+                except RuntimeError as e:
+                    print("::notice::Facebook Reel lookup failed for {}: {}".format(post["url"], e))
             print("::notice::Facebook campaign post not found in the main Page's recent published posts: {}".format(post["url"]))
             continue
 
