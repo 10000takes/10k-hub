@@ -124,6 +124,10 @@ def plan_import(rows: list[dict[str, str]], api: Api | None, apply: bool) -> lis
         if not (name and email and source.startswith("https://")):
             messages.append(f"SKIP contact for {company_name}: require contact_name, contact_email, and HTTPS email_source_url")
             continue
+        confidence = (row.get("confidence") or "low").lower()
+        if confidence not in {"low", "medium", "high"}:
+            messages.append(f"SKIP contact {email}: confidence must be low, medium, or high")
+            continue
         if company.get("ambiguous"):
             messages.append(f"SKIP contact {email}: company match needs review")
             continue
@@ -136,7 +140,7 @@ def plan_import(rows: list[dict[str, str]], api: Api | None, apply: bool) -> lis
         if not company_id:
             raise RuntimeError(f"Company {company_name!r} was not safely resolved; cannot import contact")
         body = {"display_name": name, "title": row["contact_title"], "email": email,
-                "email_source_url": source, "confidence": "low", "company_ids": [company_id],
+                "email_source_url": source, "confidence": confidence, "company_ids": [company_id],
                 "relationship_role": row["relationship_role"]}
         status, result = api.request("/v1/crm/contacts", "POST", body, stable_key("contact", email))
         if status not in (200, 201):

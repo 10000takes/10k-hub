@@ -1,11 +1,17 @@
-company_name,website,industry,contact_name,contact_title,contact_email,email_source_url,relationship_role
-Jack Link's,,,,,,,
-Kwik Trip,,,,,,,
-Gametime,,,,,,,
-SeatGeek,,,,,,,
-SCHEELS,,,,,,,
-Buffalo Wild Wings,,,,,,,
-Raising Cane's,,,,,,,
-Gatorade,,,,,,,
-CELSIUS,,,,,,,
-Jersey Mike's,,,,,,,
+company_name,website,industry,contact_name,contact_title,contact_email,email_source_url,relationship_role,confidence
+Jack Link's,,,John,,john.obrien@jacklinks.com,https://mail.google.com/mail/u/?authuser=partnerships%4010ktakesmn.com#all/1a1f15e2a33ab1f0,,low
+Kwik Trip,,,Paige Geary,,pgeary@kwiktrip.com,https://mail.google.com/mail/u/?authuser=partnerships%4010ktakesmn.com#all/1a1f167ae6dba6ea,,medium
+Kwik Trip,,,Hayden Knoll,,hknoll@kwiktrip.com,https://mail.google.com/mail/u/?authuser=partnerships%4010ktakesmn.com#all/1a1f167ae6dba6ea,Influencers & Merch referral,medium
+Kwik Trip,,,Samantha Benish,,sbenish@kwiktrip.com,https://mail.google.com/mail/u/?authuser=partnerships%4010ktakesmn.com#all/1a1f167ae6dba6ea,Social Media referral,medium
+Kwik Trip,,,McKenna Schmidtke,,mschmidtke@kwiktrip.com,https://mail.google.com/mail/u/?authuser=partnerships%4010ktakesmn.com#all/1a1f167ae6dba6ea,Website referral,medium
+Gametime,,,Elaine,,elaine.strauss@gametime.co,https://mail.google.com/mail/u/?authuser=partnerships%4010ktakesmn.com#all/1a1f17e0587384a2,,low
+SeatGeek,,,Lindsay,,lwolan@seatgeek.com,https://mail.google.com/mail/u/?authuser=partnerships%4010ktakesmn.com#all/1a1f1865c1079ca3,,low
+SeatGeek,,,,,press@seatgeek.com,https://mail.google.com/mail/u/?authuser=partnerships%4010ktakesmn.com#all/19b290cf5778cc72,Press/team inbox (not an individual),low
+SCHEELS,,,Lauren Halseth,Marketing Lead,lhalseth@scheels.com,https://mail.google.com/mail/u/?authuser=partnerships%4010ktakesmn.com#all/1a1f41adcff597da,Marketing Lead,medium
+SCHEELS,,,,,affiliate@scheels.com,https://mail.google.com/mail/u/?authuser=partnerships%4010ktakesmn.com#all/1a1f41adcff597da,Affiliate team inbox (not an individual),low
+Buffalo Wild Wings,,,Maribel,,mrodriguez@buffalowildwings.com,https://mail.google.com/mail/u/?authuser=partnerships%4010ktakesmn.com#all/1a1f191394d853ad,,low
+Buffalo Wild Wings,,,,,BWWPublicRelations@inspirebrands.com,https://mail.google.com/mail/u/?authuser=partnerships%4010ktakesmn.com#all/19b2ee91ae0cc040,Public relations inbox (not an individual),low
+Raising Cane's,,,Courtney,,cray@raisingcanes.com,https://mail.google.com/mail/u/?authuser=partnerships%4010ktakesmn.com#all/1a1f1956027a9833,,low
+Gatorade,,,Rachel,,rachel.mellott@gatorade.com,https://mail.google.com/mail/u/?authuser=partnerships%4010ktakesmn.com#all/1a1f19e6625366f4,,low
+CELSIUS,,,Brenna,,bshipman@celsius.com,https://mail.google.com/mail/u/?authuser=partnerships%4010ktakesmn.com#all/1a1f1a1d9d407150,,low
+Jersey Mike's,,,Hillary,,hhutchinson@jerseymikes.com,https://mail.google.com/mail/u/?authuser=partnerships%4010ktakesmn.com#all/1a1f1aa906d1a1cf,,low
