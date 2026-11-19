@@ -66,6 +66,429 @@ async function audit(env: Env, actor: SalesActor, action: string, entityType = "
     .bind(crypto.randomUUID(), actor.id, action, entityType, entityId, JSON.stringify(metadata), new Date().toISOString()).run();
 }
 
+const CRM_SCOPES = new Set([
+  "companies:read", "companies:write", "contacts:read", "contacts:write",
+  "communications:read", "research:write", "opportunities:read",
+  "opportunities:write", "tasks:read", "tasks:write",
+]);
+const CRM_USER_SCOPES = [...CRM_SCOPES];
+
+interface CrmPrincipal extends SalesActor {
+  scopes: string[];
+  rateLimit: number;
+  ownerId: string;
+}
+
+async function sha256Hex(value: string): Promise<string> {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function authenticateCrm(request: Request, env: Env): Promise<CrmPrincipal | null> {
+  const human = identifyActor(request, env);
+  if (human && !human.legacy) return { ...human, scopes: CRM_USER_SCOPES, rateLimit: 120, ownerId: human.id };
+  const authorization = request.headers.get("Authorization") ?? "";
+  const match = authorization.match(/^Bearer ([A-Za-z0-9._~-]{32,256})$/);
+  if (!match) return null;
+  const tokenHash = await sha256Hex(match[1]);
+  const result = await env.DB.prepare(`SELECT id, label, scopes_json, rate_limit_per_minute, created_by
+    FROM sales_crm_api_credentials
+    WHERE token_sha256=? AND revoked_at IS NULL AND (expires_at IS NULL OR expires_at > ?)
+    LIMIT 1`).bind(tokenHash, new Date().toISOString()).all<Record<string, unknown>>();
+  const credential = result.results?.[0];
+  if (!credential) return null;
+  const owner = await env.DB.prepare("SELECT active FROM sales_users WHERE id=?").bind(String(credential.created_by)).all<Record<string, unknown>>();
+  if (Number(owner.results?.[0]?.active) !== 1) return null;
+  let scopes: string[] = [];
+  try {
+    const parsed = JSON.parse(String(credential.scopes_json || "[]"));
+    if (Array.isArray(parsed)) scopes = parsed.filter((scope): scope is string => typeof scope === "string" && CRM_SCOPES.has(scope));
+  } catch { return null; }
+  return {
+    id: `crm_api:${String(credential.id)}`,
+    display_name: String(credential.label || "CRM integration"),
+    role: "crm_api",
+    legacy: false,
+    scopes,
+    rateLimit: Math.max(1, Math.min(600, Number(credential.rate_limit_per_minute) || 60)),
+    ownerId: String(credential.created_by),
+  };
+}
+
+async function consumeCrmRateLimit(env: Env, actor: CrmPrincipal): Promise<boolean> {
+  const windowStart = Math.floor(Date.now() / 60_000);
+  const result = await env.DB.prepare(`INSERT INTO sales_crm_rate_limits (principal_id, window_start, request_count)
+    VALUES (?, ?, 1)
+    ON CONFLICT(principal_id, window_start) DO UPDATE SET request_count=request_count+1
+    RETURNING request_count`).bind(actor.id, windowStart).all<{ request_count: number }>();
+  if (windowStart % 60 === 0) {
+    await env.DB.prepare("DELETE FROM sales_crm_rate_limits WHERE principal_id=? AND window_start < ?").bind(actor.id, windowStart - 60).run();
+  }
+  return Number(result.results?.[0]?.request_count ?? actor.rateLimit + 1) <= actor.rateLimit;
+}
+
+function crmScope(actor: CrmPrincipal, scope: string): boolean {
+  return actor.scopes.includes(scope);
+}
+
+async function auditCrm(env: Env, actor: CrmPrincipal, action: string, entityType = "", entityId = "", metadata: Record<string, unknown> = {}): Promise<void> {
+  await audit(env, actor, action, entityType, entityId, { ...metadata, integration_owner: actor.ownerId });
+}
+
+async function idempotentCrmWrite(
+  request: Request,
+  env: Env,
+  actor: CrmPrincipal,
+  routeKey: string,
+  execute: (body: Record<string, unknown>) => Promise<Response>,
+): Promise<Response> {
+  const key = request.headers.get("Idempotency-Key")?.trim() ?? "";
+  if (!/^[A-Za-z0-9._:-]{12,128}$/.test(key)) return json({ error: "A unique Idempotency-Key (12–128 characters) is required for CRM writes." }, 400);
+  const raw = await request.text();
+  if (raw.length > 30_000) return json({ error: "Request body must be under 30 KB." }, 413);
+  let body: Record<string, unknown>;
+  try { body = salesObject(JSON.parse(raw)); } catch (error) { return json({ error: error instanceof Error ? error.message : "Invalid JSON body." }, 400); }
+  const requestHash = await sha256Hex(raw);
+  const now = new Date().toISOString();
+  const reserve = await env.DB.prepare(`INSERT INTO sales_crm_idempotency
+    (principal_id,idempotency_key,route_key,request_sha256,state,created_at,updated_at,expires_at)
+    VALUES (?,?,?,?,'processing',?,?,?) ON CONFLICT(principal_id,idempotency_key) DO NOTHING
+    RETURNING idempotency_key`).bind(actor.id, key, routeKey, requestHash, now, now, new Date(Date.now() + 86_400_000).toISOString()).all();
+  if (!reserve.results?.length) {
+    const old = await env.DB.prepare(`SELECT route_key,request_sha256,state,response_status,response_json,updated_at
+      FROM sales_crm_idempotency WHERE principal_id=? AND idempotency_key=?`).bind(actor.id, key).all<Record<string, unknown>>();
+    const prior = old.results?.[0];
+    if (!prior || prior.route_key !== routeKey || prior.request_sha256 !== requestHash) return json({ error: "Idempotency-Key was already used for a different request." }, 409);
+    if (prior.state === "complete") {
+      return json(JSON.parse(String(prior.response_json || "{}")), Number(prior.response_status) || 200, { "Idempotent-Replay": "true" });
+    }
+    if (Date.now() - Date.parse(String(prior.updated_at)) < 10 * 60_000) return json({ error: "This request is already being processed. Retry with the same key shortly." }, 409);
+    const reclaimed = await env.DB.prepare(`UPDATE sales_crm_idempotency SET updated_at=?
+      WHERE principal_id=? AND idempotency_key=? AND state='processing' AND updated_at=? RETURNING idempotency_key`)
+      .bind(now, actor.id, key, String(prior.updated_at)).all();
+    if (!reclaimed.results?.length) return json({ error: "This request is already being processed. Retry with the same key shortly." }, 409);
+  }
+  let response: Response;
+  try {
+    response = await execute(body);
+    const responseText = await response.clone().text();
+    const safeResponse = responseText.length <= 30_000 ? responseText : JSON.stringify({ error: "Response exceeds idempotency cache limit." });
+    await env.DB.prepare(`UPDATE sales_crm_idempotency SET state='complete',response_status=?,response_json=?,updated_at=?
+      WHERE principal_id=? AND idempotency_key=?`).bind(response.status, safeResponse, new Date().toISOString(), actor.id, key).run();
+    return response;
+  } catch (error) {
+    await env.DB.prepare("DELETE FROM sales_crm_idempotency WHERE principal_id=? AND idempotency_key=? AND state='processing'").bind(actor.id, key).run();
+    throw error;
+  }
+}
+
+function crmContactValidEmail(value: unknown): string {
+  const email = salesString(value, "", 254).toLowerCase();
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error("Provide a valid contact email address.");
+  return email;
+}
+
+async function crmRoute(request: Request, env: Env, url: URL): Promise<Response> {
+  const actor = await authenticateCrm(request, env);
+  if (!actor) return json({ error: "Unauthorized. Use a named-user token or a scoped CRM integration key." }, 401);
+  if (!(await consumeCrmRateLimit(env, actor))) return json({ error: "Rate limit exceeded. Retry after the current minute." }, 429, { "Retry-After": String(60 - Math.floor((Date.now() % 60_000) / 1000)) });
+  const method = request.method;
+  const path = url.pathname.replace(/\/+$/, "");
+  const requireScope = (scope: string) => crmScope(actor, scope) ? null : json({ error: `Missing required scope: ${scope}` }, 403);
+  try {
+    if (path === "/v1/crm/companies" && method === "GET") {
+      const denied = requireScope("companies:read"); if (denied) return denied;
+      const q = salesString(url.searchParams.get("q"), "", 160).toLowerCase();
+      const limit = Math.max(1, Math.min(100, Number(url.searchParams.get("limit") || 50)));
+      const rows = await env.DB.prepare(`SELECT c.id,c.name AS company_name,c.industry,c.website,c.notes,c.updated_at,
+        COUNT(DISTINCT r.id) AS linked_record_count,
+        GROUP_CONCAT(DISTINCT r.entity_type) AS record_types
+        FROM sales_companies c LEFT JOIN sales_record_companies rc ON rc.company_id=c.id
+        LEFT JOIN sales_records r ON r.id=rc.record_id
+        WHERE (?='' OR lower(c.name) LIKE ?)
+        GROUP BY c.id ORDER BY c.updated_at DESC LIMIT ?`).bind(q, `%${q}%`, limit).all();
+      return json({ companies: rows.results ?? [] });
+    }
+    if (path === "/v1/crm/companies" && method === "POST") {
+      const denied = requireScope("companies:write"); if (denied) return denied;
+      return idempotentCrmWrite(request, env, actor, path, async (body) => {
+        const name = salesString(body.name ?? body.company_name, "", 160);
+        if (!name) return json({ error: "name is required" }, 400);
+        const normalized = name.trim().toLowerCase();
+        const dupe = await env.DB.prepare("SELECT id FROM sales_companies WHERE normalized_name=? LIMIT 1").bind(normalized).all<Record<string, unknown>>();
+        if (dupe.results?.length) return json({ error: "Company already exists.", id: dupe.results[0].id }, 409);
+        const id = crypto.randomUUID(), now = new Date().toISOString();
+        try {
+          await env.DB.prepare(`INSERT INTO sales_companies (id,name,normalized_name,website,industry,notes,created_at,updated_at)
+            VALUES (?,?,?,?,?,?,?,?)`).bind(id, name, normalized, salesString(body.website, "", 1000), salesString(body.industry, "", 100), salesString(body.notes, "", 2000), now, now).run();
+        } catch (error) {
+          const duplicate = await env.DB.prepare("SELECT id FROM sales_companies WHERE normalized_name=?").bind(normalized).all<Record<string, unknown>>();
+          if (duplicate.results?.length) return json({ error: "Company already exists.", id: duplicate.results[0].id }, 409);
+          throw error;
+        }
+        await auditCrm(env, actor, "crm_company_created", "company", id, { company_name: name });
+        return json({ id, company_name: name, created_at: now }, 201);
+      });
+    }
+    const companyMatch = path.match(/^\/v1\/crm\/companies\/([\w-]+)$/);
+    if (companyMatch && method === "PATCH") {
+      const denied = requireScope("companies:write"); if (denied) return denied;
+      return idempotentCrmWrite(request, env, actor, path, async (patch) => {
+        const existing = await env.DB.prepare("SELECT * FROM sales_companies WHERE id=?").bind(companyMatch[1]).all<Record<string, unknown>>();
+        const row = existing.results?.[0]; if (!row) return json({ error: "Company not found." }, 404);
+        const allowed = new Set(["name", "website", "industry", "notes"]);
+        const unknown = Object.keys(patch).filter((key) => !allowed.has(key));
+        if (unknown.length) return json({ error: `Unsupported company fields: ${unknown.join(", ")}` }, 400);
+        const name = salesString(patch.name, String(row.name), 160);
+        if (!name) return json({ error: "name cannot be empty." }, 400);
+        const normalized = name.trim().toLowerCase();
+        const now = new Date().toISOString();
+        const collision = await env.DB.prepare("SELECT id FROM sales_companies WHERE normalized_name=? AND id<>? LIMIT 1").bind(normalized, companyMatch[1]).all();
+        if (collision.results?.length) return json({ error: "Another company already uses that name." }, 409);
+        await env.DB.prepare("UPDATE sales_companies SET name=?,normalized_name=?,website=?,industry=?,notes=?,updated_at=? WHERE id=?")
+          .bind(name, normalized, salesString(patch.website, String(row.website), 1000), salesString(patch.industry, String(row.industry), 100), salesString(patch.notes, String(row.notes), 2000), now, companyMatch[1]).run();
+        if (Object.prototype.hasOwnProperty.call(patch, "name")) await env.DB.prepare(`UPDATE sales_records SET name=?,data_json=json_set(data_json,'$.company_name',?),updated_at=?
+          WHERE id IN (SELECT record_id FROM sales_record_companies WHERE company_id=?)`).bind(name, name, now, companyMatch[1]).run();
+        if (Object.prototype.hasOwnProperty.call(patch, "industry")) await env.DB.prepare(`UPDATE sales_records SET industry=?,data_json=json_set(data_json,'$.industry',?),updated_at=?
+          WHERE id IN (SELECT record_id FROM sales_record_companies WHERE company_id=?)`).bind(salesString(patch.industry, "", 100), salesString(patch.industry, "", 100), now, companyMatch[1]).run();
+        await auditCrm(env, actor, "crm_company_updated", "company", companyMatch[1], { changed_fields: Object.keys(patch) });
+        return json({ id: companyMatch[1], company_name: name, updated_at: now });
+      });
+    }
+    if (path === "/v1/crm/contacts" && method === "GET") {
+      const denied = requireScope("contacts:read"); if (denied) return denied;
+      const q = salesString(url.searchParams.get("q"), "", 160).toLowerCase();
+      const companyId = salesString(url.searchParams.get("company_id"), "", 80);
+      const rows = await env.DB.prepare(`SELECT c.id,c.display_name,c.title,c.phone,c.notes,c.updated_at,
+        e.email,e.is_primary,rc.company_id, r.name AS company_name,rc.relationship_role,rc.is_primary AS company_primary
+        FROM sales_contacts c
+        LEFT JOIN sales_contact_emails e ON e.contact_id=c.id
+        LEFT JOIN sales_company_contacts rc ON rc.contact_id=c.id
+        LEFT JOIN sales_companies r ON r.id=rc.company_id
+        WHERE (?='' OR lower(c.display_name) LIKE ? OR lower(COALESCE(e.normalized_email,'')) LIKE ?)
+          AND (?='' OR rc.company_id=?)
+        ORDER BY c.display_name,e.is_primary DESC LIMIT 500`).bind(q, `%${q}%`, `%${q}%`, companyId, companyId).all();
+      return json({ contacts: rows.results ?? [] });
+    }
+    if (path === "/v1/crm/contacts" && method === "POST") {
+      const denied = requireScope("contacts:write"); if (denied) return denied;
+      return idempotentCrmWrite(request, env, actor, path, async (body) => {
+        const displayName = salesString(body.display_name ?? body.name, "", 160);
+        if (!displayName) return json({ error: "display_name is required." }, 400);
+        const email = crmContactValidEmail(body.email);
+        const emailSourceUrl = salesString(body.email_source_url, "", 1000);
+        if (emailSourceUrl && !/^https:\/\//i.test(emailSourceUrl)) return json({ error: "email_source_url must use HTTPS." }, 400);
+        const confidence = String(body.confidence || "unverified");
+        if (!["unverified", "low", "medium", "high"].includes(confidence)) return json({ error: "confidence must be unverified, low, medium, or high." }, 400);
+        const companyIds = Array.isArray(body.company_ids) ? [...new Set(body.company_ids.map((v) => salesString(v, "", 80)).filter(Boolean))] : [];
+        if (!email && !companyIds.length) return json({ error: "Provide an email or at least one company_id so the contact can be deduplicated and linked." }, 400);
+        if (companyIds.length) {
+          const found = await env.DB.prepare(`SELECT COUNT(*) AS n FROM sales_companies WHERE id IN (${companyIds.map(() => "?").join(",")})`).bind(...companyIds).all<{ n: number }>();
+          if (Number(found.results?.[0]?.n) !== companyIds.length) return json({ error: "One or more company_ids were not found." }, 404);
+        }
+        const now = new Date().toISOString();
+        let contactId = "", matched = false;
+        if (email) {
+          const existing = await env.DB.prepare("SELECT contact_id FROM sales_contact_emails WHERE normalized_email=? LIMIT 1").bind(email).all<Record<string, unknown>>();
+          if (existing.results?.length) { contactId = String(existing.results[0].contact_id); matched = true; }
+        }
+        if (!contactId) {
+          contactId = crypto.randomUUID();
+          await env.DB.prepare("INSERT INTO sales_contacts (id,display_name,title,phone,notes,created_at,updated_at) VALUES (?,?,?,?,?,?,?)")
+            .bind(contactId, displayName, salesString(body.title, "", 160), salesString(body.phone, "", 80), salesString(body.notes, "", 2000), now, now).run();
+          if (email) {
+            try {
+              await env.DB.prepare("INSERT INTO sales_contact_emails (id,contact_id,email,normalized_email,is_primary,verification_source_url,confidence,created_at) VALUES (?,?,?,?,1,?,?,?)")
+                .bind(crypto.randomUUID(), contactId, email, email, emailSourceUrl, confidence, now).run();
+            } catch (error) {
+              await env.DB.prepare("DELETE FROM sales_contacts WHERE id=?").bind(contactId).run();
+              const duplicate = await env.DB.prepare("SELECT contact_id FROM sales_contact_emails WHERE normalized_email=?").bind(email).all<Record<string, unknown>>();
+              if (duplicate.results?.length) return json({ error: "That email address already belongs to another CRM contact.", id: duplicate.results[0].contact_id }, 409);
+              throw error;
+            }
+          }
+        }
+        for (const companyId of companyIds) {
+          await env.DB.prepare("INSERT OR IGNORE INTO sales_company_contacts (company_id,contact_id,relationship_role,is_primary,created_at) VALUES (?,?,?,?,?)")
+            .bind(companyId, contactId, salesString(body.relationship_role, "", 160), body.is_primary === true ? 1 : 0, now).run();
+        }
+        await auditCrm(env, actor, matched ? "crm_contact_linked" : "crm_contact_created", "contact", contactId, { email: email || "", company_ids: companyIds, matched_existing: matched });
+        return json({ id: contactId, display_name: displayName, email: email || null, company_ids: companyIds, matched_existing: matched }, matched ? 200 : 201);
+      });
+    }
+    const contactMatch = path.match(/^\/v1\/crm\/contacts\/([\w-]+)$/);
+    if (contactMatch && method === "PATCH") {
+      const denied = requireScope("contacts:write"); if (denied) return denied;
+      return idempotentCrmWrite(request, env, actor, path, async (patch) => {
+        const existing = await env.DB.prepare("SELECT id FROM sales_contacts WHERE id=?").bind(contactMatch[1]).all();
+        if (!existing.results?.length) return json({ error: "Contact not found." }, 404);
+        const assignments: string[] = [], values: unknown[] = [];
+        for (const [key, column, max] of [["display_name", "display_name", 160], ["title", "title", 160], ["phone", "phone", 80], ["notes", "notes", 2000]] as const) {
+          if (Object.prototype.hasOwnProperty.call(patch, key)) { const value = salesString(patch[key], "", max); if (key === "display_name" && !value) return json({ error: "display_name cannot be empty." }, 400); assignments.push(`${column}=?`); values.push(value); }
+        }
+        if (Object.prototype.hasOwnProperty.call(patch, "email")) {
+          const email = crmContactValidEmail(patch.email);
+          if (!email) return json({ error: "Contact email cannot be removed; set a replacement or leave it unchanged." }, 400);
+          const now = new Date().toISOString();
+          const confidence = String(patch.confidence || "unverified");
+          const emailSourceUrl = salesString(patch.email_source_url, "", 1000);
+          if (!["unverified", "low", "medium", "high"].includes(confidence)) return json({ error: "confidence must be unverified, low, medium, or high." }, 400);
+          if (emailSourceUrl && !/^https:\/\//i.test(emailSourceUrl)) return json({ error: "email_source_url must use HTTPS." }, 400);
+          await env.DB.prepare("UPDATE sales_contact_emails SET is_primary=0 WHERE contact_id=?").bind(contactMatch[1]).run();
+          const saved = await env.DB.prepare("INSERT INTO sales_contact_emails (id,contact_id,email,normalized_email,is_primary,verification_source_url,confidence,created_at) VALUES (?,?,?,?,1,?,?,?) ON CONFLICT(normalized_email) DO UPDATE SET is_primary=CASE WHEN contact_id=excluded.contact_id THEN 1 ELSE is_primary END RETURNING contact_id")
+            .bind(crypto.randomUUID(), contactMatch[1], email, email, emailSourceUrl, confidence, now).all<Record<string, unknown>>();
+          if (saved.results?.[0]?.contact_id !== contactMatch[1]) return json({ error: "That email address is already assigned to a different contact." }, 409);
+        }
+        assignments.push("updated_at=?"); values.push(new Date().toISOString()); values.push(contactMatch[1]);
+        if (assignments.length) await env.DB.prepare(`UPDATE sales_contacts SET ${assignments.join(",")} WHERE id=?`).bind(...values).run();
+        await auditCrm(env, actor, "crm_contact_updated", "contact", contactMatch[1], { changed_fields: Object.keys(patch) });
+        return json({ id: contactMatch[1], updated_at: new Date().toISOString() });
+      });
+    }
+    if (path === "/v1/crm/research-notes" && method === "POST") {
+      const denied = requireScope("research:write"); if (denied) return denied;
+      return idempotentCrmWrite(request, env, actor, path, async (body) => {
+        const companyId = salesString(body.company_id, "", 80), note = salesString(body.note, "", 2000);
+        if (!companyId || !note) return json({ error: "company_id and note are required." }, 400);
+        const found = await env.DB.prepare("SELECT id FROM sales_companies WHERE id=?").bind(companyId).all();
+        if (!found.results?.length) return json({ error: "Company not found." }, 404);
+        const sourceUrl = salesString(body.source_url, "", 1000);
+        const confidence = String(body.confidence || "unverified");
+        if (sourceUrl && !/^https:\/\//i.test(sourceUrl)) return json({ error: "source_url must use HTTPS." }, 400);
+        if (!["unverified", "low", "medium", "high"].includes(confidence)) return json({ error: "confidence must be unverified, low, medium, or high." }, 400);
+        const now = new Date().toISOString(), activityId = crypto.randomUUID();
+        let sourceId = "";
+        if (sourceUrl) {
+          sourceId = crypto.randomUUID();
+          await env.DB.prepare(`INSERT INTO sales_company_research_notes (id,company_id,note,source_url,source_title,confidence,created_by,created_at)
+            VALUES (?,?,?,?,?,?,?,?)`).bind(sourceId, companyId, note, sourceUrl, salesString(body.title, "Research note evidence", 160), confidence, actor.ownerId, now).run();
+        } else {
+          await env.DB.prepare(`INSERT INTO sales_company_research_notes (id,company_id,note,confidence,created_by,created_at)
+            VALUES (?,?,?,'unverified',?,?)`).bind(activityId, companyId, note, actor.ownerId, now).run();
+        }
+        await auditCrm(env, actor, "crm_research_note_added", "company", companyId, { note_id: sourceId || activityId, source_id: sourceId || null });
+        return json({ id: sourceId || activityId, company_id: companyId, source_id: sourceId || null, created_at: now }, 201);
+      });
+    }
+    if (path === "/v1/crm/communications" && method === "GET") {
+      const denied = requireScope("communications:read"); if (denied) return denied;
+      const companyId = salesString(url.searchParams.get("company_id"), "", 80);
+      const contactId = salesString(url.searchParams.get("contact_id"), "", 80);
+      if (!companyId && !contactId) return json({ error: "company_id or contact_id is required." }, 400);
+      let gmail;
+      if (companyId) gmail = await env.DB.prepare(`SELECT id,provider,gmail_message_id AS message_id,gmail_thread_id AS thread_id,gmail_draft_id AS draft_id,direction,from_email,to_emails_json,cc_emails_json,subject,snippet,occurred_at
+        FROM sales_communications WHERE company_id=? ORDER BY occurred_at DESC LIMIT 200`).bind(companyId).all();
+      else gmail = await env.DB.prepare(`SELECT c.id,c.provider,c.gmail_message_id AS message_id,c.gmail_thread_id AS thread_id,c.gmail_draft_id AS draft_id,c.direction,c.from_email,c.to_emails_json,c.cc_emails_json,c.subject,c.snippet,c.occurred_at
+        FROM sales_communications c WHERE c.contact_id=? ORDER BY c.occurred_at DESC LIMIT 200`).bind(contactId).all();
+      let resend: { results?: Record<string, unknown>[] } = { results: [] };
+      if (companyId) resend = await env.DB.prepare(`SELECT o.id,'resend' AS provider,o.provider_id AS message_id,'' AS thread_id,'' AS draft_id,'sent' AS direction,'' AS from_email,json_array(o.recipient) AS to_emails_json,'[]' AS cc_emails_json,o.subject,o.body AS snippet,o.sent_at AS occurred_at
+        FROM outreach_log o JOIN sales_record_companies rc ON rc.record_id=o.lead_id
+        WHERE rc.company_id=? ORDER BY o.sent_at DESC LIMIT 200`).bind(companyId).all<Record<string, unknown>>();
+      else resend = await env.DB.prepare(`SELECT o.id,'resend' AS provider,o.provider_id AS message_id,'' AS thread_id,'' AS draft_id,'sent' AS direction,'' AS from_email,json_array(o.recipient) AS to_emails_json,'[]' AS cc_emails_json,o.subject,o.body AS snippet,o.sent_at AS occurred_at
+        FROM outreach_log o JOIN sales_contact_emails e ON lower(e.normalized_email)=lower(o.recipient)
+        WHERE e.contact_id=? ORDER BY o.sent_at DESC LIMIT 200`).bind(contactId).all<Record<string, unknown>>();
+      const communications = [...(gmail.results ?? []), ...(resend.results ?? [])].sort((a, b) => String(b.occurred_at).localeCompare(String(a.occurred_at))).slice(0, 200);
+      return json({ communications, sources: ["gmail", "resend"], note: "Gmail message status is authoritative for Gmail messages; Resend entries remain separate and are not converted into Gmail send events." });
+    }
+    if (path === "/v1/crm/opportunities" && method === "GET") {
+      const denied = requireScope("opportunities:read"); if (denied) return denied;
+      const rows = await env.DB.prepare(`SELECT r.id,r.name AS company_name,r.stage,r.industry,r.status,r.monthly_revenue,r.total_value,r.probability,r.next_follow_up,r.last_contact,r.updated_at,rc.company_id
+        FROM sales_records r LEFT JOIN sales_record_companies rc ON rc.record_id=r.id WHERE r.entity_type='lead' ORDER BY r.updated_at DESC LIMIT 1000`).all();
+      return json({ opportunities: rows.results ?? [], model: "sales_records" });
+    }
+    const opportunityMatch = path.match(/^\/v1\/crm\/opportunities\/([\w-]+)$/);
+    if (opportunityMatch && (method === "GET" || method === "PATCH")) {
+      const denied = requireScope(method === "GET" ? "opportunities:read" : "opportunities:write"); if (denied) return denied;
+      if (method === "GET") {
+        const rows = await env.DB.prepare(`SELECT r.id,r.name AS company_name,r.stage,r.industry,r.status,r.monthly_revenue,r.total_value,r.probability,r.next_follow_up,r.last_contact,r.data_json,r.updated_at,rc.company_id
+          FROM sales_records r LEFT JOIN sales_record_companies rc ON rc.record_id=r.id WHERE r.id=? AND r.entity_type='lead'`).bind(opportunityMatch[1]).all();
+        return rows.results?.length ? json({ opportunity: rows.results[0] }) : json({ error: "Opportunity not found." }, 404);
+      }
+      return idempotentCrmWrite(request, env, actor, path, async (patch) => {
+        const old = await env.DB.prepare("SELECT * FROM sales_records WHERE id=? AND entity_type='lead'").bind(opportunityMatch[1]).all<Record<string, unknown>>();
+        const row = old.results?.[0]; if (!row) return json({ error: "Opportunity not found." }, 404);
+        const allowed = new Set(["stage", "status", "monthly_revenue", "total_value", "probability", "next_follow_up", "notes", "pipeline_outcome", "win_loss_reason"]);
+        const unknown = Object.keys(patch).filter((key) => !allowed.has(key));
+        if (unknown.length) return json({ error: `Unsupported opportunity fields: ${unknown.join(", ")}` }, 400);
+        let data: Record<string, unknown> = {}; try { data = JSON.parse(String(row.data_json || "{}")); } catch { data = {}; }
+        const next = { ...data, ...patch }, stage = salesString(next.stage, String(row.stage), 40);
+        if (!SALES_STAGES.has(stage)) return json({ error: "Unknown lead stage" }, 400);
+        const now = new Date().toISOString();
+        await env.DB.prepare(`UPDATE sales_records SET stage=?,status=?,monthly_revenue=?,total_value=?,probability=?,next_follow_up=?,data_json=?,updated_at=? WHERE id=?`)
+          .bind(stage, salesString(next.status, String(row.status), 30), salesNumber(next.monthly_revenue, Number(row.monthly_revenue)), salesNumber(next.total_value, Number(row.total_value)), Math.min(100, Math.round(salesNumber(next.probability, Number(row.probability)))), salesDate(next.next_follow_up), JSON.stringify(next), now, opportunityMatch[1]).run();
+        await auditCrm(env, actor, "crm_opportunity_updated", "lead", opportunityMatch[1], { changed_fields: Object.keys(patch) });
+        return json({ id: opportunityMatch[1], stage, updated_at: now });
+      });
+    }
+    if (path === "/v1/crm/follow-up-tasks" && method === "GET") {
+      const denied = requireScope("tasks:read"); if (denied) return denied;
+      const rows = await env.DB.prepare(`SELECT t.*,co.name AS company_name,r.name AS opportunity_name,c.display_name AS contact_name
+        FROM sales_follow_up_tasks t JOIN sales_companies co ON co.id=t.company_id
+        LEFT JOIN sales_records r ON r.id=t.record_id
+        LEFT JOIN sales_contacts c ON c.id=t.contact_id
+        WHERE (?='' OR t.status=?) ORDER BY t.due_at LIMIT 500`).bind(salesString(url.searchParams.get("status"), "", 20), salesString(url.searchParams.get("status"), "", 20)).all();
+      return json({ tasks: rows.results ?? [] });
+    }
+    if (path === "/v1/crm/follow-up-tasks" && method === "POST") {
+      const denied = requireScope("tasks:write"); if (denied) return denied;
+      return idempotentCrmWrite(request, env, actor, path, async (body) => {
+        const companyId = salesString(body.company_id, "", 80), recordId = salesString(body.record_id, "", 80), title = salesString(body.title, "", 240);
+        if (!companyId || !title) return json({ error: "company_id and title are required." }, 400);
+        const company = await env.DB.prepare("SELECT id FROM sales_companies WHERE id=?").bind(companyId).all();
+        if (!company.results?.length) return json({ error: "Company not found." }, 404);
+        if (recordId) {
+          const linkedRecord = await env.DB.prepare("SELECT record_id FROM sales_record_companies WHERE record_id=? AND company_id=?").bind(recordId, companyId).all();
+          if (!linkedRecord.results?.length) return json({ error: "record_id is not linked to the selected company." }, 400);
+        }
+        const contactId = salesString(body.contact_id, "", 80);
+        if (contactId) {
+          const linked = await env.DB.prepare("SELECT contact_id FROM sales_company_contacts WHERE company_id=? AND contact_id=?").bind(companyId, contactId).all();
+          if (!linked.results?.length) return json({ error: "Contact is not linked to the selected company." }, 400);
+        }
+        const dueAt = salesDate(body.due_at);
+        if (!dueAt) return json({ error: "due_at is required and must use YYYY-MM-DD." }, 400);
+        const dedupeKey = salesString(body.dedupe_key, "", 300) || null;
+        const id = crypto.randomUUID(), now = new Date().toISOString();
+        try {
+          await env.DB.prepare(`INSERT INTO sales_follow_up_tasks (id,company_id,record_id,contact_id,task_type,title,notes,assigned_to,due_at,status,generated_by,dedupe_key,created_by,created_at,updated_at)
+            VALUES (?,?,?,?,?,?,?,?,?,'open','manual',?,?,?,?)`).bind(id, companyId, recordId || null, contactId || null, salesString(body.task_type, "follow_up", 60), title, salesString(body.notes, "", 2000), salesString(body.assigned_to, "", 80), dueAt, dedupeKey, actor.ownerId, now, now).run();
+        } catch (error) {
+          if (dedupeKey) {
+            const prior = await env.DB.prepare("SELECT id FROM sales_follow_up_tasks WHERE dedupe_key=?").bind(dedupeKey).all<Record<string, unknown>>();
+            if (prior.results?.length) return json({ id: prior.results[0].id, matched_existing: true }, 200);
+          }
+          throw error;
+        }
+        await auditCrm(env, actor, "crm_follow_up_task_created", "follow_up_task", id, { company_id: companyId, record_id: recordId || null, contact_id: contactId || null, due_at: dueAt });
+        return json({ id, status: "open", created_at: now }, 201);
+      });
+    }
+    const taskMatch = path.match(/^\/v1\/crm\/follow-up-tasks\/([\w-]+)$/);
+    if (taskMatch && method === "PATCH") {
+      const denied = requireScope("tasks:write"); if (denied) return denied;
+      return idempotentCrmWrite(request, env, actor, path, async (patch) => {
+        const rowResult = await env.DB.prepare("SELECT * FROM sales_follow_up_tasks WHERE id=?").bind(taskMatch[1]).all<Record<string, unknown>>();
+        const row = rowResult.results?.[0]; if (!row) return json({ error: "Follow-up task not found." }, 404);
+        const allowed = new Set(["title", "notes", "assigned_to", "due_at", "status"]);
+        const unknown = Object.keys(patch).filter((key) => !allowed.has(key));
+        if (unknown.length) return json({ error: `Unsupported task fields: ${unknown.join(", ")}` }, 400);
+        const status = salesString(patch.status, String(row.status), 20);
+        if (!["open", "completed", "cancelled"].includes(status)) return json({ error: "status must be open, completed, or cancelled." }, 400);
+        const dueAt = Object.prototype.hasOwnProperty.call(patch, "due_at") ? salesDate(patch.due_at) : String(row.due_at);
+        const now = new Date().toISOString();
+        await env.DB.prepare(`UPDATE sales_follow_up_tasks SET title=?,notes=?,assigned_to=?,due_at=?,status=?,updated_at=?,completed_at=?,cancelled_at=? WHERE id=?`)
+          .bind(salesString(patch.title, String(row.title), 240), salesString(patch.notes, String(row.notes), 2000), salesString(patch.assigned_to, String(row.assigned_to), 80), dueAt,
+            status, now, status === "completed" ? now : status === "open" ? null : row.completed_at, status === "cancelled" ? now : status === "open" ? null : row.cancelled_at, taskMatch[1]).run();
+        await auditCrm(env, actor, "crm_follow_up_task_updated", "follow_up_task", taskMatch[1], { changed_fields: Object.keys(patch), status });
+        return json({ id: taskMatch[1], status, updated_at: now });
+      });
+    }
+    return json({ error: "Not found" }, 404);
+  } catch (error) {
+    return json({ error: error instanceof Error ? error.message.slice(0, 240) : "CRM request failed" }, 400);
+  }
+}
+
 function originMatches(request: Request, env: Env): boolean {
   return Boolean(env.PUBLIC_READ_ORIGIN && request.headers.get("Origin") === env.PUBLIC_READ_ORIGIN);
 }
@@ -438,6 +861,7 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     if (request.method === "GET" && url.pathname === "/health") return json({ ok: true });
+    if (url.pathname.startsWith("/v1/crm/")) return crmRoute(request, env, url);
     if (url.pathname.startsWith("/v1/sales/")) {
       return salesRoute(request, env, url);
     }
