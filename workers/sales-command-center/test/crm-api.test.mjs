@@ -161,12 +161,15 @@ test('Gmail message keys and Resend records remain separate to avoid duplicate a
     VALUES ('gmail-1','gmail','message-1','thread-1',?,?,'sent','partnerships@10ktakesmn.com','Pitch','Gmail message preview',?,?)`).run(companyOne, leadId, now, now);
   db.prepare(`INSERT OR IGNORE INTO sales_communications (id,provider,gmail_message_id,gmail_thread_id,company_id,record_id,direction,from_email,subject,snippet,occurred_at,synced_at)
     VALUES ('gmail-duplicate','gmail','message-1','thread-1',?,?,'sent','partnerships@10ktakesmn.com','Pitch','Duplicate attempt',?,?)`).run(companyOne, leadId, now, now);
+  db.prepare(`INSERT INTO sales_communications (id,provider,gmail_message_id,gmail_thread_id,company_id,record_id,direction,from_email,subject,snippet,occurred_at,synced_at,deleted_at)
+    VALUES ('gmail-deleted','gmail','message-deleted','thread-deleted',?,?,'received','contact@example.com','Old reply','Soft-deleted message',?,?,?)`).run(companyOne, leadId, now, now, now);
   db.prepare("INSERT INTO outreach_log (id,lead_id,recipient,subject,body,provider_id,sent_at) VALUES ('resend-1',?,'prospect@example.com','Pitch','Resend copy','resend-message-1',?)").run(leadId, now);
   db.prepare("INSERT INTO sales_activities (id,record_id,activity_type,summary,occurred_at,created_at) VALUES ('resend-activity-1',?,'email_sent','Sent via Resend',?,?)").run(leadId, now, now);
   assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sales_communications WHERE provider='gmail' AND gmail_message_id='message-1'").get().n, 1);
   const history = await call(`/v1/crm/communications?company_id=${companyOne}`);
   assert.equal(history.data.communications.length, 2);
   assert.deepEqual(new Set(history.data.communications.map((message) => message.provider)), new Set(['gmail', 'resend']));
+  assert.equal(history.data.communications.some((message) => message.message_id === 'message-deleted'), false, 'soft-deleted Gmail messages are excluded from history');
   assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sales_activities WHERE activity_type='email_sent'").get().n, 1);
 });
 

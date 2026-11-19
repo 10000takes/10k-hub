@@ -252,7 +252,7 @@ async function syncOneMessage(env: GmailEnv, accessToken: string, messageId: str
   const direction = isDraft ? "draft" : labels.includes("SENT") || fromEmails.includes(mailbox) ? "sent" : "received";
   const externalEmails = direction === "received" ? fromEmails.filter((email) => email !== mailbox) : [...toEmails, ...ccEmails].filter((email) => email !== mailbox);
   let link = await findLink(env, externalEmails);
-  if (!link.contactId && message.threadId) link = await inheritThreadLink(env, message.threadId);
+  if (!link.contactId && !link.companyId && message.threadId) link = await inheritThreadLink(env, message.threadId);
   // Do not retain unrelated mailbox metadata. Only CRM-linked people, known company domains,
   // or messages in an already linked thread enter the CRM communication history.
   if (!link.contactId && !link.companyId) return { matched: false, direction, deleted: false };
@@ -528,12 +528,14 @@ export async function scheduledGmailSync(env: GmailEnv): Promise<void> {
     try {
       const result = await runGmailSync(env);
       await audit(env, "system:gmail_sync", "gmail_sync_scheduled", { mailbox: MAILBOX, ...result });
+      console.log(JSON.stringify({ event: "gmail_sync_cron", outcome: "success", ...result, at: new Date().toISOString() }));
     }
     catch (error) {
       const reason = error instanceof Error && /history or message/.test(error.message) ? "Gmail history needs a fresh reconciliation." : error instanceof Error ? error.message.slice(0, 180) : "Gmail synchronization failed.";
       const now = new Date().toISOString();
       await env.DB.prepare("UPDATE sales_gmail_sync_state SET status='error',error_summary=?,last_attempt_at=?,updated_at=? WHERE mailbox_email=?").bind(reason, now, now, MAILBOX).run();
       await audit(env, "system:gmail_sync", "gmail_sync_scheduled_failed", { mailbox: MAILBOX, error: reason });
+      console.error(JSON.stringify({ event: "gmail_sync_cron", outcome: "error", error: reason, at: now }));
     }
-  }
+  } else console.log(JSON.stringify({ event: "gmail_sync_cron", outcome: "skipped_not_connected", at: new Date().toISOString() }));
 }

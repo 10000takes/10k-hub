@@ -104,6 +104,9 @@ test('Gmail connection uses metadata-only OAuth and verifies the exact mailbox',
 
 test('sync stores header metadata only, records drafts, deduplicates messages and cancels follow-up on reply', async () => {
   await connectMailbox();
+  db.prepare(`UPDATE sales_companies SET website='https://northlandford.com' WHERE id=(SELECT company_id FROM sales_record_companies WHERE record_id='lead')`).run();
+  assert.equal(db.prepare("SELECT website FROM sales_companies WHERE id=(SELECT company_id FROM sales_record_companies WHERE record_id='lead')").get().website, 'https://northlandford.com');
+  assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sales_companies WHERE website<>'' AND lower(website) LIKE '%northlandford.com%'").get().n, 1);
   const contactId = 'legacy:email:jorgen.karlsrud@example.com';
   const outgoing = {
     id: 'sent-1', threadId: 'thread-1', labelIds: ['SENT'], internalDate: String(Date.parse('2026-11-19T16:00:00Z')),
@@ -123,13 +126,17 @@ test('sync stores header metadata only, records drafts, deduplicates messages an
     id: 'unrelated-1', threadId: 'unrelated-thread', labelIds: ['INBOX'], internalDate: String(Date.parse('2026-11-19T16:20:00Z')),
     payload: { headers: [{ name: 'From', value: 'Someone <someone@example.org>' }, { name: 'To', value: 'partnerships@10ktakesmn.com' }, { name: 'Subject', value: 'Unrelated private email' }] },
   };
+  const unknownContactKnownCompany = {
+    id: 'company-domain-1', threadId: 'company-domain-thread', labelIds: ['INBOX'], internalDate: String(Date.parse('2026-11-19T16:30:00Z')),
+    payload: { headers: [{ name: 'From', value: 'New Person <new.person@northlandford.com>' }, { name: 'To', value: 'partnerships@10ktakesmn.com' }, { name: 'Subject', value: 'Known company, new contact' }] },
+  };
   let historyPoll = 0, metadataGetCount = 0;
   globalThis.fetch = async (input, init = {}) => {
     const url = new URL(String(input));
     if (url.href === 'https://oauth2.googleapis.com/token') return Response.json({ access_token: 'temporary-access-token' });
     if (url.pathname.endsWith('/messages')) {
       assert.equal(url.searchParams.has('q'), false, 'metadata scope must not use Gmail search queries');
-      return Response.json({ messages: [{ id: 'sent-1' }, { id: 'draft-1' }, { id: 'unrelated-1' }] });
+      return Response.json({ messages: [{ id: 'sent-1' }, { id: 'draft-1' }, { id: 'unrelated-1' }, { id: 'company-domain-1' }] });
     }
     if (url.pathname.endsWith('/messages/sent-1') || url.pathname.endsWith('/messages/draft-1')) {
       assert.equal(url.searchParams.get('format'), 'metadata');
@@ -140,6 +147,10 @@ test('sync stores header metadata only, records drafts, deduplicates messages an
     if (url.pathname.endsWith('/messages/unrelated-1')) {
       assert.equal(url.searchParams.get('format'), 'metadata');
       return Response.json(unrelated);
+    }
+    if (url.pathname.endsWith('/messages/company-domain-1')) {
+      assert.equal(url.searchParams.get('format'), 'metadata');
+      return Response.json(unknownContactKnownCompany);
     }
     if (url.pathname.endsWith('/history')) {
       historyPoll++;
@@ -158,9 +169,13 @@ test('sync stores header metadata only, records drafts, deduplicates messages an
 
   const first = await request('/v1/sales/gmail/sync', { method: 'POST' });
   assert.equal(first.status, 200, await first.clone().text());
-  assert.equal((await first.clone().json()).unmatched, 1);
-  assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sales_communications WHERE provider='gmail'").get().n, 2);
+  const syncCounts = await first.clone().json();
+  assert.equal(syncCounts.unmatched, 1, JSON.stringify(syncCounts));
+  assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sales_communications WHERE provider='gmail'").get().n, 3);
   assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sales_communications WHERE gmail_message_id='unrelated-1'").get().n, 0, 'unmatched messages are discarded');
+  const domainMatched = db.prepare("SELECT company_id,contact_id FROM sales_communications WHERE gmail_message_id='company-domain-1'").get();
+  assert.ok(domainMatched.company_id, 'unknown contact is retained at company level when the sender domain matches a known company website');
+  assert.equal(domainMatched.contact_id, null, 'sync does not invent a contact');
   assert.equal(db.prepare("SELECT direction FROM sales_communications WHERE gmail_message_id='sent-1'").get().direction, 'sent');
   assert.equal(db.prepare("SELECT direction FROM sales_communications WHERE gmail_message_id='draft-1'").get().direction, 'draft');
   assert.equal(db.prepare("SELECT body_ciphertext,snippet FROM sales_communications WHERE gmail_message_id='sent-1'").get().body_ciphertext, '');
@@ -171,7 +186,7 @@ test('sync stores header metadata only, records drafts, deduplicates messages an
 
   const second = await request('/v1/sales/gmail/sync', { method: 'POST' });
   assert.equal(second.status, 200, await second.clone().text());
-  assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sales_communications WHERE provider='gmail'").get().n, 3);
+  assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sales_communications WHERE provider='gmail'").get().n, 4);
   assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sales_follow_up_tasks WHERE status='open'").get().n, 0);
   assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sales_follow_up_tasks WHERE status='cancelled'").get().n, 1);
   assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sales_communications WHERE gmail_message_id='reply-1' AND contact_id=?").get(contactId).n, 1);

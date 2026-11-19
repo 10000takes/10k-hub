@@ -383,9 +383,9 @@ async function crmRoute(request: Request, env: Env, url: URL): Promise<Response>
       if (!companyId && !contactId) return json({ error: "company_id or contact_id is required." }, 400);
       let gmail;
       if (companyId) gmail = await env.DB.prepare(`SELECT id,provider,gmail_message_id AS message_id,gmail_thread_id AS thread_id,gmail_draft_id AS draft_id,direction,from_email,to_emails_json,cc_emails_json,subject,snippet,occurred_at
-        FROM sales_communications WHERE company_id=? ORDER BY occurred_at DESC LIMIT 200`).bind(companyId).all();
+        FROM sales_communications WHERE company_id=? AND deleted_at IS NULL ORDER BY occurred_at DESC LIMIT 200`).bind(companyId).all();
       else gmail = await env.DB.prepare(`SELECT c.id,c.provider,c.gmail_message_id AS message_id,c.gmail_thread_id AS thread_id,c.gmail_draft_id AS draft_id,c.direction,c.from_email,c.to_emails_json,c.cc_emails_json,c.subject,c.snippet,c.occurred_at
-        FROM sales_communications c WHERE c.contact_id=? ORDER BY c.occurred_at DESC LIMIT 200`).bind(contactId).all();
+        FROM sales_communications c WHERE c.contact_id=? AND c.deleted_at IS NULL ORDER BY c.occurred_at DESC LIMIT 200`).bind(contactId).all();
       let resend: { results?: Record<string, unknown>[] } = { results: [] };
       if (companyId) resend = await env.DB.prepare(`SELECT o.id,'resend' AS provider,o.provider_id AS message_id,'' AS thread_id,'' AS draft_id,'sent' AS direction,'' AS from_email,json_array(o.recipient) AS to_emails_json,'[]' AS cc_emails_json,o.subject,o.body AS snippet,o.sent_at AS occurred_at
         FROM outreach_log o JOIN sales_record_companies rc ON rc.record_id=o.lead_id
