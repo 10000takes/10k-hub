@@ -19,7 +19,7 @@ The Node test suite creates a temporary SQLite database, applies the current sch
 2. Apply migration `0005_crm_integration_foundation.sql` to a non-production/preview D1 database first.
 3. Verify the existing `sales_records` counts and representative clients/leads before and after migration; confirm new company/contact mappings and existing dashboard routes.
 4. Deploy the Worker only after preview validation, then run read-only smoke checks before issuing any integration key.
-5. Keep Gmail OAuth out of this phase. Confirm Google Workspace mailbox status and obtain written confirmation of OAuth verification and restricted-scope assessment requirements before Phase 2.
+5. Phase 2 Gmail OAuth and metadata synchronization are implemented locally in `docs/gmail-phase-2-implementation.md`; they still require separate preview/production rollout steps and Workspace/OAuth configuration.
 
 ## Rollback
 
@@ -29,4 +29,4 @@ Do not drop the new tables as part of a routine rollback: doing so would permane
 
 ## Deployment boundary
 
-This task stops before all production actions. Phase 2 (Gmail OAuth/synchronization and automatic follow-up generation) must not start until its OAuth cost/compliance review and the Phase 1 production rollout are separately completed.
+This Phase 1 task stopped before production actions. Phase 2 is now implemented locally and has not been deployed. Any remote migration, OAuth setup, mailbox connection, or Worker deployment requires its own rollout action.

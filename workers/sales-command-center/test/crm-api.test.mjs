@@ -54,6 +54,7 @@ beforeEach(() => {
   insert.run('lead-one', 'lead', 'Northland Ford', 'Contacted', 'Automotive', 'open', 0, 5000, 20, null, null, now,
     JSON.stringify({ company_name: 'Northland Ford', stage: 'Contacted', estimated_total_value: 5000 }), now, now);
   db.exec(readFileSync(join(here, 'migrations', '0005_crm_integration_foundation.sql'), 'utf8'));
+  db.exec(readFileSync(join(here, 'migrations', '0006_gmail_internal_metadata_sync.sql'), 'utf8'));
   env = { DB: new LocalD1(db), SALES_JACK_TOKEN: 'jack-test-token-with-at-least-thirty-two-characters', SALES_CODY_TOKEN: 'cody-test-token-with-at-least-thirty-two-characters', PUBLIC_READ_ORIGIN: 'https://10000takes.github.io' };
   companyOne = db.prepare("SELECT company_id FROM sales_record_companies WHERE record_id='company-one'").get().company_id;
   companyTwo = db.prepare("SELECT company_id FROM sales_record_companies WHERE record_id='company-two'").get().company_id;

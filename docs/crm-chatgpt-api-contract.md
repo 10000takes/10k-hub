@@ -35,7 +35,7 @@ This contract is implemented under `/v1/crm/*` in the Sales Command Center Worke
 | `POST /v1/crm/follow-up-tasks` | `tasks:write` | Create a manual task, optionally linked to a contact. |
 | `PATCH /v1/crm/follow-up-tasks/{id}` | `tasks:write` | Reschedule, assign, complete, reopen, or cancel a task. |
 
-Canonical companies are additive identity records linked to the current `sales_records`; pipeline/client lifecycle remains in the existing dashboard model. Creating a canonical company does not create or promote a `sales_records` row. The current Gmail communication endpoint returns only stored metadata and a short preview. Gmail messages remain authoritative for Gmail sent/reply/draft status. A future sync must never mark a Gmail message sent because a draft was generated. Resend remains a separate provider and its existing `outreach_log`/activity behavior is preserved; Gmail sync records are stored in their own unique-message table and do not also create `sales_activities` entries.
+Canonical companies are additive identity records linked to the current `sales_records`; pipeline/client lifecycle remains in the existing dashboard model. Creating a canonical company does not create or promote a `sales_records` row. The Gmail sync stores selected header metadata only; it does not read message bodies or attachments. Gmail messages remain authoritative for Gmail sent/reply/draft status. A future sync must never mark a Gmail message sent because a draft was generated. Resend remains a separate provider and its existing `outreach_log`/activity behavior is preserved; Gmail sync records are stored in their own unique-message table and do not also create `sales_activities` entries.
 
 ## Recommended ChatGPT key
 

@@ -1,3 +1,5 @@
+import { handleGmailCallback, handleGmailRoute, scheduledGmailSync } from "./gmail";
+
 interface D1Result<T = unknown> { results?: T[] }
 interface D1PreparedStatement {
   bind(...values: unknown[]): D1PreparedStatement;
@@ -16,6 +18,10 @@ interface Env {
   RESEND_API_KEY?: string;
   RESEND_FROM?: string;
   AI?: { run(model: string, input: Record<string, unknown>): Promise<unknown> };
+  GOOGLE_OAUTH_CLIENT_ID?: string;
+  GOOGLE_OAUTH_CLIENT_SECRET?: string;
+  GOOGLE_OAUTH_REDIRECT_URI?: string;
+  GMAIL_TOKEN_ENCRYPTION_KEY?: string;
 }
 
 interface SalesActor { id: string; display_name: string; role: string; legacy: boolean }
@@ -542,6 +548,9 @@ async function salesRoute(request: Request, env: Env, url: URL): Promise<Respons
       const user = await env.DB.prepare("SELECT active FROM sales_users WHERE id = ?").bind(actor.id).all<Record<string, unknown>>();
       if (Number(user.results?.[0]?.active) !== 1) return json({ error: "This user is inactive. Contact the workspace owner." }, 403, salesCors(request, env));
     }
+    if (path.startsWith("/v1/sales/gmail/")) {
+      return handleGmailRoute(request, env, url, actor, salesCors(request, env));
+    }
     if (path === "/v1/sales/audit" && request.method === "GET") {
       const limit = Math.max(1, Math.min(100, Number(url.searchParams.get("limit") || 30)));
       const rows = await env.DB.prepare("SELECT a.*, u.display_name FROM sales_audit_log a LEFT JOIN sales_users u ON u.id = a.actor_id ORDER BY a.created_at DESC LIMIT ?").bind(limit).all();
@@ -861,10 +870,14 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     if (request.method === "GET" && url.pathname === "/health") return json({ ok: true });
+    if (url.pathname === "/v1/sales/gmail/callback") return handleGmailCallback(request, env);
     if (url.pathname.startsWith("/v1/crm/")) return crmRoute(request, env, url);
     if (url.pathname.startsWith("/v1/sales/")) {
       return salesRoute(request, env, url);
     }
     return json({ error: "Not found" }, 404);
+  },
+  async scheduled(_controller: unknown, env: Env, context: { waitUntil(promise: Promise<unknown>): void }): Promise<void> {
+    context.waitUntil(scheduledGmailSync(env));
   },
 };

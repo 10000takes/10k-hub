@@ -4,6 +4,9 @@
 	"main": "src/index.ts",
 	"compatibility_date": "2026-11-05",
 	"workers_dev": true,
+	"triggers": {
+		"crons": ["*/15 * * * *"]
+	},
 	"vars": {
 		"PUBLIC_READ_ORIGIN": "https://10000takes.github.io"
 	},
