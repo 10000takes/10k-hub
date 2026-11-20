@@ -30,28 +30,26 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Check Friday morning schedule
+      - name: Accept scheduled or manual run
         id: gate
         env:
           EVENT_NAME: ${{ github.event_name }}
         run: |
-          if [ "$EVENT_NAME" = "workflow_dispatch" ] || { [ "$(TZ=America/Chicago date +%u)" = "5" ] && [ "$(TZ=America/Chicago date +%H)" = "09" ]; }; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "run=false" >> "$GITHUB_OUTPUT"
-            echo "Not Friday at 9 AM Central; skipping report generation and email."
-          fi
+          # The schedule itself selects Friday at 9 AM Central. GitHub may start
+          # scheduled runs late, so do not skip a valid run based on its start hour.
+          echo "run=true" >> "$GITHUB_OUTPUT"
+          echo "Proceeding with ${EVENT_NAME} at $(TZ=America/Chicago date '+%Y-%m-%d %H:%M %Z')."
 
       - uses: actions/setup-python@v6
         if: steps.gate.outputs.run == 'true'
         with:
           python-version: "3.12"
 
-      - name: Confirm today's X metrics are saved
+      - name: Check today's X metrics availability
         if: steps.gate.outputs.run == 'true' && github.event_name == 'schedule'
         run: |
           python - <<'PY'
-          import csv, sys
+          import csv
           from datetime import datetime
           from zoneinfo import ZoneInfo
           day = datetime.now(ZoneInfo("America/Chicago")).date().isoformat()
@@ -64,8 +62,9 @@ jobs:
           except OSError:
               ready = False
           if not ready:
-              sys.exit("X/Twitter metrics were not saved for today. Stopping so the scheduled report cannot email stale X numbers; check the Collect X workflow and retry.")
-          print("Fresh X/Twitter metrics found for " + day)
+              print("::warning::No X/Twitter rolling metric was saved for today. The report will still be sent; its existing freshness rules will mark missing or old readings unavailable.")
+          else:
+              print("Fresh X/Twitter metrics found for " + day)
           PY
 
       - name: Check whether today's post snapshot needs a refresh

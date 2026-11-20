@@ -111,6 +111,7 @@ html.locked #gate{display:flex}
 .gbox{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:28px 26px;width:100%;max-width:340px;text-align:center}
 .gbox h1{font-size:30px;margin-bottom:4px}.gbox p{color:var(--mute);margin:4px 0 16px}
 .gbox input{width:100%;font:700 28px Barlow,sans-serif;letter-spacing:10px;text-align:center;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+#pin{-webkit-text-security:disc}
 .gbox button{width:100%;margin-top:12px;padding:10px;font-size:16px}
 #pinMsg{min-height:20px;margin-top:10px;font-size:14px;color:var(--down)}
 .tabs.top{margin:14px 0 6px;border-bottom-width:3px}
@@ -134,7 +135,7 @@ html.locked #gate{display:flex}
 </style></head>
 <body>
 <div id="gate" role="dialog" aria-modal="true" aria-labelledby="gateT"><div class="gbox"><h1 id="gateT">10K Takes</h1><p>Enter your PIN to continue.</p>
-<input id="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" aria-label="PIN"><button id="pinGo">Unlock</button><div id="pinMsg" role="alert"></div></div></div>
+<input id="pin" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="one-time-code" autocapitalize="off" spellcheck="false" aria-label="PIN"><button id="pinGo">Unlock</button><div id="pinMsg" role="alert"></div></div></div>
 <div class="wrap">
 <header><div><div class="brand"><img class="brand-logo" src="assets/10k-takes-logo-white.png" alt="10K Takes logo"><h1>10K Hub</h1></div></div>
 <div class="row"><button class="alt" id="toggleImport">Import Data</button></div></header>

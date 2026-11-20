@@ -18,15 +18,13 @@ jobs:
   collect-x:
     runs-on: ubuntu-24.04
     steps:
-      - name: Check it is Friday 6 AM Central
+      - name: Accept scheduled or manual collection
         id: gate
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "$(TZ=America/Chicago date +%H)" = "06" ]; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "run=false" >> "$GITHUB_OUTPUT"
-            echo "Not 6 AM Central right now, so this scheduled run is skipped."
-          fi
+          # The schedule selects Friday at 6:07 AM Central. GitHub can start it
+          # later than requested, so accept the scheduled event regardless of delay.
+          echo "run=true" >> "$GITHUB_OUTPUT"
+          echo "Proceeding with ${{ github.event_name }} at $(TZ=America/Chicago date '+%Y-%m-%d %H:%M %Z')."
  
       - uses: actions/checkout@v5
         if: steps.gate.outputs.run == 'true'
