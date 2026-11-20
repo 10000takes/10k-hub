@@ -28,6 +28,7 @@ PLATFORM = "Instagram"
 OUT = "metrics.csv"
 HEADER = ["date", "account", "platform", "metric", "value"]
 METRICS = {"views_7d": "views", "engagements_7d": "total_interactions"}
+RATE_LIMIT_RETRIES = 3
 
 
 def week_total(ig_id, token, metric):
@@ -36,14 +37,28 @@ def week_total(ig_id, token, metric):
     url = "https://graph.facebook.com/{}/{}/insights?".format(GRAPH_VERSION, ig_id) + \
         urllib.parse.urlencode({"metric": metric, "metric_type": "total_value",
                                 "period": "day", "since": since, "until": until})
-    req = urllib.request.Request(url, headers={"Authorization": "Bearer " + token})
-    try:
-        with urllib.request.urlopen(req, timeout=20) as r:
-            data = json.load(r)
-    except urllib.error.HTTPError as e:
-        raise RuntimeError("{} error {}: {}".format(metric, e.code, e.read().decode("utf-8", "replace")[:300]))
-    except urllib.error.URLError as e:
-        raise RuntimeError("{} unreachable: {}".format(metric, e.reason))
+    data = None
+    for attempt in range(RATE_LIMIT_RETRIES + 1):
+        req = urllib.request.Request(url, headers={"Authorization": "Bearer " + token})
+        try:
+            with urllib.request.urlopen(req, timeout=20) as r:
+                data = json.load(r)
+            break
+        except urllib.error.HTTPError as e:
+            body = e.read().decode("utf-8", "replace")[:300]
+            if e.code == 429 and attempt < RATE_LIMIT_RETRIES:
+                retry_after = e.headers.get("Retry-After") if e.headers else None
+                try:
+                    delay = max(1, int(retry_after)) if retry_after else 5 * (2 ** attempt)
+                except ValueError:
+                    delay = 5 * (2 ** attempt)
+                print("::warning::{} was rate limited (HTTP 429); retry {}/{} in {} seconds.".format(
+                    metric, attempt + 1, RATE_LIMIT_RETRIES, delay))
+                time.sleep(delay)
+                continue
+            raise RuntimeError("{} error {}: {}".format(metric, e.code, body))
+        except urllib.error.URLError as e:
+            raise RuntimeError("{} unreachable: {}".format(metric, e.reason))
     for item in data.get("data", []):
         if item.get("name") == metric:
             if "total_value" in item:
