@@ -35,21 +35,33 @@ PAGES = {
     "Captain's Patch": "1444449392073981",
 }
 METRICS = {"views_7d": "page_media_view", "engagements_7d": "page_post_engagements"}
+RATE_LIMIT_RETRIES = 3
 FOLLOWERS_FILE, FHEADER = "followers.csv", ["date", "account", "platform", "followers"]
 METRICS_FILE, MHEADER = "metrics.csv", ["date", "account", "platform", "metric", "value"]
 
 
 def get(path, params, token):
     url = "https://graph.facebook.com/{}/{}?".format(GRAPH, path) + urllib.parse.urlencode(params)
-    req = urllib.request.Request(url, headers={"Authorization": "Bearer " + token})
-    try:
-        with urllib.request.urlopen(req, timeout=20) as r:
-            return json.load(r)
-    except urllib.error.HTTPError as e:
-        body = e.read().decode("utf-8", "replace")[:300]
-        raise RuntimeError("Facebook error {}: {}".format(e.code, body.replace(token, "***")))
-    except urllib.error.URLError as e:
-        raise RuntimeError("Could not reach Facebook: {}".format(e.reason))
+    for attempt in range(RATE_LIMIT_RETRIES + 1):
+        req = urllib.request.Request(url, headers={"Authorization": "Bearer " + token})
+        try:
+            with urllib.request.urlopen(req, timeout=20) as r:
+                return json.load(r)
+        except urllib.error.HTTPError as e:
+            body = e.read().decode("utf-8", "replace")[:300]
+            if e.code == 429 and attempt < RATE_LIMIT_RETRIES:
+                retry_after = e.headers.get("Retry-After") if e.headers else None
+                try:
+                    delay = max(1, int(retry_after)) if retry_after else 5 * (2 ** attempt)
+                except ValueError:
+                    delay = 5 * (2 ** attempt)
+                print("::warning::Facebook API rate limit on {}; retry {}/{} in {} seconds.".format(
+                    path, attempt + 1, RATE_LIMIT_RETRIES, delay))
+                time.sleep(delay)
+                continue
+            raise RuntimeError("Facebook error {}: {}".format(e.code, body.replace(token, "***")))
+        except urllib.error.URLError as e:
+            raise RuntimeError("Could not reach Facebook: {}".format(e.reason))
 
 
 def week_total(page_id, page_token, metric):

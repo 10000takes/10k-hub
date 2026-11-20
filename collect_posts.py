@@ -17,26 +17,39 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+import time
 from datetime import datetime, timedelta, timezone
 from urllib.parse import parse_qs, urlparse
 
 from campaign_common import env_name, metric_rows, read_posts, save_post_metrics
 
 GRAPH = "v26.0"
+RATE_LIMIT_RETRIES = 3
 
 
 def fetch(url, headers=None, secrets=()):
-    req = urllib.request.Request(url, headers=headers or {})
-    try:
-        with urllib.request.urlopen(req, timeout=25) as r:
-            return json.load(r)
-    except urllib.error.HTTPError as e:
-        body = e.read().decode("utf-8", "replace")[:250]
-        for s in secrets:
-            body = body.replace(s, "***")
-        raise RuntimeError("HTTP {}: {}".format(e.code, body))
-    except urllib.error.URLError as e:
-        raise RuntimeError("unreachable: {}".format(e.reason))
+    for attempt in range(RATE_LIMIT_RETRIES + 1):
+        req = urllib.request.Request(url, headers=headers or {})
+        try:
+            with urllib.request.urlopen(req, timeout=25) as r:
+                return json.load(r)
+        except urllib.error.HTTPError as e:
+            body = e.read().decode("utf-8", "replace")[:250]
+            for s in secrets:
+                body = body.replace(s, "***")
+            if e.code == 429 and attempt < RATE_LIMIT_RETRIES:
+                retry_after = e.headers.get("Retry-After") if e.headers else None
+                try:
+                    delay = max(1, int(retry_after)) if retry_after else 5 * (2 ** attempt)
+                except ValueError:
+                    delay = 5 * (2 ** attempt)
+                print("::warning::API rate limit (HTTP 429); retry {}/{} in {} seconds.".format(
+                    attempt + 1, RATE_LIMIT_RETRIES, delay))
+                time.sleep(delay)
+                continue
+            raise RuntimeError("HTTP {}: {}".format(e.code, body))
+        except urllib.error.URLError as e:
+            raise RuntimeError("unreachable: {}".format(e.reason))
 
 
 def insight_value(data):
@@ -311,6 +324,7 @@ def facebook(posts):
             # Page Posts doesn't return Reels. Their public link contains the
             # video ID, which can be queried directly for Reel insights.
             reel_match = re.search(r"/reel/(\d+)", post["url"])
+            reel_lookup_failed = False
             if reel_match:
                 video_id = reel_match.group(1)
                 try:
@@ -335,7 +349,9 @@ def facebook(posts):
                     continue
                 except RuntimeError as e:
                     print("::notice::Facebook Reel lookup failed for {}: {}".format(post["url"], e))
-            print("::notice::Facebook campaign post not found in the main Page's recent published posts: {}".format(post["url"]))
+                    reel_lookup_failed = True
+            if not reel_lookup_failed:
+                print("::notice::Facebook campaign post not found in the main Page's recent published posts: {}".format(post["url"]))
             continue
 
         values = {}
