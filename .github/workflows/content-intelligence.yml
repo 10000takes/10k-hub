@@ -2,7 +2,8 @@ name: Content Intelligence snapshot
 
 on:
   schedule:
-    - cron: "30 12 * * *" # after the existing 11:00 UTC collector schedule
+    - cron: "30 6 * * *"
+      timezone: "America/Chicago"
   workflow_dispatch:
 
 permissions:

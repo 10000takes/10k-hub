@@ -2,9 +2,8 @@ name: Collect main X followers daily
 
 on:
   schedule:
-    # The gate keeps only the UTC entry that lands at 6 AM America/Chicago.
-    - cron: "7 11 * * *"
-    - cron: "7 12 * * *"
+    - cron: "7 6 * * *"
+      timezone: "America/Chicago"
   workflow_dispatch:
 
 permissions:
@@ -26,7 +25,7 @@ jobs:
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
-            echo "Not 6 AM Central; skipping the second UTC schedule."
+            echo "Not 6 AM Central; skipping this scheduled run."
           fi
 
       - uses: actions/checkout@v5
@@ -52,7 +51,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No follower-count change to save."
           else
-            git commit -m "Save daily main X follower snapshot $(date -u +%F)"
+            git commit -m "Save daily main X follower snapshot $(TZ=America/Chicago date +%F)"
             git pull --rebase --autostash
             git push
           fi

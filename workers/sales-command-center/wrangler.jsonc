@@ -26,5 +26,27 @@
 			"database_id": "3823f4a6-0ba4-449b-81a5-5fb6a9225b3d",
 			"remote": true
 		}
-	]
+	],
+	"env": {
+		"staging": {
+			"name": "10k-takes-sales-command-center-staging",
+			"workers_dev": true,
+			"triggers": {
+				"crons": ["*/15 * * * *"]
+			},
+			"vars": {
+				"PUBLIC_READ_ORIGIN": "https://10000takes.github.io"
+			},
+			"ai": {
+				"binding": "AI"
+			},
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "10k-takes-sales-command-center-staging",
+					"database_id": "0b960090-30e9-43ed-bd15-1ad7dfe05f81"
+				}
+			]
+		}
+	}
 }

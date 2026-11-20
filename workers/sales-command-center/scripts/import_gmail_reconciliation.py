@@ -39,7 +39,11 @@ class Api:
 
     def request(self, path: str, method: str = "GET", body: dict | None = None, idempotency_key: str | None = None):
         url = self.base_url.rstrip("/") + path
-        headers = {"Authorization": f"Bearer {self.token}", "Accept": "application/json"}
+        headers = {
+            "Authorization": f"Bearer {self.token}",
+            "Accept": "application/json",
+            "User-Agent": "10K-Hub-CRM-Reconciliation/1.0",
+        }
         data = None
         if body is not None:
             headers["Content-Type"] = "application/json"

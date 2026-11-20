@@ -2,8 +2,8 @@ name: Daily Content Report
 
 on:
   schedule:
-    # Gate hourly runs to the configured America/Chicago delivery hour.
     - cron: "0 * * * *"
+      timezone: "America/Chicago"
   workflow_dispatch:
     inputs:
       mode:

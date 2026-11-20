@@ -3,8 +3,8 @@ name: Weekly Analytics Report
 on:
   schedule:
     # Run at 9:00 AM America/Chicago on Friday, after the 6 AM X collector.
-    - cron: "0 14 * * 5"
-    - cron: "0 15 * * 5"
+    - cron: "0 9 * * 5"
+      timezone: "America/Chicago"
   workflow_dispatch:
     inputs:
       mode:

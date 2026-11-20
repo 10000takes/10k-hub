@@ -2,7 +2,8 @@ name: Collect follower counts
 
 on:
   schedule:
-    - cron: "0 11 * * *"   # every day at 11:00 UTC (6 AM Central during daylight time)
+    - cron: "0 5 * * *"
+      timezone: "America/Chicago"
   push:
     branches:
       - main
@@ -159,7 +160,7 @@ jobs:
         if: always()
         run: |
           cp save_results.sh /tmp/save_results.sh
-          bash /tmp/save_results.sh "Follower snapshot $(date -u +%F)"
+          bash /tmp/save_results.sh "Follower snapshot $(TZ=America/Chicago date +%F)"
 
       - name: Refresh the dashboard site
         if: always()

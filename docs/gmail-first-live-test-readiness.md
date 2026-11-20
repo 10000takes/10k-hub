@@ -1,12 +1,23 @@
 # Gmail First Live Test Readiness
 
-**Preparation only:** Gmail has not been connected, OAuth credentials have not been created, no migration has been applied remotely, and no Worker has been deployed.
+**Staging prepared; Gmail remains disconnected.** No OAuth credentials were created, no prospect records were imported, and production was not touched.
+
+### Staging environment created
+
+- D1: `10k-takes-sales-command-center-staging` (`0b960090-30e9-43ed-bd15-1ad7dfe05f81`)
+- Worker: `10k-takes-sales-command-center-staging` at `https://10k-takes-sales-command-center-staging.10ktakes.workers.dev`
+- Staging Worker version: `5beb7dc8-fa89-48a7-ac08-6077db7b8e91`
+- D1 was initialized from the repository baseline `schema.sql`, then migrations 0002–0006 were applied in order and recorded in `d1_migrations`.
+- The deployed staging Worker is bound only to the staging D1, the Workers AI binding, and the public read origin. It has the `*/15 * * * *` cron trigger. The top-level production D1 binding was not included in the staging deployment (Wrangler dry-run binding preview confirmed this).
+- No Gmail OAuth variables/secrets are configured. `sales_gmail_oauth_credentials` and `sales_gmail_sync_state` are empty, so cron invocations will skip rather than poll Gmail.
+- Baseline CRM counts: `sales_records=0`, `sales_companies=0`, `sales_contacts=0`, `sales_communications=0`, `sales_follow_up_tasks=0`, Gmail sync states `=0`. D1 also contains only the baseline user rows/settings/source rows inserted by the schema/migrations.
+- A short-lived staging-only credential with `companies:read` was created as a hash, used for the importer's dry run, and deleted immediately afterward. No live CRM records were created.
 
 ## Historical contact reconciliation
 
 The evidence-backed contact worksheet is `workers/sales-command-center/data/gmail_reconciliation_contacts_template.csv`. It contains 16 rows across the ten requested brands. It uses the Gmail messages/replies currently found in `partnerships@10ktakesmn.com`; the source URL is the corresponding Gmail message. Names shown only in outbound greetings are kept to the first name. Titles are blank unless a message states one. The three Kwik Trip referrals are role labels, not asserted job titles. SeatGeek press, SCHEELS affiliate, and Buffalo Wild Wings PR addresses are included as team inbox references but have no contact name, so the importer skips them.
 
-The default importer was run in dry-run mode. It planned ten company checks and named-contact create/link operations, skipped the three unnamed team inboxes, and made no writes. **It did not check the CRM.** No `CRM_IMPORT_WORKER_URL`/`CRM_IMPORT_TOKEN` was supplied. A previous read-only inspection of the configured Wrangler preview D1 found the legacy `sales_records` entries but no `sales_companies` table; migrations 0002–0006 were pending. That preview is not evidence of production contents. Thus there is no safe basis to claim matches or inserts against production. Before any import, initialize an isolated staging database, apply/validate its migrations, provide a staging-only scoped CRM token, and rerun the default dry run against staging. Resolve every match before using `--apply`.
+The importer's dry run was subsequently run against the initialized staging CRM API with a temporary staging-only read credential. It found **0 existing matches, 0 ambiguous records, 10 proposed company additions, 13 named-contact additions/links, and 3 unnamed team inboxes skipped**. Because the staging CRM begins empty, the named-contact actions are proposed as create/link operations under the ten companies. The importer made no writes. This is not a production match report; production must be checked separately in an approved rollout.
 
 No title, surname, company website, or industry was inferred from an email local-part or the conversation. Email addresses are included only where they appeared in actual mailbox messages (sent recipients, replies, or explicit referrals). A supplied address by itself is not treated as independent verification.
 
@@ -45,7 +56,7 @@ Official sources:
 
 ## Staging readiness
 
-The local source contains the Gmail metadata sync, migration files, OAuth callback, `*/15 * * * *` cron declaration, and sanitized `gmail_sync_cron` logs. This means the code/configuration foundation is present; it does **not** mean staging is ready. The configured Wrangler preview D1 inspected for this milestone had migration IDs 0002–0006 unapplied and lacked `sales_companies`. Do not run those migrations blindly against production or assume this preview is production. First create/use an isolated staging D1 and staging Worker, inspect the migration ledger and actual schema, apply only migrations appropriate to that database in tracked order, and validate pre/post counts and legacy API behavior. Then add staging-only OAuth settings and deploy staging. The 15-minute cron is only confirmed in local config; verify the deployed staging Worker has the trigger before testing.
+The local source contains the Gmail metadata sync, migration files, OAuth callback, `*/15 * * * *` cron declaration, and sanitized `gmail_sync_cron` logs. Staging D1 and Worker are now deployed as listed above; all five tracked migrations show applied, and schema queries confirmed canonical companies, contacts, communications, follow-up tasks, OAuth credentials/state, and sync queue tables. Wrangler's staging deploy output confirmed the 15-minute trigger. The old preview D1 is separate from this newly created staging D1 and remains uninitialized; neither it nor production was modified for this setup.
 
 ## First live staging sync checks
 
@@ -75,4 +86,4 @@ Recovery: for `skipped_not_connected`, finish the approved staging OAuth connect
 
 ## Approval boundary
 
-This milestone ends at local checklist and dry-run preview. The next authorized step should be approval to initialize staging D1/Worker and configure an OAuth app, after the Internal/External and security-assessment questions are resolved. Prospect-specific API endpoints and the Custom GPT Action remain a later phase.
+This milestone ends with staging provisioned and the import preview reviewed; Gmail remains disconnected. Before any staging mailbox connection, resolve the Internal/External and security-assessment questions and get the required Workspace approval. A separate explicit approval is still required before live Gmail synchronization. Prospect-specific API endpoints and the Custom GPT Action remain a later phase.
