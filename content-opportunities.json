@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-11-19T20:54:15.432814+00:00",
+  "generated_at": "2026-11-21T19:36:50.814852+00:00",
   "status": "ok",
   "source_scope": "Google News RSS searches for Minnesota teams plus configured RSS feeds for tracked accounts.",
   "source_count": 8,
-  "articles_scanned": 146,
+  "articles_scanned": 139,
   "social_trend_coverage": {
     "Instagram": "not_connected",
     "Facebook": "not_connected",
@@ -15,609 +15,18 @@
   "source_failures": [],
   "opportunities": [
     {
-      "id": "93ca2bf98a844695",
-      "score": 85,
+      "id": "ecea925be54ea41d",
+      "score": 86,
       "score_breakdown": {
         "relevance": 91,
-        "timeliness": 97,
+        "timeliness": 99,
         "virality_potential": 51,
         "ease_of_execution": 93
       },
-      "team": "Wild",
-      "title": "Minnesota Wild Dealt New Dylan Larkin Trade Twist By NHL Insider",
-      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxPaFlOeF9uTmlqamdZbkxxOVRxaDhvaEFDQVAxbzB2UnQwbFAyQk5qWmtKbVJ4Y3Vqc09Hdk0wcE85OHJUOTNOQzBUWUlTWmh0T2JVQUZrVEdfMmw3T1lSMXd6LU4wRzhUb1dSZFFtcGFPdUtBMXMwZDdXaVJFRkpfa211bTlHS2JfNEE?oc=5",
-      "published_at": "2026-11-19T19:04:42+00:00",
-      "category": "Minnesota team news",
-      "source": "Yahoo Sports",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [
-        "trade"
-      ],
-      "format": "Fast explainer + reaction",
-      "hook_draft": "What Wild fans need to know about this: Minnesota Wild Dealt New Dylan Larkin Trade Twist By NHL Insider",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "956fcb7499e4fe32",
-      "score": 84,
-      "score_breakdown": {
-        "relevance": 91,
-        "timeliness": 98,
-        "virality_potential": 46,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "2026 NFL Week 11: Minnesota Vikings “at” San Francisco 49ers (in Mexico City)",
-      "url": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxQNmxPT3BxaWExWGFtbVFJNmtUak42TlJEX2tLekZtWWRxQ2JGTjNfR3Nvcy1XY0N1bGlzOU1jTEhzSS03TXBMM0hWMGp4N1ZLYjE1c29CRXkzRXU5aW8wTktKQlZzUzIwVm9ZZkV3X3VJSGxvQ3d4b194TjJaZGpxcGU4LXRwMUhSWGtnX0x0WHlMNG5xY0JZYVVrRm5KREYtUFFKOG1nNWg1aHVIR0k4M0MtY0paNmZFNER0MlBuVTBNYjZsLVkxRFhvS25IN1NlelM3WXNFQm9QUDFVdHFhQTdCY3Q0UGtfb0oySU9zVXBhdw?oc=5",
-      "published_at": "2026-11-19T19:57:48+00:00",
-      "category": "Minnesota team news",
-      "source": "Daily Norseman",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 2,
-      "trend_signal": "Early signal",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: 2026 NFL Week 11: Minnesota Vikings “at” San Francisco 49ers (in Mexico City)",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "25509c41655a40ae",
-      "score": 84,
-      "score_breakdown": {
-        "relevance": 91,
-        "timeliness": 90,
-        "virality_potential": 54,
-        "ease_of_execution": 93
-      },
-      "team": "Timberwolves",
-      "title": "Knicks vs. Timberwolves prediction, odds, time: 2026 NBA picks for Thursday, Nov. 19 from proven model",
-      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOeldxZjM3Yzh4RzYxb01VVnFVYmRqbi1kZ3lqemdpSXlJTFh5Q1JwVTJIVHBQR3kxbXh6ak5FTXBvN0NJZEVGd2V0Q2hUbGg1UFY5RFpkMUR0WFYtQ0Jyc0psY3RFS3FmaGxQN254R2JrbjBSQ3lYUDNZNGRaLTR1ZGlIQkt6dkJWcTNXTXlkQ0tVX1VjcDdOSkVhRk44WXVzOE5hNEZDOVRNbXU4R3B0NWZWR1JuU0k?oc=5",
-      "published_at": "2026-11-19T15:28:14+00:00",
-      "category": "Minnesota team news",
-      "source": "CBS Sports",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 3,
-      "trend_signal": "Multiple sources",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Timberwolves story: Knicks vs. Timberwolves prediction, odds, time: 2026 NBA picks for Thursday, Nov. 19 from proven model",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "ecdac986b97416c6",
-      "score": 83,
-      "score_breakdown": {
-        "relevance": 91,
-        "timeliness": 88,
-        "virality_potential": 54,
-        "ease_of_execution": 93
-      },
-      "team": "Timberwolves",
-      "title": "Knicks vs. Timberwolves Prediction, Odds and Best NBA Prop Bets for Thursday, Nov. 19",
-      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOM2ZZTmE0dDFhZlgzeWtrWTVTZjN0MFRHT0J2cmhFd1VoZFhWWEQ4UEVHTnRtWHdnbDNWU2pjVEpuU0JEeXpzRlBVQWE2MjhZVkFVQWl0R0kyOFZyWTFUcTR0S3NBa21jVnk0a3JXNmZCVHk3RjBpQ3JqTFNXaHJpSHREUzg2T2RrbTFsb05DTERVQkVxWi1mRDRIaExEYjZMN2txSDVaMUE0cGVoZWFlb1JRUQ?oc=5",
-      "published_at": "2026-11-19T14:31:50+00:00",
-      "category": "Minnesota team news",
-      "source": "Sports Illustrated",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 3,
-      "trend_signal": "Multiple sources",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Timberwolves story: Knicks vs. Timberwolves Prediction, Odds and Best NBA Prop Bets for Thursday, Nov. 19",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "c16597a0c2a76cd5",
-      "score": 83,
-      "score_breakdown": {
-        "relevance": 91,
-        "timeliness": 89,
-        "virality_potential": 54,
-        "ease_of_execution": 93
-      },
-      "team": "Timberwolves",
-      "title": "Knicks vs Timberwolves Prediction, Pick, NBA Odds for Thursday, November 19",
-      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNVGpDUXNYQ1daYnlGYmVwRTJZN1ExU0x4OTlMTmxFVVpCVnZLTDhlUnlsdm94V2ZkLW53MmxPd2EtZlZsa0RVRTlNdlF2YnN1YnlkaWxzckFuWk91U0xQUFNQNWwtNHNHTWlHTjZmU1hKNDROMDF4RWpJQ3F0T2c2UlpDYmViRkI2Mi1KOWxRQ2hUZDEyYTkwZlkzS1Y4Vm5lVnJWSzJCODViM3MyQnJSTm15eGRUczZZQlFOSEpR?oc=5",
-      "published_at": "2026-11-19T15:00:00+00:00",
-      "category": "Minnesota team news",
-      "source": "Action Network",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 3,
-      "trend_signal": "Multiple sources",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Timberwolves story: Knicks vs Timberwolves Prediction, Pick, NBA Odds for Thursday, November 19",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "5dac80f37c973bd0",
-      "score": 82,
-      "score_breakdown": {
-        "relevance": 91,
-        "timeliness": 95,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "NFL Power Rankings: Are the Minnesota Vikings a Top 5 Team?",
-      "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQei0wYm5wNm9DSkZ2US0yOGRCaGFKOFMyb2c3blVUdVdtams0QXhjSUZNeU5ydm1OeFZ2OXQxY092ZmFwNzNhQ2QybElEaEpNS29VbTE4ZVNPZEQ3UkZFUFlLSWxNNlg3Z2d2UWpGczV5Y2Rrcm5XSERnYUVRT3RPYkFjZVNXcGFQeW5JcEpn?oc=5",
-      "published_at": "2026-11-19T18:16:38+00:00",
-      "category": "Minnesota team news",
-      "source": "Yahoo Sports",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: NFL Power Rankings: Are the Minnesota Vikings a Top 5 Team?",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "ff399ec9c72096fa",
-      "score": 82,
-      "score_breakdown": {
-        "relevance": 91,
-        "timeliness": 95,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Wild",
-      "title": "Minnesota Wild NHL Line Combinations",
-      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBSTnZnQW1vNlM4eUtEY3hVYV9MNzVXWFI4TEUxZXYwckVIcS1NbHRraVNtS3AyME1FVkppc21laVAyQWdCc0YtUXRtSkVWeS00VDcta2x3ak80azl3bVlGVXJpYUd2TTVDU3ZXNlhKVEZmSnJYVDhn?oc=5",
-      "published_at": "2026-11-19T18:10:00+00:00",
-      "category": "Minnesota team news",
-      "source": "Daily Faceoff",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Wild story: Minnesota Wild NHL Line Combinations",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "c2987b3e54e7b9da",
-      "score": 80,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 99,
-        "virality_potential": 46,
-        "ease_of_execution": 93
-      },
-      "team": "Wild",
-      "title": "Wild vs Flames Prediction, Picks, NHL Odds for Thursday, November 19",
-      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPSU9lYVFmVFZ0bVAyTFVzUTdyYWZrVUlPQXA2ak5fdGJGeUtsbDgwNGtSdE5DWXE0WnBMdmlua1M3SFc1SGd0U3J3Qkh4dl9McTJWNGcxZVB5aHAyd3V3MGRYYzM4dFkwV2Zzb1JrLTg4MEdtaHhSNW9yZi1UN28tdnNnaXBwZnNLS1hKdW9WXzgxQlhqUlpXTW1KTWtiemFZTzQyMEl0eDhzREpRcGVDMWVkTQ?oc=5",
-      "published_at": "2026-11-19T20:20:00+00:00",
-      "category": "Minnesota team news",
-      "source": "Action Network",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 2,
-      "trend_signal": "Early signal",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Wild story: Wild vs Flames Prediction, Picks, NHL Odds for Thursday, November 19",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "833bba2feed656c5",
-      "score": 79,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 93,
-        "virality_potential": 46,
-        "ease_of_execution": 93
-      },
-      "team": "Wild",
-      "title": "Wild vs Flames Prediction, Picks & Odds for Tonight’s NHL Game",
-      "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE9DZkhwcXRsc1BEcWl3azIyVUt0VEV2SjVtU2EwUFQ2SmJnSzRrUy1pS05fc0NLcnlBMk9sdkZFbHRtNTZXR2JfWlo1RXE2eHRkMndUYWFiUW1NVHZ5MzVXdDVucnE5QTBKN0F2ZWR2MFpCbFhfLTN4Rlhn?oc=5",
-      "published_at": "2026-11-19T17:05:00+00:00",
-      "category": "Minnesota team news",
-      "source": "Covers.com",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 2,
-      "trend_signal": "Early signal",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Wild story: Wild vs Flames Prediction, Picks & Odds for Tonight’s NHL Game",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "5acb1d53971cfc80",
-      "score": 78,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 90,
-        "virality_potential": 46,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "The NFL Report: Vikings vs. 49ers Sunday Night Football Preview",
-      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOU2s4RF9BVGRKalNiaXZ2cUN6VnF0c0x4eGI0LVZXSUotT1ZsUkdtZG1ybmJ4MDh1d0hHSld6UFg3TlZjeGs2T1d0ZTZzRzZTWmVSYXlqM3VzUXhELXAwYUp4bjh3amQyaEhMcDU5YTJxLVo2WDBFbEhhaXdOTjdORko0NTdBX2d5OHdwTTRQM1FWeXZvVWc?oc=5",
-      "published_at": "2026-11-19T15:36:47+00:00",
-      "category": "Minnesota team news",
-      "source": "Vikings.com",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 2,
-      "trend_signal": "Early signal",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: The NFL Report: Vikings vs. 49ers Sunday Night Football Preview",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "b439caba02363962",
-      "score": 78,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 96,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "Minnesota Vikings News and Links: What Are The Keys To Beating The 49ers?",
-      "url": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxQMDRkZ2prSndvMnhtWlVyd3ctZFptMmtDTzBQazZlTkl5dTlCeVJIRUdIYjNxSWZXSXRiU0tIdnN6dkVoUVZ5alRYekhsMVktbWFKUVhCb1owWGR5Q2xPaE4wdlRyZDZsVEhjQjg2NWk1Q0tyWHNWcG1nRlFnNVZlckhFYUlUemlRUzRDb3cxNTJKZE5zM2kxdkxxZ1pzVkFQUGNTdnROWUpHOExPbHdodTFqcHdGQVZHNVh6RkNWLThQWkR2MjFiamJROUpmRGxoUWJHYURqS2h0RUc3dmtRWEtjY2NXeUFBSXowSQ?oc=5",
-      "published_at": "2026-11-19T18:31:05+00:00",
-      "category": "Minnesota team news",
-      "source": "Daily Norseman",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: Minnesota Vikings News and Links: What Are The Keys To Beating The 49ers?",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "321dcafdfb24adb2",
-      "score": 78,
-      "score_breakdown": {
-        "relevance": 67,
-        "timeliness": 99,
-        "virality_potential": 54,
-        "ease_of_execution": 93
-      },
-      "team": "Twins",
-      "title": "Did the Twins have an ulterior motive to sign Sonny Gray?",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQeGt6bXhUNmFoZ3RoS04zZ0tNZWJMRjc1T1N0VUNPOHlRbXRpRGllMTFtQjhrVkJsOHJDS3lpcVNiZVlXNVZsRmsxMTNBNDhmMjcydFpRbnI4TlJTdGhNRS12VnRfMENYWmRiQWJoUDJia0ItTjBiSnlfSEFDMDRjRS1FdEdnU2ltUlhKRHJ3VHFhRVhRcFA1RnFXT2RPM1R4XzB3?oc=5",
-      "published_at": "2026-11-19T20:33:00+00:00",
-      "category": "Minnesota team news",
-      "source": "Lyndy's Sports Annuals",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 3,
-      "trend_signal": "Multiple sources",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Twins story: Did the Twins have an ulterior motive to sign Sonny Gray?",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "45c1bdfa047396c3",
-      "score": 78,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 96,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Twins",
-      "title": "Minnesota Twins honored for their Girls Belong in Baseball initiative",
-      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQU2xUYjlBeERLWUlGVHpTU0JqNFZlNmp3OFZqUWFVUDhEc1V5aUN4cnFwU0dPU0tDMzBCZHhGZ3JjSkI5RHpSLUlfS3I1dDFwaTItVFIzanV2Yjc3LXRsQWVibm14NUl5aXBEYUxKOHVueFZCZEYxMlEzNTc5MGFEZ0l4dVJOdFYzblpXY0Vld2E5ZDBBV2Z0ZGRFUGFrV3FMQ1JUS3JB?oc=5",
-      "published_at": "2026-11-19T19:00:32+00:00",
-      "category": "Minnesota team news",
-      "source": "WDIO.com",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Twins story: Minnesota Twins honored for their Girls Belong in Baseball initiative",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "5b677c804ebb6592",
-      "score": 78,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 97,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Wild",
-      "title": "Calgary Flames Welcome Red-Hot Minnesota Wild to the Saddledome",
-      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPcXRadGlhWl9ZWHNaRXhiMi16aUxydmkwRVhrLXpXdkxLVEFjcW4xcWdLNWxaTWpIZHFQU1VneFRvbHBTVXF5OEpBS3ZDTEp4UnBMdW9QRng3eEZXeTg1Y0FCSDJwSlg4MVQ0ZkUyWGg1ZW85SVN3RG1VRlRUUnExdi14UTduQQ?oc=5",
-      "published_at": "2026-11-19T19:16:32+00:00",
-      "category": "Minnesota team news",
-      "source": "Yahoo Sports",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Wild story: Calgary Flames Welcome Red-Hot Minnesota Wild to the Saddledome",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "18b318caa19d7b2c",
-      "score": 77,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 94,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Twins",
-      "title": "Reason Gray Left Boston for Minnesota? Salary Cap Good for MLB? GTA Day! ||The Greg Hill Show",
-      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNWVlmZEpZNm96Nko1djFyNFNkOVJjZ1AwZkE2YjkyQkFfOE5iZ3VFd2pOWjhmVDQ3cndOLVMxc1dYSUtfQkxPZHViTnpjNlJ5MHlQZTJNdTdtb0xoY2tWRVp0LXR5Y1IwSkdKMmlrTjdqSWx0LTI0dXowbVdJTU8xWWQ3RlVPZHFjcklHdDV0c1dpbHNXS3hjWEF5cGFZbUZvQmRGMFJYR25TRkhweVhXQmFDWmVuNGJMNjYxTkZ1NA?oc=5",
-      "published_at": "2026-11-19T17:38:50+00:00",
-      "category": "Minnesota team news",
-      "source": "BVM Sports",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Twins story: Reason Gray Left Boston for Minnesota? Salary Cap Good for MLB? GTA Day! ||The Greg Hill Show",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "c5d1091fe7ce45f4",
-      "score": 77,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 94,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Wild",
-      "title": "Minnesota Wild Recalls Forward Tyler Pitlick from Iowa",
-      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPSm9lXzlwa0laT0RzNUhBQllnc1lsRzhlUXF6LVd5RVc3eWJZa2s0LUx1ajZFQWhnRWxxUkhNNk9nbmVBX0Q2Q05Zc3pRb2llb2tud0lNLU5hd0lMUHRBZVpuSUxpRERjdURYSmt4Yk5JTjRvU2RXN3JHMWJXbzRUaFMzazd1RGlDSE9lRU1uZy1UZFgySXc?oc=5",
-      "published_at": "2026-11-19T17:48:45+00:00",
-      "category": "Minnesota team news",
-      "source": "NHL.com",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Wild story: Minnesota Wild Recalls Forward Tyler Pitlick from Iowa",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "eeb846d210076b74",
-      "score": 77,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 93,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Wild",
-      "title": "MINNESOTA WILD SIGNS FORWARD WILL BITTEN TO A ONE-YEAR, TWO-WAY CONTRACT",
-      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxOQTdoSnhBZmtyMzBlb1ZBN01BSndqdmRDU2JyeC1iY3pRZlhJUUJIb0lQUnJlcmVaM2x1eC1zVEx6R2pLMUxYWkZuaVExbXNBTWw5MjlLV3VOWG1VZENqdHlma21zdWpfdWV2OGFHaFpGQUVHc01sUW51OGxKcm8tdGdZcjlicEMtOUhBLUhoN1I5M2dnTU5TVjg2U01qQQ?oc=5",
-      "published_at": "2026-11-19T17:24:34+00:00",
-      "category": "Minnesota team news",
-      "source": "Iowa Wild",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Wild story: MINNESOTA WILD SIGNS FORWARD WILL BITTEN TO A ONE-YEAR, TWO-WAY CONTRACT",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "c8b35d87e6ef3006",
-      "score": 77,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 93,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Wild",
-      "title": "MINNESOTA WILD SIGNS FORWARD MASON SHAW TO A TWO-YEAR, TWO-WAY CONTRACT",
-      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQTGZzOFdaQ0c5S0VJNlhuTFBJbFpLNU1FNDRoeFpFbHZacXBHYjB6OEQ0ZHNuVTRrLU44bkRMTkV0UEZyVzliMWdoaVg0UDI0Q0RjMHk4Y09nc3duVUVYNXhnRVpCRk04S1JseG5yU0FmbVZOUTFKaVhpczUyNkRwLUUxTzFkdE1XdXZRbDBEdG1lUFpLRFlLNTlZMVE?oc=5",
-      "published_at": "2026-11-19T17:23:34+00:00",
-      "category": "Minnesota team news",
-      "source": "Iowa Wild",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Wild story: MINNESOTA WILD SIGNS FORWARD MASON SHAW TO A TWO-YEAR, TWO-WAY CONTRACT",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "ea33c2312aabce54",
-      "score": 76,
-      "score_breakdown": {
-        "relevance": 79,
-        "timeliness": 89,
-        "virality_potential": 38,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "Vikings-49ers game marks return to Mexico City, though the NFL never truly left",
-      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNU3Q1US15ZVJhOU5rN0NYQ2ZVMFZYRm9vVE1MNlNyeXZqMXJDYzhZNTdSSWJCaGVPUXlva0wydklnVWNhOUlqVVkwSzE0WEdRZ1pZeEVUU3p0NUNGWWxPaHlFNkstQmNxMUVGRl9CYnF2UXZVVFFpNHktcV9VTWxRQWdmbDZPNHV2MThlcjdiRjV0X2Q5aFhJdENEcXlZWWs?oc=5",
-      "published_at": "2026-11-19T14:39:23+00:00",
-      "category": "Minnesota team news",
-      "source": "CBS News",
-      "source_kind": "news",
-      "tracked_account": null,
-      "corroborating_items": 1,
-      "trend_signal": "Single-source story",
-      "viral_cues": [],
-      "format": "Quick take + 3-point breakdown",
-      "hook_draft": "The key question behind this Vikings story: Vikings-49ers game marks return to Mexico City, though the NFL never truly left",
-      "platform_adaptations": {
-        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
-        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
-        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
-        "X": "Post a concise take with one verified stat or quote and link to the source."
-      },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
-      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
-    },
-    {
-      "id": "922617b3d10bde4b",
-      "score": 76,
-      "score_breakdown": {
-        "relevance": 67,
-        "timeliness": 96,
-        "virality_potential": 51,
-        "ease_of_execution": 93
-      },
-      "team": "Vikings",
-      "title": "Vikings Scouting: Three-Round Mock Draft",
-      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQTHFKMjFnTWlwUG90dmNKY3gtbUxSN0ZUQXBuN2prQmxzWWFpRFJPN3o0SnpYRWpRb1VtbmJpNk14NE0yVUJTUFE5SGFGRVdwVExBamU2dkNzNEtudHgwUjE2YW1GSFdrWEkzY0Y3Q19YSThXR0p5N2pRS3ZsN2V3SGR3STYzLXh6aEE?oc=5",
-      "published_at": "2026-11-19T18:53:02+00:00",
+      "team": "Lynx",
+      "title": "Who could emerge as a late first-round find for the Indiana Fever, Golden State Valkyries or Minnesota Lynx in the 2027 WNBA Draft?",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOTDk0TGVxQUF3bEM0aEhfUTJFUDgxNmQzODVCYWg4aVJ1ak1WY08tcGFYYXQ0WTJ1TUpwTl8wR1BjbGlteDdJX1Qyd3RncjNlWld5dmVTMkRaZUg1MGtFSHMwY0FWeG9XcnRFS3lpZ2NOZWxHQ3h0Y0RIZldIN2o2Sjh0bXFGa0VX?oc=5",
+      "published_at": "2026-11-21T19:00:00+00:00",
       "category": "Minnesota team news",
       "source": "Yahoo Sports",
       "source_kind": "news",
@@ -628,14 +37,613 @@
         "draft"
       ],
       "format": "Fast explainer + reaction",
-      "hook_draft": "What Vikings fans need to know about this: Vikings Scouting: Three-Round Mock Draft",
+      "hook_draft": "What Lynx fans need to know about this: Who could emerge as a late first-round find for the Indiana Fever, Golden State Valkyries or Minnesota Lynx in the 2027 WNBA Draft?",
       "platform_adaptations": {
         "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
         "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
         "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
         "X": "Post a concise take with one verified stat or quote and link to the source."
       },
-      "own_performance_note": "190 recent owned posts with view counts are available for a later format-level benchmark.",
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "81ac1b8556caf1f6",
+      "score": 83,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 99,
+        "virality_potential": 59,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "NFL Week 11 Picks: Cowboys Upset Alert? 49ers vs. Vikings in Mexico",
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE9TTXVrV0pnX2hTQTd1UnE0MVZoMUtoRUVPb3RhSGoyT3ZOUHJxMGY3Z2h3eXpmek9jenBLVW1GRzRPQXpSalM4WWswbHlzUXVabi1UalZxMFVkMU15MFVNT0ZvY9IBaEFVX3lxTE1lei1RT0pITGJTZzhuYXFVNjlxM1dVLXV4eXFheTZaTG9QVlhMX1NMTDB0dDFReG1VcEFuLWtoVWlXZkZIV2tvQzlXdk9ScFdQXzhzWmJ6eXRCWGdaS05maDhESlRVWnlC?oc=5",
+      "published_at": "2026-11-21T19:05:05+00:00",
+      "category": "Minnesota team news",
+      "source": "FOX 7 Austin",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 2,
+      "trend_signal": "Early signal",
+      "viral_cues": [
+        "upset"
+      ],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: NFL Week 11 Picks: Cowboys Upset Alert? 49ers vs. Vikings in Mexico",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "b29ae2a0b8b6e5bc",
+      "score": 82,
+      "score_breakdown": {
+        "relevance": 91,
+        "timeliness": 95,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "The Minnesota Wild Are Making A Serious Case As The NHL’s Best Team",
+      "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOSHBHUWpZMjY4bmV4YWFCMXRGbDM0cEJvYURILVBESXNJNnYyOFdWWWlYeTlPZUZRRmF0dU1YajFBU1VmU3FQVzA3ai1QMmZ6VlVZRi1WMHMwZGpZTnBkTnV1OU1CQ3VZbHBndk9ieUQ4aEkzSUU4OEFuR25faWUyRmVvS05MOTdPV3cw?oc=5",
+      "published_at": "2026-11-21T16:50:19+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Wild story: The Minnesota Wild Are Making A Serious Case As The NHL’s Best Team",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "3f119d9d072aeda9",
+      "score": 81,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 97,
+        "virality_potential": 51,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Who did the Vikings land in ESPN's latest 2027 NFL Mock Draft?",
+      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQaFkyNUw0QzZjNERHSU5ENUNyck1DQ2hyQ2lSSnFxV2syWFp1QXJaTTFLWjZNTEI5b1piMTJqYmFnQm43cTdqb2NJYUJGT0JRa1hGcEVLcndSTjFJVlZ5cUhNVC1FX0ZOMGVHNmFSSlRNUEd6QnV2SmotN182N1c5cDJyQmU?oc=5",
+      "published_at": "2026-11-21T17:55:43+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [
+        "draft"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Vikings fans need to know about this: Who did the Vikings land in ESPN's latest 2027 NFL Mock Draft?",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "83f51c81dc1a3de0",
+      "score": 81,
+      "score_breakdown": {
+        "relevance": 91,
+        "timeliness": 92,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Timberwolves",
+      "title": "Minnesota Timberwolves Could Be Changing Conferences",
+      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPbEdrLUJlUk4wX3lmUUZrUEU4MXpEV3NjMG8tLXBjcUFoa3prYXpzX0w1WVFTRWpEZGsxcTJuMERwdGdxa090MEdGWk1xYjJlRENicFJ0QTJIOXRQbFV1VEVzY1hEQzZFMUdOaUstTkkwTXIzcEFJYnhEbEhxLXJVNFdUYWlITVJnZ28zQkgtR1VndUktLXk1OWZRbWVtcUZhWldlTXpENnJyYV93ZFVTbUE0bXc3ZGI4Q0FCb0FWZWI4Zw?oc=5",
+      "published_at": "2026-11-21T15:01:05+00:00",
+      "category": "Minnesota team news",
+      "source": "Minnesota Sports Fan",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Timberwolves story: Minnesota Timberwolves Could Be Changing Conferences",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "4b8c97d6f5bcb53e",
+      "score": 79,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 99,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "Minnesota Wild Recalls Defenseman Viking Gustafsson Nyberg from Iowa",
+      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPamNSdXdiSl83bjhjNUNLX1RaODNyLU5kczQyMGxWWE9Ba05Hb2VqTVBHc2htcFdUTEJZbHV4RlhuWS1uRmdoYlJHZV83SHRzb1IxWEFpcmJvM0JsbHpqX2M2VEQ4U196QU43ZkNUUUM0aVM5NjFJV2sxdDdVMXVrZW5wLUFibFVQSi1FTDNBS25Yc01LcFl2WUhGTk1ZVnZFNkViZExhMkY?oc=5",
+      "published_at": "2026-11-21T19:07:30+00:00",
+      "category": "Minnesota team news",
+      "source": "NHL.com",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Wild story: Minnesota Wild Recalls Defenseman Viking Gustafsson Nyberg from Iowa",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "6d9a388fa0e93bc3",
+      "score": 78,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 92,
+        "virality_potential": 46,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Why the 49ers will Lose to the Minnesota Vikings in Mexico City",
+      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNYVNoT196Z296ZVJZNzUyWHlwRmplanhjNEJqZUZNZXhiQmdqUTBoOE5DSHdzZ3BsQ2w2LXpURHRGZGFEMVRBem9qTWw1Z2JiUG84SVlUdmJZaDBPS2t6WWhVRWRyTkQ0bktjRHIxNmpETkU4d0NvRUZGUmd2Y1NfbTQ3cHY?oc=5",
+      "published_at": "2026-11-21T15:11:08+00:00",
+      "category": "Minnesota team news",
+      "source": "Sports Illustrated",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 2,
+      "trend_signal": "Early signal",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: Why the 49ers will Lose to the Minnesota Vikings in Mexico City",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "50df85c6cddf16a9",
+      "score": 78,
+      "score_breakdown": {
+        "relevance": 91,
+        "timeliness": 67,
+        "virality_potential": 59,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "NHL Center Trade Targets The Minnesota Wild Can Explore If A Dylan Larkin Deal Is Off The Table",
+      "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxPdzYxYlFhRE1rajNXSElJRGRqVWlxVGhwcHFLbTBMWk9fbzgzdmlfMExJa3otZ0RqYXJMWUh1d1hXZEZCRU8zSlpQVHhhbk9oS3FKbnhzU3F6VnIxdUxncTlMTzV0WjJJdkNxYm9FczBIbjZEVDJXVTdLelRNS19NS0IxZWlWbExGN2Z4Q3dMSFdKQkk0YmRLTW5nMkFHWmVwdk51enpHNF9PYk9BbVc0VTJWaU5WVzdwbEN1aHdtM0x4cVB3RjFBZzd2cC1rLUZyR3g2SDV0eEFMd3l1dUtvd091SnRNV28?oc=5",
+      "published_at": "2026-11-20T23:11:07+00:00",
+      "category": "Minnesota team news",
+      "source": "The Hockey News",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 2,
+      "trend_signal": "Early signal",
+      "viral_cues": [
+        "trade"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Wild fans need to know about this: NHL Center Trade Targets The Minnesota Wild Can Explore If A Dylan Larkin Deal Is Off The Table",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "c5208970763275c9",
+      "score": 77,
+      "score_breakdown": {
+        "relevance": 91,
+        "timeliness": 64,
+        "virality_potential": 59,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "NHL Center Trade Targets The Minnesota Wild Can Explore If A Dylan Larkin Deal Is Off The Table",
+      "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQS0x0RG9sY3RqRC1yd0s4dTVSN0pXV0IzU253N3VyWldJenpscVFWZVBBbDh6ZkdOUFdxR3hSb01ySm15LUs1VVBLNTRiam5nMkNuaHk3TjRVaWVHQ29iaERtNG92THk5aEJvTXFwc1FIVHJCMm5VWDU2Z1VpN0ZDVmMzRlNaVkNwc3Nj?oc=5",
+      "published_at": "2026-11-20T20:31:21+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 2,
+      "trend_signal": "Early signal",
+      "viral_cues": [
+        "trade"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Wild fans need to know about this: NHL Center Trade Targets The Minnesota Wild Can Explore If A Dylan Larkin Deal Is Off The Table",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "845904a1edae2957",
+      "score": 76,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 64,
+        "virality_potential": 75,
+        "ease_of_execution": 93
+      },
+      "team": "Twins",
+      "title": "Minnesota Twins reportedly trade Royce Lewis to Los Angeles Dodgers",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQQmtEdkxFMXlDR3JFenItLVA1OU1NOHBHajQwa1hOLVI3VFp3dnV1OWVyREhTcVZoT0VkY3dkM3hBblRTYjEyNmNodFY4QW5TWVY0ZnptS0xnXzVFWURvaHlRd2dTMkt0UU9MWVczNzBCWkw0dUdHSW9ua1dlU1pSTVhzbHVKTmxFbjc4R1ZLWDJQckpydzEtenl4clk2Smc?oc=5",
+      "published_at": "2026-11-20T20:42:00+00:00",
+      "category": "Minnesota team news",
+      "source": "kaaltv.com",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 7,
+      "trend_signal": "Multiple sources",
+      "viral_cues": [
+        "trade"
+      ],
+      "format": "Fast explainer + reaction",
+      "hook_draft": "What Twins fans need to know about this: Minnesota Twins reportedly trade Royce Lewis to Los Angeles Dodgers",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "b99fb22a8083175e",
+      "score": 76,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 88,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Timberwolves",
+      "title": "NBA: Top 5 Wolves Games I’ve Attended",
+      "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE9pcWRsckxHSUZmbXBza19rVVIwRmJvc1Rwb0lxbktvQV8xZnJpT25zT1o5OWhLbU9hcmxOdzI2T2FqN2MwRzNJeVRrU3hTRV9WVGJQNmxFMnZoQVE5dzRFNUc3X0ZuZTNjUW1OZjlsQ19fcnZmQ0NvbThXaw?oc=5",
+      "published_at": "2026-11-21T13:00:00+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Timberwolves story: NBA: Top 5 Wolves Games I’ve Attended",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "1d1b16e836bb4873",
+      "score": 75,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 86,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Is Kirk Cousins an NFL MVP dark horse? With this Vikings defense, you betcha!",
+      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxOa0xGeE9ZS1Iza1N0M2JNSE1veU80OXBEZWF6YXNTbTVEdVEzUUctcG5GenVQOElvZGhQRlRHZWRRa084cGhGelNVY01DSGpseHY3aDkxYkVmcmNQUl9HU2hMZ05NN3NDSUE5dms1Y2dJb1kwbXFaQkJRYmFUeTdrOFRxdjRUQTRKMkFMSUVQak5jak5XaE05Wl9PVDZuNm84b1Y0dzh0angySkRMS0hxS0t0QnlQbEppX1dZTWdtdFBvRFJxMi1QdGFfWVlQSGNm?oc=5",
+      "published_at": "2026-11-21T11:30:00+00:00",
+      "category": "Minnesota team news",
+      "source": "Star Tribune",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: Is Kirk Cousins an NFL MVP dark horse? With this Vikings defense, you betcha!",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "8b4d8815fd46b074",
+      "score": 75,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 100,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "Vikings Rookie Report: Week 11 Takes Place in Mexico as MIN Goes Toe-to-Toe with SF",
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOTFN6Z0FZSjlnXzFGM2NlVklDOFJEYUdKanAteUF0R21EU0pXcDZ1dVNoenZuQ2NYa3Y4WmVuSl92WTZwVHJySEFNRXBDdGZUWWczQTR5cmRFeXVsQXM1Y1JXd1NVMUtyUEQyT0lTNEhZYkNidVAxd0NhUXl0S0NJeQ?oc=5",
+      "published_at": "2026-11-21T19:25:00+00:00",
+      "category": "Minnesota team news",
+      "source": "Vikings Territory",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: Vikings Rookie Report: Week 11 Takes Place in Mexico as MIN Goes Toe-to-Toe with SF",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "b673d63f14e7edec",
+      "score": 75,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 86,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "Vancouver Canucks Gameday Preview #25: A Chance To Slow Down The Red-Hot Minnesota Wild",
+      "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNZVFKUDRnZExoMVo3WDlHaXpKSEpnWHJQdjN3S3pjTVVvSU1RV2FKNVlzQ3lXWEtBRjBURllJeGVhOEMtSkhiS0I3emloa0hGaFFDSmdVcDlfaVh0QlJXODFzc1RIN093NFBfMFE2RjJISDZqSWRranpqXzM0XzVmckp1R08xUlhXSEZia2JR?oc=5",
+      "published_at": "2026-11-21T12:00:31+00:00",
+      "category": "Minnesota team news",
+      "source": "Yahoo Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Wild story: Vancouver Canucks Gameday Preview #25: A Chance To Slow Down The Red-Hot Minnesota Wild",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "4c29de26b7a3dcb8",
+      "score": 75,
+      "score_breakdown": {
+        "relevance": 79,
+        "timeliness": 86,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Wild",
+      "title": "NHL On Tap: White-hot Wild eye sixth win in row, point in 14th straight",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9hZWc3ZGd5Sk1kOXpxUGVsaUprUkM0cDVRUU40SnAxZzJFeTRXa2NvaFN6TlFOUUFJTWhZd0dFS0N0djFIZUl0ejUxZzBHbFIzSnNES0F0azRQQjN0UUxWTWxROVptX2x1Yl9LME9DRVRwak1Iemc?oc=5",
+      "published_at": "2026-11-21T11:44:47+00:00",
+      "category": "Minnesota team news",
+      "source": "NHL.com",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Wild story: NHL On Tap: White-hot Wild eye sixth win in row, point in 14th straight",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "3da999c686bca843",
+      "score": 75,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 100,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Gophers",
+      "title": "NCAA College Men's Ice Hockey DI Stats",
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE5nRFd4R2owSFFHazdyTXV6SS1zclA5MlY3dVk1SDdlYUlYUkRlS1lsMkxsbndtbFFIb3EtRWZ0OGJ4aVRLZGUwNmt4NkhSWGczQUxJUWFB?oc=5",
+      "published_at": "2026-11-21T19:21:38+00:00",
+      "category": "Minnesota team news",
+      "source": "NCAA.com",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Gophers story: NCAA College Men's Ice Hockey DI Stats",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "38d885dc7ef3f1e4",
+      "score": 75,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 99,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Gophers",
+      "title": "Struggling Gophers RB Planning to Return?",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOZnJDRnliNFVoU3d3cE16ZjBONzZPSlRsTndCNVZ2bjVzak9ZQXpaaENvSFJEd1dYSkhpa2E4dEtpWDNZSlR3eEhHYnRsamVyWnFsTFVLdkQwXzlWaFpMYlpFeXNBai1nbkR4VURFbjhzMUlOcmVNbkFhOENfUl9ZTVZvdTdwbmYtbU1LSTNrZGw2M2YzNmxLT0ZORQ?oc=5",
+      "published_at": "2026-11-21T19:05:17+00:00",
+      "category": "Minnesota team news",
+      "source": "Minnesota Sports Fan",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Gophers story: Struggling Gophers RB Planning to Return?",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "3779c92a7ac4fdc1",
+      "score": 74,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 97,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "A Critical Detail Revealed as Vikings Get Fresh Chance at Making a Bold Signing",
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQQUZoalBHX2Vtc3l3ZF9fMk5WalNyZXhwRVRHVDluVkx1VlQ0MVVWYWZxelZHYUNrWURWSVhReFpiazJWWmlfNGtLODIyXzE5SzJVWlowZi1icC14ZEFSNXJTb2lNVTVaVDVBTjZDVVFBMGNDeG5PMDM0eFVkSXVaWg?oc=5",
+      "published_at": "2026-11-21T18:05:00+00:00",
+      "category": "Minnesota team news",
+      "source": "Vikings Territory",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: A Critical Detail Revealed as Vikings Get Fresh Chance at Making a Bold Signing",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "5804a2e3b448c5aa",
+      "score": 74,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 93,
+        "virality_potential": 46,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "How to watch 49ers vs. Vikings in Mexico City: TV, streaming, betting odds for 'Sunday Night Football' clash",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNeGZSS0NWY0VqQTdYSFlhd1NfZTdNTXhtV2dhNE41V1RVYzRmMk5IT1ZKX05zV0tlQkdETl9KczRPc3hiTXRMNDVSUGJXenVoeUdOU3k1alZ1alpkSExoazFWckNqdWQ3clE2aWtlZHZ3NHIxSDN6NV9WOUNrbDgyZld6azdvd0RNNVZVb1hkd3lHRGhRWEs0YW5IUkdNVEVyMGRUYWJmZG5ZXzI3WFdhYzJGR2k2S2s?oc=5",
+      "published_at": "2026-11-21T15:47:28+00:00",
+      "category": "Minnesota team news",
+      "source": "CBS Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 2,
+      "trend_signal": "Early signal",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: How to watch 49ers vs. Vikings in Mexico City: TV, streaming, betting odds for 'Sunday Night Football' clash",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
+      "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
+    },
+    {
+      "id": "4375abbb012857b2",
+      "score": 74,
+      "score_breakdown": {
+        "relevance": 67,
+        "timeliness": 97,
+        "virality_potential": 38,
+        "ease_of_execution": 93
+      },
+      "team": "Vikings",
+      "title": "The 49ers and Vikings have already added to the iconic history of Estadio Banorte, formerly Estadio Azteca, before even playing",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNMy1HNldTYmJia2QtemsxMmQtSkxnNF9IWV9pZkNWQ2ViV20zblZHZ0NOdzBFWmVKekotRVpWdkpKWjdLYk5xWF9ES21CZTkzVlZ2dFVrem43MGpFczZkLWU3d3ozMW4zLVZBRkNEaE14Mnp1NzF0aUJzQXNfdFVsaFBoc0RaaW1MVS1uaFNkUWZZb1laUWJSckdRM3FscXF6d3NNeHdJaDFjTHNiaVpTaGlveFN4b29XUEY4ckF3?oc=5",
+      "published_at": "2026-11-21T18:07:09+00:00",
+      "category": "Minnesota team news",
+      "source": "A to Z Sports",
+      "source_kind": "news",
+      "tracked_account": null,
+      "corroborating_items": 1,
+      "trend_signal": "Single-source story",
+      "viral_cues": [],
+      "format": "Quick take + 3-point breakdown",
+      "hook_draft": "The key question behind this Vikings story: The 49ers and Vikings have already added to the iconic history of Estadio Banorte, formerly Estadio Azteca, before even playing",
+      "platform_adaptations": {
+        "Instagram": "Reel: cold open with the question; use captions and a concise 3-point breakdown.",
+        "Facebook": "Native short video: lead with the fan impact and invite a specific, respectful debate.",
+        "TikTok": "Vertical reaction: put the hook on screen immediately, then explain the source-backed context.",
+        "X": "Post a concise take with one verified stat or quote and link to the source."
+      },
+      "own_performance_note": "189 recent owned posts with view counts are available for a later format-level benchmark.",
       "editorial_safeguard": "Verify the latest facts and use the linked source before recording. Hook is a draft, not a factual claim."
     }
   ],
