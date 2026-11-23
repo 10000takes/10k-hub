@@ -161,11 +161,17 @@ def weekly_rolling_metrics(report_day):
                      "change": current - previous if current is not None and previous is not None else None,
                      "change_pct": pct_change(current, previous)})
     comparable = [row for row in rows if row["current"] is not None and row["previous"] is not None]
-    current_total = sum(row["current"] for row in comparable) if comparable else None
-    previous_total = sum(row["previous"] for row in comparable) if comparable else None
+    available_current = [row["current"] for row in rows if row["current"] is not None]
+    available_previous = [row["previous"] for row in rows if row["previous"] is not None]
+    current_total = sum(available_current) if available_current else None
+    previous_total = sum(available_previous) if available_previous else None
+    comparable_current = sum(row["current"] for row in comparable) if comparable else None
+    comparable_previous = sum(row["previous"] for row in comparable) if comparable else None
     return {"platforms": rows, "current_total": current_total, "previous_total": previous_total,
-            "change": current_total - previous_total if current_total is not None and previous_total is not None else None,
-            "change_pct": pct_change(current_total, previous_total), "coverage": len(comparable),
+            "comparable_current_total": comparable_current,
+            "comparable_previous_total": comparable_previous,
+            "change": comparable_current - comparable_previous if comparable_current is not None and comparable_previous is not None else None,
+            "change_pct": pct_change(comparable_current, comparable_previous), "coverage": len(comparable),
             "expected_platforms": len(MAIN_PLATFORMS),
             "current_dates": sorted({row["current_date"] for row in comparable if row["current_date"]}),
             "missing_platforms": [row["platform"] for row in rows if row["current"] is None or row["previous"] is None]}
@@ -396,10 +402,11 @@ def render_pdf(report, path):
     follower_main = report["main_followers"]
     main_value = fmt(follower_main["total"] if follower_main["complete"] else follower_main["partial_total"], signed=True)
     main_hint = "All expected platform snapshots" if follower_main["complete"] else "Partial · {}/{} account-platform pairs".format(follower_main["observed_pairs"], follower_main["expected_pairs"])
-    imp_hint = "Rolling 7-day measures · {}/{} platforms".format(imp["coverage"], imp["expected_platforms"]) if imp["current_total"] is not None else "Unavailable · no comparable platform readings"
+    current_coverage = sum(row["current"] is not None for row in imp["platforms"])
+    imp_hint = "Rolling 7-day measures · {}/{} platforms".format(current_coverage, imp["expected_platforms"]) if imp["current_total"] is not None else "Unavailable · no current platform readings"
     kpis = Table([[kpi("Main Followers Gained", main_value, main_hint),
                    kpi("Main Views / Impressions", fmt(imp["current_total"]), imp_hint),
-                   kpi("Vs. Prior 7 Days", pct_change(imp["current_total"], imp["previous_total"]), "{} change".format(fmt(imp["change"])))]],
+                   kpi("Vs. Prior 7 Days", imp["change_pct"], "{} change · {}/{} comparable platforms".format(fmt(imp["change"]), imp["coverage"], imp["expected_platforms"]))]],
                  colWidths=[doc.width/3]*3)
     kpis.setStyle(TableStyle([("BACKGROUND", (0,0),(-1,-1), PALE), ("BOX",(0,0),(-1,-1),.5,RULE), ("INNERGRID",(0,0),(-1,-1),.5,RULE), ("VALIGN",(0,0),(-1,-1),"TOP"), ("LEFTPADDING",(0,0),(-1,-1),10), ("RIGHTPADDING",(0,0),(-1,-1),10), ("TOPPADDING",(0,0),(-1,-1),9), ("BOTTOMPADDING",(0,0),(-1,-1),8)]))
     lead_parts = []
@@ -412,8 +419,8 @@ def render_pdf(report, path):
         lead_parts.append("Subsidiaries gained {} followers.".format(fmt(subs["total"], signed=True)))
     else:
         lead_parts.append("Subsidiary follower gain is partial: {} across {}/{} pairs.".format(fmt(subs["partial_total"], signed=True), subs["observed_pairs"], subs["expected_pairs"]))
-    if imp["current_total"] is not None and imp["previous_total"] is not None:
-        lead_parts.append("Views/impressions changed {} versus the previous 7 days across {}/{} comparable platforms.".format(pct_change(imp["current_total"], imp["previous_total"]), imp["coverage"], imp["expected_platforms"]))
+    if imp["comparable_current_total"] is not None and imp["comparable_previous_total"] is not None:
+        lead_parts.append("Views/impressions changed {} versus the previous 7 days across {}/{} comparable platforms.".format(imp["change_pct"], imp["coverage"], imp["expected_platforms"]))
     else:
         lead_parts.append("A comparable week-over-week views/impressions reading is not available yet.")
     if report["top_posts"]:
@@ -463,14 +470,17 @@ def render_pdf(report, path):
     story += [make_table(account_rows, account_widths)]
     story.extend(section_rule())
     story += [PageBreak(), Paragraph("Main Account Views And Impressions", s["section"]),
-              Paragraph("Each value is the platform's saved rolling 7-day views metric (impressions for X), compared with that platform's reading from seven days earlier. The total is a convenience sum of native metrics; coverage is shown because platform definitions differ.", s["small"]), Spacer(1, 5)]
+              Paragraph("Each value is the platform's saved rolling 7-day views metric (impressions for X), compared with that platform's reading from seven days earlier. All Available totals sum readings present for each period; the comparable row and change use only platforms with both readings. These are mixed native measures, not standardized cross-platform metrics.", s["small"]), Spacer(1, 5)]
     imp_rows = [[Paragraph(x, s["tablehead"]) for x in ("Platform", "Measure", "Last 7 Days", "Prior 7 Days", "Change", "% Change")]]
     for row in imp["platforms"]:
         imp_rows.append([Paragraph(row["platform"], s["cell"]), Paragraph(row["measure"], s["cell"]),
                          Paragraph(fmt(row["current"]), s["cellright"]), Paragraph(fmt(row["previous"]), s["cellright"]),
                          Paragraph(fmt(row["change"]), s["cellright"]), Paragraph(row["change_pct"], s["cellright"])])
-    imp_rows.append([Paragraph("Total", s["cellbold"]), Paragraph("Mixed Native Measures", s["smallbold"]),
+    imp_rows.append([Paragraph("All Available", s["cellbold"]), Paragraph("Mixed Native Measures", s["smallbold"]),
                      Paragraph(fmt(imp["current_total"]), s["cellrightbold"]), Paragraph(fmt(imp["previous_total"]), s["cellrightbold"]),
+                     Paragraph("—", s["cellrightbold"]), Paragraph("—", s["cellrightbold"])])
+    imp_rows.append([Paragraph("Comparable · {}/{}".format(imp["coverage"], imp["expected_platforms"]), s["cellbold"]), Paragraph("Matched Platforms", s["smallbold"]),
+                     Paragraph(fmt(imp["comparable_current_total"]), s["cellrightbold"]), Paragraph(fmt(imp["comparable_previous_total"]), s["cellrightbold"]),
                      Paragraph(fmt(imp["change"]), s["cellrightbold"]), Paragraph(imp["change_pct"], s["cellrightbold"])])
     story += [make_table(imp_rows, [doc.width*.18, doc.width*.15, doc.width*.17, doc.width*.17, doc.width*.16, doc.width*.17])]
     story.extend(section_rule())
@@ -490,7 +500,7 @@ def render_pdf(report, path):
     top_capture = report["top_posts"][0].get("captured") if report["top_posts"] else None
     notes = ["Follower changes compare saved counts 7 days apart. The capture dates are shown above; stale or missing account-platform pairs are unavailable, not zero.",
              "Top posts are posts published during the reporting week, ranked by their cumulative view or impression counters at the latest saved capture{}. The posts have different ages, so these are not equal-age comparisons.".format(" on " + top_capture if top_capture else ""),
-             "Views and X impressions are different native measures. The combined total is a convenience sum, not a standardized cross-platform metric."]
+             "Views and X impressions are different native measures. All Available totals sum readings present for each period; the change uses only platforms with both readings. Combined totals are a convenience sum, not a standardized cross-platform metric."]
     if imp["current_dates"]:
         notes.append("Comparable rolling-metric captures: {}. Missing or stale platforms: {}.".format(", ".join(imp["current_dates"]), ", ".join(imp["missing_platforms"]) if imp["missing_platforms"] else "none"))
     elif imp["missing_platforms"]:
