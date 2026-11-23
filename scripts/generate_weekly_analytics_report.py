@@ -563,6 +563,8 @@ def deliver(end_day, authorized_resend=False):
                "attachments": [{"filename": pdf_path.name, "content": base64.b64encode(pdf_path.read_bytes()).decode("ascii")} ]}
     request = urllib.request.Request("https://api.resend.com/emails", data=json.dumps(payload).encode(),
                                      headers={"Authorization": "Bearer " + key, "Content-Type": "application/json",
+                                              "User-Agent": "10K-Hub-Weekly-Analytics/1.0",
+                                              "Accept": "application/json",
                                               "Idempotency-Key": "10k-weekly-analytics-{}-{}".format(end_day.isoformat(), attempt if authorized_resend else 1)}, method="POST")
     try:
         with urllib.request.urlopen(request, timeout=45) as response:
@@ -574,7 +576,7 @@ def deliver(end_day, authorized_resend=False):
         detail = error.read().decode("utf-8", "replace")[:400]
         status.update({"state": "delivery_failed", "error": "Resend HTTP {}: {}".format(error.code, detail), "updated_at": datetime.now(timezone.utc).isoformat()})
         status_path.write_text(json.dumps(status, indent=2) + "\n", encoding="utf-8")
-        raise RuntimeError("Resend rejected weekly report (HTTP {}).".format(error.code))
+        raise RuntimeError("Resend rejected weekly report (HTTP {}): {}".format(error.code, detail))
     except (urllib.error.URLError, TimeoutError) as error:
         status.update({"state": "delivery_unknown", "error": str(error)[:300], "updated_at": datetime.now(timezone.utc).isoformat()})
         status_path.write_text(json.dumps(status, indent=2) + "\n", encoding="utf-8")
