@@ -1,0 +1,296 @@
+{
+  "report_date": "2026-11-23",
+  "generated_at": "2026-11-23T14:43:32.884122-06:00",
+  "window": {
+    "start": "2026-11-16",
+    "end_exclusive": "2026-11-23",
+    "previous_start": "2026-11-09",
+    "previous_end_exclusive": "2026-11-16"
+  },
+  "follower_window": {
+    "start": "2026-11-15",
+    "end": "2026-11-22"
+  },
+  "main_followers": {
+    "platforms": {
+      "Facebook": {
+        "gained": null,
+        "coverage": 0,
+        "expected": 1
+      },
+      "Instagram": {
+        "gained": null,
+        "coverage": 0,
+        "expected": 1
+      },
+      "TikTok": {
+        "gained": 153,
+        "coverage": 1,
+        "expected": 1
+      },
+      "Threads": {
+        "gained": 0,
+        "coverage": 1,
+        "expected": 1
+      },
+      "X/Twitter": {
+        "gained": null,
+        "coverage": 0,
+        "expected": 1
+      },
+      "YouTube": {
+        "gained": 130,
+        "coverage": 1,
+        "expected": 1
+      }
+    },
+    "total": null,
+    "partial_total": 283,
+    "complete": false,
+    "observed_pairs": 3,
+    "expected_pairs": 6
+  },
+  "subsidiary_followers": {
+    "platforms": {
+      "Facebook": {
+        "gained": 122,
+        "coverage": 5,
+        "expected": 5
+      },
+      "Instagram": {
+        "gained": 76,
+        "coverage": 5,
+        "expected": 5
+      },
+      "TikTok": {
+        "gained": 0,
+        "coverage": 5,
+        "expected": 5
+      },
+      "Threads": {
+        "gained": 32,
+        "coverage": 5,
+        "expected": 5
+      },
+      "X/Twitter": {
+        "gained": null,
+        "coverage": 0,
+        "expected": 5
+      }
+    },
+    "total": null,
+    "partial_total": 230,
+    "complete": false,
+    "observed_pairs": 20,
+    "expected_pairs": 25
+  },
+  "subsidiaries_by_account": [
+    {
+      "account": "Wild Takes",
+      "platforms": {
+        "Facebook": 60,
+        "Instagram": 42,
+        "TikTok": 1,
+        "Threads": 5,
+        "X/Twitter": null
+      },
+      "total": null,
+      "partial_total": 108,
+      "coverage": 4,
+      "expected": 5,
+      "complete": false
+    },
+    {
+      "account": "10K Howls",
+      "platforms": {
+        "Facebook": 0,
+        "Instagram": 26,
+        "TikTok": -1,
+        "Threads": 26,
+        "X/Twitter": null
+      },
+      "total": null,
+      "partial_total": 51,
+      "coverage": 4,
+      "expected": 5,
+      "complete": false
+    },
+    {
+      "account": "State of Skol",
+      "platforms": {
+        "Facebook": 62,
+        "Instagram": 18,
+        "TikTok": -2,
+        "Threads": 1,
+        "X/Twitter": null
+      },
+      "total": null,
+      "partial_total": 79,
+      "coverage": 4,
+      "expected": 5,
+      "complete": false
+    },
+    {
+      "account": "The Underline",
+      "platforms": {
+        "Facebook": -1,
+        "Instagram": -2,
+        "TikTok": 2,
+        "Threads": 0,
+        "X/Twitter": null
+      },
+      "total": null,
+      "partial_total": -1,
+      "coverage": 4,
+      "expected": 5,
+      "complete": false
+    },
+    {
+      "account": "Captain's Patch",
+      "platforms": {
+        "Facebook": 1,
+        "Instagram": -8,
+        "TikTok": 0,
+        "Threads": 0,
+        "X/Twitter": null
+      },
+      "total": null,
+      "partial_total": -7,
+      "coverage": 4,
+      "expected": 5,
+      "complete": false
+    }
+  ],
+  "impressions": {
+    "platforms": [
+      {
+        "platform": "Facebook",
+        "measure": "views",
+        "current": 1577341,
+        "previous": null,
+        "current_date": "2026-11-22",
+        "previous_date": "2026-11-15",
+        "change": null,
+        "change_pct": "Unavailable"
+      },
+      {
+        "platform": "Instagram",
+        "measure": "views",
+        "current": 615137,
+        "previous": null,
+        "current_date": "2026-11-22",
+        "previous_date": "2026-11-15",
+        "change": null,
+        "change_pct": "Unavailable"
+      },
+      {
+        "platform": "TikTok",
+        "measure": "views",
+        "current": 124515,
+        "previous": 100150,
+        "current_date": "2026-11-22",
+        "previous_date": "2026-11-15",
+        "change": 24365,
+        "change_pct": "+24.3%"
+      },
+      {
+        "platform": "Threads",
+        "measure": "views",
+        "current": 7968,
+        "previous": 184905,
+        "current_date": "2026-11-22",
+        "previous_date": "2026-11-15",
+        "change": -176937,
+        "change_pct": "-95.7%"
+      },
+      {
+        "platform": "X/Twitter",
+        "measure": "impressions",
+        "current": null,
+        "previous": null,
+        "current_date": null,
+        "previous_date": null,
+        "change": null,
+        "change_pct": "Unavailable"
+      },
+      {
+        "platform": "YouTube",
+        "measure": "views",
+        "current": 361974,
+        "previous": 36712,
+        "current_date": "2026-11-22",
+        "previous_date": "2026-11-15",
+        "change": 325262,
+        "change_pct": "+886.0%"
+      }
+    ],
+    "current_total": 2686935,
+    "previous_total": 321767,
+    "comparable_current_total": 494457,
+    "comparable_previous_total": 321767,
+    "change": 172690,
+    "change_pct": "+53.7%",
+    "coverage": 3,
+    "expected_platforms": 6,
+    "current_dates": [
+      "2026-11-22"
+    ],
+    "missing_platforms": [
+      "Facebook",
+      "Instagram",
+      "X/Twitter"
+    ]
+  },
+  "top_posts": [
+    {
+      "platform": "YouTube",
+      "url": "https://youtube.com/watch?v=lPBsj_FhI14",
+      "title": "Remember this Torii Hunter Moment ... #shorts #minnesotatwins #mlb",
+      "format": "Short",
+      "published": "Nov 17",
+      "captured": "2026-11-23",
+      "exposure": 199601,
+      "measure": "views"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://facebook.com/reel/1207280618650041",
+      "title": "Bobby Brink must have gotten friendzoned... #minnesotawild #nhl #nhlmemes",
+      "format": "Video",
+      "published": "Nov 19",
+      "captured": "2026-11-23",
+      "exposure": 113210,
+      "measure": "views"
+    },
+    {
+      "platform": "X/Twitter",
+      "url": "https://x.com/10K_Takes/status/2124202006999183822",
+      "title": "DISGUSTING: Minnesota Gophers Onside kicking coach, Mike Hawk spotted at the bar 1 hour before kickoff! We need to clean house https://t....",
+      "format": "Post",
+      "published": "Nov 21",
+      "captured": "2026-11-23",
+      "exposure": 80163,
+      "measure": "impressions"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://facebook.com/reel/1159065136482957",
+      "title": "Good afternoon Timberwolves fans! Another crashout video to start your day off right! #minnesotatimberwolves #nba",
+      "format": "Video",
+      "published": "Nov 18",
+      "captured": "2026-11-23",
+      "exposure": 53318,
+      "measure": "views"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://facebook.com/reel/1695506588597096",
+      "title": "6-1 with 17 minutes with in the 2nd. Are you kidding me?!... #minnesotawild #mnwild #nhl",
+      "format": "Video",
+      "published": "Nov 17",
+      "captured": "2026-11-23",
+      "exposure": 52457,
+      "measure": "views"
+    }
+  ]
+}
