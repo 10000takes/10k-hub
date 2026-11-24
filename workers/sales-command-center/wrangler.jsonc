@@ -30,13 +30,23 @@
 	"env": {
 		"staging": {
 			"name": "10k-takes-sales-command-center-staging",
+			"compatibility_flags": ["global_fetch_strictly_public"],
 			"workers_dev": true,
 			"triggers": {
 				"crons": ["*/15 * * * *"]
 			},
 			"vars": {
-				"PUBLIC_READ_ORIGIN": "https://10000takes.github.io"
+				"PUBLIC_READ_ORIGIN": "https://10000takes.github.io",
+				"MCP_SERVER_URL": "https://10k-takes-sales-command-center-staging.10ktakes.workers.dev/mcp",
+				"MCP_OAUTH_ISSUER": "https://10k-takes-sales-command-center-staging.10ktakes.workers.dev",
+				"MCP_CRM_API_BASE_URL": "https://10k-takes-sales-command-center-staging.10ktakes.workers.dev"
 			},
+			"kv_namespaces": [
+				{
+					"binding": "OAUTH_KV",
+					"id": "22445adea8f2460fa8a14a04fee6f9b5"
+				}
+			],
 			"ai": {
 				"binding": "AI"
 			},

@@ -22,6 +22,12 @@ interface Env {
   GOOGLE_OAUTH_CLIENT_SECRET?: string;
   GOOGLE_OAUTH_REDIRECT_URI?: string;
   GMAIL_TOKEN_ENCRYPTION_KEY?: string;
+  OAUTH_KV: { get(key: string, type: "json"): Promise<Record<string, unknown> | null>; put(key: string, value: string, options?: { expirationTtl?: number }): Promise<void>; delete(key: string): Promise<void> };
+  MCP_SERVER_URL?: string;
+  MCP_OAUTH_ISSUER?: string;
+  MCP_CRM_API_BASE_URL?: string;
+  MCP_CRM_API_TOKEN?: string;
+  MCP_AUTH_PASSWORD?: string;
 }
 
 interface SalesActor { id: string; display_name: string; role: string; legacy: boolean }
@@ -367,6 +373,48 @@ async function crmRoute(request: Request, env: Env, url: URL): Promise<Response>
           VALUES (?,?,'prospect_research',?,?,?,?,?,?)`).bind(crypto.randomUUID(), prospectMatch[1], salesString(next.source_name, "Prospect research source", 160), String(next.source_url), salesString(next.company_description, "", 1000), String(next.research_confidence || "unverified"), now, actor.ownerId).run();
         await auditCrm(env, actor, "crm_prospect_updated", "prospect", prospectMatch[1], { changed_fields: Object.keys(patch), company_id: row.company_id || null });
         return json({ id: prospectMatch[1], company_id: row.company_id || null, updated_at: now });
+      });
+    }
+    const prospectPromoteMatch = path.match(/^\/v1\/crm\/prospects\/([\w-]+)\/promote$/);
+    if (prospectPromoteMatch && method === "POST") {
+      const prospectDenied = requireScope("prospects:write"); if (prospectDenied) return prospectDenied;
+      const opportunityDenied = requireScope("opportunities:write"); if (opportunityDenied) return opportunityDenied;
+      return idempotentCrmWrite(request, env, actor, path, async () => {
+        const sourceResult = await env.DB.prepare(`SELECT r.*,rc.company_id,c.name AS canonical_name,c.industry AS canonical_industry
+          FROM sales_records r LEFT JOIN sales_record_companies rc ON rc.record_id=r.id
+          LEFT JOIN sales_companies c ON c.id=rc.company_id
+          WHERE r.id=? AND r.entity_type='prospect'`).bind(prospectPromoteMatch[1]).all<Record<string, unknown>>();
+        const prospect = sourceResult.results?.[0];
+        if (!prospect) return json({ error: "Prospect not found." }, 404);
+        if (!prospect.company_id) return json({ error: "Prospect must be linked to a canonical company before promotion." }, 409);
+        const duplicate = await env.DB.prepare(`SELECT r.id FROM sales_records r LEFT JOIN sales_record_companies rc ON rc.record_id=r.id
+          WHERE r.entity_type='lead' AND (rc.company_id=? OR lower(r.name)=lower(?)) LIMIT 1`)
+          .bind(prospect.company_id, String(prospect.canonical_name || prospect.name)).all<Record<string, unknown>>();
+        if (duplicate.results?.length) return json({ error: "An active lead already exists for this company.", id: duplicate.results[0].id }, 409);
+        let data: Record<string, unknown> = {};
+        try { data = JSON.parse(String(prospect.data_json || "{}")); } catch { data = {}; }
+        const companyName = String(prospect.canonical_name || prospect.name);
+        const now = new Date().toISOString(), leadId = crypto.randomUUID();
+        const leadData = {
+          ...data,
+          company_name: companyName,
+          stage: "New",
+          status: "open",
+          lead_source: `Brand Discovery: ${salesString(data.source_name, "manual research", 160)}`,
+          fit_explanation: salesString(data.fit_reason, "", 1000),
+          probability: 20,
+        };
+        await env.DB.prepare(`INSERT INTO sales_records (id,entity_type,name,stage,industry,status,monthly_revenue,total_value,probability,next_follow_up,contract_end,last_contact,data_json,created_at,updated_at)
+          VALUES (?,'lead',?,'New',?,'open',?,?,20,NULL,NULL,NULL,?,?,?)`)
+          .bind(leadId, companyName, String(prospect.canonical_industry || prospect.industry || ""),
+            salesNumber(data.estimated_monthly_value), salesNumber(data.estimated_total_value), JSON.stringify(leadData), now, now).run();
+        await env.DB.prepare("INSERT INTO sales_record_companies (record_id,company_id,created_at) VALUES (?,?,?)")
+          .bind(leadId, String(prospect.company_id), now).run();
+        await env.DB.prepare(`INSERT INTO sales_research_sources (id,record_id,source_type,title,url,fact_summary,confidence,captured_at,added_by)
+          SELECT lower(hex(randomblob(16))),?,source_type,title,url,fact_summary,confidence,captured_at,added_by
+          FROM sales_research_sources WHERE record_id=?`).bind(leadId, prospectPromoteMatch[1]).run();
+        await auditCrm(env, actor, "crm_prospect_promoted", "lead", leadId, { prospect_id: prospectPromoteMatch[1], company_id: prospect.company_id });
+        return json({ id: leadId, prospect_id: prospectPromoteMatch[1], company_id: prospect.company_id, company_name: companyName, stage: "New", created_at: now }, 201);
       });
     }
     if (path === "/v1/crm/contacts" && method === "GET") {
@@ -975,9 +1023,13 @@ async function salesRoute(request: Request, env: Env, url: URL): Promise<Respons
 }
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: { waitUntil(promise: Promise<unknown>): void }): Promise<Response> {
     const url = new URL(request.url);
     if (request.method === "GET" && url.pathname === "/health") return json({ ok: true });
+    if (url.pathname === "/mcp" || url.pathname === "/authorize" || url.pathname.startsWith("/.well-known/") || url.pathname.startsWith("/oauth/")) {
+      const { handleMcpRequest } = await import("./mcp");
+      return handleMcpRequest(request, env, ctx);
+    }
     if (url.pathname === "/v1/sales/gmail/callback") return handleGmailCallback(request, env);
     if (url.pathname.startsWith("/v1/crm/")) return crmRoute(request, env, url);
     if (url.pathname.startsWith("/v1/sales/")) {

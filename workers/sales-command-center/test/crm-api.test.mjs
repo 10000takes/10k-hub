@@ -161,6 +161,33 @@ test('prospect API searches existing records and creates, updates, and deduplica
   assert.equal(audit, 2);
 });
 
+test('prospect promotion preserves canonical contacts, research provenance, and communication history', async () => {
+  const company = await call('/v1/crm/companies', { method: 'POST', key: 'promote-company-001', body: { name: 'Synthetic North Star Foods', industry: 'Food & Beverage', website: 'https://northstar.example' } });
+  const prospect = await call('/v1/crm/prospects', { method: 'POST', key: 'promote-prospect-001', body: { company_id: company.data.id, fit_reason: 'Synthetic fit evidence', source_url: 'https://northstar.example/partners', research_confidence: 'high' } });
+  const contact1 = await call('/v1/crm/contacts', { method: 'POST', key: 'promote-contact-001', body: { display_name: 'Riley Example', title: 'Partnerships Director', email: 'riley@northstar.example', company_ids: [company.data.id] } });
+  const contact2 = await call('/v1/crm/contacts', { method: 'POST', key: 'promote-contact-002', body: { display_name: 'Jordan Example', title: 'Brand Manager', email: 'jordan@northstar.example', company_ids: [company.data.id] } });
+  db.prepare(`INSERT INTO sales_communications (id,provider,gmail_message_id,gmail_thread_id,company_id,contact_id,direction,from_email,to_emails_json,cc_emails_json,subject,snippet,occurred_at,synced_at)
+    VALUES ('synthetic-message','gmail','synthetic-msg-1','synthetic-thread-1',?,?,'received','riley@northstar.example','["crm@10ktakesmn.com"]','[]','Synthetic reply','Synthetic history test','2026-11-24T10:00:00Z','2026-11-24T10:01:00Z')`)
+    .run(company.data.id, contact1.data.id);
+  const promoted = await call(`/v1/crm/prospects/${prospect.data.id}/promote`, { method: 'POST', key: 'promote-lead-001', body: {} });
+  assert.equal(promoted.response.status, 201);
+  assert.equal(promoted.data.stage, 'New');
+  const lead = db.prepare("SELECT * FROM sales_records WHERE id=? AND entity_type='lead'").get(promoted.data.id);
+  const leadData = JSON.parse(lead.data_json);
+  assert.equal(leadData.fit_reason, 'Synthetic fit evidence');
+  assert.equal(db.prepare('SELECT company_id FROM sales_record_companies WHERE record_id=?').get(lead.id).company_id, company.data.id);
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM sales_company_contacts WHERE company_id=?').get(company.data.id).n, 2);
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM sales_research_sources WHERE record_id=?').get(lead.id).n, 1);
+  const history = await call(`/v1/crm/communications?company_id=${company.data.id}`);
+  assert.equal(history.data.communications.filter((message) => message.provider === 'gmail').length, 1);
+  const secondPromote = await call(`/v1/crm/prospects/${prospect.data.id}/promote`, { method: 'POST', key: 'promote-lead-002', body: {} });
+  assert.equal(secondPromote.response.status, 409);
+  assert.equal(secondPromote.data.id, lead.id);
+  const audit = db.prepare("SELECT COUNT(*) AS n FROM sales_audit_log WHERE action='crm_prospect_promoted'").get().n;
+  assert.equal(audit, 1);
+  assert.notEqual(contact2.data.id, contact1.data.id);
+});
+
 test('integration writes are audited, research sources validated, and opportunity rows remain sales_records leads', async () => {
   const note = await call('/v1/crm/research-notes', { method: 'POST', key: 'research-note-0001', body: { company_id: companyOne, note: 'Confirmed regional campaign interest.', source_url: 'https://example.com/news', confidence: 'medium' } });
   assert.equal(note.response.status, 201);

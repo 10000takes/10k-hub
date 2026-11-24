@@ -28,6 +28,7 @@ This contract is implemented under `/v1/crm/*` in the Sales Command Center Worke
 | `GET /v1/crm/prospects?q=&limit=` | `prospects:read` | Search existing prospect research records, including company, fit, and campaign-opportunity text. |
 | `POST /v1/crm/prospects` | `prospects:write` | Create one prospect research record linked to an existing canonical company. A record for that company must not already exist. |
 | `PATCH /v1/crm/prospects/{id}` | `prospects:write` | Update prospect research fields; source URLs must use HTTPS. |
+| `POST /v1/crm/prospects/{id}/promote` | `prospects:write` + `opportunities:write` | Create a New-stage lead in the existing `sales_records` model, preserve the canonical company/contact/history link, and copy research provenance. Duplicate leads are rejected. |
 | `POST /v1/crm/research-notes` | `research:write` | Save a CRM activity note and optional HTTPS source with confidence. |
 | `GET /v1/crm/communications?company_id={id}` | `communications:read` | Read Gmail communication metadata/snippets and existing Resend outreach records for a company. |
 | `GET /v1/crm/communications?contact_id={id}` | `communications:read` | Read history for an individual contact. |
@@ -46,7 +47,7 @@ Start with `companies:read/write`, `contacts:read/write`, `prospects:read/write`
 
 The prospect resource is separate from canonical company identity and the lead opportunity pipeline. Creating it requires `company_id` for a previously found/created canonical company and writes an `entity_type='prospect'` record to the existing `sales_records` model, with a `sales_record_companies` link. It does not create a client or lead opportunity, and duplicate prospect records for the same canonical company return `409`. Creating a canonical company alone still does not create a prospect.
 
-An importable OpenAPI 3.1 Action schema and Custom GPT setup/usage instructions are in `workers/sales-command-center/openapi/gpt-action.yaml` and `docs/custom-gpt-crm-action.md`. The schema points at the isolated staging Worker URL. It is a local artifact only; no Action has been created, no API key has been issued, and staging has not been deployed by this change.
+An importable OpenAPI 3.1 Action schema and Custom GPT setup/usage instructions are in `workers/sales-command-center/openapi/gpt-action.yaml` and `docs/custom-gpt-crm-action.md`. The schema points at the isolated staging Worker URL. The staging Worker is deployed and a dedicated staging key exists; production remains unchanged.
 
 ## Follow-up automation boundary
 

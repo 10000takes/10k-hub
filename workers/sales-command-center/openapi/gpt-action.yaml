@@ -195,6 +195,23 @@ paths:
       responses:
         '200': { $ref: '#/components/responses/Updated' }
         '404': { $ref: '#/components/responses/NotFound' }
+  /v1/crm/prospects/{id}/promote:
+    post:
+      operationId: promoteProspectToLead
+      summary: Promote a researched prospect into a new lead opportunity
+      description: Creates one New-stage lead in the existing sales_records model and links it to the same canonical company. Copies prospect research provenance; canonical contacts and company-level communication history stay linked to that company. Fails if a matching lead already exists.
+      parameters:
+        - { $ref: '#/components/parameters/Id' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, additionalProperties: false }
+      responses:
+        '201': { $ref: '#/components/responses/Created' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
   /v1/crm/research-notes:
     post:
       operationId: saveResearchNote
