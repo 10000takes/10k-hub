@@ -13,7 +13,7 @@ This contract is implemented under `/v1/crm/*` in the Sales Command Center Worke
 
 ## Scope names
 
-`companies:read`, `companies:write`, `contacts:read`, `contacts:write`, `communications:read`, `research:write`, `opportunities:read`, `opportunities:write`, `tasks:read`, and `tasks:write`.
+`companies:read`, `companies:write`, `contacts:read`, `contacts:write`, `prospects:read`, `prospects:write`, `communications:read`, `research:write`, `opportunities:read`, `opportunities:write`, `tasks:read`, and `tasks:write`.
 
 ## Operations
 
@@ -25,6 +25,9 @@ This contract is implemented under `/v1/crm/*` in the Sales Command Center Worke
 | `GET /v1/crm/contacts?q=&company_id=` | `contacts:read` | Search contacts and their company relationships. |
 | `POST /v1/crm/contacts` | `contacts:write` | Add or link a contact. Existing email addresses match the existing contact rather than creating a duplicate. Multiple distinct contacts can be associated with one company. |
 | `PATCH /v1/crm/contacts/{id}` | `contacts:write` | Update contact name, title, phone, notes, or primary email. Email evidence URLs must be HTTPS. |
+| `GET /v1/crm/prospects?q=&limit=` | `prospects:read` | Search existing prospect research records, including company, fit, and campaign-opportunity text. |
+| `POST /v1/crm/prospects` | `prospects:write` | Create one prospect research record linked to an existing canonical company. A record for that company must not already exist. |
+| `PATCH /v1/crm/prospects/{id}` | `prospects:write` | Update prospect research fields; source URLs must use HTTPS. |
 | `POST /v1/crm/research-notes` | `research:write` | Save a CRM activity note and optional HTTPS source with confidence. |
 | `GET /v1/crm/communications?company_id={id}` | `communications:read` | Read Gmail communication metadata/snippets and existing Resend outreach records for a company. |
 | `GET /v1/crm/communications?contact_id={id}` | `communications:read` | Read history for an individual contact. |
@@ -39,7 +42,11 @@ Canonical companies are additive identity records linked to the current `sales_r
 
 ## Recommended ChatGPT key
 
-Start with `companies:read`, `contacts:read`, `contacts:write`, `communications:read`, `research:write`, `opportunities:read`, `opportunities:write`, `tasks:read`, and `tasks:write`. Add `companies:write` only if you want ChatGPT creating company records. Do not grant any email-send scope. Rotate/revoke the key independently of Jack and Cody's dashboard tokens.
+Start with `companies:read/write`, `contacts:read/write`, `prospects:read/write`, `communications:read`, `research:write`, `opportunities:read/write`, and `tasks:read/write`. The scope set can be narrowed if some operations are not wanted. Do not grant any email-send scope. Rotate/revoke the key independently of Jack and Cody's dashboard tokens.
+
+The prospect resource is separate from canonical company identity and the lead opportunity pipeline. Creating it requires `company_id` for a previously found/created canonical company and writes an `entity_type='prospect'` record to the existing `sales_records` model, with a `sales_record_companies` link. It does not create a client or lead opportunity, and duplicate prospect records for the same canonical company return `409`. Creating a canonical company alone still does not create a prospect.
+
+An importable OpenAPI 3.1 Action schema and Custom GPT setup/usage instructions are in `workers/sales-command-center/openapi/gpt-action.yaml` and `docs/custom-gpt-crm-action.md`. The schema points at the isolated staging Worker URL. It is a local artifact only; no Action has been created, no API key has been issued, and staging has not been deployed by this change.
 
 ## Follow-up automation boundary
 

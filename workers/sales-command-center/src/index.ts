@@ -74,6 +74,7 @@ async function audit(env: Env, actor: SalesActor, action: string, entityType = "
 
 const CRM_SCOPES = new Set([
   "companies:read", "companies:write", "contacts:read", "contacts:write",
+  "prospects:read", "prospects:write",
   "communications:read", "research:write", "opportunities:read",
   "opportunities:write", "tasks:read", "tasks:write",
 ]);
@@ -259,6 +260,113 @@ async function crmRoute(request: Request, env: Env, url: URL): Promise<Response>
           WHERE id IN (SELECT record_id FROM sales_record_companies WHERE company_id=?)`).bind(salesString(patch.industry, "", 100), salesString(patch.industry, "", 100), now, companyMatch[1]).run();
         await auditCrm(env, actor, "crm_company_updated", "company", companyMatch[1], { changed_fields: Object.keys(patch) });
         return json({ id: companyMatch[1], company_name: name, updated_at: now });
+      });
+    }
+    if (path === "/v1/crm/prospects" && method === "GET") {
+      const denied = requireScope("prospects:read"); if (denied) return denied;
+      const q = salesString(url.searchParams.get("q"), "", 160).toLowerCase();
+      const limit = Math.max(1, Math.min(100, Number(url.searchParams.get("limit") || 50)));
+      const rows = await env.DB.prepare(`SELECT r.id,rc.company_id,COALESCE(c.name,r.name) AS company_name,
+        COALESCE(NULLIF(r.industry,''),c.industry,'') AS industry,r.status,r.updated_at,
+        COALESCE(json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.company_description'),'') AS company_description,
+        COALESCE(json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.fit_reason'),'') AS fit_reason,
+        COALESCE(json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.campaign_opportunities'),'') AS campaign_opportunities,
+        COALESCE(json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.lead_category'),'brand') AS lead_category,
+        COALESCE(json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.location'),'') AS location,
+        COALESCE(json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.source_name'),'') AS source_name,
+        COALESCE((SELECT s.url FROM sales_research_sources s WHERE s.record_id=r.id ORDER BY s.captured_at DESC LIMIT 1),
+          json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.source_url'),'') AS source_url,
+        COALESCE((SELECT s.confidence FROM sales_research_sources s WHERE s.record_id=r.id ORDER BY s.captured_at DESC LIMIT 1),
+          json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.research_confidence'),'unverified') AS research_confidence,
+        COALESCE(json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.researched_at'),'') AS researched_at,
+        COALESCE(json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.notes'),'') AS notes,
+        c.website
+        FROM sales_records r
+        LEFT JOIN sales_record_companies rc ON rc.record_id=r.id
+        LEFT JOIN sales_companies c ON c.id=rc.company_id
+        WHERE r.entity_type='prospect' AND (?='' OR lower(COALESCE(c.name,r.name)) LIKE ?
+          OR lower(COALESCE(r.industry,c.industry,'')) LIKE ?
+          OR lower(COALESCE(json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.company_description'),'')) LIKE ?
+          OR lower(COALESCE(json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.fit_reason'),'')) LIKE ?
+          OR lower(COALESCE(json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.campaign_opportunities'),'')) LIKE ?)
+        ORDER BY r.updated_at DESC LIMIT ?`).bind(q, `%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, limit).all();
+      return json({ prospects: rows.results ?? [] });
+    }
+    if (path === "/v1/crm/prospects" && method === "POST") {
+      const denied = requireScope("prospects:write"); if (denied) return denied;
+      return idempotentCrmWrite(request, env, actor, path, async (body) => {
+        const companyId = salesString(body.company_id, "", 80);
+        if (!companyId) return json({ error: "company_id is required. Create or find the canonical company first." }, 400);
+        const allowed = new Set(["company_id", "company_description", "fit_reason", "campaign_opportunities", "lead_category", "location", "source_name", "source_url", "research_confidence", "researched_at", "notes"]);
+        const unknown = Object.keys(body).filter((key) => !allowed.has(key));
+        if (unknown.length) return json({ error: `Unsupported prospect fields: ${unknown.join(", ")}` }, 400);
+        const companyResult = await env.DB.prepare("SELECT id,name,industry FROM sales_companies WHERE id=?").bind(companyId).all<Record<string, unknown>>();
+        const company = companyResult.results?.[0];
+        if (!company) return json({ error: "Canonical company not found." }, 404);
+        const existing = await env.DB.prepare(`SELECT r.id FROM sales_records r JOIN sales_record_companies rc ON rc.record_id=r.id
+          WHERE r.entity_type='prospect' AND rc.company_id=? LIMIT 1`).bind(companyId).all<Record<string, unknown>>();
+        if (existing.results?.length) return json({ error: "A prospect research record already exists for this company.", id: existing.results[0].id }, 409);
+        const sourceUrl = salesString(body.source_url, "", 1000);
+        if (sourceUrl && !/^https:\/\//i.test(sourceUrl)) return json({ error: "source_url must use HTTPS." }, 400);
+        const confidence = String(body.research_confidence || (sourceUrl ? "low" : "unverified"));
+        if (!["unverified", "low", "medium", "high"].includes(confidence)) return json({ error: "research_confidence must be unverified, low, medium, or high." }, 400);
+        const category = String(body.lead_category || "brand").toLowerCase();
+        if (!["brand", "agency"].includes(category)) return json({ error: "lead_category must be brand or agency." }, 400);
+        const researchedAt = body.researched_at ? dateOnly(body.researched_at, "researched_at") : new Date().toISOString().slice(0, 10);
+        const now = new Date().toISOString(), id = crypto.randomUUID();
+        const data = {
+          company_name: String(company.name), company_description: salesString(body.company_description, "", 1000),
+          fit_reason: salesString(body.fit_reason, "", 1000), campaign_opportunities: salesString(body.campaign_opportunities, "", 1000),
+          lead_category: category, location: salesString(body.location, "", 160), source_name: salesString(body.source_name, "", 160),
+          source_url: sourceUrl, research_confidence: confidence, researched_at: researchedAt, notes: salesString(body.notes, "", 2000),
+        };
+        await env.DB.prepare(`INSERT INTO sales_records (id,entity_type,name,stage,industry,status,monthly_revenue,total_value,probability,next_follow_up,contract_end,last_contact,data_json,created_at,updated_at)
+          VALUES (?,'prospect',?,'',?,'open',0,0,0,NULL,NULL,NULL,?,?,?)`).bind(id, String(company.name), String(company.industry || ""), JSON.stringify(data), now, now).run();
+        await env.DB.prepare("INSERT INTO sales_record_companies (record_id,company_id,created_at) VALUES (?,?,?)").bind(id, companyId, now).run();
+        if (sourceUrl) await env.DB.prepare(`INSERT INTO sales_research_sources (id,record_id,source_type,title,url,fact_summary,confidence,captured_at,added_by)
+          VALUES (?,?,'prospect_research',?,?,?,?,?,?)`).bind(crypto.randomUUID(), id, data.source_name || "Prospect research source", sourceUrl, data.company_description, confidence, now, actor.ownerId).run();
+        await auditCrm(env, actor, "crm_prospect_created", "prospect", id, { company_id: companyId, company_name: String(company.name), source_url: sourceUrl || null });
+        return json({ id, company_id: companyId, company_name: String(company.name), created_at: now }, 201);
+      });
+    }
+    const prospectMatch = path.match(/^\/v1\/crm\/prospects\/([\w-]+)$/);
+    if (prospectMatch && method === "PATCH") {
+      const denied = requireScope("prospects:write"); if (denied) return denied;
+      return idempotentCrmWrite(request, env, actor, path, async (patch) => {
+        const old = await env.DB.prepare(`SELECT r.*,rc.company_id FROM sales_records r LEFT JOIN sales_record_companies rc ON rc.record_id=r.id
+          WHERE r.id=? AND r.entity_type='prospect'`).bind(prospectMatch[1]).all<Record<string, unknown>>();
+        const row = old.results?.[0]; if (!row) return json({ error: "Prospect not found." }, 404);
+        const allowed = new Set(["company_description", "fit_reason", "campaign_opportunities", "lead_category", "location", "source_name", "source_url", "research_confidence", "researched_at", "notes"]);
+        const unknown = Object.keys(patch).filter((key) => !allowed.has(key));
+        if (unknown.length) return json({ error: `Unsupported prospect fields: ${unknown.join(", ")}` }, 400);
+        let previous: Record<string, unknown> = {}; try { previous = JSON.parse(String(row.data_json || "{}")); } catch { previous = {}; }
+        const next = { ...previous };
+        for (const [key, max] of [["company_description", 1000], ["fit_reason", 1000], ["campaign_opportunities", 1000], ["location", 160], ["source_name", 160], ["notes", 2000]] as const) {
+          if (Object.prototype.hasOwnProperty.call(patch, key)) next[key] = salesString(patch[key], "", max);
+        }
+        if (Object.prototype.hasOwnProperty.call(patch, "lead_category")) {
+          const category = String(patch.lead_category || "").toLowerCase();
+          if (!["brand", "agency"].includes(category)) return json({ error: "lead_category must be brand or agency." }, 400);
+          next.lead_category = category;
+        }
+        if (Object.prototype.hasOwnProperty.call(patch, "source_url")) {
+          const sourceUrl = salesString(patch.source_url, "", 1000);
+          if (sourceUrl && !/^https:\/\//i.test(sourceUrl)) return json({ error: "source_url must use HTTPS." }, 400);
+          next.source_url = sourceUrl;
+        }
+        if (Object.prototype.hasOwnProperty.call(patch, "research_confidence")) {
+          const confidence = String(patch.research_confidence || "");
+          if (!["unverified", "low", "medium", "high"].includes(confidence)) return json({ error: "research_confidence must be unverified, low, medium, or high." }, 400);
+          next.research_confidence = confidence;
+        }
+        if (Object.prototype.hasOwnProperty.call(patch, "researched_at")) next.researched_at = patch.researched_at ? dateOnly(patch.researched_at, "researched_at") : "";
+        const now = new Date().toISOString();
+        await env.DB.prepare("UPDATE sales_records SET data_json=?,updated_at=? WHERE id=?").bind(JSON.stringify(next), now, prospectMatch[1]).run();
+        const sourceChanged = next.source_url && (next.source_url !== previous.source_url || next.source_name !== previous.source_name || next.company_description !== previous.company_description || next.research_confidence !== previous.research_confidence);
+        if (sourceChanged) await env.DB.prepare(`INSERT INTO sales_research_sources (id,record_id,source_type,title,url,fact_summary,confidence,captured_at,added_by)
+          VALUES (?,?,'prospect_research',?,?,?,?,?,?)`).bind(crypto.randomUUID(), prospectMatch[1], salesString(next.source_name, "Prospect research source", 160), String(next.source_url), salesString(next.company_description, "", 1000), String(next.research_confidence || "unverified"), now, actor.ownerId).run();
+        await auditCrm(env, actor, "crm_prospect_updated", "prospect", prospectMatch[1], { changed_fields: Object.keys(patch), company_id: row.company_id || null });
+        return json({ id: prospectMatch[1], company_id: row.company_id || null, updated_at: now });
       });
     }
     if (path === "/v1/crm/contacts" && method === "GET") {

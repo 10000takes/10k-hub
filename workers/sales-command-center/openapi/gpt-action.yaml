@@ -1,0 +1,439 @@
+openapi: 3.1.0
+info:
+  title: 10K Hub Partnerships CRM
+  version: 1.0.0
+  description: >-
+    Private staging API for prospect research, contacts, company records,
+    communications history, existing opportunities, and follow-up tasks.
+    This API cannot send email or access raw SQL.
+servers:
+  - url: https://10k-takes-sales-command-center-staging.10ktakes.workers.dev
+    description: Isolated staging Worker. Confirm this URL is active before configuring an Action.
+security:
+  - bearerAuth: []
+paths:
+  /v1/crm/companies:
+    get:
+      operationId: searchCompanies
+      summary: Search canonical companies
+      parameters:
+        - in: query
+          name: q
+          schema: { type: string, maxLength: 160 }
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 100, default: 50 }
+      responses:
+        '200':
+          description: Matching companies
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  companies: { type: array, items: { $ref: '#/components/schemas/Company' } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    post:
+      operationId: createCompany
+      summary: Create a canonical company identity
+      description: Does not create a prospect, client, or opportunity. Search first to avoid duplicates.
+      parameters: [{ $ref: '#/components/parameters/IdempotencyKey' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string, maxLength: 160 }
+                industry: { type: string, maxLength: 100 }
+                website: { type: string, format: uri, maxLength: 1000 }
+                notes: { type: string, maxLength: 2000 }
+      responses:
+        '201': { $ref: '#/components/responses/Created' }
+        '409': { $ref: '#/components/responses/Conflict' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /v1/crm/companies/{id}:
+    patch:
+      operationId: updateCompany
+      summary: Update canonical company details
+      parameters:
+        - { $ref: '#/components/parameters/Id' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              minProperties: 1
+              properties:
+                name: { type: string, maxLength: 160 }
+                industry: { type: string, maxLength: 100 }
+                website: { type: string, maxLength: 1000 }
+                notes: { type: string, maxLength: 2000 }
+      responses:
+        '200': { $ref: '#/components/responses/Updated' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /v1/crm/contacts:
+    get:
+      operationId: searchContacts
+      summary: Search CRM contacts
+      parameters:
+        - in: query
+          name: q
+          schema: { type: string, maxLength: 160 }
+        - in: query
+          name: company_id
+          schema: { type: string }
+      responses:
+        '200':
+          description: Matching contacts and company relationships
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: { contacts: { type: array, items: { type: object, additionalProperties: true } } }
+    post:
+      operationId: createOrLinkContact
+      summary: Create or link a contact
+      description: Search first. Email addresses deduplicate globally; several distinct contacts may link to one company.
+      parameters: [{ $ref: '#/components/parameters/IdempotencyKey' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [display_name]
+              properties:
+                display_name: { type: string, maxLength: 160 }
+                title: { type: string, maxLength: 160 }
+                email: { type: string, format: email, maxLength: 320 }
+                phone: { type: string, maxLength: 80 }
+                notes: { type: string, maxLength: 2000 }
+                company_ids: { type: array, items: { type: string }, uniqueItems: true }
+                relationship_role: { type: string, maxLength: 160 }
+                email_source_url: { type: string, format: uri }
+                confidence: { $ref: '#/components/schemas/Confidence' }
+      responses:
+        '200': { description: Existing contact matched and linked }
+        '201': { $ref: '#/components/responses/Created' }
+        '409': { $ref: '#/components/responses/Conflict' }
+  /v1/crm/contacts/{id}:
+    patch:
+      operationId: updateContact
+      summary: Update contact details
+      parameters:
+        - { $ref: '#/components/parameters/Id' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              minProperties: 1
+              properties:
+                display_name: { type: string, maxLength: 160 }
+                title: { type: string, maxLength: 160 }
+                phone: { type: string, maxLength: 80 }
+                notes: { type: string, maxLength: 2000 }
+                email: { type: string, format: email, maxLength: 320 }
+                email_source_url: { type: string, format: uri }
+                confidence: { $ref: '#/components/schemas/Confidence' }
+      responses:
+        '200': { $ref: '#/components/responses/Updated' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /v1/crm/prospects:
+    get:
+      operationId: searchProspects
+      summary: Search prospect research records
+      parameters:
+        - in: query
+          name: q
+          schema: { type: string, maxLength: 160 }
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 100, default: 50 }
+      responses:
+        '200':
+          description: Matching prospects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: { prospects: { type: array, items: { $ref: '#/components/schemas/Prospect' } } }
+    post:
+      operationId: createProspect
+      summary: Create a prospect research record
+      description: Requires an existing canonical company_id. Does not create a client or pipeline opportunity. Search first; one prospect record per canonical company.
+      parameters: [{ $ref: '#/components/parameters/IdempotencyKey' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ProspectInput' }
+      responses:
+        '201': { $ref: '#/components/responses/Created' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+  /v1/crm/prospects/{id}:
+    patch:
+      operationId: updateProspect
+      summary: Update prospect research
+      parameters:
+        - { $ref: '#/components/parameters/Id' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ProspectPatch' }
+      responses:
+        '200': { $ref: '#/components/responses/Updated' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /v1/crm/research-notes:
+    post:
+      operationId: saveResearchNote
+      summary: Save sourced company research
+      parameters: [{ $ref: '#/components/parameters/IdempotencyKey' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [company_id, note]
+              properties:
+                company_id: { type: string }
+                note: { type: string, maxLength: 2000 }
+                source_url: { type: string, format: uri, description: HTTPS required when supplied }
+                title: { type: string, maxLength: 160 }
+                confidence: { $ref: '#/components/schemas/Confidence' }
+      responses:
+        '201': { $ref: '#/components/responses/Created' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /v1/crm/communications:
+    get:
+      operationId: getCommunicationHistory
+      summary: Read company or contact communication history
+      parameters:
+        - in: query
+          name: company_id
+          schema: { type: string }
+        - in: query
+          name: contact_id
+          schema: { type: string }
+      responses:
+        '200':
+          description: Gmail metadata and Resend records, deduplicated by provider source
+          content:
+            application/json:
+              schema: { type: object, properties: { communications: { type: array, items: { type: object, additionalProperties: true } }, sources: { type: array, items: { type: string } }, note: { type: string } } }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /v1/crm/opportunities:
+    get:
+      operationId: searchOpportunities
+      summary: List existing lead opportunities
+      description: Reads the existing sales_records entity_type=lead model.
+      responses:
+        '200':
+          description: Existing opportunities
+          content:
+            application/json:
+              schema: { type: object, properties: { opportunities: { type: array, items: { type: object, additionalProperties: true } }, model: { type: string } } }
+  /v1/crm/opportunities/{id}:
+    get:
+      operationId: getOpportunity
+      summary: Read one existing opportunity
+      parameters: [{ $ref: '#/components/parameters/Id' }]
+      responses:
+        '200': { description: Opportunity record }
+        '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      operationId: updateOpportunity
+      summary: Update an existing opportunity
+      description: Allowed stages are New, Contacted, Proposal Sent, and Closed. This does not replace the existing pipeline model.
+      parameters:
+        - { $ref: '#/components/parameters/Id' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              minProperties: 1
+              properties:
+                stage: { type: string, enum: [New, Contacted, Proposal Sent, Closed] }
+                status: { type: string, maxLength: 30 }
+                monthly_revenue: { type: number, minimum: 0 }
+                total_value: { type: number, minimum: 0 }
+                probability: { type: number, minimum: 0, maximum: 100 }
+                next_follow_up: { type: [string, 'null'], format: date }
+                notes: { type: string, maxLength: 2000 }
+                pipeline_outcome: { type: string }
+                win_loss_reason: { type: string }
+      responses:
+        '200': { $ref: '#/components/responses/Updated' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /v1/crm/follow-up-tasks:
+    get:
+      operationId: listFollowUpTasks
+      summary: List follow-up tasks
+      parameters:
+        - in: query
+          name: status
+          schema: { type: string, enum: [open, completed, cancelled] }
+      responses:
+        '200':
+          description: Follow-up tasks
+          content:
+            application/json:
+              schema: { type: object, properties: { tasks: { type: array, items: { type: object, additionalProperties: true } } } }
+    post:
+      operationId: createFollowUpTask
+      summary: Create a follow-up task
+      parameters: [{ $ref: '#/components/parameters/IdempotencyKey' }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [company_id, title, due_at]
+              properties:
+                company_id: { type: string }
+                record_id: { type: string }
+                contact_id: { type: string }
+                title: { type: string, maxLength: 240 }
+                notes: { type: string, maxLength: 2000 }
+                assigned_to: { type: string, maxLength: 80 }
+                task_type: { type: string, maxLength: 60 }
+                due_at: { type: string, format: date }
+                dedupe_key: { type: string, maxLength: 300 }
+      responses:
+        '201': { $ref: '#/components/responses/Created' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /v1/crm/follow-up-tasks/{id}:
+    patch:
+      operationId: updateFollowUpTask
+      summary: Update, complete, or cancel a follow-up task
+      parameters:
+        - { $ref: '#/components/parameters/Id' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              minProperties: 1
+              properties:
+                title: { type: string, maxLength: 240 }
+                notes: { type: string, maxLength: 2000 }
+                assigned_to: { type: string, maxLength: 80 }
+                due_at: { type: string, format: date }
+                status: { type: string, enum: [open, completed, cancelled] }
+      responses:
+        '200': { $ref: '#/components/responses/Updated' }
+        '404': { $ref: '#/components/responses/NotFound' }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: 10K Hub CRM integration key
+  parameters:
+    Id:
+      in: path
+      name: id
+      required: true
+      schema: { type: string }
+    IdempotencyKey:
+      in: header
+      name: Idempotency-Key
+      required: true
+      description: Generate a new random 12–128 character key for each distinct write. Reuse only when retrying the exact same request.
+      schema: { type: string, minLength: 12, maxLength: 128 }
+  schemas:
+    Confidence:
+      type: string
+      enum: [unverified, low, medium, high]
+    Company:
+      type: object
+      additionalProperties: true
+      properties:
+        id: { type: string }
+        company_name: { type: string }
+        industry: { type: string }
+        website: { type: string }
+        record_types: { type: string }
+    Prospect:
+      type: object
+      additionalProperties: true
+      properties:
+        id: { type: string }
+        company_id: { type: string }
+        company_name: { type: string }
+        industry: { type: string }
+        company_description: { type: string }
+        fit_reason: { type: string }
+        campaign_opportunities: { type: string }
+        source_url: { type: string }
+        research_confidence: { $ref: '#/components/schemas/Confidence' }
+        notes: { type: string }
+    ProspectInput:
+      type: object
+      required: [company_id]
+      properties:
+        company_id: { type: string }
+        company_description: { type: string, maxLength: 1000 }
+        fit_reason: { type: string, maxLength: 1000 }
+        campaign_opportunities: { type: string, maxLength: 1000 }
+        lead_category: { type: string, enum: [brand, agency] }
+        location: { type: string, maxLength: 160 }
+        source_name: { type: string, maxLength: 160 }
+        source_url: { type: string, format: uri, description: HTTPS required }
+        research_confidence: { $ref: '#/components/schemas/Confidence' }
+        researched_at: { type: string, format: date }
+        notes: { type: string, maxLength: 2000 }
+    ProspectPatch:
+      type: object
+      minProperties: 1
+      properties:
+        company_description: { type: string, maxLength: 1000 }
+        fit_reason: { type: string, maxLength: 1000 }
+        campaign_opportunities: { type: string, maxLength: 1000 }
+        lead_category: { type: string, enum: [brand, agency] }
+        location: { type: string, maxLength: 160 }
+        source_name: { type: string, maxLength: 160 }
+        source_url: { type: string, format: uri, description: HTTPS required }
+        research_confidence: { $ref: '#/components/schemas/Confidence' }
+        researched_at: { type: string, format: date }
+        notes: { type: string, maxLength: 2000 }
+  responses:
+    Unauthorized:
+      description: Missing or invalid authentication
+    Created:
+      description: Record created
+      content:
+        application/json:
+          schema: { type: object, additionalProperties: true, properties: { id: { type: string }, company_id: { type: string }, created_at: { type: string } } }
+    Updated:
+      description: Record updated
+      content:
+        application/json:
+          schema: { type: object, additionalProperties: true, properties: { id: { type: string }, updated_at: { type: string }, status: { type: string } } }
+    Conflict:
+      description: Duplicate or conflicting record
+    BadRequest:
+      description: Invalid or missing request fields
+      content:
+        application/json:
+          schema: { type: object, properties: { error: { type: string } } }
+    NotFound:
+      description: Record not found

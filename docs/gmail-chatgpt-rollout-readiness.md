@@ -82,18 +82,21 @@ Use a private Custom GPT configured with an **Action** and an explicit OpenAPI s
 
 The next phase should publish a narrowly scoped key through a Jack-only provisioning/revocation path (or a controlled operator CLI); raw key shown once, D1 stores only its hash. Use a distinct key for each GPT/environment, short expiration, and modest per-minute limit. Grant only `companies:read/write`, `contacts:read/write`, `research:write`, `communications:read`, `opportunities:read/write`, and `tasks:read/write` as needed. No send-email scope or send endpoint. Do not store the key in a GPT prompt or instructions; place it only in the Action's authentication configuration. Apply workspace/domain action allowlisting if the ChatGPT plan exposes/enforces it.
 
-The existing `/v1/crm/*` API already covers most operations, with request validation, narrow scopes, rate limiting, audit records, and idempotency for writes. The prospective contract includes:
+The existing `/v1/crm/*` API covers the operations below, with request validation, narrow scopes, rate limiting, audit records, and idempotency for writes. The local changes add prospect search/create/update over the existing prospect records, without changing the `sales_records` model:
 
 | Capability | Operation |
 |---|---|
 | Search companies and contacts | `GET /v1/crm/companies?q=&limit=`; `GET /v1/crm/contacts?q=&company_id=` |
 | Create/update canonical companies and contacts | `POST/PATCH /v1/crm/companies[/{id}]`; `POST/PATCH /v1/crm/contacts[/{id}]` |
+| Search/create/update prospect research | `GET/POST /v1/crm/prospects`; `PATCH /v1/crm/prospects/{id}` |
 | Research notes | `POST /v1/crm/research-notes` with HTTPS source and confidence |
 | Communication history | `GET /v1/crm/communications?company_id=` or `?contact_id=` |
 | Opportunities | `GET /v1/crm/opportunities[/{id}]`; `PATCH /v1/crm/opportunities/{id}` (existing `sales_records` lead model) |
 | Follow-up tasks | `GET/POST /v1/crm/follow-up-tasks`; `PATCH /v1/crm/follow-up-tasks/{id}` |
 
-Before GPT setup, add a purpose-built prospect search/create/update operation over existing prospect records. The current companies search gives canonical company identities and `linked_record_count`/`record_types`; opportunities cover `entity_type='lead'`, not all prospect records. Keep companies (identity) distinct from opportunities and prospects, and do not change the existing `sales_records` model. Produce a reviewed OpenAPI document that marks every write with required `Idempotency-Key`, explicit request/response schemas, and no raw database access. Make ChatGPT confirm before any write with meaningful side effects; human approval remains required for all outbound messages, and this API has no send operation.
+Prospects remain distinct from canonical company identities and opportunities (`entity_type='lead'`). Creating a prospect requires an existing canonical `company_id` and rejects a second prospect for the same company. The reviewed OpenAPI 3.1 schema is `workers/sales-command-center/openapi/gpt-action.yaml`; private GPT setup and safe-use instructions are in `docs/custom-gpt-crm-action.md`. The schema requires `Idempotency-Key` on every write and exposes no raw database access. ChatGPT should confirm before every write; outbound email remains manual and this API has no send operation.
+
+This milestone is local preparation only. It does not create a GPT Action, issue an API key, deploy the staging Worker, connect Gmail, or change production. Deploy to staging and issue a dedicated staging key only after approval; keep GPT sharing private during acceptance tests.
 
 OpenAI's setup guide: [Configuring actions in GPTs](https://help.openai.com/en/articles/9442513-configuring-actions-in-gpts). Action authentication and schema are configured in the GPT editor; test each operation in Preview before sharing the GPT privately.
 

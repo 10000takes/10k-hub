@@ -131,6 +131,36 @@ test('canonical companies can be created and updated without replacing sales_rec
   assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sales_records WHERE entity_type='lead'").get().n, 1);
 });
 
+test('prospect API searches existing records and creates, updates, and deduplicates prospect research records', async () => {
+  const listed = await call('/v1/crm/prospects?q=northland');
+  assert.equal(listed.response.status, 200);
+  assert.equal(listed.data.prospects.length, 1);
+  assert.equal(listed.data.prospects[0].company_name, 'Northland Ford');
+  assert.equal(listed.data.prospects[0].company_id, companyOne);
+
+  const company = await call('/v1/crm/companies', { method: 'POST', key: 'prospect-company-001', body: { name: 'Lakeview Auto', industry: 'Automotive', website: 'https://lakeview.example' } });
+  assert.equal(company.response.status, 201);
+  const body = { company_id: company.data.id, company_description: 'Minnesota dealership with a local community program.', fit_reason: 'Potential sports audience fit.', source_name: 'Company community page', source_url: 'https://lakeview.example/community', research_confidence: 'medium' };
+  const created = await call('/v1/crm/prospects', { method: 'POST', key: 'prospect-create-001', body });
+  const replay = await call('/v1/crm/prospects', { method: 'POST', key: 'prospect-create-001', body });
+  assert.equal(created.response.status, 201);
+  assert.equal(replay.response.headers.get('Idempotent-Replay'), 'true');
+  assert.equal(replay.data.id, created.data.id);
+  assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sales_records WHERE entity_type='prospect' AND name='Lakeview Auto'").get().n, 1);
+  assert.equal(db.prepare('SELECT company_id FROM sales_record_companies WHERE record_id=?').get(created.data.id).company_id, company.data.id);
+
+  const updated = await call(`/v1/crm/prospects/${created.data.id}`, { method: 'PATCH', key: 'prospect-update-001', body: { campaign_opportunities: 'A locally sourced student-athlete feature.', researched_at: '2026-11-23' } });
+  assert.equal(updated.response.status, 200);
+  const searched = await call('/v1/crm/prospects?q=student-athlete');
+  assert.equal(searched.data.prospects.length, 1);
+  assert.equal(searched.data.prospects[0].campaign_opportunities, 'A locally sourced student-athlete feature.');
+  const duplicate = await call('/v1/crm/prospects', { method: 'POST', key: 'prospect-create-002', body });
+  assert.equal(duplicate.response.status, 409);
+  assert.equal(duplicate.data.id, created.data.id);
+  const audit = db.prepare("SELECT COUNT(*) AS n FROM sales_audit_log WHERE action IN ('crm_prospect_created','crm_prospect_updated')").get().n;
+  assert.equal(audit, 2);
+});
+
 test('integration writes are audited, research sources validated, and opportunity rows remain sales_records leads', async () => {
   const note = await call('/v1/crm/research-notes', { method: 'POST', key: 'research-note-0001', body: { company_id: companyOne, note: 'Confirmed regional campaign interest.', source_url: 'https://example.com/news', confidence: 'medium' } });
   assert.equal(note.response.status, 201);
