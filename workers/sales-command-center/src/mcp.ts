@@ -203,7 +203,10 @@ export async function handleMcpRequest(request: Request, env: Env, ctx: Executio
   if (request.method !== "POST") return json({ error: "MCP endpoint accepts POST requests only." }, 405, { Allow: "POST" });
   const resource = env.MCP_SERVER_URL || `${url.origin}/mcp`;
   const auth = request.headers.get("Authorization") || "";
-  const tokenMatch = auth.match(/^Bearer ([A-Za-z0-9._~-]{16,4096})$/);
+  // Cloudflare's OAuth provider issues opaque tokens in userId:grantId:random form.
+  // Keep the value constrained, but allow the colons so valid OAuth credentials are
+  // passed through to validateToken instead of being mistaken for missing auth.
+  const tokenMatch = auth.match(/^Bearer ([A-Za-z0-9._~:-]{16,4096})$/);
   const metadataUrl = `${url.origin}/.well-known/oauth-protected-resource/mcp`;
   let token: Awaited<ReturnType<typeof server.validateToken>> | null = null;
   if (tokenMatch) try { token = await server.validateToken(resource, tokenMatch[1], env); } catch (error) {
@@ -215,7 +218,14 @@ export async function handleMcpRequest(request: Request, env: Env, ctx: Executio
   catch { return json({ jsonrpc: "2.0", id: null, error: { code: -32700, message: "Parse error" } }, 400); }
   const id = message.id;
   if (message.jsonrpc !== "2.0" || typeof message.method !== "string") return json({ jsonrpc: "2.0", id: id ?? null, error: { code: -32600, message: "Invalid Request" } }, 400);
-  console.info("mcp_request", { method: message.method });
+  const requestParams = message.params && typeof message.params === "object" ? message.params as Record<string, unknown> : {};
+  console.info("mcp_request", {
+    method: message.method,
+    toolName: message.method === "tools/call" && typeof requestParams.name === "string" ? requestParams.name : undefined,
+    bearerTokenPresent: Boolean(tokenMatch),
+    bearerTokenValid: Boolean(token),
+    scopes: token?.scope || [],
+  });
   if (message.method === "notifications/initialized" || message.method === "notifications/cancelled") return new Response(null, { status: 202, headers: { "Cache-Control": "no-store" } });
   if (message.method === "ping") return json({ jsonrpc: "2.0", id, result: {} });
   if (message.method === "initialize") return json({ jsonrpc: "2.0", id, result: { protocolVersion: String((message.params as Record<string, unknown> | undefined)?.protocolVersion || "2025-11-25"), capabilities: { tools: { listChanged: false } }, serverInfo: { name: "10K Hub Partnerships CRM", version: "1.0.0" } } });
