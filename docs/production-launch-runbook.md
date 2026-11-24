@@ -104,29 +104,21 @@ The namespace ID must be for a new production-only KV namespace, never the stagi
 npx wrangler kv namespace create 10k-hub-crm-production-oauth --binding OAUTH_KV --use-remote --update-config
 ```
 
-Add the returned ID to the root binding above. Set separate secrets through interactive prompts (do not put values in commands, files, or logs):
+Add the returned ID to the root binding above. Use a separate production passphrase and a high-entropy production API token. The OAuth consent scopes remain `crm:read`, `crm:write`, and `offline_access` only. The API token row scopes should cover only company/contact/prospect search and writes, research read/write, communication read, opportunity read/write, and task read/write. Do not grant email send, delete, or Gmail credential scopes.
 
-```sh
-npx wrangler secret put MCP_AUTH_PASSWORD --name 10k-takes-sales-command-center
-npx wrangler secret put MCP_CRM_API_TOKEN --name 10k-takes-sales-command-center
-```
-
-Use a new production passphrase and a high-entropy production API token. Store the token hash in `sales_crm_api_credentials`; scopes should cover only company/contact/prospect search and writes, research read/write, communication read, opportunity read/write, and task read/write. Do not grant email send, delete, or Gmail credential scopes. Keep the raw token only as the Worker secret and in a password manager for setup; never commit it. The OAuth consent scopes remain `crm:read`, `crm:write`, and `offline_access` only.
-
-After migration 0005 creates `sales_crm_api_credentials`, generate a 64-character random token in a password manager (or another approved secure generator). To derive its D1 hash without echoing the token, run this locally and enter it only at the hidden prompt:
+After migrations create `sales_crm_api_credentials`, generate a high-entropy API token and a separate 32-character-or-longer OAuth passphrase. Keep both out of the repository and shell history. Use a temporary secrets JSON file on the mounted encrypted backup volume; keep it readable only by the current user. Retain the OAuth passphrase in the password manager because ChatGPT will ask for it during OAuth consent. The raw API token is used only as the Worker secret; the CRM stores only its SHA-256 hash.
 
 ```sh
 python3 -c 'import getpass,hashlib; print(hashlib.sha256(getpass.getpass("Production MCP API token: ").encode()).hexdigest())'
 ```
 
-Insert only that SHA-256 result into D1, with the least privileges needed by the existing MCP tools, then paste the raw value into the interactive Worker-secret prompt. Both the D1 row and secret update require explicit production-change approval:
+Insert only that SHA-256 result into D1, with the least privileges needed by the existing MCP tools. The credential row and secret configuration are production changes and must remain separate from Gmail authorization:
 
 ```sh
 npx wrangler d1 execute 10k-takes-sales-command-center --remote --command "INSERT INTO sales_crm_api_credentials (id,label,token_sha256,scopes_json,rate_limit_per_minute,created_by,created_at,expires_at) VALUES (lower(hex(randomblob(16))),'ChatGPT Business — Production','<SHA256_OF_TOKEN>','[\"companies:read\",\"companies:write\",\"contacts:read\",\"contacts:write\",\"prospects:read\",\"prospects:write\",\"communications:read\",\"research:read\",\"research:write\",\"opportunities:read\",\"opportunities:write\",\"tasks:read\",\"tasks:write\"]',60,'jack',datetime('now'),datetime('now','+90 days'));"
-npx wrangler secret put MCP_CRM_API_TOKEN --name 10k-takes-sales-command-center
 ```
 
-Use a separate, randomly generated passphrase for `MCP_AUTH_PASSWORD`; do not reuse the API token. Revoke the credential row and replace the Worker secret together during rotation.
+Do not run `wrangler secret put` before the release deployment: Cloudflare documents that it immediately creates and deploys a Worker version. Instead, place `MCP_AUTH_PASSWORD` and `MCP_CRM_API_TOKEN` in a temporary JSON secrets file on the encrypted volume, and pass that file to the single release deployment in Step 8. Delete the temporary file after the deployment succeeds. Revoke the credential row and replace the Worker secret together during rotation.
 
 The MCP tool allowlist contains no outbound-email, record-delete, or Gmail-credential management tools. The staging warning about the root `_10k_takes_sales_command_center` D1 binding is non-fatal: Wrangler does not inherit root D1 bindings into staging, staging explicitly binds `DB` to D1 `0b960090-30e9-43ed-bd15-1ad7dfe05f81`, and application code uses `DB` only. The root alias points to production but is not present in staging and is not referenced by source. No staging-to-production D1 path was found.
 
@@ -134,10 +126,10 @@ The MCP tool allowlist contains no outbound-email, record-delete, or Gmail-crede
 
 ```sh
 npx wrangler deploy --dry-run --env=""
-npx wrangler deploy --env=""
+npx wrangler deploy --env="" --secrets-file="/Volumes/10K Hub Backups/production-mcp-secrets.json"
 ```
 
-The dry run must show production `DB`, production `OAUTH_KV`, production MCP variables, and version metadata. Stop if it shows the staging D1 or KV IDs, missing bindings, or a non-production environment label. The deploy command is a production change and requires explicit approval.
+The dry run must show the root production D1 database ID, production `OAUTH_KV`, production MCP variables, and version metadata. Wrangler may display the configured D1 preview database name during a local dry run; inspect `database_id` in the root config to confirm it is the production ID and ensure the staging environment still names only its staging database and KV. Stop if any ID is wrong or the environment label is not `production`. The deploy command creates and activates one Worker version with code, config, and secrets together; use the release commit and inspect the deployed version ID afterward.
 
 ## 9. Verify data and existing behavior
 
