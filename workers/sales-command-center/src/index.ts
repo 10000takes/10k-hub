@@ -81,7 +81,7 @@ async function audit(env: Env, actor: SalesActor, action: string, entityType = "
 const CRM_SCOPES = new Set([
   "companies:read", "companies:write", "contacts:read", "contacts:write",
   "prospects:read", "prospects:write",
-  "communications:read", "research:write", "opportunities:read",
+  "communications:read", "research:read", "research:write", "opportunities:read",
   "opportunities:write", "tasks:read", "tasks:write",
 ]);
 const CRM_USER_SCOPES = [...CRM_SCOPES];
@@ -531,6 +531,19 @@ async function crmRoute(request: Request, env: Env, url: URL): Promise<Response>
         await auditCrm(env, actor, "crm_research_note_added", "company", companyId, { note_id: sourceId || activityId, source_id: sourceId || null });
         return json({ id: sourceId || activityId, company_id: companyId, source_id: sourceId || null, created_at: now }, 201);
       });
+    }
+    if (path === "/v1/crm/research-notes" && method === "GET") {
+      const denied = requireScope("research:read"); if (denied) return denied;
+      const companyId = salesString(url.searchParams.get("company_id"), "", 80);
+      if (!companyId) return json({ error: "company_id is required." }, 400);
+      const limit = Math.max(1, Math.min(100, Number(url.searchParams.get("limit") || 50)));
+      const company = await env.DB.prepare("SELECT id FROM sales_companies WHERE id=?").bind(companyId).all();
+      if (!company.results?.length) return json({ error: "Company not found." }, 404);
+      const notes = await env.DB.prepare(`SELECT n.id,n.company_id,c.name AS company_name,n.note,n.source_url,
+        n.source_title,n.confidence,n.created_by,n.created_at
+        FROM sales_company_research_notes n JOIN sales_companies c ON c.id=n.company_id
+        WHERE n.company_id=? ORDER BY n.created_at DESC LIMIT ?`).bind(companyId, limit).all();
+      return json({ notes: notes.results ?? [] });
     }
     if (path === "/v1/crm/communications" && method === "GET") {
       const denied = requireScope("communications:read"); if (denied) return denied;
