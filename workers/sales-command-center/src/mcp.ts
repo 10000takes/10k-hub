@@ -137,12 +137,23 @@ async function crmCall(env: Env, path: string, method = "GET", body?: Record<str
   return { ok: response.ok, status: response.status, payload };
 }
 
-function makeMcpServer(env: Env, scope: string[]) {
+function makeMcpServer(env: Env, scope: string[], metadataUrl: string) {
   const server = new McpServer({ name: "10K Hub Partnerships CRM", version: "1.0.0" });
   const add = (name: string, description: string, schema: Record<string, z.ZodTypeAny>, method: string, path: (args: Record<string, unknown>) => string, buildBody?: (args: Record<string, unknown>) => Record<string, unknown>) => {
     const write = method !== "GET";
-    server.registerTool(name, { title: name.replaceAll("_", " "), description, inputSchema: schema }, async (args: Record<string, unknown>) => {
-      if (!scope.includes("crm:read") || (write && !scope.includes("crm:write"))) return { isError: true, content: [{ type: "text", text: "The connected OAuth grant lacks the required CRM scope. Reconnect and approve crm:read and crm:write." }] };
+    const requiredScopes = write ? ["crm:read", "crm:write", "offline_access"] : ["crm:read", "offline_access"];
+    const missingScopes = !scope.includes("crm:read") || (write && !scope.includes("crm:write"));
+    server.registerTool(name, {
+      title: name.replaceAll("_", " "),
+      description,
+      inputSchema: schema,
+      _meta: { securitySchemes: [{ type: "oauth2", scopes: requiredScopes }] },
+    }, async (args: Record<string, unknown>) => {
+      if (missingScopes) return {
+        isError: true,
+        content: [{ type: "text", text: "Connect or reconnect the 10K Hub CRM and approve the requested scopes." }],
+        _meta: { "mcp/www_authenticate": [`Bearer resource_metadata="${metadataUrl}", error="insufficient_scope", error_description="The selected CRM tool needs additional authorization scopes."`] },
+      };
       try {
         const result = await crmCall(env, path(args), method, buildBody?.(args), name);
         const text = JSON.stringify(result.payload);
@@ -194,14 +205,10 @@ export async function handleMcpRequest(request: Request, env: Env, ctx: Executio
   const auth = request.headers.get("Authorization") || "";
   const tokenMatch = auth.match(/^Bearer ([A-Za-z0-9._~-]{16,4096})$/);
   const metadataUrl = `${url.origin}/.well-known/oauth-protected-resource/mcp`;
-  const requiredScopes = MCP_SCOPES.join(" ");
-  if (!tokenMatch) return new Response(null, { status: 401, headers: { "WWW-Authenticate": `Bearer resource_metadata="${metadataUrl}", scope="${requiredScopes}"`, "Cache-Control": "no-store" } });
-  let token;
-  try { token = await server.validateToken(resource, tokenMatch[1], env); } catch (error) {
+  let token: Awaited<ReturnType<typeof server.validateToken>> | null = null;
+  if (tokenMatch) try { token = await server.validateToken(resource, tokenMatch[1], env); } catch (error) {
     console.warn("mcp_token_validation_failed", { errorType: error instanceof Error ? error.name : "unknown" });
-    token = null;
   }
-  if (!token) return new Response(null, { status: 401, headers: { "WWW-Authenticate": `Bearer resource_metadata="${metadataUrl}", scope="${requiredScopes}"`, "Cache-Control": "no-store" } });
 
   let message: Record<string, unknown>;
   try { message = await request.json() as Record<string, unknown>; }
@@ -212,7 +219,7 @@ export async function handleMcpRequest(request: Request, env: Env, ctx: Executio
   if (message.method === "notifications/initialized" || message.method === "notifications/cancelled") return new Response(null, { status: 202, headers: { "Cache-Control": "no-store" } });
   if (message.method === "ping") return json({ jsonrpc: "2.0", id, result: {} });
   if (message.method === "initialize") return json({ jsonrpc: "2.0", id, result: { protocolVersion: String((message.params as Record<string, unknown> | undefined)?.protocolVersion || "2025-11-25"), capabilities: { tools: { listChanged: false } }, serverInfo: { name: "10K Hub Partnerships CRM", version: "1.0.0" } } });
-  const mcp = createMcpHandler(() => makeMcpServer(env, token.scope), {
+  const mcp = createMcpHandler(() => makeMcpServer(env, token?.scope || [], metadataUrl), {
     route: "/mcp",
     corsOptions: false,
     onerror: (error: Error) => console.error("mcp_handler_error", { errorType: error.name }),
