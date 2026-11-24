@@ -113,6 +113,21 @@ npx wrangler secret put MCP_CRM_API_TOKEN --name 10k-takes-sales-command-center
 
 Use a new production passphrase and a high-entropy production API token. Store the token hash in `sales_crm_api_credentials`; scopes should cover only company/contact/prospect search and writes, research read/write, communication read, opportunity read/write, and task read/write. Do not grant email send, delete, or Gmail credential scopes. Keep the raw token only as the Worker secret and in a password manager for setup; never commit it. The OAuth consent scopes remain `crm:read`, `crm:write`, and `offline_access` only.
 
+After migration 0005 creates `sales_crm_api_credentials`, generate a 64-character random token in a password manager (or another approved secure generator). To derive its D1 hash without echoing the token, run this locally and enter it only at the hidden prompt:
+
+```sh
+python3 -c 'import getpass,hashlib; print(hashlib.sha256(getpass.getpass("Production MCP API token: ").encode()).hexdigest())'
+```
+
+Insert only that SHA-256 result into D1, with the least privileges needed by the existing MCP tools, then paste the raw value into the interactive Worker-secret prompt. Both the D1 row and secret update require explicit production-change approval:
+
+```sh
+npx wrangler d1 execute 10k-takes-sales-command-center --remote --command "INSERT INTO sales_crm_api_credentials (id,label,token_sha256,scopes_json,rate_limit_per_minute,created_by,created_at,expires_at) VALUES (lower(hex(randomblob(16))),'ChatGPT Business — Production','<SHA256_OF_TOKEN>','[\"companies:read\",\"companies:write\",\"contacts:read\",\"contacts:write\",\"prospects:read\",\"prospects:write\",\"communications:read\",\"research:read\",\"research:write\",\"opportunities:read\",\"opportunities:write\",\"tasks:read\",\"tasks:write\"]',60,'jack',datetime('now'),datetime('now','+90 days'));"
+npx wrangler secret put MCP_CRM_API_TOKEN --name 10k-takes-sales-command-center
+```
+
+Use a separate, randomly generated passphrase for `MCP_AUTH_PASSWORD`; do not reuse the API token. Revoke the credential row and replace the Worker secret together during rotation.
+
 The MCP tool allowlist contains no outbound-email, record-delete, or Gmail-credential management tools. The staging warning about the root `_10k_takes_sales_command_center` D1 binding is non-fatal: Wrangler does not inherit root D1 bindings into staging, staging explicitly binds `DB` to D1 `0b960090-30e9-43ed-bd15-1ad7dfe05f81`, and application code uses `DB` only. The root alias points to production but is not present in staging and is not referenced by source. No staging-to-production D1 path was found.
 
 ## 8. Validate config, then deploy the Worker
