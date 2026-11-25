@@ -131,6 +131,28 @@ test('canonical companies can be created and updated without replacing sales_rec
   assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sales_records WHERE entity_type='lead'").get().n, 1);
 });
 
+test('company search treats business-name punctuation and LIKE metacharacters literally', async () => {
+  const exactName = "O'Reilly & Sons — 50% Off_Season (Twin Cities) - North";
+  const wildcardLookalike = "O'Reilly & Sons — 50X OffXSeason (Twin Cities) - North";
+  const first = await call('/v1/crm/companies', { method: 'POST', key: 'company-search-special-001', body: { name: exactName, industry: 'Synthetic QA' } });
+  const second = await call('/v1/crm/companies', { method: 'POST', key: 'company-search-special-002', body: { name: wildcardLookalike, industry: 'Synthetic QA' } });
+  assert.equal(first.response.status, 201);
+  assert.equal(second.response.status, 201);
+
+  const full = await call(`/v1/crm/companies?q=${encodeURIComponent(exactName)}`);
+  assert.deepEqual(full.data.companies.map((company) => company.id), [first.data.id]);
+  for (const query of ["O'Reilly", '50%', 'Off_Season', '50% Off_Season', ' - North']) {
+    const result = await call(`/v1/crm/companies?q=${encodeURIComponent(query)}`);
+    assert.ok(result.data.companies.some((company) => company.id === first.data.id), `expected match for ${query}`);
+  }
+  const literalPercent = await call(`/v1/crm/companies?q=${encodeURIComponent('50%')}`);
+  assert.deepEqual(literalPercent.data.companies.map((company) => company.id), [first.data.id]);
+  const literalUnderscore = await call(`/v1/crm/companies?q=${encodeURIComponent('Off_Season')}`);
+  assert.deepEqual(literalUnderscore.data.companies.map((company) => company.id), [first.data.id]);
+  const parentheses = await call(`/v1/crm/companies?q=${encodeURIComponent('(Twin Cities)')}`);
+  assert.deepEqual(new Set(parentheses.data.companies.map((company) => company.id)), new Set([first.data.id, second.data.id]));
+});
+
 test('prospect API searches existing records and creates, updates, and deduplicates prospect research records', async () => {
   const listed = await call('/v1/crm/prospects?q=northland');
   assert.equal(listed.response.status, 200);
@@ -198,6 +220,59 @@ test('integration writes are audited, research sources validated, and opportunit
   assert.equal(update.response.status, 200);
   assert.equal(db.prepare("SELECT stage FROM sales_records WHERE id='lead-one'").get().stage, 'Proposal Sent');
   assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sales_audit_log WHERE action IN ('crm_research_note_added','crm_opportunity_updated')").get().n, 2);
+});
+
+test('standalone research notes can be read only with research:read scope', async () => {
+  const note = await call('/v1/crm/research-notes', { method: 'POST', key: 'research-note-read-0001', body: { company_id: companyOne, note: 'Synthetic note for a read test.', source_url: 'https://example.com/research', title: 'Synthetic source', confidence: 'medium' } });
+  assert.equal(note.response.status, 201);
+  const researchReader = await addApiKey({ label: 'research reader', scopes: ['research:read'], token: 'research-reader-token-with-at-least-thirty-two-characters' });
+  const allowed = await call(`/v1/crm/research-notes?company_id=${companyOne}`, { token: researchReader });
+  assert.equal(allowed.response.status, 200);
+  assert.equal(allowed.data.notes.length, 1);
+  assert.equal(allowed.data.notes[0].note, 'Synthetic note for a read test.');
+  const denied = await call(`/v1/crm/research-notes?company_id=${companyOne}`, { token: await addApiKey({ label: 'company reader', scopes: ['companies:read'], token: 'company-reader-token-with-at-least-thirty-two-characters' }) });
+  assert.equal(denied.response.status, 403);
+  const missingCompany = await call('/v1/crm/research-notes');
+  assert.equal(missingCompany.response.status, 400);
+});
+
+test('synthetic partnership lifecycle covers writes, deduplication, notes, and lead promotion', async () => {
+  const company = await call('/v1/crm/companies', { method: 'POST', key: 'synthetic-lifecycle-company-001', body: { name: 'Synthetic Lifecycle QA', industry: 'Retail' } });
+  assert.equal(company.response.status, 201);
+  const contact = await call('/v1/crm/contacts', { method: 'POST', key: 'synthetic-lifecycle-contact-001', body: { display_name: 'Synthetic QA Contact', title: 'Partnerships Manager', email: 'synthetic.qa@example.invalid', company_ids: [company.data.id] } });
+  assert.equal(contact.response.status, 201);
+  const secondContact = await call('/v1/crm/contacts', { method: 'POST', key: 'synthetic-lifecycle-contact-002', body: { display_name: 'Second Synthetic Contact', title: 'Brand Manager', company_ids: [company.data.id] } });
+  assert.equal(secondContact.response.status, 201);
+  assert.notEqual(secondContact.data.id, contact.data.id);
+  const duplicateContact = await call('/v1/crm/contacts', { method: 'POST', key: 'synthetic-lifecycle-contact-duplicate', body: { display_name: 'Duplicate Synthetic Contact', email: 'SYNTHETIC.QA@example.invalid', company_ids: [company.data.id] } });
+  assert.equal(duplicateContact.response.status, 200);
+  assert.equal(duplicateContact.data.id, contact.data.id);
+  assert.equal(duplicateContact.data.matched_existing, true);
+  const prospectBody = { company_id: company.data.id, fit_reason: 'Synthetic fit reason.', source_name: 'Synthetic QA source', source_url: 'https://example.invalid/qa', research_confidence: 'medium' };
+  const prospect = await call('/v1/crm/prospects', { method: 'POST', key: 'synthetic-lifecycle-prospect-001', body: prospectBody });
+  assert.equal(prospect.response.status, 201);
+  const duplicateProspect = await call('/v1/crm/prospects', { method: 'POST', key: 'synthetic-lifecycle-prospect-002', body: prospectBody });
+  assert.equal(duplicateProspect.response.status, 409);
+  assert.equal(duplicateProspect.data.id, prospect.data.id);
+  const contactUpdate = await call(`/v1/crm/contacts/${contact.data.id}`, { method: 'PATCH', key: 'synthetic-lifecycle-contact-update', body: { title: 'Senior Partnerships Manager' } });
+  assert.equal(contactUpdate.response.status, 200);
+  const prospectUpdate = await call(`/v1/crm/prospects/${prospect.data.id}`, { method: 'PATCH', key: 'synthetic-lifecycle-prospect-update', body: { campaign_opportunities: 'Synthetic campaign concept.' } });
+  assert.equal(prospectUpdate.response.status, 200);
+  const companyUpdate = await call(`/v1/crm/companies/${company.data.id}`, { method: 'PATCH', key: 'synthetic-lifecycle-company-update', body: { website: 'https://synthetic.example.invalid' } });
+  assert.equal(companyUpdate.response.status, 200);
+  const standaloneNote = await call('/v1/crm/research-notes', { method: 'POST', key: 'synthetic-lifecycle-note-create', body: { company_id: company.data.id, note: 'Synthetic standalone research note.', source_url: 'https://example.invalid/notes' } });
+  assert.equal(standaloneNote.response.status, 201);
+  const noteList = await call(`/v1/crm/research-notes?company_id=${company.data.id}`);
+  assert.equal(noteList.response.status, 200);
+  assert.equal(noteList.data.notes.some((item) => item.id === standaloneNote.data.id), true);
+  const promoted = await call(`/v1/crm/prospects/${prospect.data.id}/promote`, { method: 'POST', key: 'synthetic-lifecycle-promote', body: {} });
+  assert.equal(promoted.response.status, 201);
+  assert.equal(promoted.data.stage, 'New');
+  const promotionDuplicate = await call(`/v1/crm/prospects/${prospect.data.id}/promote`, { method: 'POST', key: 'synthetic-lifecycle-promote-again', body: {} });
+  assert.equal(promotionDuplicate.response.status, 409);
+  assert.equal(promotionDuplicate.data.id, promoted.data.id);
+  assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sales_records WHERE entity_type='lead' AND id=?").get(promoted.data.id).n, 1);
+  assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sales_audit_log WHERE entity_id IN (?,?,?)").get(company.data.id, contact.data.id, prospect.data.id).n >= 5, true);
 });
 
 test('task creation is idempotent and per-key request limits are enforced', async () => {

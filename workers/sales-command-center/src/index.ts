@@ -81,7 +81,7 @@ async function audit(env: Env, actor: SalesActor, action: string, entityType = "
 const CRM_SCOPES = new Set([
   "companies:read", "companies:write", "contacts:read", "contacts:write",
   "prospects:read", "prospects:write",
-  "communications:read", "research:write", "opportunities:read",
+  "communications:read", "research:read", "research:write", "opportunities:read",
   "opportunities:write", "tasks:read", "tasks:write",
 ]);
 const CRM_USER_SCOPES = [...CRM_SCOPES];
@@ -218,8 +218,8 @@ async function crmRoute(request: Request, env: Env, url: URL): Promise<Response>
         GROUP_CONCAT(DISTINCT r.entity_type) AS record_types
         FROM sales_companies c LEFT JOIN sales_record_companies rc ON rc.company_id=c.id
         LEFT JOIN sales_records r ON r.id=rc.record_id
-        WHERE (?='' OR lower(c.name) LIKE ?)
-        GROUP BY c.id ORDER BY c.updated_at DESC LIMIT ?`).bind(q, `%${q}%`, limit).all();
+        WHERE (?='' OR instr(lower(c.name), ?) > 0)
+        GROUP BY c.id ORDER BY c.updated_at DESC LIMIT ?`).bind(q, q, limit).all();
       return json({ companies: rows.results ?? [] });
     }
     if (path === "/v1/crm/companies" && method === "POST") {
@@ -290,12 +290,12 @@ async function crmRoute(request: Request, env: Env, url: URL): Promise<Response>
         FROM sales_records r
         LEFT JOIN sales_record_companies rc ON rc.record_id=r.id
         LEFT JOIN sales_companies c ON c.id=rc.company_id
-        WHERE r.entity_type='prospect' AND (?='' OR lower(COALESCE(c.name,r.name)) LIKE ?
-          OR lower(COALESCE(r.industry,c.industry,'')) LIKE ?
-          OR lower(COALESCE(json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.company_description'),'')) LIKE ?
-          OR lower(COALESCE(json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.fit_reason'),'')) LIKE ?
-          OR lower(COALESCE(json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.campaign_opportunities'),'')) LIKE ?)
-        ORDER BY r.updated_at DESC LIMIT ?`).bind(q, `%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, limit).all();
+        WHERE r.entity_type='prospect' AND (?='' OR instr(lower(COALESCE(c.name,r.name)), ?) > 0
+          OR instr(lower(COALESCE(r.industry,c.industry,'')), ?) > 0
+          OR instr(lower(COALESCE(json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.company_description'),'')), ?) > 0
+          OR instr(lower(COALESCE(json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.fit_reason'),'')), ?) > 0
+          OR instr(lower(COALESCE(json_extract(CASE WHEN json_valid(r.data_json) THEN r.data_json ELSE '{}' END,'$.campaign_opportunities'),'')), ?) > 0)
+        ORDER BY r.updated_at DESC LIMIT ?`).bind(q, q, q, q, q, q, limit).all();
       return json({ prospects: rows.results ?? [] });
     }
     if (path === "/v1/crm/prospects" && method === "POST") {
@@ -427,9 +427,9 @@ async function crmRoute(request: Request, env: Env, url: URL): Promise<Response>
         LEFT JOIN sales_contact_emails e ON e.contact_id=c.id
         LEFT JOIN sales_company_contacts rc ON rc.contact_id=c.id
         LEFT JOIN sales_companies r ON r.id=rc.company_id
-        WHERE (?='' OR lower(c.display_name) LIKE ? OR lower(COALESCE(e.normalized_email,'')) LIKE ?)
+        WHERE (?='' OR instr(lower(c.display_name), ?) > 0 OR instr(lower(COALESCE(e.normalized_email,'')), ?) > 0)
           AND (?='' OR rc.company_id=?)
-        ORDER BY c.display_name,e.is_primary DESC LIMIT 500`).bind(q, `%${q}%`, `%${q}%`, companyId, companyId).all();
+        ORDER BY c.display_name,e.is_primary DESC LIMIT 500`).bind(q, q, q, companyId, companyId).all();
       return json({ contacts: rows.results ?? [] });
     }
     if (path === "/v1/crm/contacts" && method === "POST") {
@@ -531,6 +531,19 @@ async function crmRoute(request: Request, env: Env, url: URL): Promise<Response>
         await auditCrm(env, actor, "crm_research_note_added", "company", companyId, { note_id: sourceId || activityId, source_id: sourceId || null });
         return json({ id: sourceId || activityId, company_id: companyId, source_id: sourceId || null, created_at: now }, 201);
       });
+    }
+    if (path === "/v1/crm/research-notes" && method === "GET") {
+      const denied = requireScope("research:read"); if (denied) return denied;
+      const companyId = salesString(url.searchParams.get("company_id"), "", 80);
+      if (!companyId) return json({ error: "company_id is required." }, 400);
+      const limit = Math.max(1, Math.min(100, Number(url.searchParams.get("limit") || 50)));
+      const company = await env.DB.prepare("SELECT id FROM sales_companies WHERE id=?").bind(companyId).all();
+      if (!company.results?.length) return json({ error: "Company not found." }, 404);
+      const notes = await env.DB.prepare(`SELECT n.id,n.company_id,c.name AS company_name,n.note,n.source_url,
+        n.source_title,n.confidence,n.created_by,n.created_at
+        FROM sales_company_research_notes n JOIN sales_companies c ON c.id=n.company_id
+        WHERE n.company_id=? ORDER BY n.created_at DESC LIMIT ?`).bind(companyId, limit).all();
+      return json({ notes: notes.results ?? [] });
     }
     if (path === "/v1/crm/communications" && method === "GET") {
       const denied = requireScope("communications:read"); if (denied) return denied;

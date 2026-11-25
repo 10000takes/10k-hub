@@ -3,15 +3,28 @@
 	"name": "10k-takes-sales-command-center",
 	"main": "src/index.ts",
 	"compatibility_date": "2026-11-05",
+	"compatibility_flags": [
+		"global_fetch_strictly_public"
+	],
 	"workers_dev": true,
 	"triggers": {
-		"crons": ["*/15 * * * *"]
+		"crons": [
+			"*/15 * * * *"
+		]
 	},
 	"vars": {
-		"PUBLIC_READ_ORIGIN": "https://10000takes.github.io"
+		"PUBLIC_READ_ORIGIN": "https://10000takes.github.io",
+		"MCP_ENVIRONMENT": "production",
+		"MCP_SERVICE_NAME": "10K Hub CRM — Production",
+		"MCP_SERVER_URL": "https://10k-takes-sales-command-center.10ktakes.workers.dev/mcp",
+		"MCP_OAUTH_ISSUER": "https://10k-takes-sales-command-center.10ktakes.workers.dev",
+		"MCP_CRM_API_BASE_URL": "https://10k-takes-sales-command-center.10ktakes.workers.dev"
 	},
 	"ai": {
 		"binding": "AI"
+	},
+	"version_metadata": {
+		"binding": "CF_VERSION_METADATA"
 	},
 	"d1_databases": [
 		{
@@ -30,13 +43,19 @@
 	"env": {
 		"staging": {
 			"name": "10k-takes-sales-command-center-staging",
-			"compatibility_flags": ["global_fetch_strictly_public"],
+			"compatibility_flags": [
+				"global_fetch_strictly_public"
+			],
 			"workers_dev": true,
 			"triggers": {
-				"crons": ["*/15 * * * *"]
+				"crons": [
+					"*/15 * * * *"
+				]
 			},
 			"vars": {
 				"PUBLIC_READ_ORIGIN": "https://10000takes.github.io",
+				"MCP_ENVIRONMENT": "staging",
+				"MCP_SERVICE_NAME": "10K Hub Partnerships CRM",
 				"MCP_SERVER_URL": "https://10k-takes-sales-command-center-staging.10ktakes.workers.dev/mcp",
 				"MCP_OAUTH_ISSUER": "https://10k-takes-sales-command-center-staging.10ktakes.workers.dev",
 				"MCP_CRM_API_BASE_URL": "https://10k-takes-sales-command-center-staging.10ktakes.workers.dev"
@@ -50,6 +69,9 @@
 			"ai": {
 				"binding": "AI"
 			},
+			"version_metadata": {
+				"binding": "CF_VERSION_METADATA"
+			},
 			"d1_databases": [
 				{
 					"binding": "DB",
@@ -58,5 +80,12 @@
 				}
 			]
 		}
-	}
+	},
+	"kv_namespaces": [
+		{
+			"binding": "OAUTH_KV",
+			"id": "0aba0c53dcc443b7975c9086b09fe78a",
+			"remote": true
+		}
+	]
 }
