@@ -2088,23 +2088,23 @@ date,account,platform,metric,value
 2026-11-25,10K Howls,Facebook,engagements_7d,3
 2026-11-25,10K Howls,Facebook,views_7d,40
 2026-11-25,10K Howls,Instagram,engagements_7d,3885
-2026-11-25,10K Howls,Instagram,views_7d,46601
+2026-11-25,10K Howls,Instagram,views_7d,46602
 2026-11-25,10K Howls,Threads,engagements_7d,9
 2026-11-25,10K Howls,Threads,views_7d,414
 2026-11-25,10K Howls,TikTok,engagements_7d,0
 2026-11-25,10K Howls,TikTok,views_7d,0
 2026-11-25,10K Takes,Facebook,engagements_7d,72419
-2026-11-25,10K Takes,Facebook,views_7d,1377817
-2026-11-25,10K Takes,Instagram,engagements_7d,20221
-2026-11-25,10K Takes,Instagram,views_7d,458594
+2026-11-25,10K Takes,Facebook,views_7d,1378390
+2026-11-25,10K Takes,Instagram,engagements_7d,20232
+2026-11-25,10K Takes,Instagram,views_7d,458627
 2026-11-25,10K Takes,Threads,engagements_7d,162
 2026-11-25,10K Takes,Threads,views_7d,9017
 2026-11-25,10K Takes,TikTok,engagements_7d,9364
-2026-11-25,10K Takes,TikTok,views_7d,105784
-2026-11-25,10K Takes,YouTube,engagements_7d,2357
-2026-11-25,10K Takes,YouTube,engagements_total,11559
-2026-11-25,10K Takes,YouTube,views_7d,336293
-2026-11-25,10K Takes,YouTube,views_total,8841027
+2026-11-25,10K Takes,TikTok,views_7d,105801
+2026-11-25,10K Takes,YouTube,engagements_7d,2358
+2026-11-25,10K Takes,YouTube,engagements_total,11560
+2026-11-25,10K Takes,YouTube,views_7d,360740
+2026-11-25,10K Takes,YouTube,views_total,8865474
 2026-11-25,Captain's Patch,Facebook,engagements_7d,0
 2026-11-25,Captain's Patch,Facebook,views_7d,5
 2026-11-25,Captain's Patch,Instagram,engagements_7d,37
@@ -2114,9 +2114,9 @@ date,account,platform,metric,value
 2026-11-25,Captain's Patch,TikTok,engagements_7d,0
 2026-11-25,Captain's Patch,TikTok,views_7d,0
 2026-11-25,State of Skol,Facebook,engagements_7d,1114
-2026-11-25,State of Skol,Facebook,views_7d,22883
+2026-11-25,State of Skol,Facebook,views_7d,22884
 2026-11-25,State of Skol,Instagram,engagements_7d,615
-2026-11-25,State of Skol,Instagram,views_7d,8054
+2026-11-25,State of Skol,Instagram,views_7d,8055
 2026-11-25,State of Skol,Threads,engagements_7d,68
 2026-11-25,State of Skol,Threads,views_7d,1047
 2026-11-25,State of Skol,TikTok,engagements_7d,0
@@ -2124,7 +2124,7 @@ date,account,platform,metric,value
 2026-11-25,The Underline,Facebook,engagements_7d,2
 2026-11-25,The Underline,Facebook,views_7d,294
 2026-11-25,The Underline,Instagram,engagements_7d,200
-2026-11-25,The Underline,Instagram,views_7d,6274
+2026-11-25,The Underline,Instagram,views_7d,6277
 2026-11-25,The Underline,Threads,engagements_7d,0
 2026-11-25,The Underline,Threads,views_7d,0
 2026-11-25,The Underline,TikTok,engagements_7d,50
@@ -2132,7 +2132,7 @@ date,account,platform,metric,value
 2026-11-25,Wild Takes,Facebook,engagements_7d,6698
 2026-11-25,Wild Takes,Facebook,views_7d,136715
 2026-11-25,Wild Takes,Instagram,engagements_7d,15189
-2026-11-25,Wild Takes,Instagram,views_7d,243038
+2026-11-25,Wild Takes,Instagram,views_7d,243329
 2026-11-25,Wild Takes,Threads,engagements_7d,101
 2026-11-25,Wild Takes,Threads,views_7d,888
 2026-11-25,Wild Takes,TikTok,engagements_7d,0
