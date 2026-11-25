@@ -131,6 +131,28 @@ test('canonical companies can be created and updated without replacing sales_rec
   assert.equal(db.prepare("SELECT COUNT(*) AS n FROM sales_records WHERE entity_type='lead'").get().n, 1);
 });
 
+test('company search treats business-name punctuation and LIKE metacharacters literally', async () => {
+  const exactName = "O'Reilly & Sons — 50% Off_Season (Twin Cities) - North";
+  const wildcardLookalike = "O'Reilly & Sons — 50X OffXSeason (Twin Cities) - North";
+  const first = await call('/v1/crm/companies', { method: 'POST', key: 'company-search-special-001', body: { name: exactName, industry: 'Synthetic QA' } });
+  const second = await call('/v1/crm/companies', { method: 'POST', key: 'company-search-special-002', body: { name: wildcardLookalike, industry: 'Synthetic QA' } });
+  assert.equal(first.response.status, 201);
+  assert.equal(second.response.status, 201);
+
+  const full = await call(`/v1/crm/companies?q=${encodeURIComponent(exactName)}`);
+  assert.deepEqual(full.data.companies.map((company) => company.id), [first.data.id]);
+  for (const query of ["O'Reilly", '50%', 'Off_Season', '50% Off_Season', ' - North']) {
+    const result = await call(`/v1/crm/companies?q=${encodeURIComponent(query)}`);
+    assert.ok(result.data.companies.some((company) => company.id === first.data.id), `expected match for ${query}`);
+  }
+  const literalPercent = await call(`/v1/crm/companies?q=${encodeURIComponent('50%')}`);
+  assert.deepEqual(literalPercent.data.companies.map((company) => company.id), [first.data.id]);
+  const literalUnderscore = await call(`/v1/crm/companies?q=${encodeURIComponent('Off_Season')}`);
+  assert.deepEqual(literalUnderscore.data.companies.map((company) => company.id), [first.data.id]);
+  const parentheses = await call(`/v1/crm/companies?q=${encodeURIComponent('(Twin Cities)')}`);
+  assert.deepEqual(new Set(parentheses.data.companies.map((company) => company.id)), new Set([first.data.id, second.data.id]));
+});
+
 test('prospect API searches existing records and creates, updates, and deduplicates prospect research records', async () => {
   const listed = await call('/v1/crm/prospects?q=northland');
   assert.equal(listed.response.status, 200);

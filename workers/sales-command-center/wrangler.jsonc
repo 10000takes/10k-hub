@@ -3,6 +3,9 @@
 	"name": "10k-takes-sales-command-center",
 	"main": "src/index.ts",
 	"compatibility_date": "2026-11-05",
+	"compatibility_flags": [
+		"global_fetch_strictly_public"
+	],
 	"workers_dev": true,
 	"triggers": {
 		"crons": [
