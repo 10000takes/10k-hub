@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-24T22:40:03.843842+00:00",
+  "generated_at": "2026-11-25T21:53:19.871275+00:00",
   "status": "partial",
   "source": "Meta Instagram Business Discovery API",
   "coverage_note": "0 of 41 listed Instagram accounts returned data; 0 public posts captured. Rankings compare interaction-per-follower proxies within each account and do not reveal reach or prove causation.",
@@ -24,7 +24,7 @@
       "category": "General Minnesota Sports",
       "profile_url": "https://www.instagram.com/kfan1003/",
       "status": "unavailable",
-      "error": "Meta API 401 for @kfan1003: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:04 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AjdeRq8pogPVh-S4OH37uBO\"}}"
+      "error": "Meta API 401 for @kfan1003: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:20 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AFEl2RKxOBkAHRs_mF6DCL1\"}}"
     },
     {
       "handle": "@skornorthmn",
@@ -32,7 +32,7 @@
       "category": "General Minnesota Sports",
       "profile_url": "https://www.instagram.com/skornorthmn/",
       "status": "unavailable",
-      "error": "Meta API 401 for @skornorthmn: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:04 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"Al6jxoec4D0FKhCqzd7lYg5\"}}"
+      "error": "Meta API 401 for @skornorthmn: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:20 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"Ay4XIJ2bjbm7ZOB_vYOWqO6\"}}"
     },
     {
       "handle": "@bringmn",
@@ -40,7 +40,7 @@
       "category": "General Minnesota Sports & News",
       "profile_url": "https://www.instagram.com/bringmn/",
       "status": "unavailable",
-      "error": "Meta API 401 for @bringmn: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:04 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AcucR6xo0EWJaizcQPjs4MF\"}}"
+      "error": "Meta API 401 for @bringmn: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:20 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AI4RFq572QmUGKnXcdTok5R\"}}"
     },
     {
       "handle": "@mnsportsnews",
@@ -48,7 +48,7 @@
       "category": "General Minnesota Sports",
       "profile_url": "https://www.instagram.com/mnsportsnews/",
       "status": "unavailable",
-      "error": "Meta API 401 for @mnsportsnews: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:05 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AdpuvhcHHzFXANDvpWAT2YJ\"}}"
+      "error": "Meta API 401 for @mnsportsnews: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:20 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AlW1h9uf2vwkK4DSPBMUvs7\"}}"
     },
     {
       "handle": "@realmnsportsfan",
@@ -56,7 +56,7 @@
       "category": "General Minnesota Sports",
       "profile_url": "https://www.instagram.com/realmnsportsfan/",
       "status": "unavailable",
-      "error": "Meta API 401 for @realmnsportsfan: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:05 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AEW7mYNhAspoxAnWt1Ok6Sa\"}}"
+      "error": "Meta API 401 for @realmnsportsfan: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:20 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AS0ErUD8nFX4iYxs4kaRmBV\"}}"
     },
     {
       "handle": "@mnsportsandevents",
@@ -64,7 +64,7 @@
       "category": "General Minnesota Sports",
       "profile_url": "https://www.instagram.com/mnsportsandevents/",
       "status": "unavailable",
-      "error": "Meta API 401 for @mnsportsandevents: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:05 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"ANKVZ-u6qyrFc7gCUgUO-BR\"}}"
+      "error": "Meta API 401 for @mnsportsandevents: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:21 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AFu98_ucyYI3z59_5WxAxsO\"}}"
     },
     {
       "handle": "@mnsportscollective",
@@ -72,7 +72,7 @@
       "category": "General Minnesota Sports",
       "profile_url": "https://www.instagram.com/mnsportscollective/",
       "status": "unavailable",
-      "error": "Meta API 401 for @mnsportscollective: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:06 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"A71_Odwvi_Fj7UpSRoyWStW\"}}"
+      "error": "Meta API 401 for @mnsportscollective: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:21 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AjDiDn3y5ZrJaqAPX3XvHsE\"}}"
     },
     {
       "handle": "@skolbros2",
@@ -80,7 +80,7 @@
       "category": "General Minnesota Sports",
       "profile_url": "https://www.instagram.com/skolbros2/",
       "status": "unavailable",
-      "error": "Meta API 401 for @skolbros2: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:06 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"Ap1w9UxiVrTD0QQjeYlB8jJ\"}}"
+      "error": "Meta API 401 for @skolbros2: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:21 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AP4wfBv9uXCfkFuH6KA98Cz\"}}"
     },
     {
       "handle": "@vikingnations",
@@ -88,7 +88,7 @@
       "category": "Vikings",
       "profile_url": "https://www.instagram.com/vikingnations/",
       "status": "unavailable",
-      "error": "Meta API 401 for @vikingnations: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:06 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"As-k7xRtoLIPKToOq99gAEv\"}}"
+      "error": "Meta API 401 for @vikingnations: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:21 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AIk8bjkdtf5Ura6oAW11Lzh\"}}"
     },
     {
       "handle": "@skolsundays",
@@ -96,7 +96,7 @@
       "category": "Vikings",
       "profile_url": "https://www.instagram.com/skolsundays/",
       "status": "unavailable",
-      "error": "Meta API 401 for @skolsundays: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:07 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"Al6PENi4B5C2hs62NKLKsa7\"}}"
+      "error": "Meta API 401 for @skolsundays: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:21 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AkivrJUlKrycmMF7rIiW6BS\"}}"
     },
     {
       "handle": "@vikesinsider",
@@ -104,7 +104,7 @@
       "category": "Vikings",
       "profile_url": "https://www.instagram.com/vikesinsider/",
       "status": "unavailable",
-      "error": "Meta API 401 for @vikesinsider: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:07 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"ATuwMf7OrcfKXKMgHvJchtm\"}}"
+      "error": "Meta API 401 for @vikesinsider: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:21 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"A5Sf6qTTl6CkLygGHs0FJnr\"}}"
     },
     {
       "handle": "@vikeslatest",
@@ -112,7 +112,7 @@
       "category": "Vikings",
       "profile_url": "https://www.instagram.com/vikeslatest/",
       "status": "unavailable",
-      "error": "Meta API 401 for @vikeslatest: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:07 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"As0giml1LM5PnUEvpKxnNT4\"}}"
+      "error": "Meta API 401 for @vikeslatest: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:22 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AJ169uZAybEp0gwWkWHXzlN\"}}"
     },
     {
       "handle": "@vikingzfanpage",
@@ -120,7 +120,7 @@
       "category": "Vikings",
       "profile_url": "https://www.instagram.com/vikingzfanpage/",
       "status": "unavailable",
-      "error": "Meta API 401 for @vikingzfanpage: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:08 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"A-Y68vtbwNo8XCIk00eRtzK\"}}"
+      "error": "Meta API 401 for @vikingzfanpage: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:22 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AMCv2QZtdkOYzHygHsMEd0n\"}}"
     },
     {
       "handle": "@everything.wild",
@@ -128,7 +128,7 @@
       "category": "Wild",
       "profile_url": "https://www.instagram.com/everything.wild/",
       "status": "unavailable",
-      "error": "Meta API 401 for @everything.wild: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:08 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"Afl8v58EsSRhU_lqhKXGRDB\"}}"
+      "error": "Meta API 401 for @everything.wild: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:22 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"Ag1nKFCH6e9-rYK4bnUR0HJ\"}}"
     },
     {
       "handle": "@mnwildplayers",
@@ -136,7 +136,7 @@
       "category": "Wild",
       "profile_url": "https://www.instagram.com/mnwildplayers/",
       "status": "unavailable",
-      "error": "Meta API 401 for @mnwildplayers: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:08 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"Af6-hNvot2ek5knn3iDH4LO\"}}"
+      "error": "Meta API 401 for @mnwildplayers: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:22 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"ACNzwBko8hykAn18GCGS4oZ\"}}"
     },
     {
       "handle": "@twolvesinsider",
@@ -144,7 +144,7 @@
       "category": "Wolves",
       "profile_url": "https://www.instagram.com/twolvesinsider/",
       "status": "unavailable",
-      "error": "Meta API 401 for @twolvesinsider: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:09 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"Ako2eNIqRurWSyI0jerwzP2\"}}"
+      "error": "Meta API 401 for @twolvesinsider: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:22 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AIqP_6Vg3GA593itVH2Go0l\"}}"
     },
     {
       "handle": "@the_daily_wolves",
@@ -152,7 +152,7 @@
       "category": "Wolves",
       "profile_url": "https://www.instagram.com/the_daily_wolves/",
       "status": "unavailable",
-      "error": "Meta API 401 for @the_daily_wolves: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:09 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"As_F2U2IR31Oyh7MlUbjFU0\"}}"
+      "error": "Meta API 401 for @the_daily_wolves: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:23 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AtEJoLq8B-6tmZtw3CCsFbv\"}}"
     },
     {
       "handle": "@trackthepack",
@@ -160,7 +160,7 @@
       "category": "Wolves",
       "profile_url": "https://www.instagram.com/trackthepack/",
       "status": "unavailable",
-      "error": "Meta API 401 for @trackthepack: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:09 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"A0HG4COAR9DO3pSV6kI_-KO\"}}"
+      "error": "Meta API 401 for @trackthepack: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:23 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AzFFctbUDP06stt_8V-Q3v3\"}}"
     },
     {
       "handle": "@thetwinsdaily",
@@ -168,7 +168,7 @@
       "category": "Twins",
       "profile_url": "https://www.instagram.com/thetwinsdaily/",
       "status": "unavailable",
-      "error": "Meta API 401 for @thetwinsdaily: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:10 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"Ap_Pyo1byqK85zA0j1xMLRb\"}}"
+      "error": "Meta API 401 for @thetwinsdaily: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:23 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"Ay7G6SvNG-aPX3ZGaa_dKF_\"}}"
     },
     {
       "handle": "@twinscenter",
@@ -176,7 +176,7 @@
       "category": "Twins",
       "profile_url": "https://www.instagram.com/twinscenter/",
       "status": "unavailable",
-      "error": "Meta API 401 for @twinscenter: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:10 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AjfBcCQ5xBdf_0NvhS0Uzur\"}}"
+      "error": "Meta API 401 for @twinscenter: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:23 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"ALLMgJExylu3Snkl_8d19vu\"}}"
     },
     {
       "handle": "@barstoolgophers",
@@ -184,7 +184,7 @@
       "category": "Gophers",
       "profile_url": "https://www.instagram.com/barstoolgophers/",
       "status": "unavailable",
-      "error": "Meta API 401 for @barstoolgophers: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:10 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AzG372Vs4ftaXfgKCDQskbM\"}}"
+      "error": "Meta API 401 for @barstoolgophers: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:23 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"ABjEZavqVYFTOrKd-d4sbs1\"}}"
     },
     {
       "handle": "@barstoolsports",
@@ -192,7 +192,7 @@
       "category": "General Sports",
       "profile_url": "https://www.instagram.com/barstoolsports/",
       "status": "unavailable",
-      "error": "Meta API 401 for @barstoolsports: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:11 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AaTNbHG0g5tgpmH6oUDbpRO\"}}"
+      "error": "Meta API 401 for @barstoolsports: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:23 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AGAgUS-ebJ98M4rZeNtEcyq\"}}"
     },
     {
       "handle": "@snapbacksports_",
@@ -200,7 +200,7 @@
       "category": "General Sports",
       "profile_url": "https://www.instagram.com/snapbacksports_/",
       "status": "unavailable",
-      "error": "Meta API 401 for @snapbacksports_: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:11 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"A0UgkJV3gA54IBSaZYCU2OQ\"}}"
+      "error": "Meta API 401 for @snapbacksports_: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:24 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AWlZo0LNURcebvKO08UqZqr\"}}"
     },
     {
       "handle": "@theathletic",
@@ -208,7 +208,7 @@
       "category": "General Sports",
       "profile_url": "https://www.instagram.com/theathletic/",
       "status": "unavailable",
-      "error": "Meta API 401 for @theathletic: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:11 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AB6DaHShNAaU86A7RGJUB0s\"}}"
+      "error": "Meta API 401 for @theathletic: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:24 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AfTkV2E8DDaRQUKg4w7_E3f\"}}"
     },
     {
       "handle": "@bringmethenews",
@@ -216,7 +216,7 @@
       "category": "General Minnesota News",
       "profile_url": "https://www.instagram.com/bringmethenews/",
       "status": "unavailable",
-      "error": "Meta API 401 for @bringmethenews: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:12 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"A47kcHxNHx_VllC-aZuP5N0\"}}"
+      "error": "Meta API 401 for @bringmethenews: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:24 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"A61YL6UvNf68pQ6Tu48q-9Q\"}}"
     },
     {
       "handle": "@racketmn",
@@ -224,7 +224,7 @@
       "category": "General Minnesota News",
       "profile_url": "https://www.instagram.com/racketmn/",
       "status": "unavailable",
-      "error": "Meta API 401 for @racketmn: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:12 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"A0Vd88RYvPW95wPCQnUdKFO\"}}"
+      "error": "Meta API 401 for @racketmn: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:24 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AQYWxsv5n2JhOSTAw_yu6TQ\"}}"
     },
     {
       "handle": "@mnmo_mag",
@@ -232,7 +232,7 @@
       "category": "General Minnesota Sports & News",
       "profile_url": "https://www.instagram.com/mnmo_mag/",
       "status": "unavailable",
-      "error": "Meta API 401 for @mnmo_mag: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:12 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"A3uQ-Uc-ofyKXY9Vu3l8kel\"}}"
+      "error": "Meta API 401 for @mnmo_mag: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:24 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AR-rv1zkmMQSZfVls05X06t\"}}"
     },
     {
       "handle": "@vikings",
@@ -240,7 +240,7 @@
       "category": "Vikings",
       "profile_url": "https://www.instagram.com/vikings/",
       "status": "unavailable",
-      "error": "Meta API 401 for @vikings: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:13 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"A5Mrn9slaZFJ9tbj7BM6Mcc\"}}"
+      "error": "Meta API 401 for @vikings: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:24 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"APBjbOdcM_tqgVl6r-QcnLm\"}}"
     },
     {
       "handle": "@purpleinsider",
@@ -248,7 +248,7 @@
       "category": "Vikings",
       "profile_url": "https://www.instagram.com/purpleinsider/",
       "status": "unavailable",
-      "error": "Meta API 401 for @purpleinsider: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:13 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"ABQWkbSmnVh7JM1buWtAW3R\"}}"
+      "error": "Meta API 401 for @purpleinsider: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:25 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AdzI5PUYjE-r4r_7-BDdEQl\"}}"
     },
     {
       "handle": "@dailynorseman",
@@ -256,7 +256,7 @@
       "category": "Vikings",
       "profile_url": "https://www.instagram.com/dailynorseman/",
       "status": "unavailable",
-      "error": "Meta API 401 for @dailynorseman: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:13 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AGRqRhSE_dRaeLnFwcAKVvq\"}}"
+      "error": "Meta API 401 for @dailynorseman: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:25 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"Ajix5TJeiDvxg7brbAVJcQB\"}}"
     },
     {
       "handle": "@vikescentral",
@@ -264,7 +264,7 @@
       "category": "Vikings",
       "profile_url": "https://www.instagram.com/vikescentral/",
       "status": "unavailable",
-      "error": "Meta API 401 for @vikescentral: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:14 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"ASQMlwygRmi1dQayh4Itlb_\"}}"
+      "error": "Meta API 401 for @vikescentral: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:25 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"A6TGSc8cJX6-Ezo9jTYoxCy\"}}"
     },
     {
       "handle": "@vikings_territory",
@@ -272,7 +272,7 @@
       "category": "Vikings",
       "profile_url": "https://www.instagram.com/vikings_territory/",
       "status": "unavailable",
-      "error": "Meta API 401 for @vikings_territory: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:14 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AxZqKzKWntaoFCzag8tFGxA\"}}"
+      "error": "Meta API 401 for @vikings_territory: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:25 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"A-K6Ef8bY1mexHOxl3awL1y\"}}"
     },
     {
       "handle": "@vikesverified",
@@ -280,7 +280,7 @@
       "category": "Vikings",
       "profile_url": "https://www.instagram.com/vikesverified/",
       "status": "unavailable",
-      "error": "Meta API 401 for @vikesverified: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:14 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AlyJlv4tw45R6YQDSvAyykM\"}}"
+      "error": "Meta API 401 for @vikesverified: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:25 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"A-olp_1nV4-D5mj0E-uFf3e\"}}"
     },
     {
       "handle": "@mnwild",
@@ -288,7 +288,7 @@
       "category": "Wild",
       "profile_url": "https://www.instagram.com/mnwild/",
       "status": "unavailable",
-      "error": "Meta API 401 for @mnwild: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:15 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"Af7BRxU5BeDiXzRri2_gk2S\"}}"
+      "error": "Meta API 401 for @mnwild: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:26 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"A2o1VeUbFe9ZI-UHXkJLyQ2\"}}"
     },
     {
       "handle": "@hockeywilderness",
@@ -296,7 +296,7 @@
       "category": "Wild",
       "profile_url": "https://www.instagram.com/hockeywilderness/",
       "status": "unavailable",
-      "error": "Meta API 401 for @hockeywilderness: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:15 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"Av34SBuAgh20yuH9aMvCk1b\"}}"
+      "error": "Meta API 401 for @hockeywilderness: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:26 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"Akb4DoiClXBW5fJUzo4Df64\"}}"
     },
     {
       "handle": "@wildon7th",
@@ -304,7 +304,7 @@
       "category": "Wild",
       "profile_url": "https://www.instagram.com/wildon7th/",
       "status": "unavailable",
-      "error": "Meta API 401 for @wildon7th: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:15 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"A4RfzIkVkUVjUNfC0zFqsoS\"}}"
+      "error": "Meta API 401 for @wildon7th: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:26 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AxqCTfuDOe0OSXrRkeuvaan\"}}"
     },
     {
       "handle": "@bleacherreport",
@@ -312,7 +312,7 @@
       "category": "General Sports",
       "profile_url": "https://www.instagram.com/bleacherreport/",
       "status": "unavailable",
-      "error": "Meta API 401 for @bleacherreport: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:16 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"ApYu4MiD7gB9GbQ943VXykA\"}}"
+      "error": "Meta API 401 for @bleacherreport: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:26 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"ALWUshlVO8gHmUd-ASwkk6E\"}}"
     },
     {
       "handle": "@houseofhighlights",
@@ -320,7 +320,7 @@
       "category": "General Sports",
       "profile_url": "https://www.instagram.com/houseofhighlights/",
       "status": "unavailable",
-      "error": "Meta API 401 for @houseofhighlights: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:16 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"A_dM1ZRJWcvTE3ew6K7FYH6\"}}"
+      "error": "Meta API 401 for @houseofhighlights: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:26 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AgL8UCiHyaj6sTdbBckVI9k\"}}"
     },
     {
       "handle": "@espn",
@@ -328,7 +328,7 @@
       "category": "General Sports",
       "profile_url": "https://www.instagram.com/espn/",
       "status": "unavailable",
-      "error": "Meta API 401 for @espn: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:16 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"A4d7uXH5Kyx-zzP2ORdGHIl\"}}"
+      "error": "Meta API 401 for @espn: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:26 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AQ4aB1U-kkwAGlg--OzX6_8\"}}"
     },
     {
       "handle": "@overtime",
@@ -336,7 +336,7 @@
       "category": "General Sports",
       "profile_url": "https://www.instagram.com/overtime/",
       "status": "unavailable",
-      "error": "Meta API 401 for @overtime: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:17 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AE8qRpO8JyPfAt_7fGpRQju\"}}"
+      "error": "Meta API 401 for @overtime: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:27 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AEtgl9pSHj5-mHOnC3SxVG7\"}}"
     },
     {
       "handle": "@jomboymedia",
@@ -344,7 +344,7 @@
       "category": "General Sports",
       "profile_url": "https://www.instagram.com/jomboymedia/",
       "status": "unavailable",
-      "error": "Meta API 401 for @jomboymedia: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Tuesday, 24-Nov-26 14:40:17 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AlojEGaNX6r_ZmlbbVqqx7y\"}}"
+      "error": "Meta API 401 for @jomboymedia: {\"error\":{\"message\":\"Error validating access token: Session has expired on Thursday, 05-Nov-26 11:00:00 PST. The current time is Wednesday, 25-Nov-26 13:53:27 PST.\",\"code\":190,\"type\":\"OAuthException\",\"error_subcode\":463,\"fbtrace_id\":\"AFuC5xh1IXgXAx_1jX_vvAd\"}}"
     }
   ],
   "posts": [],
