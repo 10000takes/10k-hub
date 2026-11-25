@@ -14,77 +14,49 @@ main{max-width:900px;margin:0 auto;padding:32px 20px 64px}h1,h2,h3{line-height:1
 <main>
 <a class="back" href="index.html#partnerships">← Back to Partnerships in 10K Hub</a>
 <h1>Partnerships Tab Guide</h1>
-<p class="intro">A practical guide for Cody and anyone using the 10K Takes client, contract, prospect, revenue, and deliverables workspace.</p>
+<p class="intro">Use this workspace to manage prospects, partnership leads, current and past clients, communications, revenue, and monthly deliverables.</p>
 
-<section class="card note">
-<strong>What this workspace is:</strong> a private CRM backed by the 10K Takes Partnerships Worker and D1 database. The page has separate Prospects, Current Clients, and Past Clients tabs. Jack and Cody use individual access tokens; changes are attributed to the signed-in user in the audit log. Outbound email always requires a human to review and confirm each message. Existing clients, suppressed recipients, and recent duplicate sends are blocked.
-</section>
+<section class="card note"><strong>Private CRM:</strong> records are stored in the Partnerships Worker database. Use your individual Jack or Cody access token, and connect only on a private device. Never place access tokens in repository files, spreadsheets, or email. The audit log attributes changes to the signed-in user.</section>
 
-<h2>Connect to the Workspace</h2>
+<h2>Connect</h2>
 <ol>
- <li>When the connection panel is shown, enter the Partnerships Worker URL and your individual Jack or Cody access token, then choose <strong>Connect</strong>. The dashboard displays the authenticated name and role.</li>
- <li>After a successful connection, the token is remembered in that browser profile and the CRM reconnects automatically on later visits. It is not shared across browsers or devices. Choose <strong>Forget Access</strong> in the connected workspace to remove it from that browser.</li>
- <li>Only remember the token on a private device. Anyone who can use that browser profile can use its CRM access. The dashboard PIN unlocks the site; your named Worker token authenticates CRM requests. Never put either token in GitHub files, spreadsheets, email, or other public material.</li>
+<li>Enter the Partnerships Worker URL and your named-user access token, then choose <strong>Connect</strong>. Confirm the displayed name and role.</li>
+<li>The token can be remembered in the current browser profile. Choose <strong>Forget Access</strong> to remove it from that browser.</li>
+<li>The site PIN unlocks the page; the Worker token authenticates CRM requests. Keep both private.</li>
 </ol>
 
-<h2>Current Clients</h2>
-<p>The <strong>Current Clients</strong> tab contains active client records and the account overview. Records marked Active contribute to the Active Clients count. Cash MRR includes Monthly Retainer clients; Trade partnerships are excluded from cash totals, while Per Deliverable contracts contribute to contracted revenue only when the agreed deliverable count is recorded.</p>
-<p>The overview summarizes:</p>
-<ul>
- <li><strong>Cash MRR:</strong> sum of Monthly Retainer amounts for active clients.</li>
- <li><strong>Active clients:</strong> count of records marked Active.</li>
- <li><strong>Cash contracted revenue:</strong> known contract values for cash clients, including Per Deliverable contracts with a recorded quantity. Trade partnerships are excluded.</li>
- <li><strong>New Client MRR This Month:</strong> Monthly Retainer amounts on client records created this calendar month. This is not a payment ledger.</li>
- <li><strong>Proposals:</strong> leads in the Proposal Sent stage.</li>
- <li><strong>Contracts expiring:</strong> current clients with a contract end date within the next 90 days.</li>
-</ul>
-<p>The Current Clients tab focuses on active client records, deliverables, and account-level totals.</p>
-<h3>Cash Received (Logged)</h3>
-<p>Use the form to log revenue actually received for a client and month. Entries are retained in the private Worker database and shown in a rolling monthly chart. A dash means no receipt has been entered for that month; it does not mean revenue was confirmed to be $0. The chart does not read a client's monthly revenue or contract value. Enter corrections as separate, clearly described entries.</p>
-<h3>Monthly Deliverables Tracker</h3>
-<p>Add one commitment for each recurring client deliverable (for example, four short videos each month). Choose a month and check <strong>Completed</strong> when the full commitment is complete; unchecking it resets that month to zero completed units. The tracker shows completion against the commitment and keeps month-by-month history. Record published URLs on the other screen used for post tracking. Define commitments once per client; changing the plan should be reflected in a new or revised definition before tracking subsequent months.</p>
+<h2>Prospects</h2>
+<p>The <strong>Prospects</strong> view contains the lead pipeline and researched brands. Use <strong>Add Lead</strong> for an opportunity you intend to pursue, or <strong>Add Researched Brand</strong> to save a sourced company for later qualification. Do not treat an unverified research prospect as contacted or as an active opportunity.</p>
+<p>Move leads through <strong>New → Contacted → Proposal Sent → Closed</strong> using the stage selector or drag-and-drop. Set the separate Closed Outcome to Won or Lost. Search, filter, and sort the pipeline; CSV import is available from <strong>Import CSV</strong>. Add a next follow-up date to active leads so they appear in priorities when due.</p>
+<p>Open a record with <strong>Edit</strong> to update its details, log calls or meetings, and review its Activity Timeline and Communications. A researched prospect can be promoted to a lead when qualified; promotion preserves its company details, contacts, research notes, and communication history.</p>
+<h3>Research and AI assistance</h3>
+<p><strong>Research &amp; Discovered Prospects</strong> searches public news coverage. Open the source and verify relevance before saving a company. Search results do not verify budgets, decision-makers, contact details, or buying intent. AI lead scoring, sales advice, role suggestions, and proposal language are optional drafts based on supplied CRM information. Verify facts, use approved pricing, and review generated content before sharing.</p>
+<p><strong>Today’s Priorities</strong> highlights leads with overdue or missing next actions and clients with upcoming contract dates. <strong>Partnership Recommendations</strong> surfaces follow-up, proposal, and renewal reminders. These are prompts for review, not automatic actions.</p>
 
-<p>Expand <strong>Client Records</strong> to view the list or choose <strong>Add Client</strong> to enter a sponsor. Set its <strong>Compensation Model</strong> to <strong>Monthly Retainer</strong>, <strong>Per Deliverable</strong>, or <strong>Trade</strong>. Monthly Retainer records use MRR and payment frequency; contract value is calculated from MRR and the inclusive contract duration. Per Deliverable records use a fee, interval in months, and (when known) the agreed deliverable count; a total contract value is shown only when that count is entered. For example, a $1,000 custom post every three months is recorded as $1,000 per deliverable, a three-month interval, and the contract quantity if agreed. Trade records hide cash MRR and payment frequency and display Trade in place of cash amounts. Payment frequency options for Monthly Retainer records are Monthly, Quarterly, and Annually.</p>
-<p><strong>Contract Status</strong> determines whether the record appears under Current Clients or Past Clients. Only Active clients are included in active client and monthly revenue totals.</p>
-<p>The Contract Document URL field stores a link only; it does not upload or secure the document. Use a file-sharing link with appropriate permissions. Avoid putting confidential documents in a public repository.</p>
+<h2>Communication history and Gmail</h2>
+<p>Open a lead or client to see logged activities and the <strong>Communications</strong> timeline, including matched Gmail metadata and Resend records. The timeline shows last contacted, last reply, and next follow-up when available. Gmail is authoritative for Gmail sent, received, and draft status; Resend outreach remains a separate source. Matching and message IDs prevent the same communication from being counted twice.</p>
+<p>The <strong>Gmail Synchronization</strong> section shows connection status and offers <strong>Sync Now</strong>, <strong>Reconcile History Again</strong>, and <strong>Disconnect Gmail</strong>. Sync reads message metadata only: message bodies and attachments are not read or stored. It retains messages matched to a CRM contact, a known company website, or an already linked thread. A disconnect removes the Worker’s Gmail authorization; existing CRM history is retained.</p>
+<p>Gmail sync does not send messages. Any outreach draft must be reviewed by a person, and sending always requires explicit human approval through the authorized email workflow.</p>
+
+<h2>Current Clients</h2>
+<p>The <strong>Current Clients</strong> view contains current client records and account totals. Expand <strong>Client Records</strong> to review or edit a client, or choose <strong>Add Client</strong> to add one. Compensation models include Monthly Retainer, Per Deliverable, and Trade. Cash MRR excludes Trade partnerships; contract value for Per Deliverable clients is shown only when the agreed quantity is recorded.</p>
+<p>A valid <strong>Contract End Date</strong> controls the client list automatically: dates before today place a client in <strong>Past Clients</strong>; editing that date to a future date returns the client to <strong>Current Clients</strong>. If there is no contract end date, Contract Status determines the list.</p>
+<h3>Cash Received (Logged)</h3>
+<p>Use this form to record cash actually received for a client and month. The chart shows logged receipts, not contracted revenue or MRR. A blank month means no receipt was entered; it does not mean $0 was confirmed.</p>
+<h3>Monthly Deliverables Tracker</h3>
+<p>Add a monthly commitment for each recurring deliverable, choose a month, and mark <strong>Completed</strong> when the full commitment is finished. Unchecking resets that item to zero for the selected month. The green bar and percentage beside the month filter summarize completed units across all commitments for that month. Cards show completed and committed counts without individual percentages. The tracker keeps month-by-month completion history; use the Campaign Tracker to record post links and performance.</p>
 
 <h2>Past Clients</h2>
-<p>The <strong>Past Clients</strong> tab contains client records with Contract Status set to Inactive. Edit a record and change its status to move it between the current and past client lists. Past records remain available for reference and future re-engagement.</p>
-<p>Historical partnership records imported from the Partnership History workbook are marked inactive. Repeated partner names were consolidated, with the source rows and amounts retained in the record and activity history. The imported monthly amounts are historical amounts collected per month; they are not current recurring revenue. The workbook did not provide most contract end dates. The previously unnamed $1,999.99 row was identified as Chill Boys and is now included in its history.</p>
+<p>The <strong>Past Clients</strong> view keeps inactive or expired client records and their history available. Update a valid contract end date to a future date to move a client back to Current Clients. For a client without an end date, update Contract Status. Historical revenue entries remain separate from current recurring revenue.</p>
 
-<h2>Prospects</h2>
-<p>The <strong>Prospects</strong> tab combines lead management, public-source discovery, AI sales advice, and prospecting controls. Choose <strong>Add Lead</strong> to create a company you may pursue. The stage dropdown on a card or drag-and-drop moves a lead through these four stages:</p>
-<p><strong>New → Contacted → Proposal Sent → Closed.</strong> New leads start in New. Set the separate <strong>Closed Outcome</strong> to Won or Lost when closing a lead. Existing Qualified leads are moved to New, and existing Proposal leads are moved to Proposal Sent. Older labels are mapped into these four stages.</p>
-<p>The Add Lead form captures company details, source, campaign ideas, contact information, and follow-up dates. Industry is selected from a standard list shared by client, lead, and prospect forms. The form no longer asks for priority, fit score, value estimates, closing probability, or a contact-source URL. Changing a stage adds an entry to the lead’s Activity Timeline. Open a card with <strong>Edit</strong> to add notes or log a call, meeting, email, proposal, or other activity.</p>
-<p>The lead search, stage/industry/source filters, and sort menu sit above the pipeline. CSV import expects a header row; useful column names include <code>company_name</code>, <code>industry</code>, <code>stage</code>, <code>website</code>, <code>lead_source</code>, <code>priority</code>, <code>estimated_monthly_value</code>, <code>estimated_total_value</code>, <code>probability</code>, <code>last_contact</code>, and <code>next_follow_up</code>. Duplicate company names in the Leads category are skipped.</p>
-<p><strong>Today’s Priorities</strong> flags open leads that need a next action and client contracts ending soon. <strong>Partnership Recommendations</strong> shows cross-CRM follow-up, proposal, and renewal reminders. These sections are available only in Prospects. Pipeline totals and stage counts are shown on the lead board.</p>
-
-<h3>Brand Discovery and Agencies</h3>
-<p>Expand <strong>Research &amp; Discovered Prospects</strong>, enter a query, and choose <strong>Search News</strong> to search Google News RSS for public coverage. Open the cited article, verify the company and Minnesota/sports relevance, and use <strong>Save as Prospect</strong> to keep a sourced research lead. The saved item is explicitly marked unverified. Search does not crawl social media, confirm sponsorship budgets, or prove buying intent. Research decision-maker roles using company-published pages and record source links; do not infer private contact information.</p>
-<p>Weekly discovery, qualification, and outreach-draft targets are planning ranges, not quotas; the monthly cost limit is configurable up to $50.</p>
-
-<h2>AI Lead Scoring, Advice, and Proposals</h2>
-<p>In Prospects, select a lead and choose <strong>Score Lead</strong>, <strong>Sales Advice</strong>, <strong>Proposal / Pricing Draft</strong>, or <strong>Research Relevant Decision-maker Roles</strong>, then choose <strong>Generate Draft</strong>. The assistant receives selected CRM fields and any pricing assumptions entered in the form. It can suggest roles to research, but it does not verify a person's identity or contact details. Review evidence and assumptions; never rely on generated budgets, audience figures, contacts, or deal terms without verification. Enter only approved rates and review proposal language before sharing.</p>
-<p>AI use is optional and requires the Cloudflare Workers AI binding to be configured for this Worker. Until it is enabled, the dashboard shows an explanatory unavailable message. AI processing may incur usage charges; check the provider’s current pricing before enabling it.</p>
-
-<h2>Sales Outreach Email</h2>
-<p>The Partnerships dashboard does not currently create Gmail drafts or send email. Use verified CRM contact details and AI advice as research inputs, then prepare, review, and send outreach manually in Gmail. AI-generated Gmail drafts and inbox synchronization are not implemented.</p>
-
-<h2>Data Quality and Boundaries</h2>
+<h2>Good data practices</h2>
 <ul>
- <li>News discovery finds public articles only; it does not automatically identify verified decision-makers, private emails, sponsorship budgets, or buying intent.</li>
- <li>AI scoring and proposal/pricing suggestions are drafts, not approved prices or a guarantee of deal likelihood. The model only has the CRM facts provided in its request.</li>
- <li>The historical revenue chart reflects manually entered revenue receipts. It is only complete if all receipts are entered and reconciled.</li>
- <li>The monthly deliverables tracker is separate from the deliverables notes field. Its checkbox marks the full monthly commitment complete; publication links are managed on the post-tracking screen.</li>
- <li>Review each message and recipient in Gmail before sending. AI advice is not an approved email draft.</li>
- <li>Worker access is attributed to Jack or Cody and changes are written to the security log. The current roles identify users for accountability; granular restrictions between these two roles are not yet implemented.</li>
+<li>Use verified names, titles, emails, source links, and dates. Leave unknown information blank instead of guessing.</li>
+<li>Keep research notes and follow-up dates on the related prospect or lead. Log meaningful calls, meetings, and other activity.</li>
+<li>Review AI-generated facts, recommendations, and pricing before using them.</li>
+<li>Use a permitted file-sharing link for contract documents; the URL field stores a link and does not upload or secure the document.</li>
+<li>Review recipients and message content before every outreach send. The CRM does not autonomously send email.</li>
 </ul>
-
-<section class="card note"><strong>Data entry tip:</strong> use real figures when known, leave estimates blank when uncertain, set a next follow-up date for active leads, and include a source when recording researched prospects. Never treat an estimate as confirmed budget or buying intent. Unlabeled historical amounts should remain unassigned until their partner is verified.</section>
-
-<h2>Owner Setup Notes</h2>
-<p>The Worker must accept the same four pipeline stages shown in the dashboard. When deploying a new version, deploy the Sales Worker and publish the GitHub Pages dashboard from the same code revision. Jack and Cody's individual tokens belong only in Cloudflare Worker secrets as <code>SALES_JACK_TOKEN</code> and <code>SALES_CODY_TOKEN</code>; never store them in GitHub or this repository.</p>
-<p>Optional AI setup requires the Worker AI binding named <code>AI</code>. Keep all credentials in Worker secrets, not page files or repository variables.</p>
 </main>
 </body>
 </html>
