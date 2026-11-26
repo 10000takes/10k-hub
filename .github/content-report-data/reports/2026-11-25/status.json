@@ -1,5 +1,8 @@
 {
   "reporting_date": "2026-11-25",
-  "state": "ready",
-  "updated_at": "2026-11-26T14:54:06.029530+00:00"
+  "state": "delivery_blocked",
+  "updated_at": "2026-11-26T14:54:08.553548+00:00",
+  "attempt": 1,
+  "idempotency_key": "10k-daily-content-report-2026-11-25-1",
+  "error": "Both daily snapshots are required before email delivery."
 }
