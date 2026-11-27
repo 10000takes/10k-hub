@@ -1,0 +1,294 @@
+{
+  "report_date": "2026-11-27",
+  "generated_at": "2026-11-27T17:04:13.987329-06:00",
+  "window": {
+    "start": "2026-11-20",
+    "end_exclusive": "2026-11-27",
+    "previous_start": "2026-11-13",
+    "previous_end_exclusive": "2026-11-20"
+  },
+  "follower_window": {
+    "start": "2026-11-20",
+    "end": "2026-11-27"
+  },
+  "main_followers": {
+    "platforms": {
+      "Facebook": {
+        "gained": 217,
+        "coverage": 1,
+        "expected": 1
+      },
+      "Instagram": {
+        "gained": -1,
+        "coverage": 1,
+        "expected": 1
+      },
+      "TikTok": {
+        "gained": 75,
+        "coverage": 1,
+        "expected": 1
+      },
+      "Threads": {
+        "gained": 2,
+        "coverage": 1,
+        "expected": 1
+      },
+      "X/Twitter": {
+        "gained": null,
+        "coverage": 0,
+        "expected": 1
+      },
+      "YouTube": {
+        "gained": 110,
+        "coverage": 1,
+        "expected": 1
+      }
+    },
+    "total": null,
+    "partial_total": 403,
+    "complete": false,
+    "observed_pairs": 5,
+    "expected_pairs": 6
+  },
+  "subsidiary_followers": {
+    "platforms": {
+      "Facebook": {
+        "gained": 121,
+        "coverage": 5,
+        "expected": 5
+      },
+      "Instagram": {
+        "gained": 69,
+        "coverage": 5,
+        "expected": 5
+      },
+      "TikTok": {
+        "gained": -4,
+        "coverage": 5,
+        "expected": 5
+      },
+      "Threads": {
+        "gained": 25,
+        "coverage": 5,
+        "expected": 5
+      },
+      "X/Twitter": {
+        "gained": null,
+        "coverage": 0,
+        "expected": 5
+      }
+    },
+    "total": null,
+    "partial_total": 211,
+    "complete": false,
+    "observed_pairs": 20,
+    "expected_pairs": 25
+  },
+  "subsidiaries_by_account": [
+    {
+      "account": "Wild Takes",
+      "platforms": {
+        "Facebook": 117,
+        "Instagram": 59,
+        "TikTok": -1,
+        "Threads": 4,
+        "X/Twitter": null
+      },
+      "total": null,
+      "partial_total": 179,
+      "coverage": 4,
+      "expected": 5,
+      "complete": false
+    },
+    {
+      "account": "10K Howls",
+      "platforms": {
+        "Facebook": 0,
+        "Instagram": 6,
+        "TikTok": -1,
+        "Threads": 19,
+        "X/Twitter": null
+      },
+      "total": null,
+      "partial_total": 24,
+      "coverage": 4,
+      "expected": 5,
+      "complete": false
+    },
+    {
+      "account": "State of Skol",
+      "platforms": {
+        "Facebook": 6,
+        "Instagram": 2,
+        "TikTok": -2,
+        "Threads": 2,
+        "X/Twitter": null
+      },
+      "total": null,
+      "partial_total": 8,
+      "coverage": 4,
+      "expected": 5,
+      "complete": false
+    },
+    {
+      "account": "The Underline",
+      "platforms": {
+        "Facebook": -2,
+        "Instagram": 2,
+        "TikTok": 1,
+        "Threads": 0,
+        "X/Twitter": null
+      },
+      "total": null,
+      "partial_total": 1,
+      "coverage": 4,
+      "expected": 5,
+      "complete": false
+    },
+    {
+      "account": "Captain's Patch",
+      "platforms": {
+        "Facebook": 0,
+        "Instagram": 0,
+        "TikTok": -1,
+        "Threads": 0,
+        "X/Twitter": null
+      },
+      "total": null,
+      "partial_total": -1,
+      "coverage": 4,
+      "expected": 5,
+      "complete": false
+    }
+  ],
+  "impressions": {
+    "platforms": [
+      {
+        "platform": "Facebook",
+        "measure": "views",
+        "current": 1154908,
+        "previous": 1583430,
+        "current_date": "2026-11-27",
+        "previous_date": "2026-11-20",
+        "change": -428522,
+        "change_pct": "-27.1%"
+      },
+      {
+        "platform": "Instagram",
+        "measure": "views",
+        "current": 380094,
+        "previous": 910235,
+        "current_date": "2026-11-27",
+        "previous_date": "2026-11-20",
+        "change": -530141,
+        "change_pct": "-58.2%"
+      },
+      {
+        "platform": "TikTok",
+        "measure": "views",
+        "current": 32922,
+        "previous": 91836,
+        "current_date": "2026-11-27",
+        "previous_date": "2026-11-20",
+        "change": -58914,
+        "change_pct": "-64.2%"
+      },
+      {
+        "platform": "Threads",
+        "measure": "views",
+        "current": 6081,
+        "previous": 8892,
+        "current_date": "2026-11-27",
+        "previous_date": "2026-11-20",
+        "change": -2811,
+        "change_pct": "-31.6%"
+      },
+      {
+        "platform": "X/Twitter",
+        "measure": "impressions",
+        "current": 477602,
+        "previous": null,
+        "current_date": "2026-11-27",
+        "previous_date": "2026-11-20",
+        "change": null,
+        "change_pct": "Unavailable"
+      },
+      {
+        "platform": "YouTube",
+        "measure": "views",
+        "current": 290218,
+        "previous": 250580,
+        "current_date": "2026-11-27",
+        "previous_date": "2026-11-20",
+        "change": 39638,
+        "change_pct": "+15.8%"
+      }
+    ],
+    "current_total": 2341825,
+    "previous_total": 2844973,
+    "comparable_current_total": 1864223,
+    "comparable_previous_total": 2844973,
+    "change": -980750,
+    "change_pct": "-34.5%",
+    "coverage": 5,
+    "expected_platforms": 6,
+    "current_dates": [
+      "2026-11-27"
+    ],
+    "missing_platforms": [
+      "X/Twitter"
+    ]
+  },
+  "top_posts": [
+    {
+      "platform": "Facebook",
+      "url": "https://facebook.com/reel/2283610702497342",
+      "title": "There's two types of influencers in the Wild Marissa Voss Jack Leverentz... #minnesotawild #nhl #minnesota",
+      "format": "Video",
+      "published": "Nov 23",
+      "captured": "2026-11-27",
+      "exposure": 329972,
+      "measure": "views"
+    },
+    {
+      "platform": "Facebook",
+      "url": "https://facebook.com/reel/1493774925960693",
+      "title": "Who else misses Torri Hunter? #minnesotatwins #mlb #mlbmemes",
+      "format": "Video",
+      "published": "Nov 23",
+      "captured": "2026-11-27",
+      "exposure": 292822,
+      "measure": "views"
+    },
+    {
+      "platform": "X/Twitter",
+      "url": "https://x.com/10K_Takes/status/2125727482301055265",
+      "title": "You could cut the sexual tension with a knife https://t.co/td44Ecq7HK",
+      "format": "Quote",
+      "published": "Nov 25",
+      "captured": "2026-11-27",
+      "exposure": 116298,
+      "measure": "impressions"
+    },
+    {
+      "platform": "Instagram",
+      "url": "https://instagram.com/reel/DgF3lddqIBy",
+      "title": "There's two types of influencers in the Wild @voss11 @bossman_10k... #minnesotawild #nhl #minnesota",
+      "format": "Reel",
+      "published": "Nov 23",
+      "captured": "2026-11-27",
+      "exposure": 61468,
+      "measure": "views"
+    },
+    {
+      "platform": "Instagram",
+      "url": "https://instagram.com/reel/Df-aj4bKqoM",
+      "title": "The Minnesota Wild are currently the best team in the NHL #minnesotawild #mnwild #nhl #nhlhockey",
+      "format": "Reel",
+      "published": "Nov 20",
+      "captured": "2026-11-27",
+      "exposure": 28584,
+      "measure": "views"
+    }
+  ]
+}
